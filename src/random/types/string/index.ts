@@ -1,0 +1,16 @@
+export {
+    StringGenerator,
+    AlphaNumericGenerator,
+    AlphaGenerator,
+    stringGenerator,
+    string,
+    hexstring,
+    base64string,
+    alphaString,
+    lowerAlphaString,
+    alphaNumericString,
+    lowerAlphaNumericString,
+    asciistring,
+    utf16string,
+    utf16surrogatestring,
+} from './string'

@@ -1,0 +1,1 @@
+export { fstat } from './fstat'

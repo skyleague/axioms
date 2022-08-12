@@ -1,0 +1,1 @@
+export { weightedChoice } from './choice'

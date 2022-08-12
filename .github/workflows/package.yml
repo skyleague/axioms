@@ -1,0 +1,22 @@
+name: Typescript Package CI
+
+on: push
+
+jobs:
+  typescript:
+    uses: skyleague/node-standards/.github/workflows/reusable-typescript.yml@main
+    secrets:
+      GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    uses: skyleague/node-standards/.github/workflows/reusable-build.yml@main
+    secrets:
+      GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    needs: [typescript, build]
+    uses: skyleague/node-standards/.github/workflows/reusable-release.yml@main
+    with:
+      build_artifact_name: ${{ needs.build.outputs.artifact_name }}
+    secrets:
+      GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

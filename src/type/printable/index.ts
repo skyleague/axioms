@@ -1,0 +1,1 @@
+export { Printable } from './showable'

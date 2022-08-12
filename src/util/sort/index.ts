@@ -1,0 +1,1 @@
+export { sortStrings } from './sort'

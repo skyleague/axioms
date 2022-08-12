@@ -1,0 +1,1 @@
+export { mappableFunc } from './mappable'
