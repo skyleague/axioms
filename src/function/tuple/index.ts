@@ -1,0 +1,1 @@
+export { curryTuple } from './tuple'

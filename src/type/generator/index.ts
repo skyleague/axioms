@@ -1,0 +1,1 @@
+export { InfiniteGenerator } from './generator'

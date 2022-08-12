@@ -1,0 +1,1 @@
+export { head } from './head'

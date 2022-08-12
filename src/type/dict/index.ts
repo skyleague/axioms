@@ -1,0 +1,1 @@
+export { Dict } from './dict'
