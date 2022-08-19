@@ -1,4 +1,5 @@
+export * from './async-chunk'
 export * from './async-collect'
-export * from './generator'
+export * from './async-map'
 export * from './parallel-limit'
 export * from './sleep'
