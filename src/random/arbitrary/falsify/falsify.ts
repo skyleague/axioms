@@ -110,3 +110,82 @@ export function findSmallest<T>({
 
     return { tree, depth }
 }
+
+export interface AsyncFalsifyOptions<T> {
+    values: () => Traversable<Tree<T>>
+    predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
+    maxDepth: number
+    counterExample: T | undefined
+}
+
+export async function asyncFalsify<T>({
+    values,
+    predicate,
+    maxDepth,
+    counterExample,
+}: AsyncFalsifyOptions<T>): Promise<Maybe<Falsified<T>>> {
+    if (isDefined(counterExample)) {
+        const [holds, error] = await predicate(counterExample)
+        if (!holds) {
+            return {
+                counterExample,
+                counterExampleStr: toString(counterExample),
+                error,
+                depth: 0,
+                tests: 0,
+            }
+        }
+        return Nothing
+    }
+    let smallest = undefined
+    for (const [i, tree] of enumerate(values())) {
+        let foundCounterExample: Maybe<Tree<T>> = Nothing
+        const [holds] = await predicate(tree.value)
+        if (!holds) {
+            const found = await asyncFindSmallest({ tree, predicate, depth: maxDepth })
+            foundCounterExample = found.tree
+            const str = toString(foundCounterExample.value)
+            const strLength = str?.length ?? -1
+
+            const [, error] = await predicate(foundCounterExample.value)
+            if ((smallest === undefined || smallest[1] > strLength) ?? (0 || (smallest[1] === strLength && smallest[0] > str))) {
+                smallest = [
+                    str,
+                    strLength,
+                    {
+                        counterExample: foundCounterExample.value,
+                        counterExampleStr: str,
+                        error,
+                        depth: maxDepth - found.depth,
+                        tests: i + 1,
+                    },
+                ] as const
+            }
+        }
+    }
+    if (smallest) {
+        return smallest[2]
+    }
+    return Nothing
+}
+
+export async function asyncFindSmallest<T>({
+    tree,
+    predicate,
+    depth,
+}: {
+    tree: Tree<T>
+    predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
+    depth: number
+}): Promise<{ tree: Tree<T>; depth: number }> {
+    if (depth > 0) {
+        for (const child of tree.children) {
+            const [holds] = await predicate(child.value)
+            if (!holds) {
+                return asyncFindSmallest({ tree: child, predicate, depth: depth - 1 })
+            }
+        }
+    }
+
+    return { tree, depth }
+}
