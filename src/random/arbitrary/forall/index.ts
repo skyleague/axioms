@@ -1,1 +1,1 @@
-export { ForallOptions, forAll } from './forall'
+export { ForallOptions, forAll, asyncForAll } from './forall'
