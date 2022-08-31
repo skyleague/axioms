@@ -6,14 +6,12 @@ import type { Either, Left, Right } from '../../type/either'
 import type { Maybe } from '../../type/maybe'
 import { Nothing } from '../../type/maybe'
 
-export function leftToMaybe<T extends Either<any, any>>(x: T): Maybe<T extends Left<infer L> ? L : never> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return isLeft(x) ? x.left : Nothing
+export function leftToMaybe<T extends Either<unknown, unknown>>(x: T): T extends Left<infer L> ? Maybe<L> : Nothing {
+    return (isLeft(x) ? x.left : Nothing) as T extends Left<infer L> ? Maybe<L> : Nothing
 }
 
-export function rightToMaybe<T extends Either<any, any>>(x: T): Maybe<T extends Right<infer R> ? R : never> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return isRight(x) ? x.right : Nothing
+export function rightToMaybe<T extends Either<unknown, unknown>>(x: T): T extends Right<infer R> ? Maybe<R> : Nothing {
+    return (isRight(x) ? x.right : Nothing) as T extends Right<infer R> ? Maybe<R> : Nothing
 }
 
 export function maybeToRight<L, X>(x: X, left: L): Either<L, Exclude<X, Nothing>> {
