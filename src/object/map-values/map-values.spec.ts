@@ -10,7 +10,7 @@ test('infers correct type', () => {
         fooz: 'barbar' | 'barbaz' | 'bazbar' | 'bazbaz'
     } = mapValues(original, (v) => `${v}${v}` as const)
     expect(transformed).toMatchInlineSnapshot(`
-        Object {
+        {
           "foo": "barbar",
           "fooz": "bazbaz",
         }

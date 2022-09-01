@@ -56,7 +56,7 @@ test('range from function with index', () => {
 
 test('spread', () => {
     expect(collect(replicate(() => false, 10))).toMatchInlineSnapshot(`
-        Array [
+        [
           false,
           false,
           false,

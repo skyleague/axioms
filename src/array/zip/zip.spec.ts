@@ -104,7 +104,7 @@ describe('zipWith', () => {
 
     test('simple', () => {
         expect(collect(zipWith(add, [1, 2, 3], [3, 2, 1]))).toMatchInlineSnapshot(`
-            Array [
+            [
               4,
               4,
               4,

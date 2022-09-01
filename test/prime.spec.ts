@@ -14,7 +14,7 @@ test('prime', () => {
     }
 
     expect(collect(take(primes(), 10))).toMatchInlineSnapshot(`
-        Array [
+        [
           2,
           3,
           5,

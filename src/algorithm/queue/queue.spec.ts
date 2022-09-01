@@ -6,7 +6,7 @@ import { forAll, array, unknown } from '../../random'
 
 test('simple', () => {
     expect(collect(queue([1, 2, 3, 4]))).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -19,26 +19,26 @@ test('continued', () => {
     const q = queue([1, 2, 3, 4])
     q.enqueue([5, 6, 7])
     expect(collect(take(q, 3))).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
         ]
     `)
     expect(collect(take(q, 2))).toMatchInlineSnapshot(`
-        Array [
+        [
           4,
           5,
         ]
     `)
     expect(collect(q)).toMatchInlineSnapshot(`
-        Array [
+        [
           6,
           7,
         ]
     `)
     q.enqueue([5, 6, 7])
-    expect(collect(q)).toMatchInlineSnapshot(`Array []`)
+    expect(collect(q)).toMatchInlineSnapshot(`[]`)
 })
 
 test('take n queue xs === xs', () => {

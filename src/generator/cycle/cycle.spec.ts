@@ -7,19 +7,19 @@ import { array, forAll, mappableFunc, natural, tuple, unknown } from '../../rand
 
 test('simple', () => {
     expect(collect(take(cycle([1, 2, 3]), 10))).toMatchInlineSnapshot(`
-              Array [
-                1,
-                2,
-                3,
-                1,
-                2,
-                3,
-                1,
-                2,
-                3,
-                1,
-              ]
-      `)
+        [
+          1,
+          2,
+          3,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3,
+          1,
+        ]
+    `)
 })
 
 test('generator', () => {
@@ -29,7 +29,7 @@ test('generator', () => {
     }
 
     expect(collect(take(cycle(foo), 10))).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           1,

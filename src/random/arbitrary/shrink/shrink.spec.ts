@@ -6,71 +6,71 @@ import { take } from '../../../iterator'
 describe('towards', () => {
     test('simple', () => {
         expect(collect(towards(100, 0))).toMatchInlineSnapshot(`
-                      Array [
-                        50,
-                        75,
-                        88,
-                        94,
-                        97,
-                        99,
-                      ]
-              `)
+            [
+              50,
+              75,
+              88,
+              94,
+              97,
+              99,
+            ]
+        `)
     })
     test('negative', () => {
         expect(collect(towards(-21, -50))).toMatchInlineSnapshot(`
-                      Array [
-                        -35,
-                        -28,
-                        -24,
-                        -22,
-                      ]
-              `)
+            [
+              -35,
+              -28,
+              -24,
+              -22,
+            ]
+        `)
     })
 })
 
 describe('halves', () => {
     test('simple', () => {
         expect(collect(halves(15))).toMatchInlineSnapshot(`
-                      Array [
-                        15,
-                        7,
-                        3,
-                        1,
-                      ]
-              `)
+            [
+              15,
+              7,
+              3,
+              1,
+            ]
+        `)
     })
 
     test('large', () => {
         expect(collect(halves(100))).toMatchInlineSnapshot(`
-                      Array [
-                        100,
-                        50,
-                        25,
-                        12,
-                        6,
-                        3,
-                        1,
-                      ]
-              `)
+            [
+              100,
+              50,
+              25,
+              12,
+              6,
+              3,
+              1,
+            ]
+        `)
     })
 
     test('negative', () => {
         expect(collect(halves(-31))).toMatchInlineSnapshot(`
-                      Array [
-                        -31,
-                        -15,
-                        -7,
-                        -3,
-                        -1,
-                      ]
-              `)
+            [
+              -31,
+              -15,
+              -7,
+              -3,
+              -1,
+            ]
+        `)
     })
 })
 
 describe('towardsf', () => {
     test('simple', () => {
         expect(collect(take(towardsf(0, 100), 7))).toMatchInlineSnapshot(`
-            Array [
+            [
               50,
               75,
               87.5,
@@ -83,7 +83,7 @@ describe('towardsf', () => {
     })
     test('negative', () => {
         expect(collect(take(towardsf(-50, -21), 7))).toMatchInlineSnapshot(`
-            Array [
+            [
               -35.5,
               -28.25,
               -24.625,
@@ -99,7 +99,7 @@ describe('towardsf', () => {
 describe('halvesf', () => {
     test('simple', () => {
         expect(collect(take(halvesf(15), 7))).toMatchInlineSnapshot(`
-            Array [
+            [
               15,
               7.5,
               3.75,
@@ -113,7 +113,7 @@ describe('halvesf', () => {
 
     test('large', () => {
         expect(collect(take(halvesf(100), 7))).toMatchInlineSnapshot(`
-            Array [
+            [
               100,
               50,
               25,
@@ -127,7 +127,7 @@ describe('halvesf', () => {
 
     test('negative', () => {
         expect(collect(take(halvesf(-31), 7))).toMatchInlineSnapshot(`
-            Array [
+            [
               -31,
               -15.5,
               -7.75,
@@ -143,59 +143,59 @@ describe('halvesf', () => {
 describe('shrinkOne', () => {
     test('simple', () => {
         expect(collect(shrinkOne([1, 2, 3, 4, 5]))).toMatchInlineSnapshot(`
-            Array [
-              Array [
-                Array [],
+            [
+              [
+                [],
                 1,
-                Array [
+                [
                   2,
                   3,
                   4,
                   5,
                 ],
               ],
-              Array [
-                Array [
+              [
+                [
                   1,
                 ],
                 2,
-                Array [
+                [
                   3,
                   4,
                   5,
                 ],
               ],
-              Array [
-                Array [
+              [
+                [
                   1,
                   2,
                 ],
                 3,
-                Array [
+                [
                   4,
                   5,
                 ],
               ],
-              Array [
-                Array [
+              [
+                [
                   1,
                   2,
                   3,
                 ],
                 4,
-                Array [
+                [
                   5,
                 ],
               ],
-              Array [
-                Array [
+              [
+                [
                   1,
                   2,
                   3,
                   4,
                 ],
                 5,
-                Array [],
+                [],
               ],
             ]
         `)

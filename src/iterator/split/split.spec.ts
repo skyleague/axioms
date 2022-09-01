@@ -5,7 +5,7 @@ import { collect } from '../../array'
 test('string', () => {
     const [init, rest] = splitAt('hello world!', 6)
     expect(init).toMatchInlineSnapshot(`
-        Array [
+        [
           "h",
           "e",
           "l",
@@ -15,7 +15,7 @@ test('string', () => {
         ]
     `)
     expect(collect(rest)).toMatchInlineSnapshot(`
-        Array [
+        [
           "w",
           "o",
           "r",
@@ -29,12 +29,12 @@ test('string', () => {
 test('simple 1', () => {
     const [init, rest] = splitAt([1, 2, 3], 1)
     expect(init).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
         ]
     `)
     expect(collect(rest)).toMatchInlineSnapshot(`
-        Array [
+        [
           2,
           3,
         ]
@@ -44,32 +44,32 @@ test('simple 1', () => {
 test('simple 2', () => {
     const [init, rest] = splitAt([1, 2, 3], 3)
     expect(init).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
         ]
     `)
-    expect(collect(rest)).toMatchInlineSnapshot(`Array []`)
+    expect(collect(rest)).toMatchInlineSnapshot(`[]`)
 })
 
 test('over', () => {
     const [init, rest] = splitAt([1, 2, 3], 4)
     expect(init).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
         ]
     `)
-    expect(collect(rest)).toMatchInlineSnapshot(`Array []`)
+    expect(collect(rest)).toMatchInlineSnapshot(`[]`)
 })
 
 test('negative', () => {
     const [init, rest] = splitAt([1, 2, 3], -1)
-    expect(init).toMatchInlineSnapshot(`Array []`)
+    expect(init).toMatchInlineSnapshot(`[]`)
     expect(collect(rest)).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -79,9 +79,9 @@ test('negative', () => {
 
 test('zero', () => {
     const [init, rest] = splitAt([1, 2, 3], 0)
-    expect(init).toMatchInlineSnapshot(`Array []`)
+    expect(init).toMatchInlineSnapshot(`[]`)
     expect(collect(rest)).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -92,7 +92,7 @@ test('zero', () => {
 test('simple', () => {
     const [init, rest] = splitAt([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5)
     expect(init).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -101,7 +101,7 @@ test('simple', () => {
         ]
     `)
     expect(collect(rest)).toMatchInlineSnapshot(`
-        Array [
+        [
           6,
           7,
           8,

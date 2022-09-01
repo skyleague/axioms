@@ -73,7 +73,7 @@ describe('omitBy', () => {
 describe('omit', () => {
     test('simple', () => {
         expect(omit({ foo: 'bar', bar: 'foo', baz: 'baz' }, ['foo', 'bar'])).toMatchInlineSnapshot(`
-            Object {
+            {
               "baz": "baz",
             }
         `)

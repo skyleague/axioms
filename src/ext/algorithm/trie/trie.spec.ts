@@ -10,15 +10,15 @@ test('simple', () => {
     t.insert(['foo', 'bar'], 2)
 
     expect(t).toMatchInlineSnapshot(`
-        Object {
+        {
           "find": [Function],
           "insert": [Function],
-          "root": Object {
-            "children": Object {
-              "foo": Object {
-                "children": Object {
-                  "bar": Object {
-                    "children": Object {},
+          "root": {
+            "children": {
+              "foo": {
+                "children": {
+                  "bar": {
+                    "children": {},
                     "value": 2,
                   },
                 },

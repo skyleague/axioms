@@ -45,7 +45,7 @@ describe('pickBy', () => {
 describe('pick', () => {
     test('simple', () => {
         expect(pick({ foo: 'bar', bar: 'foo', baz: 'baz' }, ['foo', 'bar'])).toMatchInlineSnapshot(`
-            Object {
+            {
               "bar": "foo",
               "foo": "bar",
             }
@@ -85,7 +85,7 @@ describe('pick', () => {
         }
         const picked: { foo: 'bar' } = pick(orignal, ['foo'])
         expect(picked).toMatchInlineSnapshot(`
-            Object {
+            {
               "foo": "bar",
             }
         `)

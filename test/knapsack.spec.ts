@@ -55,63 +55,63 @@ test('knapsack', () => {
 
     const result = knapsack(items, 400)
     expect(result).toMatchInlineSnapshot(`
-        Array [
-          Array [
+        [
+          [
             "socks",
             4,
             50,
           ],
-          Array [
+          [
             "sunglasses",
             7,
             20,
           ],
-          Array [
+          [
             "note-case",
             22,
             80,
           ],
-          Array [
+          [
             "waterproof overclothes",
             43,
             75,
           ],
-          Array [
+          [
             "waterproof trousers",
             42,
             70,
           ],
-          Array [
+          [
             "suntan cream",
             11,
             70,
           ],
-          Array [
+          [
             "banana",
             27,
             60,
           ],
-          Array [
+          [
             "glucose",
             15,
             60,
           ],
-          Array [
+          [
             "sandwich",
             50,
             160,
           ],
-          Array [
+          [
             "water",
             153,
             200,
           ],
-          Array [
+          [
             "compass",
             13,
             35,
           ],
-          Array [
+          [
             "map",
             9,
             150,
@@ -126,13 +126,13 @@ test('knapsack', () => {
         ['beer', 35, 3],
     ]
     expect(knapsack(greedy, 40)).toMatchInlineSnapshot(`
-        Array [
-          Array [
+        [
+          [
             "gps",
             25,
             2,
           ],
-          Array [
+          [
             "sunscreen",
             15,
             2,

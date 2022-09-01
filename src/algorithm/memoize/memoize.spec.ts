@@ -79,7 +79,7 @@ test('memoizeGetters', () => {
 
     expect({ ...y }).toEqual({ ...y })
     expect({ ...y }).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": undefined,
           "b": [Function],
           "clear": [Function],
@@ -99,7 +99,7 @@ test('memoizeAttributes', () => {
     expect({ ...x }).toEqual({ ...x })
     expect(mapValues(x, (f) => f())).not.toEqual(mapValues(x, (f) => f()))
     expect(mapValues(x, (f) => f())).toMatchInlineSnapshot(`
-        Object {
+        {
           "x": 3,
         }
     `)
@@ -108,14 +108,14 @@ test('memoizeAttributes', () => {
     expect({ ...y }).toEqual({ ...y })
     expect(mapValues(y, (f) => f())).toEqual(mapValues(y, (f) => f()))
     expect(mapValues(y, (f) => f())).toMatchInlineSnapshot(`
-        Object {
+        {
           "x": 4,
         }
     `)
     y.x.clear()
     expect(mapValues(y, (f) => f())).toEqual(mapValues(y, (f) => f()))
     expect(mapValues(y, (f) => f())).toMatchInlineSnapshot(`
-        Object {
+        {
           "x": 5,
         }
     `)

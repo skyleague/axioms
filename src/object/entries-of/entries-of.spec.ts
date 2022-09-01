@@ -16,16 +16,16 @@ test('entriesOf [xs] === Object.entries', () => {
 
 test('entriesOf [1, 2, 3]', () => {
     expect(entriesOf([1, 2, 3])).toMatchInlineSnapshot(`
-        Array [
-          Array [
+        [
+          [
             "0",
             1,
           ],
-          Array [
+          [
             "1",
             2,
           ],
-          Array [
+          [
             "2",
             3,
           ],

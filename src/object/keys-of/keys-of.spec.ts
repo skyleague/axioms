@@ -16,7 +16,7 @@ test('keysOf [xs] === Object.keys', () => {
 
 test('keysOf [1, 2, 3]', () => {
     expect(keysOf([1, 2, 3])).toMatchInlineSnapshot(`
-        Array [
+        [
           "0",
           "1",
           "2",

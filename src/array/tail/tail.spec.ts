@@ -7,7 +7,7 @@ import { toTraversable } from '../../type'
 
 test('tail simple', () => {
     expect(collect(tail([1, 2, 3]))).toMatchInlineSnapshot(`
-        Array [
+        [
           2,
           3,
         ]

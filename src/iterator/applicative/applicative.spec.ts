@@ -8,18 +8,18 @@ import { array, forAll, unknown } from '../../random'
 test('make reentrant', () => {
     const xs = range(1, 5)
     expect(collect(xs)).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
           4,
         ]
     `)
-    expect(collect(xs)).toMatchInlineSnapshot(`Array []`)
+    expect(collect(xs)).toMatchInlineSnapshot(`[]`)
 
     const axs = applicative(range(1, 5))
     expect(collect(axs)).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -27,7 +27,7 @@ test('make reentrant', () => {
         ]
     `)
     expect(collect(axs)).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -55,7 +55,7 @@ test('make reentrant - lazy', () => {
     expect(fn).toHaveBeenCalledTimes(2)
 
     expect(collect(take(axs, 3))).toMatchInlineSnapshot(`
-        Array [
+        [
           0,
           1,
           2,
@@ -64,7 +64,7 @@ test('make reentrant - lazy', () => {
     expect(fn).toHaveBeenCalledTimes(3)
 
     expect(collect(axs)).toMatchInlineSnapshot(`
-        Array [
+        [
           0,
           1,
           2,
