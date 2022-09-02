@@ -13,10 +13,11 @@ test('distribution', () => {
                 replicate(() => boolean().sample(context), 1000),
                 (x) => x.toString()
             ),
+
             (v) => v.length
         )
     ).toMatchInlineSnapshot(`
-        Object {
+        {
           "false": 509,
           "true": 491,
         }

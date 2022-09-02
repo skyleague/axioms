@@ -26,14 +26,14 @@ test('is ordered', async () => {
             ].map((x) => x())
         )
     ).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
         ]
     `)
     expect(xs).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           3,
           2,

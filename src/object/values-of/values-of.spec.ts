@@ -16,7 +16,7 @@ test('valuesOf [xs] === Object.values', () => {
 
 test('valuesOf [1, 2, 3]', () => {
     expect(valuesOf([1, 2, 3])).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,

@@ -15,74 +15,74 @@ test('insert', () => {
     trie.insert([{ left: 'bar' }, { right: 'foo' }, { right: 'bar' }], 7)
 
     expect(trie).toMatchInlineSnapshot(`
-        Object {
+        {
           "find": [Function],
           "insert": [Function],
-          "root": Object {
-            "children": Object {
-              "foo": Object {
-                "children": Object {
-                  "bar": Object {
-                    "children": Object {},
+          "root": {
+            "children": {
+              "foo": {
+                "children": {
+                  "bar": {
+                    "children": {},
                     "parameter": Symbol(Axioms.Nothing),
-                    "value": Object {
+                    "value": {
                       "right": 2,
                     },
                   },
-                  "bar/": Object {
-                    "children": Object {},
+                  "bar/": {
+                    "children": {},
                     "parameter": Symbol(Axioms.Nothing),
-                    "value": Object {
+                    "value": {
                       "right": 3,
                     },
                   },
-                  Symbol(Axioms.Nothing): Object {
-                    "children": Object {
-                      "bar": Object {
-                        "children": Object {},
+                  Symbol(Axioms.Nothing): {
+                    "children": {
+                      "bar": {
+                        "children": {},
                         "parameter": Symbol(Axioms.Nothing),
-                        "value": Object {
+                        "value": {
                           "right": 5,
                         },
                       },
                     },
                     "parameter": "bar",
-                    "value": Object {
+                    "value": {
                       "right": 4,
                     },
                   },
                 },
                 "parameter": Symbol(Axioms.Nothing),
-                "value": Object {
+                "value": {
                   "left": Symbol(Axioms.Nothing),
                 },
               },
-              Symbol(Axioms.Nothing): Object {
-                "children": Object {
-                  "foo": Object {
-                    "children": Object {
-                      "bar": Object {
-                        "children": Object {},
+              Symbol(Axioms.Nothing): {
+                "children": {
+                  "foo": {
+                    "children": {
+                      "bar": {
+                        "children": {},
                         "parameter": Symbol(Axioms.Nothing),
-                        "value": Object {
+                        "value": {
                           "right": 7,
                         },
                       },
                     },
                     "parameter": Symbol(Axioms.Nothing),
-                    "value": Object {
+                    "value": {
                       "left": Symbol(Axioms.Nothing),
                     },
                   },
                 },
                 "parameter": "bar",
-                "value": Object {
+                "value": {
                   "right": 6,
                 },
               },
             },
             "parameter": Symbol(Axioms.Nothing),
-            "value": Object {
+            "value": {
               "left": Symbol(Axioms.Nothing),
             },
           },
@@ -96,29 +96,29 @@ test('simple', () => {
     trie.insert([{ right: 'foo' }, { right: 'bar' }], 2)
 
     expect(trie).toMatchInlineSnapshot(`
-        Object {
+        {
           "find": [Function],
           "insert": [Function],
-          "root": Object {
-            "children": Object {
-              "foo": Object {
-                "children": Object {
-                  "bar": Object {
-                    "children": Object {},
+          "root": {
+            "children": {
+              "foo": {
+                "children": {
+                  "bar": {
+                    "children": {},
                     "parameter": Symbol(Axioms.Nothing),
-                    "value": Object {
+                    "value": {
                       "right": 2,
                     },
                   },
                 },
                 "parameter": Symbol(Axioms.Nothing),
-                "value": Object {
+                "value": {
                   "left": Symbol(Axioms.Nothing),
                 },
               },
             },
             "parameter": Symbol(Axioms.Nothing),
-            "value": Object {
+            "value": {
               "left": Symbol(Axioms.Nothing),
             },
           },

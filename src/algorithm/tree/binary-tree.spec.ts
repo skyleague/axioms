@@ -9,7 +9,7 @@ test('preorder', () => {
     }
 
     expect([...dfsNLR(tree)]).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           3,
           7,
@@ -29,7 +29,7 @@ test('postorder', () => {
     }
 
     expect([...dfsLRN(tree)]).toMatchInlineSnapshot(`
-        Array [
+        [
           4,
           5,
           2,

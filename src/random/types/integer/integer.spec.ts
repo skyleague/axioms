@@ -19,10 +19,11 @@ test('distribution', () => {
                 replicate(() => integer().sample(context), 1000),
                 (x) => x % 10
             ),
+
             (v) => v.length
         )
     ).toMatchInlineSnapshot(`
-        Object {
+        {
           "-1": 39,
           "-2": 48,
           "-3": 44,
@@ -131,7 +132,7 @@ test('random sample', () => {
             )
         )
     ).toMatchInlineSnapshot(`
-        Array [
+        [
           714,
           76,
           214,

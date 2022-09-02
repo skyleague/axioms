@@ -6,7 +6,7 @@ import { forAll, array, unknown } from '../../random'
 
 test('simple', () => {
     expect(collect(stack([1, 2, 3, 4]))).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -19,26 +19,26 @@ test('continued', () => {
     const q = stack([1, 2, 3, 4])
     q.push([5, 6, 7])
     expect(collect(take(q, 3))).toMatchInlineSnapshot(`
-        Array [
+        [
           5,
           6,
           7,
         ]
     `)
     expect(collect(take(q, 2))).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
         ]
     `)
     expect(collect(q)).toMatchInlineSnapshot(`
-        Array [
+        [
           3,
           4,
         ]
     `)
     q.push([5, 6, 7])
-    expect(collect(q)).toMatchInlineSnapshot(`Array []`)
+    expect(collect(q)).toMatchInlineSnapshot(`[]`)
 })
 
 test('continued 2', () => {
@@ -48,26 +48,26 @@ test('continued 2', () => {
     q.push([6, 7])
 
     expect(collect(take(q, 3))).toMatchInlineSnapshot(`
-        Array [
+        [
           6,
           7,
           4,
         ]
     `)
     expect(collect(take(q, 2))).toMatchInlineSnapshot(`
-        Array [
+        [
           5,
           2,
         ]
     `)
     expect(collect(q)).toMatchInlineSnapshot(`
-        Array [
+        [
           3,
           1,
         ]
     `)
     q.push([5, 6, 7])
-    expect(collect(q)).toMatchInlineSnapshot(`Array []`)
+    expect(collect(q)).toMatchInlineSnapshot(`[]`)
 })
 
 test('take n stack xs === xs', () => {

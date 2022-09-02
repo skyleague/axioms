@@ -4,7 +4,7 @@ import { forAll, array, unknown } from '../../random'
 
 test('simple', () => {
     expect(init([1, 2, 3])).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
         ]

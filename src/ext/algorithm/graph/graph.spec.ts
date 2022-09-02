@@ -19,28 +19,28 @@ test('simple', () => {
     G.setEdge('d', 'e', 5)
 
     expect([...topologicalSort(G)]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "name": "a",
             "value": 1,
           },
-          Object {
+          {
             "name": "b",
             "value": 2,
           },
-          Object {
+          {
             "name": "c",
             "value": 3,
           },
-          Object {
+          {
             "name": "d",
             "value": 4,
           },
-          Object {
+          {
             "name": "e",
             "value": 5,
           },
-          Object {
+          {
             "name": "z",
             "value": 6,
           },

@@ -16,7 +16,7 @@ test('fizzbuzz', () => {
         }
     }
     expect(collect(take(fizzbuzz(counter(1)), 100))).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           "fizz",

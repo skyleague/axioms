@@ -25,7 +25,7 @@ test('preorder', () => {
     }
 
     expect([...dfsPreOrder(t)]).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           4,
@@ -59,7 +59,7 @@ test('postorder', () => {
     }
 
     expect([...dfsPostOrder(t)]).toMatchInlineSnapshot(`
-        Array [
+        [
           7,
           6,
           3,
@@ -93,7 +93,7 @@ test('bfs', () => {
     }
 
     expect([...bfs(t)]).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,
@@ -109,7 +109,7 @@ test('tree', () => {
     const root = tree(1, [tree(2, [tree(4), tree(5)]), tree(3, [tree(6), tree(7)])])
 
     expect([...bfs(root)]).toMatchInlineSnapshot(`
-        Array [
+        [
           1,
           2,
           3,

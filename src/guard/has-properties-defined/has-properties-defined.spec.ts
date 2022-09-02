@@ -15,8 +15,8 @@ test('filters with correct assertion', () => {
 
     const filtered: { foo: string }[] = original.filter(hasPropertiesDefined('foo'))
     expect(filtered).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "foo": "bar",
           },
         ]
