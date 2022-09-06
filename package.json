@@ -1,5 +1,6 @@
 {
   "name": "@skyleague/axioms",
+  "version": "1.0.0",
   "description": "Library with axioms for writing Typescript/Javascript",
   "license": "MIT",
   "main": ".main.js",
@@ -37,7 +38,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@skyleague/node-standards": "^1.7.0",
+    "@skyleague/node-standards": "^1.7.2",
     "date-fns": "^2.29.2",
     "jest-extended": "^3.1.0",
     "typescript": "^4.8.2"
