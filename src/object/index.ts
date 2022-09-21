@@ -1,4 +1,5 @@
 export * from './clone-deep'
+export * from './ensure-values'
 export * from './entries-of'
 export * from './from-entries'
 export * from './has'
