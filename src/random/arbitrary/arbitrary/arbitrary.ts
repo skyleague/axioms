@@ -34,7 +34,7 @@ export function interleave<U extends Tree<unknown>[]>(
     ...xs: [...U]
 ): Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let init: any = mapApplicativeTree(curryTuple(xs.length), xs[0])
+    let init: any = mapApplicativeTree(xs[0], curryTuple(xs.length))
     for (let i = 1; i < xs.length; ++i) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         init = interleaveTree(xs[i], init)
