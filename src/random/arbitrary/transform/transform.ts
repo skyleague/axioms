@@ -14,6 +14,6 @@ export function filterArbitrary<T>(a: Arbitrary<T>, f: (x: T) => boolean): Depen
         do {
             generated = a.value(context)
         } while (!f(generated.value))
-        return filterTree(f, generated)
+        return filterTree(generated, f)
     })
 }

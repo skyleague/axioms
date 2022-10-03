@@ -23,26 +23,26 @@ export function mapTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
     return { value: f(x.value), children: map(x.children, (c) => mapTree(c, f)) }
 }
 
-export function mapApplicativeTree<T, U>(f: (x: T) => U, x: Tree<T>): Tree<U> {
+export function mapApplicativeTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
     return { value: f(x.value), children: applicative(map(x.children, (c) => mapTree(c, f))) }
 }
 
-export function filterTree<T>(f: (x: T) => boolean, x: Tree<T>): Tree<T> {
+export function filterTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
     return {
         value: x.value,
         children: map(
             filter(x.children, (c) => f(c.value)),
-            (c) => filterTree(f, c)
+            (c) => filterTree(c, f)
         ),
     }
 }
-export function filterApplicativeTree<T>(f: (x: T) => boolean, x: Tree<T>): Tree<T> {
+export function filterApplicativeTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
     return {
         value: x.value,
         children: applicative(
             map(
                 filter(x.children, (y) => f(y.value)),
-                (c) => filterTree(f, c)
+                (c) => filterTree(c, f)
             )
         ),
     }

@@ -14,7 +14,7 @@ import { arrayWith } from '../array'
 import { tuple } from '../tuple'
 
 function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): Tree<T[]> {
-    return filterTree((x) => collect(unique(x, eq)).length === x.length, vals)
+    return filterTree(vals, (x) => collect(unique(x, eq)).length === x.length)
 }
 
 export interface SetGenerator<T> {
