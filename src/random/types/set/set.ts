@@ -56,8 +56,8 @@ export function subsuper<T>(
     const sub = set(arbitrary, { minLength, maxLength, eq })
     const complement = set(arbitrary, { minLength, maxLength, eq })
     const pair = tuple(sub, complement)
-    return mapArbitrary(([xs, cs]) => {
+    return mapArbitrary(pair, ([xs, cs]) => {
         const superset = collect(unique(concat(xs, cs), eq))
         return [xs, superset, [...difference(superset, xs)]]
-    }, pair)
+    })
 }
