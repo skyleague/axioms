@@ -12,7 +12,7 @@ describe('shrinking challenge', () => {
             return s
         }
 
-        const boundedList = filterArbitrary((x) => x.reduce(sum16, 0) < 256, array(integer({ min: -32768, max: 32767 })))
+        const boundedList = filterArbitrary(array(integer({ min: -32768, max: 32767 })), (x) => x.reduce(sum16, 0) < 256)
         expect(() =>
             forAll(
                 tuple(boundedList, boundedList, boundedList, boundedList, boundedList),
@@ -31,7 +31,7 @@ describe('shrinking challenge', () => {
     test('coupling', () => {
         expect(() =>
             forAll(
-                filterArbitrary((xs) => xs.every((v) => v < xs.length), array(natural({ max: 10 }))),
+                filterArbitrary(array(natural({ max: 10 })), (xs) => xs.every((v) => v < xs.length)),
                 (xs) => {
                     for (let i = 0; i !== xs.length; ++i) {
                         const j = xs[i]
@@ -55,7 +55,7 @@ describe('shrinking challenge', () => {
     test('deletion', () => {
         expect(() =>
             forAll(
-                filterArbitrary(([xs, i]) => i < xs.length, tuple(array(integer()), natural({ max: 10 }))),
+                filterArbitrary(tuple(array(integer()), natural({ max: 10 })), ([xs, i]) => i < xs.length),
                 ([xs, i]) => {
                     const x = xs[i]
                     const copyWithoutX = [...xs.slice(0, i), ...xs.slice(i + 1)]

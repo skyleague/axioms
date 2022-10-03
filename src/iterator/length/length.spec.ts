@@ -9,7 +9,7 @@ test('only defined for arrays', () => {
 
 test('nothing for other', () => {
     forAll(
-        filterArbitrary((x) => !isArray(x), unknown()),
+        filterArbitrary(unknown(), (x) => !isArray(x)),
         (xs) => isNothing(length(xs))
     )
 })
