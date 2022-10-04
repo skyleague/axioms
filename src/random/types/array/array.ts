@@ -1,5 +1,7 @@
+import { unique } from '../../../iterator'
 import { replicate, replicateWithMemory } from '../../../iterator/replicate'
 import type { RelaxedPartial } from '../../../type/partial'
+import { filterArbitrary, mapArbitrary } from '../../arbitrary'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
 import { interleaveList } from '../../arbitrary/arbitrary'
 import { makeDependent } from '../../arbitrary/dependent'
@@ -8,13 +10,14 @@ import { integer } from '../integer/integer'
 export interface ArrayGenerator<T> {
     minLength: number
     maxLength: number
+    uniqueItems: boolean
     equals?: (a: T, b: T) => boolean
 }
 
 export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayGenerator<T>> = {}): Arbitrary<T[]> {
-    const { minLength = 0, maxLength } = context
+    const { minLength = 0, maxLength, uniqueItems = false } = context
     const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
-    return makeDependent((ctx) =>
+    const aList = makeDependent((ctx) =>
         interleaveList(
             (() => {
                 const { bias } = ctx
@@ -35,6 +38,13 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
             }
         )
     )
+    if (uniqueItems) {
+        return filterArbitrary(
+            mapArbitrary(aList, (x) => [...unique(x)]),
+            (x) => x.length >= minLength
+        )
+    }
+    return aList
 }
 
 export function arrayWith<T>(
