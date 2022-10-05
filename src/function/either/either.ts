@@ -91,6 +91,26 @@ export function swapEither<L, R>(x: Either<L, R>): Either<R, L> {
     return isLeft(x) ? { right: x.left } : { left: x.right }
 }
 
+/**
+ * `if-else` on right/left possibilities
+ * 
+ * - Returns `x.right` when the Either is Right
+ * - Throws  `x.left` when the Either is Left
+ * 
+ * @example
+ * eitherToError({ right: 'foo' }) === 'foo'
+ * 
+ * @example
+ * eitherToError({ left: new MyError('my-message') }) === throw new MyError('my-message')
+ * 
+ * @description
+ * ```ts
+ * if (isLeft(x)) {
+ *     throw x.left
+ * }
+ * return x.right
+ * ```
+ */
 export function eitherToError<L, R>(x: Either<L, R>): R {
     if (isLeft(x)) {
         throw x.left
