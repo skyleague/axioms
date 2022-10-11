@@ -10,9 +10,10 @@ export type BiasedArbitraryContext = ArbitraryContext & {
     bias: number
 }
 
+export const defaultRng = xoroshiro128plus(BigInt(new Date().getTime()))
 export function makeContext(context: Partial<ArbitraryContext> = {}): ArbitraryContext & { parametrized: false } {
     return {
-        rng: xoroshiro128plus(BigInt(new Date().getTime())),
+        rng: defaultRng,
         parametrized: false,
         ...context,
     } as ArbitraryContext & { parametrized: false }
