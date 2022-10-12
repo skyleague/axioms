@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Library with axioms for writing Typescript/Javascript",
   "license": "MIT",
+  "author": "SkyLeague Technologies B.V. <technologies@skyleague.io> (https://skyleague.io)",
   "main": ".main.js",
   "types": "index.d.ts",
   "repository": {
