@@ -3,6 +3,37 @@ import { uncons } from '.'
 import { array, forAll, unknown } from '../../random'
 import { Nothing, toTraversable } from '../../type'
 
+test('simple', () => {
+    expect(uncons([1, 2, 3])).toMatchInlineSnapshot(`
+        [
+          1,
+          {},
+        ]
+    `)
+})
+
+test('generator', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+    expect(uncons(foobar())).toMatchInlineSnapshot(`
+        [
+          "foo",
+          {},
+        ]
+    `)
+})
+
+test('empty', () => {
+    expect(uncons([])).toMatchInlineSnapshot(`
+        [
+          Symbol(Axioms.Nothing),
+          {},
+        ]
+    `)
+})
+
 test('concat uncons === identity, for n > 0', () => {
     forAll(array(unknown(), { minLength: 1 }), (xs) => {
         const split = uncons(xs)

@@ -22,3 +22,9 @@ test('filters with correct assertion', () => {
         ]
     `)
 })
+
+test('multiple', () => {
+    const original = [{ foo: 'bar', bar: 'fooz' }, { foo: undefined }]
+    const filtered = original.filter(hasPropertiesDefined(['foo', 'bar']))
+    expect(filtered).toEqual([{ foo: 'bar', bar: 'fooz' }])
+})

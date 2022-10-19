@@ -1,6 +1,8 @@
 import { findLast } from '.'
 
+import { counter } from '../../generator'
 import { isNothing } from '../../guard'
+import { take } from '../../iterator'
 import { forAll, array, integer, natural } from '../../random'
 
 test('first in array without predicate', () => {
@@ -35,4 +37,20 @@ test('finds first randomly inserted', () => {
             randomIndex < randomIndex2
         )
     })
+})
+
+test('simple', () => {
+    expect(findLast(take(counter(), 123), (i) => i > 10)).toMatchInlineSnapshot(`122`)
+})
+
+test('generator', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+    expect(findLast(foobar(), (str) => str.startsWith('b'))).toMatchInlineSnapshot(`"bar"`)
+})
+
+test('Nothing when nothing found', () => {
+    expect(findLast(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
 })

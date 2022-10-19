@@ -1,9 +1,9 @@
 # Axioms _(@skyleague/axioms)_
 
 <p>
-  <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/skyleague/axioms">
+  <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/skyleague/axioms" />
   <img alt="Version" src="https://img.shields.io/github/package-json/v/skyleague/axioms" />
-  <img alt="LGTM Grade" src="https://img.shields.io/lgtm/grade/javascript/github/skyleague/axioms">
+  <img alt="LGTM Grade" src="https://img.shields.io/lgtm/grade/javascript/github/skyleague/axioms" />
   <img src="https://img.shields.io/badge/node-%3E%3D16-blue.svg" />
   <a href="#" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />

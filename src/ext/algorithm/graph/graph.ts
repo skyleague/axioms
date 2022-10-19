@@ -1,5 +1,5 @@
-import { queue } from '../../../algorithm/queue'
-import { stack } from '../../../algorithm/stack'
+import { queue } from '../../../generator/queue'
+import { stack } from '../../../generator/stack'
 import { map } from '../../../iterator'
 import type { Maybe, Traversable } from '../../../type'
 import { Nothing } from '../../../type'
@@ -22,6 +22,11 @@ interface DiscoveryMarker<T> {
     add(value: GraphNode<T>): this
     has(value: GraphNode<T>): boolean
 }
+
+/**
+ * @experimental
+ * @group Experimental
+ */
 
 export class Graph<T, E = never> {
     private readonly _nodes: Record<GraphNodeName, GraphNode<T>> = {} as Record<GraphNodeName, GraphNode<T>>
@@ -93,6 +98,10 @@ function defaultWeightSort<T>(a: GraphEdge<T, WeightedEdge>, z: GraphEdge<T, Wei
     return a.value.weight - z.value.weight
 }
 
+/**
+ * @experimental
+ * @group Experimental
+ */
 export function* kruskal<T, E = WeightedEdge>(
     G: Graph<T, E>,
     sortBy: WeightSortFunction<T, E> = defaultWeightSort as unknown as WeightSortFunction<T, E>
@@ -111,6 +120,10 @@ export function* kruskal<T, E = WeightedEdge>(
     }
 }
 
+/**
+ * @experimental
+ * @group Experimental
+ */
 export function* topologicalSort<T, E>(G: Graph<T, E>): Generator<GraphNode<T>, void, void> {
     const visited: WeakSet<GraphNode<T>> = new WeakSet()
     for (const node of G.nodes()) {

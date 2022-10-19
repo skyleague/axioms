@@ -1,7 +1,8 @@
 import { peekable } from '.'
 
-import { repeat, next } from '..'
+import { repeat, next, range } from '..'
 import { collect, zip } from '../../array'
+import { isRight } from '../../guard/is-right'
 import { take, map, concat } from '../../iterator'
 import { forAll, array, unknown, tuple } from '../../random'
 import { toGenerator } from '../../type'
@@ -40,4 +41,42 @@ test('has +1 lookahead', () => {
         expect(next(it)).toEqual({ left: x })
         expect(it.peek()).toEqual({ left: x })
     })
+})
+
+test('simple', () => {
+    const values = []
+    const iterator = peekable(range(3))
+    let it = next(iterator)
+    while (isRight(it)) {
+        values.push([it, iterator.peek()])
+        it = next(iterator)
+    }
+    expect(values).toMatchInlineSnapshot(`
+        [
+          [
+            {
+              "right": 0,
+            },
+            {
+              "right": 1,
+            },
+          ],
+          [
+            {
+              "right": 1,
+            },
+            {
+              "right": 2,
+            },
+          ],
+          [
+            {
+              "right": 2,
+            },
+            {
+              "left": undefined,
+            },
+          ],
+        ]
+    `)
 })

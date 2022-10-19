@@ -14,6 +14,18 @@ test('tail simple', () => {
     `)
 })
 
+test('generator', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+    expect(collect(tail(foobar()))).toMatchInlineSnapshot(`
+        [
+          "bar",
+        ]
+    `)
+})
+
 test('tail xs === xs[1:]', () => {
     forAll(array(unknown()), (xs) => allEqual(toTraversable(tail(xs)), xs.slice(1)))
 })

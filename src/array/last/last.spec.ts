@@ -7,6 +7,18 @@ test('simple', () => {
     expect(last([1, 2, 3])).toMatchInlineSnapshot(`3`)
 })
 
+test('generator', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+    expect(last(foobar())).toMatchInlineSnapshot(`"bar"`)
+})
+
+test('empty', () => {
+    expect(last([])).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+})
+
 test('last in array, n > 0', () => {
     forAll(array(unknown(), { minLength: 1 }), (xs) => xs[xs.length - 1] === last(xs))
 })

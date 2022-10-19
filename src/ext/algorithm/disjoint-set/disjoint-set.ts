@@ -8,6 +8,10 @@ export type DisjointPartition<T> = {
     parent: DisjointPartition<T>
 }
 
+/**
+ * @experimental
+ * @group Experimental
+ */
 export function disjointSet<T>(...values: T[]) {
     const partitions: Map<T, DisjointPartition<T>> = new Map<T, DisjointPartition<T>>()
 

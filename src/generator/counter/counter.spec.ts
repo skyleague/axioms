@@ -16,3 +16,25 @@ test('range 0 n === take n counter', () => {
 test('range i n + i === take n counter i', () => {
     forAll(tuple(natural({ max: 2000 }), natural()), ([n, i]) => allEqual(take(counter(i), n), range(i, n + i)))
 })
+
+test('small', () => {
+    expect(collect(take(counter(), 4))).toMatchInlineSnapshot(`
+        [
+          0,
+          1,
+          2,
+          3,
+        ]
+    `)
+})
+
+test('small with offset', () => {
+    expect(collect(take(counter(10), 4))).toMatchInlineSnapshot(`
+        [
+          10,
+          11,
+          12,
+          13,
+        ]
+    `)
+})

@@ -1,12 +1,37 @@
+import { stack } from '../../generator/stack'
 import type { Traversable } from '../../type'
-import { stack } from '../stack'
 
+/**
+ * A type that represents a binary tree (which has a maximum of 2 children; left, and right).
+ *
+ * @typeParam T - The element type.
+ *
+ * @group Algorithm
+ */
 export interface BinaryTree<T> {
+    /**
+     * The value of the tree node.
+     */
     value: T
+    /**
+     * The left child of the tree.
+     */
     left?: BinaryTree<T>
+    /**
+     * The right child of the tree.
+     */
     right?: BinaryTree<T>
 }
 
+/**
+ * Run a depth-first search on the binary tree, that evaluates in the order Node, Left, Right recursively.
+ *
+ * @param node - The root to start searching from.
+ *
+ * @returns A generator with the node values in NLR order.
+ *
+ * @group Algorithm
+ */
 export function* dfsNLR<T>(node: BinaryTree<T>): Traversable<T, void> {
     const nodes = stack([node])
     for (const x of nodes) {
@@ -20,6 +45,15 @@ export function* dfsNLR<T>(node: BinaryTree<T>): Traversable<T, void> {
     }
 }
 
+/**
+ * Run a depth-first search on the binary tree, that evaluates in the order Left, Right, Node recursively.
+ *
+ * @param node - The root to start searching from.
+ *
+ * @returns A generator with the node values in LRN order.
+ *
+ * @group Algorithm
+ */
 export function* dfsLRN<T>(node: BinaryTree<T>): Traversable<T, void> {
     const nodes = stack([node])
     const ordered = []

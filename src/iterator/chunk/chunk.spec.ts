@@ -22,11 +22,47 @@ test('simple chunk function larger than array', () => {
 })
 
 test('simple chunk function offset 0', () => {
-    expect(collect(chunk([1, 2, 3, 4, 5], 0))).toEqual([])
+    expect(collect(chunk([1, 2, 3, 4, 5], 0))).toMatchInlineSnapshot(`
+        [
+          [
+            1,
+          ],
+          [
+            2,
+          ],
+          [
+            3,
+          ],
+          [
+            4,
+          ],
+          [
+            5,
+          ],
+        ]
+    `)
 })
 
 test('simple chunk function offset negative', () => {
-    expect(collect(chunk([1, 2, 3, 4, 5], -5))).toEqual([])
+    expect(collect(chunk([1, 2, 3, 4, 5], -5))).toMatchInlineSnapshot(`
+        [
+          [
+            1,
+          ],
+          [
+            2,
+          ],
+          [
+            3,
+          ],
+          [
+            4,
+          ],
+          [
+            5,
+          ],
+        ]
+    `)
 })
 
 test('tco', () => {

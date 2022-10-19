@@ -43,6 +43,10 @@ function insert<T>(node: ParamTrie<T>, prefix: Either<string, string>[], value: 
     return false
 }
 
+/**
+ * @experimental
+ * @group Experimental
+ */
 export function parameterTrie<T>(): {
     root: ParamTrie<T>
     insert: (prefix: Either<string, string>[], value: T) => boolean
