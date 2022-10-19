@@ -12,8 +12,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: package.name,
   tagline: package.description,
-  url: `https://${url.hostname}`,
-  baseUrl: `/${url.pathname}`,
+  url: url.origin,
+  baseUrl: url.pathname,
   trailingSlash: false,
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
