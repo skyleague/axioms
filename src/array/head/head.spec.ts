@@ -7,6 +7,18 @@ test('simple', () => {
     expect(head([1, 2, 3])).toMatchInlineSnapshot(`1`)
 })
 
+test('generator', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+    expect(head(foobar())).toMatchInlineSnapshot(`"foo"`)
+})
+
+test('empty', () => {
+    expect(head([])).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+})
+
 test('first in array, n > 0', () => {
     forAll(array(unknown(), { minLength: 1 }), (xs) => {
         const [first] = xs

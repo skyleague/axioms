@@ -1,7 +1,33 @@
+/**
+ * Creates a limit function that allows you to schedule promises that execute
+ * with a maximum concurrency.
+ *
+ * ### Example
+ * ```ts
+ * const limit = parallelLimit(2)
+ * const tasks = [
+ *   limit(async () => {
+ *       await sleep(100)
+ *       return 1
+ *   }),
+ *   limit(() => 2),
+ *   limit(() => 3),
+ * ]
+ * await Promise.all(tasks)
+ * // => [1, 2, 3]
+ * ```
+ *
+ * ### Alternatives
+ * - [p-limit](https://github.com/sindresorhus/p-limit)
+ *
+ * @param concurrency - The concurrency limit, constraint to a minimum of 1.
+ *
+ * @returns A limit function.
+ *
+ * @group Async
+ */
 export function parallelLimit(concurrency: number) {
-    if (concurrency < 1 || !Number.isSafeInteger(concurrency)) {
-        console.warn(`Invalid concurrency: ${concurrency}. Reverting to concurrency = 1`)
-    }
+    concurrency = Math.max(concurrency, 1)
     let activeCount = 0
     const queue: Array<() => Promise<unknown>> = []
 
@@ -9,7 +35,9 @@ export function parallelLimit(concurrency: number) {
         --activeCount
         void queue.shift()?.()
     }
-
+    /**
+     * The task function.
+     */
     return <T>(task: () => Promise<T> | T): Promise<T> =>
         new Promise<T>((resolve, reject) => {
             async function execute() {

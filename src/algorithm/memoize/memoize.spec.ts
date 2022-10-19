@@ -1,10 +1,17 @@
 import { memoize } from '.'
 
-import { memoizeAttributes, memoizeGetters } from './memoize'
-
-import { mapValues } from '../..'
 import { range } from '../../generator'
 import { forAll, integer, tuple, unknown } from '../../random'
+
+test('simple', () => {
+    let i = 0
+    const mem = memoize(() => i++)
+    expect(mem()).toEqual(0)
+    expect(mem()).toEqual(0)
+
+    mem.clear()
+    expect(mem()).toEqual(1)
+})
 
 test('mem x = x', () => {
     forAll(unknown(), (x) => {
@@ -52,71 +59,4 @@ test('clear mem x = undefined', () => {
         const mem = memoize(() => x)
         expect(mem.clear()).toBeUndefined()
     })
-})
-
-test('memoizeGetters', () => {
-    let i = 0
-    const x = {
-        x: 0,
-        get y() {
-            return ++i
-        },
-        z() {
-            return 2
-        },
-
-        a: undefined,
-        b: (c: number) => c + 1,
-    }
-    expect({ ...x }).not.toEqual({ ...x })
-
-    const y = memoizeGetters(x)
-    const z = { ...y }
-
-    expect({ ...z }).toEqual({ ...y })
-    y.clear('y')
-    expect({ ...z }).not.toEqual({ ...y })
-
-    expect({ ...y }).toEqual({ ...y })
-    expect({ ...y }).toMatchInlineSnapshot(`
-        {
-          "a": undefined,
-          "b": [Function],
-          "clear": [Function],
-          "x": 0,
-          "y": 4,
-          "z": [Function],
-        }
-    `)
-    expect(y.b(1)).toMatchInlineSnapshot(`2`)
-})
-
-test('memoizeAttributes', () => {
-    let i = 0
-    const x = {
-        x: () => ++i,
-    }
-    expect({ ...x }).toEqual({ ...x })
-    expect(mapValues(x, (f) => f())).not.toEqual(mapValues(x, (f) => f()))
-    expect(mapValues(x, (f) => f())).toMatchInlineSnapshot(`
-        {
-          "x": 3,
-        }
-    `)
-
-    const y = memoizeAttributes(x)
-    expect({ ...y }).toEqual({ ...y })
-    expect(mapValues(y, (f) => f())).toEqual(mapValues(y, (f) => f()))
-    expect(mapValues(y, (f) => f())).toMatchInlineSnapshot(`
-        {
-          "x": 4,
-        }
-    `)
-    y.x.clear()
-    expect(mapValues(y, (f) => f())).toEqual(mapValues(y, (f) => f()))
-    expect(mapValues(y, (f) => f())).toMatchInlineSnapshot(`
-        {
-          "x": 5,
-        }
-    `)
 })

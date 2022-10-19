@@ -1,1 +1,1 @@
-export { iuncons, uncons } from './uncons'
+export { uncons } from './uncons'

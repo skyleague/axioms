@@ -1,7 +1,7 @@
 import { enumerate } from '.'
 
 import { counter, range } from '..'
-import { zip } from '../../array'
+import { collect, zip } from '../../array'
 import { allEqual, map } from '../../iterator'
 import { forAll, array, unknown } from '../../random'
 
@@ -25,4 +25,27 @@ test('map second enumerate == identity', () => {
             xs
         )
     )
+})
+
+test('simple', () => {
+    expect(collect(enumerate(range(10, 14)))).toMatchInlineSnapshot(`
+        [
+          [
+            0,
+            10,
+          ],
+          [
+            1,
+            11,
+          ],
+          [
+            2,
+            12,
+          ],
+          [
+            3,
+            13,
+          ],
+        ]
+    `)
 })

@@ -1,22 +1,60 @@
 import { evaluate } from '../../function/evaluate'
-import { isDefined } from '../../guard/is-defined'
 import { isLeft } from '../../guard/is-left'
-import { unique } from '../../iterator/unique'
-import { mapValues } from '../../object/map-values'
-import type { Dict } from '../../type/dict'
 import type { Either } from '../../type/either'
+import type { ConstOrFn } from '../../type/function'
 import { Nothing } from '../../type/maybe'
 
+/**
+ * A memoized function.
+ */
 export interface Memoized<T> {
+    /**
+     * A constant function.
+     */
     (): T
+
+    /**
+     * Clears the memoized cache state, and allows for reevaluation.
+     */
     clear: () => void
 }
 
-export function memoize<T>(getter: T | (() => T)): Memoized<T> {
+/**
+ * Memoizes a constant or a constant function output. Subsequent calls to the function will
+ * not evaluate the given constant function, but uses a cached value instead.
+ *
+ * ### Example
+ * ```ts
+ * let i = 0
+ * const mem = memoize(() => i++)
+ * mem()
+ * // => 0
+ *
+ * mem()
+ * // => 0
+ *
+ * mem.clear()
+ * mem()
+ * // => 1
+ * ```
+ *
+ * ### Alternatives
+ * - [Lodash - memoize](https://lodash.com/docs/4.17.15#memoize)
+ *
+ * @param getter - The constant or constant function.
+ * @param resolver - The resolver that defines how the constant function should be retrieved.
+ *
+ * @returns The memoized function to the constant.
+ *
+ * @typeParam T - The element type.
+ *
+ * @group Algorithm
+ */
+export function memoize<T>(getter: ConstOrFn<T>, resolver: (x: ConstOrFn<T>) => T = evaluate): Memoized<T> {
     let value: Either<unknown, T> = { left: Nothing }
     const memoized: Memoized<T> = () => {
         if (isLeft(value)) {
-            value = { right: evaluate(getter) }
+            value = { right: resolver(getter) }
         }
         return value.right
     }
@@ -24,29 +62,5 @@ export function memoize<T>(getter: T | (() => T)): Memoized<T> {
     memoized.clear = () => {
         value = { left: Nothing }
     }
-    return memoized
-}
-
-export type MemoizeAttributes<T extends Dict<() => unknown>> = { [K in keyof T]: Memoized<T[K]> }
-export function memoizeAttributes<T extends Dict<() => unknown>>(x: T): MemoizeAttributes<T> {
-    return mapValues(x, memoize) as MemoizeAttributes<T>
-}
-
-export function memoizeGetters<T>(x: T & { clear?: never }): Omit<T, 'clear'> & { clear: (k: keyof T) => void } {
-    const memoized = [...unique([...Object.keys(x), ...Object.getOwnPropertyNames(x)])].reduce<Partial<Omit<T, 'clear'>>>(
-        (y, k) => {
-            const prop = Object.getOwnPropertyDescriptor(x, k)
-            if (isDefined(prop)) {
-                Object.defineProperty(y, k, 'get' in prop ? { ...prop, get: memoize(() => prop?.get?.() as unknown) } : prop)
-            }
-            return y
-        },
-        {}
-    ) as Omit<T, 'clear'> & { clear: (k: keyof T) => void }
-    memoized.clear = (k: keyof T) => {
-        const prop = Object.getOwnPropertyDescriptor(memoized, k)
-        ;(prop?.get as Memoized<unknown>)?.clear?.()
-    }
-
     return memoized
 }

@@ -11,6 +11,18 @@ test('simple', () => {
     `)
 })
 
+test('generator', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+    expect(init(foobar())).toMatchInlineSnapshot(`
+        [
+          "foo",
+        ]
+    `)
+})
+
 test('init xs === xs[:-1]', () => {
     forAll(array(unknown()), (xs) => {
         expect(init(xs)).toEqual(xs.slice(0, xs.length - 1))

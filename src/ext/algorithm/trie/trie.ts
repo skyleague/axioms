@@ -36,6 +36,10 @@ function insert<T>(node: Trie<T>, prefix: string[], value: T): boolean {
     return false
 }
 
+/**
+ * @experimental
+ * @group Experimental
+ */
 export function trie<T>() {
     const root: Trie<T> = { value: Nothing, children: {} }
 

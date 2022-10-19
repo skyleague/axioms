@@ -1,12 +1,36 @@
 import type { Traverser, Maybe, Traversable } from '../../type'
 import { Nothing, toTraverser } from '../../type'
 
-export function iuncons<T>(iterator: Traverser<T>): [Maybe<T>, Traverser<T>] {
-    const head = iterator.next()
-    return [head.done === true ? Nothing : head.value, iterator]
-}
-
+/**
+ * Take the {@link Traversable}, pick the first element and return a pair with the
+ * element and the iterator to the rest of the values.
+ *
+ * ### Example
+ * ```ts
+ * uncons([1, 2, 3])
+ * // => [1, [2, 3]]
+ *
+ * function* foobar() {
+ *     yield 'foo'
+ *     yield 'bar'
+ * }
+ * uncons(foobar())
+ * // => ["foo", ["bar"]]
+ *
+ * uncons([])
+ * // => [Nothing, []]
+ * ```
+ *
+ * @param xs - The {@link Traversable} to take the first element from.
+ *
+ * @returns The first element if it exists, otherwise `Nothing`, and the iterator to the rest of the values.
+ *
+ * @typeParam T - The element type.
+ *
+ * @group Iterators
+ */
 export function uncons<T>(xs: Traversable<T>): [Maybe<T>, Traverser<T>] {
     const iterator = toTraverser(xs)
-    return iuncons(iterator)
+    const head = iterator.next()
+    return [head.done === true ? Nothing : head.value, iterator]
 }

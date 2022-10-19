@@ -1,10 +1,10 @@
+import { queue } from '../../generator/queue'
+import { stack } from '../../generator/stack'
 import { applicative } from '../../iterator/applicative'
 import { concat } from '../../iterator/concat'
 import { filter } from '../../iterator/filter'
 import { map } from '../../iterator/map'
 import type { Printable, Traversable } from '../../type'
-import { queue } from '../queue'
-import { stack } from '../stack'
 
 export interface Tree<T> {
     value: T

@@ -1,5 +1,9 @@
 import type { Traversable } from '../../../type'
 
+/**
+ * @experimental
+ * @group Experimental
+ */
 export function* mapAccumL<S, B, T>(xs: Traversable<B>, f: (a: S, b: B) => [S, T], init: S): Generator<T, S> {
     let state = init
     let value: T

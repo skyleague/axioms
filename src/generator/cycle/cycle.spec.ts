@@ -76,3 +76,30 @@ test('given n === 0, |take n cycle(X)| === 0', () => {
         return collect(take(cycle(fn(xs)), n)).length === 0
     })
 })
+
+test('small', () => {
+    expect(collect(take(cycle([1, 2]), 4))).toMatchInlineSnapshot(`
+        [
+          1,
+          2,
+          1,
+          2,
+        ]
+    `)
+})
+
+test('small reentrant', () => {
+    function* foobar() {
+        yield 'foo'
+        yield 'bar'
+    }
+
+    expect(collect(take(cycle(foobar()), 4))).toMatchInlineSnapshot(`
+        [
+          "foo",
+          "bar",
+          "foo",
+          "bar",
+        ]
+    `)
+})
