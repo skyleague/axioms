@@ -23,7 +23,7 @@ import { promises } from 'fs'
  * @param options - Configure how the normalization should happen.
  * @param options.forceForwardSlash - Set to true if we need to replace all backwards slashes to forward. By default
  *                                    we check the separator used on the current OS, and only replace when needed.
- * @returns The normalized path.
+ * @returns The fstat response.
  *
  * @experimental
  * @category Filesystem
