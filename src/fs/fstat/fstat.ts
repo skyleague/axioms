@@ -19,7 +19,7 @@ import { promises } from 'fs'
  * ```
  *
  *
- * @param path - The path to normalize
+ * @param path - The file path.
  * @returns The fstat response.
  *
  * @experimental
