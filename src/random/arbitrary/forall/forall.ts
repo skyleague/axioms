@@ -25,7 +25,7 @@ export function forAll<T>(
         tests = 100,
         shrinks = 200,
         maxSkips = 100,
-        seed = BigInt(new Date().getTime()),
+        seed = BigInt(Math.floor(new Date().getTime() * Math.random())),
         period = 13,
         counterExample,
     }: Partial<ForallOptions<T>> = {}
@@ -81,6 +81,10 @@ export function forAll<T>(
     }
 }
 
+export interface AsyncForallOptions<T> extends ForallOptions<T> {
+    timeout?: number
+}
+
 export async function asyncForAll<T>(
     arbitrary: Arbitrary<T>,
     predicate: (x: T, context: ArbitraryContext) => Promise<boolean | void>,
@@ -88,10 +92,11 @@ export async function asyncForAll<T>(
         tests = 100,
         shrinks = 200,
         maxSkips = 100,
-        seed = BigInt(new Date().getTime()),
+        seed = BigInt(Math.floor(new Date().getTime() * Math.random())),
         period = 13,
+        timeout = 4_500,
         counterExample,
-    }: Partial<ForallOptions<T>> = {}
+    }: Partial<AsyncForallOptions<T>> = {}
 ): Promise<void> {
     const context: ArbitraryContext = {
         rng: xoroshiro128plus(BigInt(seed)),
@@ -137,6 +142,8 @@ export async function asyncForAll<T>(
             }, tests),
         maxDepth: shrinks,
         counterExample,
+        tests,
+        timeout,
     })
 
     if (isJust(maybeCounterExample)) {
