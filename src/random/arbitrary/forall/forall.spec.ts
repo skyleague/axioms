@@ -1,6 +1,7 @@
-import { forAll } from '.'
+import { asyncForAll, forAll } from '.'
 
-import { utf16string, tuple, integer, array } from '../../../random'
+import { sleep } from '../../../async'
+import { utf16string, tuple, integer, array, FalsifiedError } from '../../../random'
 
 test('abs smaller than six', () => {
     expect(() => {
@@ -34,4 +35,29 @@ describe('properties', () => {
             return contains(a + b + c, b)
         })
     })
+})
+
+test('counter example with jest expect', () => {
+    expect(() => {
+        forAll(
+            integer(),
+            (i) => {
+                expect(Math.abs(i)).toBeLessThanOrEqual(600000)
+            },
+            { seed: 42n }
+        )
+    }).toThrowWithMessage(FalsifiedError, /^Counter example found after 3 tests \(seed: 42n\)/)
+})
+
+test.only('timeout async', async () => {
+    await expect(
+        asyncForAll(
+            integer(),
+            async (i) => {
+                await sleep(5)
+                expect(Math.abs(i)).toBeLessThanOrEqual(600000)
+            },
+            { seed: 42n }
+        )
+    ).rejects.toThrowWithMessage(FalsifiedError, /^Counter example found after 20 tests \(seed: 42n\)/)
 })

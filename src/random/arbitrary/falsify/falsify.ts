@@ -5,6 +5,8 @@ import type { Traversable, Maybe } from '../../../type'
 import { Nothing } from '../../../type'
 import { toString } from '../../../util'
 
+import { performance } from 'perf_hooks'
+
 export interface FalsifyOptions<T> {
     values: () => Traversable<Tree<T>>
     predicate: (x: T) => [boolean, Maybe<Error>]
@@ -24,21 +26,21 @@ export class FalsifiedError<T> extends Error {
     public falsified: Falsified<T>
     public matcherResult?: unknown
     public constructor(falsified: Falsified<T>, { seed }: { seed: bigint }) {
-        super(
-            [
-                `Counter example found after ${falsified.tests} tests (seed: ${seed}n)`,
-                `Shrunk ${falsified.depth} time(s)`,
-                `Counter example:`,
-                '',
+        const counterExampleStr = [
+            `Counter example found after ${falsified.tests} tests (seed: ${seed}n)`,
+            `Shrunk ${falsified.depth} time(s)`,
+            `Counter example:`,
+            '',
+            falsified.counterExampleStr,
+        ].join('\n')
 
-                falsified.counterExampleStr,
-                ...(isJust(falsified.error) ? ['', falsified.error.message] : []),
-            ].join('\n')
-        )
+        super([counterExampleStr, ...(isJust(falsified.error) ? ['', falsified.error.message] : [])].join('\n'))
         this.name = 'FalsifiedError'
         this.falsified = falsified
         if (isJust(falsified.error) && isDefined(falsified.error.stack)) {
-            this.stack = falsified.error.stack
+            this.cause = falsified.error
+            // jest adds information to the stack, so input the falsify information there if needed
+            this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
             this.matcherResult = (this.falsified.error as FalsifiedError<unknown>).matcherResult
         }
     }
@@ -116,6 +118,8 @@ export interface AsyncFalsifyOptions<T> {
     predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
     maxDepth: number
     counterExample: T | undefined
+    timeout: number
+    tests: number
 }
 
 export async function asyncFalsify<T>({
@@ -123,6 +127,8 @@ export async function asyncFalsify<T>({
     predicate,
     maxDepth,
     counterExample,
+    timeout,
+    tests,
 }: AsyncFalsifyOptions<T>): Promise<Maybe<Falsified<T>>> {
     if (isDefined(counterExample)) {
         const [holds, error] = await predicate(counterExample)
@@ -138,11 +144,14 @@ export async function asyncFalsify<T>({
         return Nothing
     }
     let smallest = undefined
+    const startTime = performance.now()
     for (const [i, tree] of enumerate(values())) {
+        const timeLeft = timeout - (performance.now() - startTime)
+        const timeBudget = timeLeft / (tests - i)
         let foundCounterExample: Maybe<Tree<T>> = Nothing
         const [holds] = await predicate(tree.value)
         if (!holds) {
-            const found = await asyncFindSmallest({ tree, predicate, depth: maxDepth })
+            const found = await asyncFindSmallest({ tree, predicate, depth: maxDepth, timeBudget })
             foundCounterExample = found.tree
             const str = toString(foundCounterExample.value)
             const strLength = str?.length ?? -1
@@ -173,16 +182,24 @@ export async function asyncFindSmallest<T>({
     tree,
     predicate,
     depth,
+    timeBudget,
+    startTime = performance.now(),
 }: {
     tree: Tree<T>
     predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
     depth: number
+    timeBudget: number
+    startTime?: number
 }): Promise<{ tree: Tree<T>; depth: number }> {
     if (depth > 0) {
         for (const child of tree.children) {
+            const timeSinceStart = performance.now() - startTime
+            if (timeSinceStart > timeBudget) {
+                return { tree, depth }
+            }
             const [holds] = await predicate(child.value)
             if (!holds) {
-                return asyncFindSmallest({ tree: child, predicate, depth: depth - 1 })
+                return asyncFindSmallest({ tree: child, predicate, depth: depth - 1, timeBudget, startTime })
             }
         }
     }
