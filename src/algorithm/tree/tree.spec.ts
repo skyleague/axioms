@@ -1,7 +1,65 @@
 import type { Tree } from '.'
-import { dfsPreOrder, dfsPostOrder, bfs, tree } from '.'
+import { mapTree } from '.'
+
+import { dfsPreOrder, dfsPostOrder, bfs, tree, showTree, mapApplicativeTree, filterTree, filterApplicativeTree } from './tree'
 
 import { sum } from '../../array'
+
+test('map tree', () => {
+    const t = mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)
+    expect(showTree(t)).toMatchInlineSnapshot(`
+        "└─ 2
+            ├─ 3
+            └─ 4"
+    `)
+    expect(showTree(t)).toMatchInlineSnapshot(`"└─ 2"`)
+})
+
+test('map applicative tree', () => {
+    const t = mapApplicativeTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)
+    expect(showTree(t)).toMatchInlineSnapshot(`
+        "└─ 2
+            ├─ 3
+            └─ 4"
+    `)
+    expect(showTree(t)).toMatchInlineSnapshot(`
+        "└─ 2
+            ├─ 3
+            └─ 4"
+    `)
+})
+
+test('map tree', () => {
+    expect(showTree(mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1))).toMatchInlineSnapshot(`
+        "└─ 2
+            ├─ 3
+            └─ 4"
+    `)
+})
+
+test('filter tree', () => {
+    const t = filterTree(tree(1, [tree(2, [tree(5)]), tree(3)]), (x) => x < 4)
+    expect(showTree(t)).toMatchInlineSnapshot(`
+        "└─ 1
+            ├─ 2
+            └─ 3"
+    `)
+    expect(showTree(t)).toMatchInlineSnapshot(`"└─ 1"`)
+})
+
+test('filter applicative tree', () => {
+    const t = filterApplicativeTree(tree(1, [tree(2, [tree(5)]), tree(3)]), (x) => x < 4)
+    expect(showTree(t)).toMatchInlineSnapshot(`
+        "└─ 1
+            ├─ 2
+            └─ 3"
+    `)
+    expect(showTree(t)).toMatchInlineSnapshot(`
+        "└─ 1
+            ├─ 2
+            └─ 3"
+    `)
+})
 
 test('preorder', () => {
     const t: Tree<number> = {
