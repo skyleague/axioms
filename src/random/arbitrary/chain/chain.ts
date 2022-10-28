@@ -5,7 +5,7 @@ import { concat } from '../../../iterator/concat'
 import { map } from '../../../iterator/map'
 import type { Arbitrary } from '../arbitrary'
 import type { Dependent } from '../dependent'
-import { makeDependent } from '../dependent'
+import { dependentArbitrary } from '../dependent'
 
 export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
     return {
@@ -20,7 +20,7 @@ export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
 }
 
 export function chainArbitrary<T, U>(a: Arbitrary<T>, f: (a: T) => Arbitrary<U>): Dependent<U> {
-    return makeDependent((context) => {
+    return dependentArbitrary((context) => {
         return collapseArbitraryTree(mapTree(a.value(context), (x) => f(x).value(context)))
     })
 }

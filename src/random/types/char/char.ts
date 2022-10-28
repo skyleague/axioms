@@ -1,6 +1,6 @@
 import { mapTree } from '../../../algorithm/tree'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
-import { makeDependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import { element } from '../element'
 import { integer } from '../integer'
 
@@ -13,7 +13,7 @@ export interface CharGenerator {
 export function charGenerator(context: Partial<CharGenerator> = {}): Arbitrary<string> {
     const { min = 32, max = 126, transform = String.fromCharCode } = context
     const int = integer({ min, max })
-    return makeDependent((ctx) => mapTree(int.value(ctx), (i) => transform(i)))
+    return dependentArbitrary((ctx) => mapTree(int.value(ctx), (i) => transform(i)))
 }
 
 function toAscii(x: number): string {

@@ -1,1 +1,1 @@
-export { Dependent, makeDependent } from './dependent'
+export { Dependent, dependentArbitrary } from './dependent'

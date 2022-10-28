@@ -1,1 +1,1 @@
-export { Integrated, makeIntegrated } from './integrated'
+export { Integrated, integratedArbitrary } from './integrated'

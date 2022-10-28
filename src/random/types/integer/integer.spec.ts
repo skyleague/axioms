@@ -5,11 +5,11 @@ import { collect } from '../../../array'
 import { repeat } from '../../../generator'
 import { groupBy, replicate, take } from '../../../iterator'
 import { mapValues } from '../../../object'
-import { makeContext, forAll } from '../../../random/arbitrary'
+import { arbitraryContext, forAll } from '../../../random/arbitrary'
 import { xoroshiro128plus } from '../../../random/rng'
 
 test('distribution', () => {
-    const context = makeContext({
+    const context = arbitraryContext({
         rng: xoroshiro128plus(42n),
     })
 

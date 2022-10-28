@@ -1,7 +1,7 @@
 import { mapTree } from '../../../algorithm'
 import { toGenerator, toTraversable, toTraverser } from '../../../type'
 import type { Mappable } from '../../../type/traversable'
-import { makeDependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import type { Dependent } from '../../arbitrary/dependent'
 import { integer } from '../integer'
 
@@ -19,5 +19,5 @@ const mappableFuncs: MappableFunc[] = [
 ]
 export function mappableFunc(): Dependent<MappableFunc> {
     const aint = integer({ min: 0, max: mappableFuncs.length })
-    return makeDependent((context) => mapTree(aint.value(context), (i) => mappableFuncs[i]))
+    return dependentArbitrary((context) => mapTree(aint.value(context), (i) => mappableFuncs[i]))
 }

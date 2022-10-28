@@ -1,7 +1,7 @@
 import { mapTree } from '../../../algorithm/tree'
 import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
-import { makeDependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import { array } from '../array'
 import { alpha, alphaNumeric, ascii, base64, char, hex, lowerAlpha, lowerAlphaNumeric, utf16, utf16surrogate } from '../char'
 
@@ -14,7 +14,7 @@ export interface StringGenerator {
 export function stringGenerator(a: Arbitrary<string>, context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
     const { minLength = 0, maxLength = 10, transform = (s) => s.join('') } = context
     const alist = array(a, { minLength, maxLength })
-    return makeDependent((ctx) => mapTree(alist.value(ctx), transform))
+    return dependentArbitrary((ctx) => mapTree(alist.value(ctx), transform))
 }
 export function string(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
     return stringGenerator(char(), context)

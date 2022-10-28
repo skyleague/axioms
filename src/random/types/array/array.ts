@@ -4,7 +4,8 @@ import type { RelaxedPartial } from '../../../type/partial'
 import { filterArbitrary, mapArbitrary } from '../../arbitrary'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
 import { interleaveList } from '../../arbitrary/arbitrary'
-import { makeDependent } from '../../arbitrary/dependent'
+import type { Dependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import { integer } from '../integer/integer'
 
 export interface ArrayGenerator<T> {
@@ -14,10 +15,10 @@ export interface ArrayGenerator<T> {
     equals?: (a: T, b: T) => boolean
 }
 
-export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayGenerator<T>> = {}): Arbitrary<T[]> {
+export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayGenerator<T>> = {}): Dependent<T[]> {
     const { minLength = 0, maxLength, uniqueItems = false } = context
     const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
-    const aList = makeDependent((ctx) =>
+    const aList = dependentArbitrary((ctx) =>
         interleaveList(
             (() => {
                 const { bias } = ctx
@@ -51,10 +52,10 @@ export function arrayWith<T>(
     predicate: (x: T, xs: T[], skippedInRow: number) => boolean,
     arbitrary: Arbitrary<T>,
     context: RelaxedPartial<ArrayGenerator<T>> = {}
-): Arbitrary<T[]> {
+): Dependent<T[]> {
     const { minLength = 0, maxLength } = context
     const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
-    return makeDependent((ctx) =>
+    return dependentArbitrary((ctx) =>
         interleaveList(
             (() => {
                 const { bias } = ctx

@@ -2,7 +2,7 @@ import { mapTree } from '../../../algorithm/tree'
 import type { RelaxedPartial } from '../../../type/partial'
 import { toISO8601Date } from '../../../util/date'
 import type { Dependent } from '../../arbitrary/dependent'
-import { makeDependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import { integer } from '../integer'
 
 export interface TimestampGenerator {
@@ -28,7 +28,7 @@ export interface DatetimeGenerator {
 export function datetime(context: RelaxedPartial<DatetimeGenerator> = {}): Dependent<Date> {
     const { minDatetime, maxDatetime, precision = 'seconds', range = 'relevant' } = context
     const atimestamp = timestamp({ min: minDatetime?.getTime(), max: maxDatetime?.getTime(), range })
-    return makeDependent((ctx) =>
+    return dependentArbitrary((ctx) =>
         mapTree(atimestamp.value(ctx), (i) => {
             const d = new Date(i)
             if (!['milliseconds'].includes(precision)) {
@@ -62,7 +62,7 @@ export function date(context: RelaxedPartial<DateGenerator> = {}): Dependent<str
         range,
         precision: 'days',
     })
-    return makeDependent((ctx) =>
+    return dependentArbitrary((ctx) =>
         mapTree(atimestamp.value(ctx), (d) => {
             return toISO8601Date(d, { format: 'date' })
         })
