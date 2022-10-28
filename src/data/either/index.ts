@@ -1,4 +1,5 @@
 export {
+    eitherAsValue,
     eitherToError,
     mapLeft,
     mapLefts,
