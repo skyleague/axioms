@@ -1,1 +1,1 @@
-export { difference } from './difference'
+export { difference, symmetricDifference } from './difference'
