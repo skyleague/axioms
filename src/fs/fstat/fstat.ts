@@ -23,7 +23,7 @@ import { promises } from 'fs'
  * @returns The fstat response.
  *
  * @experimental
- * @category Filesystem
+ * @group Filesystem
  */
 export async function fstat(file: string): Promise<Either<unknown, Maybe<Stats>>> {
     try {

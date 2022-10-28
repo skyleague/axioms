@@ -23,7 +23,7 @@ const isBackwardSlash = sep === '\\'
  *                                    we check the separator used on the current OS, and only replace when needed.
  * @returns The normalized path.
  *
- * @category Filesystem
+ * @group Filesystem
  */
 export function normalizePath(path: string, options: { forceForwardSlash?: boolean } = {}): string {
     const { forceForwardSlash = isBackwardSlash } = options
