@@ -41,7 +41,7 @@ export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Mayb
 }
 
 /**
- * Return the first element of a traversable, or nothing if the traversable is empty.
+ * Return the first element of a traversable, or Nothing if the traversable is empty.
  *
  * The `first` function is a good example of how to use the at function. It's also a good example of how
  * to use the {@link Maybe} type.
