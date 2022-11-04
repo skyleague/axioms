@@ -103,7 +103,7 @@ export function second<T>(xs: Traversable<T>): Maybe<T> {
 }
 
 /**
- * Return the third element of a traversable, or nothing if the traversable is empty.
+ * Return the third element of a traversable, or Nothing if the traversable is empty.
  *
  * The `third` function is a good example of how to use the at function. It's also a good example of how
  * to use the {@link Maybe} type.
