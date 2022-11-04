@@ -2,7 +2,7 @@ import type { Tree } from '../../../algorithm'
 import { expandTree, tree } from '../../../algorithm'
 import type { RelaxedPartial } from '../../../type'
 import type { ArbitraryContext, Integrated } from '../../arbitrary'
-import { makeIntegrated, towardsf } from '../../arbitrary'
+import { integratedArbitrary, towardsf } from '../../arbitrary'
 
 export interface FloatConstraints {
     min: number
@@ -21,7 +21,7 @@ export function shrinkFloat({ min, max }: FloatConstraints, x: number): Tree<num
 export function float(constraints: RelaxedPartial<FloatConstraints> = {}): Integrated<FloatConstraints, number> {
     const { min = -Math.pow(2, 31), max = Math.pow(2, 31) } = constraints
 
-    return makeIntegrated({
+    return integratedArbitrary({
         sample: sampleFloat,
         shrink: shrinkFloat,
         constraints: {

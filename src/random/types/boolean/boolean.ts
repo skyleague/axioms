@@ -1,7 +1,7 @@
 import type { Tree } from '../../../algorithm'
 import { tree } from '../../../algorithm'
 import type { ArbitraryContext, Integrated } from '../../arbitrary'
-import { makeIntegrated } from '../../arbitrary'
+import { integratedArbitrary } from '../../arbitrary'
 
 export interface BooleanConstraints {}
 
@@ -14,5 +14,5 @@ export function shrinkBoolean(_: BooleanConstraints, x: boolean): Tree<boolean> 
 }
 
 export function boolean(constraints: Partial<BooleanConstraints> = {}): Integrated<BooleanConstraints, boolean> {
-    return makeIntegrated({ sample: sampleBoolean, shrink: shrinkBoolean, constraints })
+    return integratedArbitrary({ sample: sampleBoolean, shrink: shrinkBoolean, constraints })
 }

@@ -1,7 +1,7 @@
 import { expandTree, tree } from '../../../algorithm'
 import type { Tree } from '../../../algorithm'
 import type { RelaxedPartial } from '../../../type'
-import { makeIntegrated, towards } from '../../arbitrary'
+import { integratedArbitrary, towards } from '../../arbitrary'
 import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../../arbitrary'
 import { weightedChoice } from '../choice'
 
@@ -60,7 +60,7 @@ export function shrinkInteger({ min, max }: IntegerConstraints, x: number): Tree
 export function integer(constraints: RelaxedPartial<IntegerConstraints> = {}): Integrated<IntegerConstraints, number> {
     const { min = -Math.pow(2, 31), max = Math.pow(2, 31) } = constraints
 
-    return makeIntegrated({
+    return integratedArbitrary({
         sample: sampleInteger,
         biased: biasInteger,
         shrink: shrinkInteger,

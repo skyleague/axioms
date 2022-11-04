@@ -1,9 +1,9 @@
 import { groupBy, replicate } from '../../../iterator'
 import { mapValues } from '../../../object'
-import { boolean, forAll, makeContext, xoroshiro128plus } from '../../../random'
+import { boolean, forAll, arbitraryContext, xoroshiro128plus } from '../../../random'
 
 test('distribution', () => {
-    const context = makeContext({
+    const context = arbitraryContext({
         rng: xoroshiro128plus(42n),
     })
 

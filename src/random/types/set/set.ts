@@ -7,7 +7,7 @@ import { unique } from '../../../iterator/unique'
 import { difference } from '../../../set/difference'
 import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
-import { makeDependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import { InfeasibleTree } from '../../arbitrary/shrink'
 import { mapArbitrary } from '../../arbitrary/transform'
 import { arrayWith } from '../array'
@@ -36,7 +36,7 @@ export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGener
         arbitrary,
         { minLength, maxLength }
     )
-    return makeDependent((ctx) => {
+    return dependentArbitrary((ctx) => {
         // make sure we don't shrink to an array with duplicates
         return uniqueArbitraryTree<T>(aarray.value({ ...ctx, bias: useBias ? ctx.bias : undefined }), eq)
     })

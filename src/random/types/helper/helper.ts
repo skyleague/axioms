@@ -4,7 +4,7 @@ import { Nothing } from '../../../type/maybe'
 import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
 import type { Dependent } from '../../arbitrary/dependent'
-import { makeDependent } from '../../arbitrary/dependent'
+import { dependentArbitrary } from '../../arbitrary/dependent'
 import { oneOfWeighted } from '../one-of'
 
 export interface OptionalGenerator<N = Nothing> {
@@ -18,7 +18,7 @@ export function optional<T, O = Nothing>(
 ): Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T> {
     const { size = 1 } = context
     const afreq = oneOfWeighted([2, constant('symbol' in context ? context.symbol : Nothing)], [size + 1, a])
-    return makeDependent((ctx) => afreq.value(ctx)) as Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T>
+    return dependentArbitrary((ctx) => afreq.value(ctx)) as Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T>
 }
 
 export interface PartialGenerator {
