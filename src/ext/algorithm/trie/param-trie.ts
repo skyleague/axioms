@@ -5,7 +5,7 @@ import { Nothing } from '../../../type'
 export interface ParamTrie<T> {
     value: Either<Nothing, T>
     parameter: Maybe<string>
-    children: Record<Nothing | PropertyKey, ParamTrie<T>>
+    children: Record<PropertyKey, ParamTrie<T>>
 }
 
 function find<T>(node: ParamTrie<T>, parts: readonly string[]): Maybe<[T, [string, string][]]> {

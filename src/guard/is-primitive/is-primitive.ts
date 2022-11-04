@@ -1,4 +1,5 @@
 import type { Dict } from '../../type'
+import { isNothing } from '../is-nothing'
 
 /**
  * Checks if `x` is a primitive.
@@ -28,5 +29,13 @@ export function isPrimitive(x: unknown): x is Dict<unknown>
 export function isPrimitive(x: PropertyKey | boolean | unknown): x is PropertyKey | boolean
 export function isPrimitive(x: PropertyKey | boolean | unknown): x is PropertyKey | boolean {
     const type = typeof x
-    return x === undefined || x === null || type === 'string' || type === 'boolean' || type === 'number' || type === 'symbol'
+    return (
+        x === undefined ||
+        x === null ||
+        type === 'string' ||
+        type === 'boolean' ||
+        type === 'number' ||
+        type === 'symbol' ||
+        isNothing(x)
+    )
 }

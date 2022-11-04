@@ -28,7 +28,9 @@ test('generator', () => {
 test('empty', () => {
     expect(uncons([])).toMatchInlineSnapshot(`
         [
-          Symbol(Axioms.Nothing),
+          {
+            "(Nothing)": true,
+          },
           {},
         ]
     `)

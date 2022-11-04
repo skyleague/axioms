@@ -4,7 +4,7 @@ import { Nothing } from '../../../type/maybe'
 
 export interface Trie<T> {
     value: Maybe<T>
-    children: Record<Nothing | PropertyKey, Trie<T>>
+    children: Record<PropertyKey, Trie<T>>
 }
 
 function find<T>(node: Trie<T>, parts: readonly string[]): Maybe<T> {

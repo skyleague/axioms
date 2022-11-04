@@ -22,7 +22,11 @@ class BarError extends Error {
 describe('leftToMaybe', () => {
     test('simple', () => {
         expect(leftToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`"foo"`)
-        expect(leftToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+        expect(leftToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`
+            {
+              "(Nothing)": true,
+            }
+        `)
     })
 
     test('left', () => {
@@ -49,7 +53,11 @@ describe('leftToMaybe', () => {
 describe('rightToMaybe', () => {
     test('simple', () => {
         expect(rightToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`"foo"`)
-        expect(rightToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+        expect(rightToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`
+            {
+              "(Nothing)": true,
+            }
+        `)
     })
 
     test('right', () => {
@@ -159,7 +167,11 @@ describe('maybeAsValue', () => {
 describe('whenJust', () => {
     test('simple', () => {
         expect(whenJust(0, (x) => `${x}${x}`)).toMatchInlineSnapshot(`"00"`)
-        expect(whenJust<string>(Nothing, (x) => `${x}${x}`)).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+        expect(whenJust<string>(Nothing, (x) => `${x}${x}`)).toMatchInlineSnapshot(`
+            {
+              "(Nothing)": true,
+            }
+        `)
     })
 
     test('just', () => {
@@ -169,7 +181,11 @@ describe('whenJust', () => {
 
 describe('whenJusts', () => {
     test('simple', () => {
-        expect(whenJusts([Nothing, 'a'], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+        expect(whenJusts([Nothing, 'a'], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`
+            {
+              "(Nothing)": true,
+            }
+        `)
         expect(whenJusts([0, 'a'], ([x0, x1]) => [x0, x1])).toMatchInlineSnapshot(`
                   [
                     0,
