@@ -2,7 +2,7 @@ import { all } from '../../iterator/all'
 import type { Traversable } from '../../type'
 
 /**
- * A set is a subset of the superset if it contains all the elements in the superset.
+ * A set is a subset of the superset if all elements are contained in the superset.
  *
  * We check whether each element in the set belongs to the superset.
  *
