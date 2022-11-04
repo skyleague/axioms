@@ -11,6 +11,9 @@ export function* filter<T>(xs: Traversable<T>, by: (x: T) => boolean) {
     }
 }
 
+/**
+ * @experimental
+ */
 export function filterWithMemory<S extends T, T>(
     xs: Traversable<T>,
     by: (x: T, xs: S[], i: number, skippedInRow: number) => x is S
