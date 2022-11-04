@@ -4,7 +4,7 @@ import type { Traversable } from '../../type'
 /**
  * A set is a superset of the subset if every element in the subset is also in the superset.
  *
- * We check whether each element in the superset belong to the subset.
+ * We check whether each element in the subset belong to the superset.
  *
  * ### Example
  * ```ts
