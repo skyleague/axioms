@@ -72,7 +72,7 @@ export function first<T>(xs: Traversable<T>): Maybe<T> {
 }
 
 /**
- * Return the second element of a traversable, or nothing if the traversable is empty.
+ * Return the second element of a traversable, or Nothing if the traversable is empty.
  *
  * The `second` function is a good example of how to use the at function. It's also a good example of how
  * to use the {@link Maybe} type.
