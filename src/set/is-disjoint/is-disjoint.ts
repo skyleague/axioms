@@ -6,11 +6,8 @@ import type { Traversable } from '../../type'
  *
  * The `isDisjoint` determines whether a given collection of sets are disjoint or not.
  *
- * There are two approaches to the problem:
- * 1) Checking if each member of the first set is a member of the second set
- * 2) Checking if there exists any members that are not in both sets
- *
- * If either approach returns true, then the sets are not disjoint and hence they are not mutually exclusive.
+ * This problem can be solved by checking if there is any member of the first set, that is also a member of the second set.
+ * If there exists such a member, then the sets are not mutually exclusive.
  *
  * ### Example
  * ```ts
