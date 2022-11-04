@@ -1,3 +1,4 @@
+export * from './all-of'
 export * from './array'
 export * from './boolean'
 export * from './char'
