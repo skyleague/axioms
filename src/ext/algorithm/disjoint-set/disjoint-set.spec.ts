@@ -1,6 +1,6 @@
 import { disjointSet } from '.'
 
-import { maybeAsValue } from '../../../function/maybe/maybe'
+import { maybeAsValue } from '../../../data/maybe/maybe'
 import { range } from '../../../generator'
 import { isJust } from '../../../guard'
 import { forAll, set, string, natural } from '../../../random'
