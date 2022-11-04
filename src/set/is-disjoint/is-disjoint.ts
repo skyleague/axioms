@@ -2,7 +2,7 @@ import { all } from '../../iterator/all'
 import type { Traversable } from '../../type'
 
 /**
- * A disjoint set is a set of elements that have no members in common.
+ * Two sets of elements are disjoint when they have no members in common.
  *
  * The `isDisjoint` determines whether a given collection of sets are disjoint or not.
  *
