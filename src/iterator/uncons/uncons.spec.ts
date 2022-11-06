@@ -28,9 +28,7 @@ test('generator', () => {
 test('empty', () => {
     expect(uncons([])).toMatchInlineSnapshot(`
         [
-          {
-            "(Nothing)": true,
-          },
+          Symbol((Nothing)),
           {},
         ]
     `)

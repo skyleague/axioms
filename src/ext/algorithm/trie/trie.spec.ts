@@ -22,14 +22,10 @@ test('simple', () => {
                     "value": 2,
                   },
                 },
-                "value": {
-                  "(Nothing)": true,
-                },
+                "value": Symbol((Nothing)),
               },
             },
-            "value": {
-              "(Nothing)": true,
-            },
+            "value": Symbol((Nothing)),
           },
         }
     `)

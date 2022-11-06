@@ -52,9 +52,5 @@ test('generator', () => {
 })
 
 test('Nothing when nothing found', () => {
-    expect(findLast(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`
-        {
-          "(Nothing)": true,
-        }
-    `)
+    expect(findLast(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`Symbol((Nothing))`)
 })

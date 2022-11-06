@@ -20,44 +20,27 @@ test('insert', () => {
           "insert": [Function],
           "root": {
             "children": {
-              "(Nothing)": {
-                "children": {
-                  "foo": {
-                    "children": {
-                      "bar": {
-                        "children": {},
-                        "parameter": {
-                          "(Nothing)": true,
-                        },
-                        "value": {
-                          "right": 7,
-                        },
-                      },
-                    },
-                    "parameter": {
-                      "(Nothing)": true,
-                    },
-                    "value": {
-                      "left": {
-                        "(Nothing)": true,
-                      },
-                    },
-                  },
-                },
-                "parameter": "bar",
-                "value": {
-                  "right": 6,
-                },
-              },
               "foo": {
                 "children": {
-                  "(Nothing)": {
+                  "bar": {
+                    "children": {},
+                    "parameter": Symbol((Nothing)),
+                    "value": {
+                      "right": 2,
+                    },
+                  },
+                  "bar/": {
+                    "children": {},
+                    "parameter": Symbol((Nothing)),
+                    "value": {
+                      "right": 3,
+                    },
+                  },
+                  Symbol((Nothing)): {
                     "children": {
                       "bar": {
                         "children": {},
-                        "parameter": {
-                          "(Nothing)": true,
-                        },
+                        "parameter": Symbol((Nothing)),
                         "value": {
                           "right": 5,
                         },
@@ -68,42 +51,39 @@ test('insert', () => {
                       "right": 4,
                     },
                   },
-                  "bar": {
-                    "children": {},
-                    "parameter": {
-                      "(Nothing)": true,
-                    },
-                    "value": {
-                      "right": 2,
-                    },
-                  },
-                  "bar/": {
-                    "children": {},
-                    "parameter": {
-                      "(Nothing)": true,
-                    },
-                    "value": {
-                      "right": 3,
-                    },
-                  },
                 },
-                "parameter": {
-                  "(Nothing)": true,
-                },
+                "parameter": Symbol((Nothing)),
                 "value": {
-                  "left": {
-                    "(Nothing)": true,
+                  "left": Symbol((Nothing)),
+                },
+              },
+              Symbol((Nothing)): {
+                "children": {
+                  "foo": {
+                    "children": {
+                      "bar": {
+                        "children": {},
+                        "parameter": Symbol((Nothing)),
+                        "value": {
+                          "right": 7,
+                        },
+                      },
+                    },
+                    "parameter": Symbol((Nothing)),
+                    "value": {
+                      "left": Symbol((Nothing)),
+                    },
                   },
+                },
+                "parameter": "bar",
+                "value": {
+                  "right": 6,
                 },
               },
             },
-            "parameter": {
-              "(Nothing)": true,
-            },
+            "parameter": Symbol((Nothing)),
             "value": {
-              "left": {
-                "(Nothing)": true,
-              },
+              "left": Symbol((Nothing)),
             },
           },
         }
@@ -125,31 +105,21 @@ test('simple', () => {
                 "children": {
                   "bar": {
                     "children": {},
-                    "parameter": {
-                      "(Nothing)": true,
-                    },
+                    "parameter": Symbol((Nothing)),
                     "value": {
                       "right": 2,
                     },
                   },
                 },
-                "parameter": {
-                  "(Nothing)": true,
-                },
+                "parameter": Symbol((Nothing)),
                 "value": {
-                  "left": {
-                    "(Nothing)": true,
-                  },
+                  "left": Symbol((Nothing)),
                 },
               },
             },
-            "parameter": {
-              "(Nothing)": true,
-            },
+            "parameter": Symbol((Nothing)),
             "value": {
-              "left": {
-                "(Nothing)": true,
-              },
+              "left": Symbol((Nothing)),
             },
           },
         }

@@ -1,11 +1,11 @@
 import { Nothing } from '.'
 
 test('Nothing serializes', () => {
-    expect(`${Nothing.toString()}`).toEqual('(Nothing)')
+    expect(`${Nothing.toString()}`).toEqual('Symbol((Nothing))')
 })
 
 test('Nothing string coerces', () => {
-    expect(`${String(Nothing)}`).toEqual('(Nothing)')
+    expect(`${String(Nothing)}`).toEqual('Symbol((Nothing))')
 })
 
 test('Nothing assignable to Nothing', () => {

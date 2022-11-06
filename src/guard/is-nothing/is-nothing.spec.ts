@@ -3,11 +3,7 @@ import { isNothing } from './is-nothing'
 import { forAll, unknown } from '../../random'
 import { Nothing } from '../../type'
 
-export const OtherNothing = Object.freeze(
-    new (class {
-        public ['(Nothing)'] = true
-    })() as unknown as Nothing
-)
+export const OtherNothing = Symbol.for('(Nothing)')
 
 test('just values are not Nothing', () => {
     forAll(unknown({ nothing: false }), (x) => !isNothing(x))

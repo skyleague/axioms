@@ -16,11 +16,7 @@ test('generator', () => {
 })
 
 test('empty', () => {
-    expect(head([])).toMatchInlineSnapshot(`
-        {
-          "(Nothing)": true,
-        }
-    `)
+    expect(head([])).toMatchInlineSnapshot(`Symbol((Nothing))`)
 })
 
 test('first in array, n > 0', () => {

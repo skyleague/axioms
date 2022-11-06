@@ -16,11 +16,7 @@ test('generator', () => {
 })
 
 test('empty', () => {
-    expect(last([])).toMatchInlineSnapshot(`
-        {
-          "(Nothing)": true,
-        }
-    `)
+    expect(last([])).toMatchInlineSnapshot(`Symbol((Nothing))`)
 })
 
 test('last in array, n > 0', () => {

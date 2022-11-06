@@ -1,6 +1,6 @@
 import type { Maybe } from '../../type/maybe'
 import type { Just } from '../../type/maybe/maybe'
-import { isNothing } from '../is-nothing'
+import { nothingSymbol } from '../../type/maybe/maybe'
 
 /**
  * Checks if `x` is not {@link Nothing}.
@@ -29,5 +29,5 @@ import { isNothing } from '../is-nothing'
  * @group Maybe
  */
 export function isJust<T>(x: Maybe<T>): x is Just<T> {
-    return !isNothing(x)
+    return Symbol.for(nothingSymbol) !== x
 }

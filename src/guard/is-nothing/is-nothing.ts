@@ -1,4 +1,5 @@
 import type { Nothing } from '../../type/maybe/maybe'
+import { nothingSymbol } from '../../type/maybe/maybe'
 
 /**
  * Checks if `x` is {@link Nothing}.
@@ -25,12 +26,5 @@ import type { Nothing } from '../../type/maybe/maybe'
  * @group Maybe
  */
 export function isNothing(x: Nothing | unknown): x is Nothing {
-    return (
-        x !== undefined &&
-        x !== null &&
-        typeof x === 'object' &&
-        '(Nothing)' in x &&
-        (x as { ['(Nothing)']: unknown })['(Nothing)'] === true &&
-        Object.isFrozen(x)
-    )
+    return Symbol.for(nothingSymbol) === x
 }
