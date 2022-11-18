@@ -1,7 +1,7 @@
 import { evaluate } from '../../function/evaluate'
 import { isLeft } from '../../guard/is-left'
 import type { Either } from '../../type/either'
-import type { ConstOrFn } from '../../type/function'
+import type { ConstExpr } from '../../type/function'
 import { Nothing } from '../../type/maybe'
 
 /**
@@ -50,7 +50,10 @@ export interface Memoized<T> {
  *
  * @group Algorithm
  */
-export function memoize<T>(getter: ConstOrFn<T>, resolver: (x: ConstOrFn<T>) => T = evaluate): Memoized<T> {
+export function memoize<T>(
+    getter: ConstExpr<T>,
+    resolver: (x: ConstExpr<T>) => T = evaluate as (x: ConstExpr<T>) => T
+): Memoized<T> {
     let value: Either<unknown, T> = { left: Nothing }
     const memoized: Memoized<T> = () => {
         if (isLeft(value)) {
