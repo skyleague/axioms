@@ -1,9 +1,9 @@
 import { isAlpha } from '.'
 
-import { alphaString, forAll, integer } from '../..'
+import { alpha, forAll, integer } from '../..'
 
 test('alpha', () => {
-    forAll(alphaString({ minLength: 1 }), (x) => isAlpha(x))
+    forAll(alpha({ minLength: 1 }), (x) => isAlpha(x))
 })
 
 test('numeric', () => {

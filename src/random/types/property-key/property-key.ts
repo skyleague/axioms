@@ -3,7 +3,7 @@ import type { Dependent } from '../../arbitrary/dependent'
 import { float } from '../float'
 import { integer } from '../integer'
 import { oneOf } from '../one-of'
-import { alphaNumericString } from '../string/string'
+import { alphaNumeric } from '../string/string'
 import { symbol } from '../symbol'
 
 export interface PropertyKeyGenerator {
@@ -23,7 +23,7 @@ export function propertyKey(context: RelaxedPartial<PropertyKeyGenerator> = {}):
     return oneOf(
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),
-        ...(generateString ? [alphaNumericString()] : []),
+        ...(generateString ? [alphaNumeric()] : []),
         ...(generateSymbol ? [symbol()] : [])
     )
 }

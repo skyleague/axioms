@@ -25,7 +25,7 @@ test('parse stringify x | undefined == x fails (nodejs bug)', () => {
 test('parse stringify x != x fails', () => {
     expect(() => forAll(json(), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n }))
         .toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 5 tests (seed: 42n)
+        "Counter example found after 7 tests (seed: 42n)
         Shrunk 1 time(s)
         Counter example:
 
@@ -37,8 +37,8 @@ test('parse stringify x != object x fails', () => {
     expect(() => {
         forAll(json(), (j) => !isObject(j), { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 4 tests (seed: 42n)
-        Shrunk 6 time(s)
+        "Counter example found after 14 tests (seed: 42n)
+        Shrunk 8 time(s)
         Counter example:
 
         {}"

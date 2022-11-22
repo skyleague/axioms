@@ -9,7 +9,7 @@ test('foo', () => {
     })
     expect(aobject.random({ rng: xoroshiro128plus(42n) })).toMatchInlineSnapshot(`
         {
-          "bar": "游",
+          "bar": "뢙⧪ࠍď",
           "foo": 1678974498,
         }
     `)
@@ -26,8 +26,8 @@ test('foo2', () => {
     expect(aobject.random({ rng: xoroshiro128plus(42n) })).toMatchInlineSnapshot(`
         {
           "bar": {
-            "bar": "⧪",
-            "foo": "뢙",
+            "bar": "",
+            "foo": "⧪ࠍď朔痭໠銌",
           },
           "foo": 1678974498,
         }
@@ -46,7 +46,7 @@ test('foo3', () => {
               null,
             ],
             {
-              ":PNH>:": "ᣌ",
+              ":PNH>:": "",
               "jS:#%>]u": 1267711513.3051472,
               "}X": false,
             },
@@ -56,50 +56,30 @@ test('foo3', () => {
           [
             -406554418,
             {
-              "": true,
-              "#w": -1129189339,
-              "/TrQ9Roq&": "乽",
-              "4<.pF": 748002190,
-              "R{z": "﷾",
+              ")O?F": false,
+              "6_": null,
+              "9Roq&": "9#w",
+              "Q*cM]*": -799235957,
+              "R{z": " eDZl3zqf",
+              "T": null,
               "Yp_": true,
-              "l3zqfx": false,
-              "pF)O?F": false,
+              "\\cX4<.pF7": false,
               "x<?%.7la": true,
             },
-            null,
-            true,
             {
               "": null,
-              "*3=mSk": 910395653.0842972,
-              "cYWlme,lk": true,
-              "u>+ZP;": "ᝉ",
+              "G)p J;E": null,
+              "Wb^u>+ZP": -1301672163,
+              "X": null,
+              "YWlme,l": null,
             },
-          ],
-          "珜",
-          -428571307.9568472,
-          [
+            null,
             null,
           ],
-          {
-            "-f<K": true,
-            "3 {B{": true,
-            "9@OphK0": 1335966806.542492,
-            "\\T\`H{": true,
-            "dWZ"9|": {
-              "\`)Qh": true,
-              "yG'yQHJO%": true,
-            },
-            "e\`": {
-              "9NYQ5Z": null,
-              "Dwbdf4F%j": false,
-              "G": 359924347.15237284,
-              "G4u2};": 2067471207.244885,
-              "Sv\\J5bvn": true,
-              "Xg,vg6K*": null,
-              "cR[h5pVD.": "鲝",
-              "lv%o!0": 400290437.29981756,
-            },
-          },
+          null,
+          false,
+          false,
+          true,
         ]
     `)
 })
