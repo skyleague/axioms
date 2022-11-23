@@ -24,7 +24,7 @@ export function char(context: Partial<CharGenerator> = {}): Arbitrary<string> {
     return charGenerator(context)
 }
 
-export function hex(): Arbitrary<string> {
+export function hexChar(): Arbitrary<string> {
     return charGenerator({
         min: 0,
         max: 16,
@@ -32,34 +32,34 @@ export function hex(): Arbitrary<string> {
     })
 }
 
-export function base64(): Arbitrary<string> {
+export function base64Char(): Arbitrary<string> {
     // = is padding, so it's not allowed in this function
     return element('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/')
 }
 
-export function alpha(extra = ''): Arbitrary<string> {
+export function alphaChar(extra = ''): Arbitrary<string> {
     return element(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ${extra}`)
 }
 
-export function lowerAlpha(extra = ''): Arbitrary<string> {
+export function lowerAlphaChar(extra = ''): Arbitrary<string> {
     return element(`abcdefghijklmnopqrstuvwxy${extra}`)
 }
 
-export function alphaNumeric(extra = ''): Arbitrary<string> {
+export function alphaNumericChar(extra = ''): Arbitrary<string> {
     return element(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`)
 }
 
-export function lowerAlphaNumeric(extra = ''): Arbitrary<string> {
+export function lowerAlphaNumericChar(extra = ''): Arbitrary<string> {
     return element(`abcdefghijklmnopqrstuvwxyz0123456789${extra}`)
 }
-export function ascii(): Arbitrary<string> {
+export function asciiChar(): Arbitrary<string> {
     return charGenerator({ min: 0, max: 126, transform: toAscii })
 }
 
-export function utf16(): Arbitrary<string> {
+export function utf16Char(): Arbitrary<string> {
     return charGenerator({ min: 0x00, max: 0xffff, transform: String.fromCodePoint })
 }
 
-export function utf16surrogate(): Arbitrary<string> {
+export function utf16surrogateChar(): Arbitrary<string> {
     return charGenerator({ min: 0x00, max: 0x10ffff, transform: String.fromCodePoint })
 }

@@ -3,7 +3,18 @@ import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
 import { dependentArbitrary } from '../../arbitrary/dependent'
 import { array } from '../array'
-import { alpha, alphaNumeric, ascii, base64, char, hex, lowerAlpha, lowerAlphaNumeric, utf16, utf16surrogate } from '../char'
+import {
+    alphaChar,
+    alphaNumericChar,
+    asciiChar,
+    base64Char,
+    char,
+    hexChar,
+    lowerAlphaChar,
+    lowerAlphaNumericChar,
+    utf16Char,
+    utf16surrogateChar,
+} from '../char'
 
 export interface StringGenerator {
     minLength: number
@@ -20,12 +31,12 @@ export function string(context: RelaxedPartial<StringGenerator> = {}): Arbitrary
     return stringGenerator(char(), context)
 }
 
-export function hexstring(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
-    return stringGenerator(hex(), context)
+export function hex(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
+    return stringGenerator(hexChar(), context)
 }
 
-export function base64string(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
-    return stringGenerator(base64(), {
+export function base64(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
+    return stringGenerator(base64Char(), {
         ...context,
         transform: (xs) => {
             const s = xs.join('')
@@ -46,38 +57,38 @@ export interface AlphaGenerator extends StringGenerator {
     extra: string
 }
 
-export function alphaString(context: RelaxedPartial<AlphaGenerator> = {}): Arbitrary<string> {
+export function alpha(context: RelaxedPartial<AlphaGenerator> = {}): Arbitrary<string> {
     const { extra = '' } = context
-    return stringGenerator(alpha(extra), context)
+    return stringGenerator(alphaChar(extra), context)
 }
 
-export function lowerAlphaString(context: RelaxedPartial<AlphaGenerator> = {}): Arbitrary<string> {
+export function lowerAlpha(context: RelaxedPartial<AlphaGenerator> = {}): Arbitrary<string> {
     const { extra = '' } = context
-    return stringGenerator(lowerAlpha(extra), context)
+    return stringGenerator(lowerAlphaChar(extra), context)
 }
 
 export interface AlphaNumericGenerator extends StringGenerator {
     extra: string
 }
 
-export function alphaNumericString(context: RelaxedPartial<AlphaNumericGenerator> = {}): Arbitrary<string> {
+export function alphaNumeric(context: RelaxedPartial<AlphaNumericGenerator> = {}): Arbitrary<string> {
     const { extra = '' } = context
-    return stringGenerator(alphaNumeric(extra), context)
+    return stringGenerator(alphaNumericChar(extra), context)
 }
 
-export function lowerAlphaNumericString(context: RelaxedPartial<AlphaNumericGenerator> = {}): Arbitrary<string> {
+export function lowerAlphaNumeric(context: RelaxedPartial<AlphaNumericGenerator> = {}): Arbitrary<string> {
     const { extra = '' } = context
-    return stringGenerator(lowerAlphaNumeric(extra), context)
+    return stringGenerator(lowerAlphaNumericChar(extra), context)
 }
 
-export function asciistring(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
-    return stringGenerator(ascii(), context)
+export function ascii(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
+    return stringGenerator(asciiChar(), context)
 }
 
-export function utf16string(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
-    return stringGenerator(utf16(), context)
+export function utf16(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
+    return stringGenerator(utf16Char(), context)
 }
 
-export function utf16surrogatestring(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
-    return stringGenerator(utf16surrogate(), context)
+export function utf16surrogate(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
+    return stringGenerator(utf16surrogateChar(), context)
 }

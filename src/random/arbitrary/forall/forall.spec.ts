@@ -1,7 +1,7 @@
 import { asyncForAll, forAll } from '.'
 
 import { sleep } from '../../../async'
-import { utf16string, tuple, integer, array, FalsifiedError } from '../../../random'
+import { utf16, tuple, integer, array, FalsifiedError } from '../../../random'
 
 test('abs smaller than six', () => {
     expect(() => {
@@ -28,10 +28,10 @@ const contains = (text: string, pattern: string) => text.indexOf(pattern) >= 0
 describe('properties', () => {
     // string text always contains itself
     test('should always contain itself', () => {
-        forAll(utf16string(), (text) => contains(text, text))
+        forAll(utf16(), (text) => contains(text, text))
     })
     test('should always contain its substrings', () => {
-        forAll(tuple(utf16string(), utf16string(), utf16string()), ([a, b, c]) => {
+        forAll(tuple(utf16(), utf16(), utf16()), ([a, b, c]) => {
             return contains(a + b + c, b)
         })
     })
@@ -54,10 +54,10 @@ test('timeout async', async () => {
         asyncForAll(
             integer(),
             async (i) => {
-                await sleep(5)
+                await sleep(2)
                 expect(Math.abs(i)).toBeLessThanOrEqual(600000)
             },
             { seed: 42n }
         )
-    ).rejects.toThrowWithMessage(FalsifiedError, /^Counter example found after 20 tests \(seed: 42n\)/)
+    ).rejects.toThrowWithMessage(FalsifiedError, /^Counter example found after/)
 })
