@@ -16,7 +16,7 @@ test('generator', () => {
 })
 
 test('empty', () => {
-    expect(head([])).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+    expect(head([])).toMatchInlineSnapshot(`Symbol((Nothing))`)
 })
 
 test('first in array, n > 0', () => {

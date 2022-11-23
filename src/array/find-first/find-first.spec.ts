@@ -52,5 +52,5 @@ test('generator', () => {
 })
 
 test('Nothing when nothing found', () => {
-    expect(findFirst(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`Symbol(Axioms.Nothing)`)
+    expect(findFirst(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`Symbol((Nothing))`)
 })

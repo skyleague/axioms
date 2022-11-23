@@ -22,10 +22,10 @@ test('simple', () => {
                     "value": 2,
                   },
                 },
-                "value": Symbol(Axioms.Nothing),
+                "value": Symbol((Nothing)),
               },
             },
-            "value": Symbol(Axioms.Nothing),
+            "value": Symbol((Nothing)),
           },
         }
     `)

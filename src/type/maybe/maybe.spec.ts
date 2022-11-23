@@ -1,6 +1,17 @@
 import { Nothing } from '.'
 
-test('Nothing is global', () => {
-    expect(Symbol.keyFor(Nothing)).toEqual('Axioms.Nothing')
-    expect(Nothing).toEqual(Symbol.for('Axioms.Nothing'))
+test('Nothing serializes', () => {
+    expect(`${Nothing.toString()}`).toEqual('Symbol((Nothing))')
+})
+
+test('Nothing string coerces', () => {
+    expect(`${String(Nothing)}`).toEqual('Symbol((Nothing))')
+})
+
+test('Nothing assignable to Nothing', () => {
+    const _x: Nothing = Nothing
+})
+
+test('Nothing assignable to primitive', () => {
+    const _x: Nothing | PropertyKey = Nothing
 })

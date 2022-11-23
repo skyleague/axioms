@@ -3,7 +3,7 @@ import { isJust } from '../../guard/is-just'
 import { isLeft } from '../../guard/is-left'
 import { isRight } from '../../guard/is-right'
 import type { Either, Left, Right } from '../../type/either'
-import type { Maybe } from '../../type/maybe'
+import type { Just, Maybe } from '../../type/maybe'
 import { Nothing } from '../../type/maybe'
 
 /**
@@ -76,7 +76,7 @@ export function rightToMaybe<T extends Either<unknown, unknown>>(x: T): T extend
  *
  * @group Combinators
  */
-export function maybeToRight<L, T>(x: T, left: L): Either<L, Exclude<T, Nothing>> {
+export function maybeToRight<L, T>(x: T, left: L): Either<L, Just<T>> {
     return isJust(x) ? { right: x as never } : { left }
 }
 
@@ -102,7 +102,7 @@ export function maybeToRight<L, T>(x: T, left: L): Either<L, Exclude<T, Nothing>
  *
  * @group Combinators
  */
-export function maybeToLeft<T, R>(x: T, right: R): Either<Exclude<T, Nothing>, R> {
+export function maybeToLeft<T, R>(x: T, right: R): Either<Just<T>, R> {
     return isJust(x) ? { left: x as never } : { right }
 }
 
@@ -127,7 +127,7 @@ export function maybeToLeft<T, R>(x: T, right: R): Either<Exclude<T, Nothing>, R
  *
  * @group Combinators
  */
-export function maybeAsValue<T>(x: T): Exclude<T, Nothing> | undefined {
+export function maybeAsValue<T>(x: T): Just<T> | undefined {
     return isJust(x) ? x : undefined
 }
 
@@ -153,16 +153,16 @@ export function maybeAsValue<T>(x: T): Exclude<T, Nothing> | undefined {
  *
  * @group Combinators
  */
-export function whenJust<T, M = T>(x: Maybe<T>, f: (x: Exclude<T, Nothing>) => M): Maybe<M> {
+export function whenJust<T, M = T>(x: Maybe<T>, f: (x: Just<T>) => M): Maybe<M> {
     return isJust(x) ? f(x) : Nothing
 }
 
 export type ArgJusts<Xs> = Xs extends [infer X, ...infer Rest]
-    ? [X extends infer J ? Exclude<J, Nothing> : never, ...ArgJusts<Rest>]
+    ? [X extends infer J ? Just<J> : never, ...ArgJusts<Rest>]
     : Xs extends []
     ? []
     : Xs extends Array<infer I>
-    ? Array<I extends infer J ? Exclude<J, Nothing> : never>
+    ? Array<I extends infer J ? Just<J> : never>
     : []
 
 /**

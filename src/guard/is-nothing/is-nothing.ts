@@ -1,5 +1,5 @@
 import type { Nothing } from '../../type/maybe/maybe'
-import { nothingSymbolStr } from '../../type/maybe/maybe'
+import { nothingSymbol } from '../../type/maybe/maybe'
 
 /**
  * Checks if `x` is {@link Nothing}.
@@ -26,5 +26,5 @@ import { nothingSymbolStr } from '../../type/maybe/maybe'
  * @group Maybe
  */
 export function isNothing(x: Nothing | unknown): x is Nothing {
-    return typeof x === 'symbol' && Symbol.keyFor(x) === nothingSymbolStr
+    return Symbol.for(nothingSymbol) === x
 }

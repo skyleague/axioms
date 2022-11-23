@@ -24,23 +24,23 @@ test('insert', () => {
                 "children": {
                   "bar": {
                     "children": {},
-                    "parameter": Symbol(Axioms.Nothing),
+                    "parameter": Symbol((Nothing)),
                     "value": {
                       "right": 2,
                     },
                   },
                   "bar/": {
                     "children": {},
-                    "parameter": Symbol(Axioms.Nothing),
+                    "parameter": Symbol((Nothing)),
                     "value": {
                       "right": 3,
                     },
                   },
-                  Symbol(Axioms.Nothing): {
+                  Symbol((Nothing)): {
                     "children": {
                       "bar": {
                         "children": {},
-                        "parameter": Symbol(Axioms.Nothing),
+                        "parameter": Symbol((Nothing)),
                         "value": {
                           "right": 5,
                         },
@@ -52,26 +52,26 @@ test('insert', () => {
                     },
                   },
                 },
-                "parameter": Symbol(Axioms.Nothing),
+                "parameter": Symbol((Nothing)),
                 "value": {
-                  "left": Symbol(Axioms.Nothing),
+                  "left": Symbol((Nothing)),
                 },
               },
-              Symbol(Axioms.Nothing): {
+              Symbol((Nothing)): {
                 "children": {
                   "foo": {
                     "children": {
                       "bar": {
                         "children": {},
-                        "parameter": Symbol(Axioms.Nothing),
+                        "parameter": Symbol((Nothing)),
                         "value": {
                           "right": 7,
                         },
                       },
                     },
-                    "parameter": Symbol(Axioms.Nothing),
+                    "parameter": Symbol((Nothing)),
                     "value": {
-                      "left": Symbol(Axioms.Nothing),
+                      "left": Symbol((Nothing)),
                     },
                   },
                 },
@@ -81,9 +81,9 @@ test('insert', () => {
                 },
               },
             },
-            "parameter": Symbol(Axioms.Nothing),
+            "parameter": Symbol((Nothing)),
             "value": {
-              "left": Symbol(Axioms.Nothing),
+              "left": Symbol((Nothing)),
             },
           },
         }
@@ -105,21 +105,21 @@ test('simple', () => {
                 "children": {
                   "bar": {
                     "children": {},
-                    "parameter": Symbol(Axioms.Nothing),
+                    "parameter": Symbol((Nothing)),
                     "value": {
                       "right": 2,
                     },
                   },
                 },
-                "parameter": Symbol(Axioms.Nothing),
+                "parameter": Symbol((Nothing)),
                 "value": {
-                  "left": Symbol(Axioms.Nothing),
+                  "left": Symbol((Nothing)),
                 },
               },
             },
-            "parameter": Symbol(Axioms.Nothing),
+            "parameter": Symbol((Nothing)),
             "value": {
-              "left": Symbol(Axioms.Nothing),
+              "left": Symbol((Nothing)),
             },
           },
         }
