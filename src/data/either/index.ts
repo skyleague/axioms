@@ -10,4 +10,6 @@ export {
     whenLefts,
     whenRight,
     whenRights,
+    right,
+    left,
 } from './either'

@@ -3,7 +3,6 @@
 import type { Json } from '../../../type/json'
 import { Nothing } from '../../../type/maybe'
 import type { RelaxedPartial } from '../../../type/partial'
-import type { Arbitrary } from '../../arbitrary/arbitrary'
 import type { Dependent } from '../../arbitrary/dependent'
 import { array } from '../array'
 import { boolean } from '../boolean'
@@ -19,17 +18,16 @@ import { symbol } from '../symbol'
 export interface JsonGenerator {
     maxDepth: number
     utf: boolean
+    object: boolean
 }
 
-export function json(context: RelaxedPartial<JsonGenerator> = {}): Arbitrary<Json> {
-    const { maxDepth = 3, utf = true } = context
+export function json(context: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
+    const { maxDepth = 3, utf = true, object = false } = context
     const arbs = [
-        utf ? utf16() : string(),
-        integer(),
-        float(),
-        boolean(),
-        constant(null),
-        ...(maxDepth > 0 ? [dict([string(), json({ maxDepth: maxDepth - 1 })]), array(json({ maxDepth: maxDepth - 1 }))] : []),
+        ...(!object ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
+        ...(maxDepth > 0
+            ? [dict([string(), json({ maxDepth: maxDepth - 1, utf })]), array(json({ maxDepth: maxDepth - 1, utf }))]
+            : []),
     ]
     return oneOf(...arbs)
 }

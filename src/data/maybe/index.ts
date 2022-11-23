@@ -1,1 +1,11 @@
-export { leftToMaybe, rightToMaybe, maybeToLeft, maybeToRight, maybeAsValue, whenJust, whenJusts, whenNothing } from './maybe'
+export {
+    leftToMaybe,
+    rightToMaybe,
+    maybeToLeft,
+    maybeToRight,
+    maybeAsValue,
+    whenJust,
+    whenJusts,
+    whenNothing,
+    just,
+} from './maybe'

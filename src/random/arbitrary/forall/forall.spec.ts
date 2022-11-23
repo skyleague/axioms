@@ -49,7 +49,7 @@ test('counter example with jest expect', () => {
     }).toThrowWithMessage(FalsifiedError, /^Counter example found after 3 tests \(seed: 42n\)/)
 })
 
-test.only('timeout async', async () => {
+test('timeout async', async () => {
     await expect(
         asyncForAll(
             integer(),

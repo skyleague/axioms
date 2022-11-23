@@ -220,3 +220,24 @@ export function whenJusts<Xs extends any[], M>(xs: readonly [...Xs], f: (x: ArgJ
 export function whenNothing<T, M = T>(x: Maybe<T>, f: () => M): M | T {
     return isNothing(x) ? f() : x
 }
+
+/**
+ * Creates a Just from the given value.
+ *
+ * ### Example
+ * ```ts
+ * just("foobar")
+ * // => "foobar"
+ * ```
+ *
+ * @param x - The either object to unpack.
+ *
+ * @returns The just value.
+ *
+ * @typeParam T - The Just type.
+ *
+ * @group Combinators
+ */
+export function just<T extends Just<unknown>>(x: T): T {
+    return x
+}

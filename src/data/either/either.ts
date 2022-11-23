@@ -312,9 +312,6 @@ export function whenLefts<Xs extends Either<any, any>[], T>(
  * @typeParam L - The {@link Left} type.
  * @typeParam R - The {@link Right} type.
  *
- * @typeParam L - The left type.
- * @typeParam R - The right type.
- *
  * @group Combinators
  */
 export function swapEither<L, R>(x: Either<L, R>): Either<R, L> {
@@ -359,4 +356,38 @@ export function eitherToError<L, R>(x: Either<L, R>): R {
         throw x.left
     }
     return x.right
+}
+
+/**
+ * Creates a {@link Right} from the given input.
+ *
+ * ### Example
+ * ```ts
+ * right("foobar")
+ * // => {right: "foobar"}
+ * ```
+ *
+ * @typeParam R - The {@link Right} type.
+ *
+ * @group Combinators
+ */
+export function right<R>(x: R): Right<R> {
+    return { right: x }
+}
+
+/**
+ * Creates a {@link Right} from the given input.
+ *
+ * ### Example
+ * ```ts
+ * right("foobar")
+ * // => {right: "foobar"}
+ * ```
+ *
+ * @typeParam L - The {@link Left} type.
+ *
+ * @group Combinators
+ */
+export function left<L>(x: L): Left<L> {
+    return { left: x }
 }

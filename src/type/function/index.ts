@@ -1,1 +1,1 @@
-export { ConstOrFn } from './functions'
+export { ConstExpr, AsyncConstExpr } from './functions'
