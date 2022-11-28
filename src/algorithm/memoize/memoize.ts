@@ -1,8 +1,7 @@
-import { evaluate } from '../../function/evaluate'
-import { isLeft } from '../../guard/is-left'
-import type { Either } from '../../type/either'
+import type { Resolver } from './resolver'
+import { cacheResolver } from './resolver'
+
 import type { ConstExpr } from '../../type/function'
-import { Nothing } from '../../type/maybe'
 
 /**
  * A memoized function.
@@ -50,20 +49,10 @@ export interface Memoized<T> {
  *
  * @group Algorithm
  */
-export function memoize<T>(
-    getter: ConstExpr<T>,
-    resolver: (x: ConstExpr<T>) => T = evaluate as (x: ConstExpr<T>) => T
-): Memoized<T> {
-    let value: Either<unknown, T> = { left: Nothing }
-    const memoized: Memoized<T> = () => {
-        if (isLeft(value)) {
-            value = { right: resolver(getter) }
-        }
-        return value.right
-    }
+export function memoize<T>(getter: ConstExpr<T>, resolver: Resolver<T> = cacheResolver()): Memoized<T> {
+    const memoized: Memoized<T> = () => resolver(getter)
 
-    memoized.clear = () => {
-        value = { left: Nothing }
-    }
+    memoized.clear = () => resolver.clear()
+
     return memoized
 }
