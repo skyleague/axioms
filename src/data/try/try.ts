@@ -46,6 +46,7 @@ export function failure<T>(f: T): Failure {
     }
     // we didn't get an error object, wrap it with a cause attached
     const err = new Error()
+    Error.captureStackTrace(err, failure)
     err.cause = f
     return err
 }
