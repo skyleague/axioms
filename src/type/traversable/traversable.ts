@@ -3,6 +3,7 @@ export type Traversable<T, R = unknown> = {
     [Symbol.iterator](): Iterator<T, R, void>
 }
 export type Mappable<T, R = unknown> = Traversable<T, R> | Traverser<T, R> | (() => Generator<T, R, void>)
+export type TraversableItem<T> = T extends Traversable<infer I, unknown> ? I : T
 
 export type ToTraverser<Xs extends Mappable<unknown, unknown>> = Xs extends Mappable<infer T, infer R> ? Traverser<T, R> : never
 export function toTraverser<Xs extends Mappable<unknown, unknown>>(xs: Xs): ToTraverser<Xs> {
