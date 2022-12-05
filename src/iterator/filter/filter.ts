@@ -1,5 +1,26 @@
 import type { InfiniteGenerator, Traversable } from '../../type'
 
+/**
+ * Filters items from the {@link Traversable} that do not satisfy the given predicate.
+ *
+ * ### Example
+ * ```ts
+ * collect(filter([1, 2, 3, 4], x => x > 2))
+ * // => [3, 4]
+ * ```
+ *
+ * ### Proposals
+ * - [`Iterator.prototype.filter`](https://github.com/tc39/proposal-iterator-helpers)
+ *
+ * @param xs - The values to iterate over.
+ * @param by - The predicate that must hold true.
+ *
+ * @returns The filtered {@link Traversable}.
+ *
+ * @typeParam T - The element type.
+ *
+ * @group Iterators
+ */
 export function filter<T>(xs: InfiniteGenerator<T>, by: (x: T) => boolean): InfiniteGenerator<T>
 export function filter<S extends T, T>(xs: Traversable<T>, by: (x: T) => x is S): Traversable<S>
 export function filter<T>(xs: Traversable<T>, by: (x: T) => boolean): Traversable<T>
