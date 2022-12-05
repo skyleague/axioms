@@ -15,6 +15,9 @@ import type { Traversable } from '../../type'
  * // => true
  * ```
  *
+ * ### Proposals
+ * - [`Set.prototype.isSubsetOf`](https://github.com/tc39/proposal-set-methods)
+ *
  * @param sub - The subset to check.
  * @param superset - The set that we are checking to see if it contains the other set.
  * @returns True if `sub` is a subset of `superset`, false otherwise.

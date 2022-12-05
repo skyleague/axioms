@@ -18,6 +18,9 @@ import type { Traversable } from '../../type'
  * // => true
  * ```
  *
+ * ### Proposals
+ * - [`Set.prototype.isDisjointFrom`](https://github.com/tc39/proposal-set-methods)
+ *
  * @param xs - The first iterator.
  * @param ys - The second iterator.
  * @returns True if `xs` and `ys` are disjoint, false otherwise.

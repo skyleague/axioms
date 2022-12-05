@@ -20,6 +20,9 @@ import { toTraversable } from '../../type'
  * // => ["foo", "bar"]
  * ```
  *
+ * ### Proposals
+ * - [`Iterator.prototype.toArray`](https://github.com/tc39/proposal-iterator-helpers)
+ *
  * @param xs - The {@link Mappable}.
  *
  * @returns The {@link Mappable} as array.

@@ -17,6 +17,9 @@ import { foldl } from '../fold'
  * ### Alternatives
  * - [Lodash - groupBy](https://lodash.com/docs/4.17.15#groupBy)
  *
+ * ### Proposals
+ * - [`Array.prototype.group`](https://github.com/tc39/proposal-array-grouping)
+ *
  * @param xs - The list of values to group.
  * @param group - A function that returns a group index.
  *

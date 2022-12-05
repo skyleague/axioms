@@ -20,6 +20,9 @@ import type { Traversable } from '../../type/traversable'
  * // => {1, 2, 3, '2', '3', '4'}
  * ```
  *
+ * ### Proposals
+ * - [`Set.prototype.union`](https://github.com/tc39/proposal-set-methods)
+ *
  * @param xs - The first iterator.
  * @param ys - The second iterator.
  * @returns A set of all the elements in both `xs` and `ys`.
