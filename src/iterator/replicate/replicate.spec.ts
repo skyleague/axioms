@@ -5,6 +5,21 @@ import { zip, collect } from '../../array'
 import { range } from '../../generator'
 import { forAll, tuple, natural, unknown } from '../../random'
 
+test('simple', () => {
+    expect(collect(replicate(1, 2))).toMatchInlineSnapshot(`
+        [
+          1,
+          1,
+        ]
+    `)
+    expect(collect(replicate((i) => i, 2))).toMatchInlineSnapshot(`
+        [
+          0,
+          1,
+        ]
+    `)
+})
+
 test('correct length', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
