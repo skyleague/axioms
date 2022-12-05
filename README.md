@@ -1,4 +1,4 @@
-# Axioms _(@skyleague/axioms)_
+# Axioms [_(@skyleague/axioms)_](https://skyleague.github.io/axioms/)
 
 <p>
   <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/skyleague/axioms" />
@@ -18,19 +18,10 @@ Axioms is a library of *small* composable functions, providing functional progra
 
 Writing typesafe code shouldn't be hard. However, writing generic functions to do so *is*. Axioms do the hard work for you. The library is entirely tree shakeable and small as we can make it.
 
-## Table of Contents
+## [Documentation](https://skyleague.github.io/axioms/)
+The documentation can be found [here](https://skyleague.github.io/axioms/).
 
-<!-- toc -->
-
-- [Table of Contents](#table-of-contents)
-- [Install](#install)
-- [Alternative projects](#alternative-projects)
-- [When not to use Axioms?](#when-not-to-use-axioms)
-- [License](#license)
-
-<!-- tocstop -->
-
-## Install
+## Installation
 
 Install Axioms using [`npm`](https://www.npmjs.com/):
 
