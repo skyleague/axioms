@@ -26,6 +26,9 @@ import type { Traversable } from '../../type/traversable'
  * - [ECMAScript - Array.slice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
  * - [Lodash - drop](https://lodash.com/docs/4.17.15#drop)
  *
+ * ### Proposals
+ * - [`Iterator.prototype.drop`](https://github.com/tc39/proposal-iterator-helpers)
+ *
  * @param xs - The {@link Traversable} to drop elements from.
  * @param n - The predicate to search with.
  *

@@ -24,6 +24,9 @@ import { Nothing } from '../../type'
  * - [ECMAScript - find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
  * - [Lodash - find](https://lodash.com/docs/4.17.15#find)
  *
+ * ### Proposals
+ * - [`Iterator.prototype.find`](https://github.com/tc39/proposal-iterator-helpers)
+ *
  * @param xs - The {@link Mappable} to search in.
  * @param by - The predicate to search with.
  * @param by.item - The element in the {@link Traversable}.

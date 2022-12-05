@@ -15,6 +15,9 @@ import type { Traversable } from '../../type'
  * // => {2, 3}
  * ```
  *
+ * ### Proposals
+ * - [`Set.prototype.intersection`](https://github.com/tc39/proposal-set-methods)
+ *
  * @param xs - The first iterator.
  * @param ys - The second iterator.
  * @returns A set of the elements that are in both `xs` and `ys`.

@@ -19,6 +19,9 @@ import { uncons } from '../uncons'
  * - [ECMAScript - Array.reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
  * - [Lodash - reduce](https://lodash.com/docs/4.17.15#reduce)
  *
+ * ### Proposals
+ * - [`Iterator.prototype.reduce`](https://github.com/tc39/proposal-iterator-helpers)
+ *
  * @param xs - The elements to fold.
  * @param reducer - A function that takes the accumulator and the current value and returns the new accumulator.
  * @param {R} init - The initial value of the accumulator.

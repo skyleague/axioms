@@ -15,6 +15,9 @@ import type { Traversable } from '../../type/traversable'
  * // => {1}
  * ```
  *
+ * ### Proposals
+ * - [`Set.prototype.difference`](https://github.com/tc39/proposal-set-methods)
+ *
  * @param xs - The first iterator.
  * @param ys - The second iterator.
  * @returns A set of all the elements in `xs` that are not in `ys`.
@@ -47,6 +50,9 @@ export function difference<T>(xs: Traversable<T>, ys: Traversable<T>): Set<T> {
  * symmetricDifference([1, 2, 3], [2, 3, 4])
  * // => {1, 4}
  * ```
+ *
+ * ### Proposals
+ * - [`Set.prototype.symmetricDifference`](https://github.com/tc39/proposal-set-methods)
  *
  * @param xs - The first iterator.
  * @param ys - The second iterator.

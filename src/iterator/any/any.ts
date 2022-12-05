@@ -25,6 +25,9 @@ import type { Traversable } from '../../type'
  * - [ECMAScript - Array.some](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some)
  * - [Lodash - some](https://lodash.com/docs/4.17.15#some)
  *
+ * ### Proposals
+ * - [`Iterator.prototype.some`](https://github.com/tc39/proposal-iterator-helpers)
+ *
  * @param xs - The values to check.
  * @param predicate - The predicate that will be checked on every element.
  * @param predicate.x - The current element that is checked.

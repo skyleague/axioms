@@ -16,6 +16,9 @@ import type { Traversable } from '../../type/traversable'
  * // ]
  * ```
  *
+ * ### Proposals
+ * - [`Iterator.prototype.indexed`](https://github.com/tc39/proposal-iterator-helpers)
+ *
  * @param xs - The {@link Traversable} to enumerate.
  *
  * @returns The enumerate generator.

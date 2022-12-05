@@ -26,6 +26,9 @@ import type { AsyncTraversable } from '../../type/async/async'
  * ### Alternatives
  * - [p-all](https://github.com/sindresorhus/p-all)
  *
+ * ### Proposals
+ * - [`Array.prototype.fromAsync`](https://github.com/tc39/proposal-array-from-async)
+ *
  * @param xs - The values to map over.
  *
  * @returns An array with the values from the async generator.
