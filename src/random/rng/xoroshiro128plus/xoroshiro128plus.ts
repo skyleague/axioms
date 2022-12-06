@@ -9,7 +9,17 @@ const b64Mask = (1n << 64n) - 1n
 export interface Xoroshiro128plusGenerator extends Generator<bigint, bigint>, RandomGenerator {}
 
 // noone will mistakenly use instead of random()
-// http://prng.di.unimi.it/xoroshiro128plus.c
+/**
+ * A xoroshiro128plus implementation to generate random values.
+ *
+ * Inspired by:
+ * http://prng.di.unimi.it/xoroshiro128plus.c
+ *
+ * @param seed -  The seed for the random number generator.
+ * @returns A generator function that returns a random number.
+ *
+ * @group Random
+ */
 export function xoroshiro128plus(seed: bigint | [bigint, bigint]) {
     let [s0, s1] = Array.isArray(seed) ? seed : seeder2(seed)
     const generator: Xoroshiro128plusGenerator = (function* () {
