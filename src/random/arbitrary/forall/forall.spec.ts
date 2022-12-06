@@ -24,7 +24,7 @@ test('abs smaller than six', () => {
     `)
 })
 
-const contains = (text: string, pattern: string) => text.indexOf(pattern) >= 0
+const contains = (text: string, pattern: string) => text.includes(pattern)
 describe('properties', () => {
     // string text always contains itself
     test('should always contain itself', () => {

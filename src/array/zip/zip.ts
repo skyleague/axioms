@@ -3,7 +3,7 @@ import { isRight } from '../../guard/is-right'
 import { toTraverser } from '../../type/traversable'
 import type { Traversable } from '../../type/traversable'
 
-type ZipItem<Arr> = Arr extends Generator<infer G> ? G : Arr extends Array<infer I> ? I : never
+type ZipItem<Arr> = Arr extends Generator<infer G> ? G : Arr extends (infer I)[] ? I : never
 type Zip<T> = { [K in keyof T]: ZipItem<T[K]> }
 type Unzip<T> = {
     [K in keyof T]: readonly T[K][]

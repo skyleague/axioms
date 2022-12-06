@@ -5,8 +5,19 @@ import { integratedArbitrary, towards } from '../../arbitrary'
 import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../../arbitrary'
 import { weightedChoice } from '../choice'
 
+/**
+ * Describes how integers are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
 export interface IntegerConstraints {
+    /**
+     * The minimum value to generate.
+     */
     min: number
+    /**
+     * The maximum value to generate.
+     */
     max: number
 }
 
@@ -16,15 +27,15 @@ const nearZeroBias = weightedChoice([
     [1, ({ logMin, min }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min, max: min + logMin })],
 ])
 
-export function integerLogLike(v: number): number {
+function integerLogLike(v: number): number {
     return Math.floor(Math.log(v))
 }
 
-export function sampleInteger({ min, max }: IntegerConstraints, { rng }: ArbitraryContext): number {
+function sampleInteger({ min, max }: IntegerConstraints, { rng }: ArbitraryContext): number {
     return Math.floor(rng.sample() * (max - min) + min)
 }
 
-export function biasInteger({ min, max }: IntegerConstraints, { rng, bias }: BiasedArbitraryContext): IntegerConstraints {
+function biasInteger({ min, max }: IntegerConstraints, { rng, bias }: BiasedArbitraryContext): IntegerConstraints {
     if (min === max) {
         return { min, max }
     } else if (min < 0 && max > 0) {
@@ -52,11 +63,25 @@ export function biasInteger({ min, max }: IntegerConstraints, { rng, bias }: Bia
     return choices(rng.sample())
 }
 
-export function shrinkInteger({ min, max }: IntegerConstraints, x: number): Tree<number> {
+function shrinkInteger({ min, max }: IntegerConstraints, x: number): Tree<number> {
     const destination = min <= 0 && max >= 0 ? 0 : min < 0 ? max : min
     return expandTree((v) => towards(v, destination), tree(x, [tree(destination)]))
 }
 
+/**
+ * It returns an arbitrary that generates integers between -2^31 and 2^31.
+ *
+ * ### Example
+ * ```ts
+ * random(integer())
+ * // => 123
+ * ```
+ *
+ * @param constraints - The constraints used to generate arbitrary values.
+ * @returns An arbitrary that generates integers.
+ *
+ * @group Arbitrary
+ */
 export function integer(constraints: RelaxedPartial<IntegerConstraints> = {}): Integrated<IntegerConstraints, number> {
     const { min = -Math.pow(2, 31), max = Math.pow(2, 31) } = constraints
 

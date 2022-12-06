@@ -10,7 +10,7 @@ import type { Failure } from '../../type/try/try'
 /**
  * @internal
  */
-export type AsTry<T extends AsyncConstExpr<unknown>> = T extends () => infer V
+export type AsTry<T extends AsyncConstExpr> = T extends () => infer V
     ? V extends Promise<Try<infer _P>>
         ? Promise<Try<_P>>
         : V extends Try<infer _V>

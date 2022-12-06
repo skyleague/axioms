@@ -24,7 +24,7 @@ import type { Dict } from '../../type'
  *
  * @group Guards
  */
-export function isPrimitive(x: unknown): x is Dict<unknown>
+export function isPrimitive(x: unknown): x is Dict
 export function isPrimitive(x: PropertyKey | boolean | unknown): x is PropertyKey | boolean
 export function isPrimitive(x: PropertyKey | boolean | unknown): x is PropertyKey | boolean {
     const type = typeof x

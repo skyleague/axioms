@@ -30,7 +30,7 @@ export type Nth<N extends number, T> = T extends readonly any[] ? T[N] : never
 export function at<Xs extends any[], N extends number>(
     xs: readonly [...Xs],
     n: N
-): Xs extends readonly [...BuildTuple<N, any>, infer X, ...any[]] ? X : number extends Xs['length'] ? Maybe<Xs[N]> : Nothing
+): Xs extends readonly [...BuildTuple<N>, infer X, ...any[]] ? X : number extends Xs['length'] ? Maybe<Xs[N]> : Nothing
 export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T>
 export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T> {
     if (isArray<T>(xs)) {

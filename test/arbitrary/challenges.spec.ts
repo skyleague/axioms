@@ -59,7 +59,7 @@ describe('shrinking challenge', () => {
                 ([xs, i]) => {
                     const x = xs[i]
                     const copyWithoutX = [...xs.slice(0, i), ...xs.slice(i + 1)]
-                    return copyWithoutX.indexOf(x) === -1
+                    return !copyWithoutX.includes(x)
                 },
                 { seed: 42n }
             )

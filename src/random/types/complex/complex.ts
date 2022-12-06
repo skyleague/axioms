@@ -11,7 +11,7 @@ import { float } from '../float'
 import { constant } from '../helper'
 import { integer } from '../integer'
 import { oneOf } from '../one-of'
-import { string, utf16, utf16surrogate } from '../string'
+import { string, utf16, utf16Surrogate } from '../string'
 import { symbol } from '../symbol'
 
 export interface JsonGenerator {
@@ -21,11 +21,14 @@ export interface JsonGenerator {
 }
 
 export function json(context: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
-    const { maxDepth = 3, utf = false, object = false } = context
+    const { maxDepth = 3, utf = false, object = true } = context
     const arbs = [
         ...(!object ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
         ...(maxDepth > 0
-            ? [dict([string(), json({ maxDepth: maxDepth - 1, utf })]), array(json({ maxDepth: maxDepth - 1, utf }))]
+            ? [
+                  dict([string(), json({ maxDepth: maxDepth - 1, utf, object: false })]),
+                  array(json({ maxDepth: maxDepth - 1, utf, object: false })),
+              ]
             : []),
     ]
     return oneOf(...arbs)
@@ -69,7 +72,7 @@ export function primitive(context: RelaxedPartial<PrimitiveGenerator> = {}): Dep
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),
         ...(generateBoolean ? [boolean()] : []),
-        ...(generateString ? [utf16surrogate()] : []),
+        ...(generateString ? [utf16Surrogate()] : []),
         ...(generateSymbol ? [symbol()] : []),
         ...(generateNull ? [constant(null)] : []),
         ...(generateUndefined ? [constant(undefined)] : []),
@@ -112,7 +115,7 @@ export function unknown(context: RelaxedPartial<UnknownGenerator> = {}): Depende
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),
         ...(generateBoolean ? [boolean()] : []),
-        ...(generateString ? [utf16surrogate()] : []),
+        ...(generateString ? [utf16Surrogate()] : []),
         ...(generateNull ? [constant(null)] : []),
         ...(generateUndefined ? [constant(undefined)] : []),
         ...(generateNothing ? [constant(Nothing)] : []),

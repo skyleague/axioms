@@ -12,7 +12,7 @@ export function memoizeGetters<T>(x: T & { clear?: never }): Omit<T, 'clear'> & 
         (y, k) => {
             const prop = Object.getOwnPropertyDescriptor(x, k)
             if (isDefined(prop)) {
-                Object.defineProperty(y, k, 'get' in prop ? { ...prop, get: memoize(() => prop?.get?.() as unknown) } : prop)
+                Object.defineProperty(y, k, 'get' in prop ? { ...prop, get: memoize(() => prop.get?.() as unknown) } : prop)
             }
             return y
         },
@@ -20,7 +20,7 @@ export function memoizeGetters<T>(x: T & { clear?: never }): Omit<T, 'clear'> & 
     ) as Omit<T, 'clear'> & { clear: (k: keyof T) => void }
     memoized.clear = (k: keyof T) => {
         const prop = Object.getOwnPropertyDescriptor(memoized, k)
-        ;(prop?.get as Memoized<unknown>)?.clear?.()
+        ;(prop?.get as Memoized<unknown>).clear()
     }
 
     return memoized

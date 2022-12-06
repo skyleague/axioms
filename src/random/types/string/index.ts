@@ -12,5 +12,5 @@ export {
     lowerAlphaNumeric,
     ascii,
     utf16,
-    utf16surrogate,
+    utf16Surrogate,
 } from './string'

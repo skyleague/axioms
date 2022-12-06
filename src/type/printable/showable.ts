@@ -1,1 +1,3 @@
-export type Printable = { toString: () => string }
+export interface Printable {
+    toString: () => string
+}

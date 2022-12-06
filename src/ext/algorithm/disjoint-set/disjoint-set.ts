@@ -2,7 +2,7 @@ import { isNothing, isJust } from '../../../guard'
 import type { Maybe } from '../../../type'
 import { Nothing } from '../../../type'
 
-export type DisjointPartition<T> = {
+export interface DisjointPartition<T> {
     value: T
     rank: number
     parent: DisjointPartition<T>
