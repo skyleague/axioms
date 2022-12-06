@@ -8,15 +8,28 @@ import { set } from '../set'
 import { string } from '../string'
 import { tuple } from '../tuple'
 
-export interface DictGenerator<T> {
+export interface DictGenerator {
     minLength: number
     maxLength: number
-    eq: (a: T, b: T) => boolean
 }
 
+/**
+ * It returns an arbitrary that generates a dictionary (string key) value.
+ *
+ * ### Example
+ * ```ts
+ * random(dict())
+ * // => {"&o(l%": ""}
+ * ```
+ *
+ * @param keyValue - The arbitraries to use for key/value.
+ * @returns A dictionary arbitrary.
+ *
+ * @group Arbitrary
+ */
 export function dict<T, K extends PropertyKey>(
     keyValue: Arbitrary<T> | [Arbitrary<K>, Arbitrary<T>],
-    context: RelaxedPartial<DictGenerator<T>> = {}
+    context: RelaxedPartial<DictGenerator> = {}
 ): Dependent<Record<string, T>> {
     const { minLength = 0, maxLength = 10 } = context
     const [key, value] = isArray(keyValue) ? keyValue : [string(), keyValue]

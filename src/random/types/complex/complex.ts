@@ -14,20 +14,56 @@ import { oneOf } from '../one-of'
 import { string, utf16, utf16Surrogate } from '../string'
 import { symbol } from '../symbol'
 
+/**
+ * Describes how json values are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
 export interface JsonGenerator {
+    /**
+     * The maximum nesting allowed in array/object.
+     */
     maxDepth: number
+    /**
+     * Controls whether strings should be generated with utf16.
+     */
     utf: boolean
-    object: boolean
+    /**
+     * Determines the type of json values:
+     * * object - generates a json object (default)
+     * * array - generates a json array
+     * * value - generates a primitive/object/array value
+     */
+    type: 'array' | 'object' | 'value'
 }
 
-export function json(context: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
-    const { maxDepth = 3, utf = false, object = true } = context
+/**
+ * It returns an arbitrary that generates valid json.
+ *
+ * ### Example
+ * ```ts
+ * random(json())
+ * // => {}
+ *
+ * random(json())
+ * // => {"i|": false}
+ *
+ * random(json({type: 'array'}))
+ * // => [false]
+ * ```
+ *
+ * @returns A json arbitrary.
+ *
+ * @group Arbitrary
+ */
+export function json(constraints: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
+    const { maxDepth = 2, utf = false, type = 'object' } = constraints
     const arbs = [
-        ...(!object ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
+        ...(type === 'value' ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
         ...(maxDepth > 0
             ? [
-                  dict([string(), json({ maxDepth: maxDepth - 1, utf, object: false })]),
-                  array(json({ maxDepth: maxDepth - 1, utf, object: false })),
+                  ...(type !== 'array' ? [dict([string(), json({ maxDepth: maxDepth - 1, utf, type: 'value' })])] : []),
+                  ...(type !== 'object' ? [array(json({ maxDepth: maxDepth - 1, utf, type: 'value' }))] : []),
               ]
             : []),
     ]
@@ -38,6 +74,11 @@ export function json(context: RelaxedPartial<JsonGenerator> = {}): Dependent<Jso
 
 // #region primitive
 
+/**
+ * Describes how primitive values are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
 export interface PrimitiveGenerator {
     integer: boolean
     float: boolean
@@ -51,6 +92,22 @@ export interface PrimitiveGenerator {
 
 export type PrimitiveType = Nothing | boolean | number | string | symbol | null | undefined
 
+/**
+ * It returns an arbitrary that generates primitives.
+ *
+ * ### Example
+ * ```ts
+ * random(primitive())
+ * // => null
+ *
+ * random(primitive())
+ * // => Symbol(4EM)
+ * ```
+ *
+ * @returns A primitive arbitrary.
+ *
+ * @group Arbitrary
+ */
 export function primitive(
     context: RelaxedPartial<PrimitiveGenerator> & { nothing: false }
 ): Dependent<boolean | number | string | null | undefined>
@@ -66,7 +123,7 @@ export function primitive(context: RelaxedPartial<PrimitiveGenerator> = {}): Dep
         symbol: generateSymbol = true,
         null: generateNull = true,
         undefined: generateUndefined = true,
-        nothing: generateNothing = true,
+        nothing: generateNothing = false,
     } = context
     return oneOf(
         ...(generateInteger ? [integer()] : []),
@@ -84,6 +141,11 @@ export function primitive(context: RelaxedPartial<PrimitiveGenerator> = {}): Dep
 
 // #region unknown
 
+/**
+ * Describes how unknown values are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
 export type UnknownGenerator = PrimitiveGenerator & {
     array: boolean
     object: boolean
@@ -92,6 +154,22 @@ export type UnknownGenerator = PrimitiveGenerator & {
 
 export type UnknownType = PrimitiveType | PrimitiveType[] | { [k: string]: UnknownType }
 
+/**
+ * It returns an arbitrary that generates unknown values.
+ *
+ * ### Example
+ * ```ts
+ * random(unknown())
+ * // => [false, false, 123]
+ *
+ * random(unknown())
+ * // => ""
+ * ```
+ *
+ * @returns An unknown arbitrary.
+ *
+ * @group Arbitrary
+ */
 export function unknown(
     context: RelaxedPartial<UnknownGenerator> & { nothing: false }
 ): Dependent<boolean | number | string | null | undefined>
@@ -106,7 +184,7 @@ export function unknown(context: RelaxedPartial<UnknownGenerator> = {}): Depende
         string: generateString = true,
         null: generateNull = true,
         undefined: generateUndefined = true,
-        nothing: generateNothing = true,
+        nothing: generateNothing = false,
         array: generateArray = true,
         object: generateObject = true,
         maxDepth = 1,

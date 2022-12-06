@@ -7,6 +7,7 @@ import { unique } from '../../../iterator/unique'
 import { difference } from '../../../set/difference'
 import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
+import type { Dependent } from '../../arbitrary/dependent'
 import { dependentArbitrary } from '../../arbitrary/dependent'
 import { InfeasibleTree } from '../../arbitrary/shrink'
 import { mapArbitrary } from '../../arbitrary/transform'
@@ -17,6 +18,12 @@ function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): T
     return filterTree(vals, (x) => collect(unique(x, eq)).length === x.length)
 }
 
+/**
+ * Describes how the sets allowed to be generated.
+ *
+ * @group Arbitrary
+ */
+
 export interface SetGenerator<T> {
     minLength: number
     maxLength: number
@@ -24,8 +31,23 @@ export interface SetGenerator<T> {
     eq: (a: T, b: T) => boolean
 }
 
-export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGenerator<T>> = {}): Arbitrary<T[]> {
-    const { minLength = 0, maxLength = 10, useBias = false, eq = equal } = context
+/**
+ * Generate an array of values where each value is unique.
+ *
+ * ### Example
+ * ```ts
+ * random(set(integer()))
+ * // => [1, 2, 3]
+ * ```
+ *
+ * @param arbitrary - The arbitrary to generate a set of.
+ * @param constraints - The constraints to generate the set with.
+ * @returns An arbitrary that is randomly chosen from the weighted list.
+ *
+ * @group Arbitrary
+ */
+export function set<T>(arbitrary: Arbitrary<T>, constraints: RelaxedPartial<SetGenerator<T>> = {}): Dependent<T[]> {
+    const { minLength = 0, maxLength = 10, useBias = false, eq = equal } = constraints
     const aarray = arrayWith(
         (y, xs, i) => {
             if (i > maxLength * 4) {
@@ -42,17 +64,38 @@ export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGener
     })
 }
 
+/**
+ * Describes how the super and sub sets are generated.
+ *
+ * @group Arbitrary
+ */
 export interface SubsuperGenerator<T> {
     minLength: number
     maxLength: number
     eq: (a: T, b: T) => boolean
 }
 
+/**
+ * It generates a pair of sets, and returns the first set, the union of the two sets, and the
+ * difference between the union and the first set
+ *
+ * ### Example
+ * ```ts
+ * random(subsuper(integer({ min: 0, max: 100 })))
+ * // => [[1, 2], [1, 2, 4, 5], [4, 5]]
+ * ```
+ *
+ * @param arbitrary - The arbitrary to generate a set of.
+ * @param constraints - The constraints to generate the set with.
+ * @returns An arbitrary that is randomly chosen from the weighted list.
+ *
+ * @group Arbitrary
+ */
 export function subsuper<T>(
     arbitrary: Arbitrary<T>,
-    context: RelaxedPartial<SubsuperGenerator<T>> = {}
-): Arbitrary<[sub: T[], superset: T[], complement: T[]]> {
-    const { minLength = 0, maxLength = 10, eq = equal } = context
+    constraints: RelaxedPartial<SubsuperGenerator<T>> = {}
+): Dependent<[subset: T[], superset: T[], complement: T[]]> {
+    const { minLength = 0, maxLength = 10, eq = equal } = constraints
     const sub = set(arbitrary, { minLength, maxLength, eq })
     const complement = set(arbitrary, { minLength, maxLength, eq })
     const pair = tuple(sub, complement)
