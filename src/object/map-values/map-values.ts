@@ -1,7 +1,26 @@
 import { entriesOf } from '../entries-of'
 import { fromEntries } from '../from-entries'
 
-export function mapValues<T extends ArrayLike<unknown> | {}, Mapper extends (v: T[keyof T], k: keyof T) => unknown>(
+/**
+ * Returns the names of the enumerable string properties and methods of an object.
+ *
+ * ### Example
+ * ```ts
+ * keysOf([["foo", "bar"]])
+ * // => ["foo"]
+ *
+ * keysOf({})
+ * // => []
+ * ```
+ *
+ * ### Alternatives
+ * - [Lodash - keys](https://lodash.com/docs/4.17.15#keys)
+ *
+ * @param obj - The object to get the keys from.
+ * @returns The keys as an array.
+ *
+ * @group Object
+ */ export function mapValues<T extends ArrayLike<unknown> | {}, Mapper extends (v: T[keyof T], k: keyof T) => unknown>(
     obj: T,
     mapper: Mapper
 ): {
