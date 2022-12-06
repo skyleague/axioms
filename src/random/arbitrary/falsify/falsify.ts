@@ -46,6 +46,9 @@ export class FalsifiedError<T> extends Error {
     }
 }
 
+/**
+ * @internal
+ */
 export function falsify<T>({ values, predicate, maxDepth, counterExample }: FalsifyOptions<T>): Maybe<Falsified<T>> {
     if (isDefined(counterExample)) {
         const [holds, error] = predicate(counterExample)
@@ -122,6 +125,9 @@ export interface AsyncFalsifyOptions<T> {
     tests: number
 }
 
+/**
+ * @internal
+ */
 export async function asyncFalsify<T>({
     values,
     predicate,

@@ -18,6 +18,9 @@ export interface Integrated<C, T> extends Arbitrary<T> {
     chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
 }
 
+/**
+ * @internal
+ */
 export function integratedArbitrary<C, T>({
     sample,
     shrink,
