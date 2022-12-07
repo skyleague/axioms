@@ -6,6 +6,11 @@ import { oneOf } from '../one-of'
 import { alphaNumeric } from '../string/string'
 import { symbol } from '../symbol'
 
+/**
+ * Describes how property key values are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
 export interface PropertyKeyGenerator {
     integer: boolean
     float: boolean
@@ -13,13 +18,29 @@ export interface PropertyKeyGenerator {
     symbol: boolean
 }
 
-export function propertyKey(context: RelaxedPartial<PropertyKeyGenerator> = {}): Dependent<PropertyKey> {
+/**
+ * It returns an arbitrary that generates an object property key.
+ *
+ * ### Example
+ * ```ts
+ * random(propertyKey())
+ * // => ""
+ *
+ * random(propertyKey())
+ * // => "MWxUWO93"
+ * ```
+ *
+ * @returns An property key arbitrary.
+ *
+ * @group Arbitrary
+ */
+export function propertyKey(constraints: RelaxedPartial<PropertyKeyGenerator> = {}): Dependent<PropertyKey> {
     const {
         integer: generateInteger = true,
         float: generateFloat = true,
         string: generateString = true,
         symbol: generateSymbol = true,
-    } = context
+    } = constraints
     return oneOf(
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),

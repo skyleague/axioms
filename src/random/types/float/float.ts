@@ -37,6 +37,9 @@ function shrinkFloat({ min, max }: FloatConstraints, x: number): Tree<number> {
  * ```ts
  * random(float())
  * // => 3.158
+ *
+ * random(float())
+ * // => 552579827.575685
  * ```
  *
  * @param constraints - The constraints used to generate arbitrary values.

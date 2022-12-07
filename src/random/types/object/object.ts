@@ -14,8 +14,11 @@ export interface ObjectGenerator {}
  *
  * ### Example
  * ```ts
- * random(natural())
- * // => 123
+ * random(object({foo: integer()}))
+ * // => {foo: 921604357}
+ *
+ * random(object({foo: integer()}))
+ * // => {foo: 511147728}
  * ```
  *
  * @param properties - The properties of the arbitrary.
