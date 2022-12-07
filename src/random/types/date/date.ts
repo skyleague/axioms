@@ -65,7 +65,7 @@ export interface DatetimeGenerator {
 }
 
 /**
- * It returns an arbitrary that generates a date value.
+ * It returns an arbitrary that generates a datetime value of type Date.
  *
  * ### Example
  * ```ts
