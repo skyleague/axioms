@@ -7,6 +7,9 @@ import type { Arbitrary } from '../arbitrary'
 import type { Dependent } from '../dependent'
 import { dependentArbitrary } from '../dependent'
 
+/**
+ * @internal
+ */
 export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
     return {
         value: x.value.value,
@@ -19,6 +22,9 @@ export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
     }
 }
 
+/**
+ * @internal
+ */
 export function chainArbitrary<T, U>(a: Arbitrary<T>, f: (a: T) => Arbitrary<U>): Dependent<U> {
     return dependentArbitrary((context) => {
         return collapseArbitraryTree(mapTree(a.value(context), (x) => f(x).value(context)))

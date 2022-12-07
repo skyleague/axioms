@@ -14,9 +14,19 @@ export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>
 }
 
+/**
+ * @internal
+ */
 export type TypeOfArbitrary<T extends Arbitrary<unknown>> = ReturnType<T['value']>['value']
+
+/**
+ * @internal
+ */
 export type TypeOfArbitraries<T extends Arbitrary<unknown>[]> = ReturnType<[...T][number]['value']>['value']
 
+/**
+ * @internal
+ */
 export function interleaveTree<T, U>(r: Tree<T>, l: Tree<(x: T) => U>): Tree<U> {
     const { value: f, children: ls } = l
     const { value: x, children: rs } = r
@@ -30,6 +40,10 @@ export function interleaveTree<T, U>(r: Tree<T>, l: Tree<(x: T) => U>): Tree<U> 
 }
 
 // @todo: optimize this
+
+/**
+ * @internal
+ */
 export function interleave<U extends Tree<unknown>[]>(
     ...xs: [...U]
 ): Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }> {
@@ -42,6 +56,9 @@ export function interleave<U extends Tree<unknown>[]>(
     return init as Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }>
 }
 
+/**
+ * @internal
+ */
 export function shrinkAll<T>(xs: Tree<T>[]): Tree<T[]>[] {
     const children = xs.map((x) => {
         const it = toTraverser(x.children)
@@ -51,6 +68,9 @@ export function shrinkAll<T>(xs: Tree<T>[]): Tree<T[]>[] {
     return children.every(([shrunk]) => shrunk) ? [interleaveList(map(children, ([, c]) => c))] : []
 }
 
+/**
+ * @internal
+ */
 export function interleaveList<T>(xs: Traversable<Tree<T>>, options: { minLength?: number } = {}): Tree<T[]> {
     const { minLength = 0 } = options
     const axs = collect(xs)

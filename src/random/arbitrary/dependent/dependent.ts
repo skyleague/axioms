@@ -13,6 +13,9 @@ export interface Dependent<T> extends Arbitrary<T> {
     chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
 }
 
+/**
+ * @internal
+ */
 export function dependentArbitrary<T>(f: (context: ArbitraryContext) => Tree<T>): Dependent<T> {
     let localContext: ArbitraryContext | undefined
     const dependent = {
