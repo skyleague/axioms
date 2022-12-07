@@ -34,7 +34,7 @@ export class Graph<T, E = never> {
         GraphNodeName,
         Record<GraphNodeName, GraphEdge<T, E>>
     >
-    private readonly _edges: WeakMap<GraphNode<T>, WeakSet<GraphEdge<T, E>>> = new WeakMap()
+    private readonly _edges = new WeakMap<GraphNode<T>, WeakSet<GraphEdge<T, E>>>()
 
     public addNode(name: GraphNodeName, value: Maybe<T> = Nothing): GraphNode<T> {
         const node = {
@@ -91,7 +91,9 @@ export class Graph<T, E = never> {
     }
 }
 
-export type WeightedEdge = { weight: number }
+export interface WeightedEdge {
+    weight: number
+}
 export type WeightSortFunction<T, E> = (a: GraphEdge<T, E>, b: GraphEdge<T, E>) => number
 
 function defaultWeightSort<T>(a: GraphEdge<T, WeightedEdge>, z: GraphEdge<T, WeightedEdge>) {
@@ -125,7 +127,7 @@ export function* kruskal<T, E = WeightedEdge>(
  * @group Experimental
  */
 export function* topologicalSort<T, E>(G: Graph<T, E>): Generator<GraphNode<T>, void, void> {
-    const visited: WeakSet<GraphNode<T>> = new WeakSet()
+    const visited = new WeakSet<GraphNode<T>>()
     for (const node of G.nodes()) {
         if (!visited.has(node)) {
             yield* G.dfs(node, visited)

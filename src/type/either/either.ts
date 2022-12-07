@@ -1,5 +1,9 @@
-export type Left<L> = { left: L }
-export type Right<R> = { right: R }
+export interface Left<L> {
+    left: L
+}
+export interface Right<R> {
+    right: R
+}
 
 /**
  *

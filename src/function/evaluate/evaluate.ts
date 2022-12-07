@@ -1,7 +1,7 @@
 import { isFunction } from '../../guard/is-function'
 import type { ConstExpr } from '../../type/function'
 
-export type Evaluated<T extends ConstExpr<unknown>> = T extends () => infer V ? V : T
+export type Evaluated<T extends ConstExpr> = T extends () => infer V ? V : T
 
 /**
  * Takes a value or a function that returns a value, and returns the value.
@@ -23,6 +23,6 @@ export type Evaluated<T extends ConstExpr<unknown>> = T extends () => infer V ? 
  *
  * @group Functions
  */
-export function evaluate<T extends ConstExpr<unknown>>(maybeEvaluate: T): Evaluated<T> {
+export function evaluate<T extends ConstExpr>(maybeEvaluate: T): Evaluated<T> {
     return (isFunction(maybeEvaluate) ? maybeEvaluate() : maybeEvaluate) as Evaluated<T>
 }

@@ -10,5 +10,5 @@ export {
     lowerAlphaNumericChar,
     asciiChar,
     utf16Char,
-    utf16surrogateChar,
+    utf16SurrogateChar,
 } from './char'

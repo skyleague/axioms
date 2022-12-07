@@ -34,7 +34,6 @@ describe('leftToMaybe', () => {
     })
 
     test('unions', () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const a: Either<FooError, boolean> = { right: true } as any
         const b = whenRight(a, (c): Either<BarError, Nothing> => (c ? { right: Nothing } : { left: new BarError() }))
         let x = leftToMaybe(b)
@@ -61,7 +60,6 @@ describe('rightToMaybe', () => {
     })
 
     test('unions', () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const a: Either<boolean, FooError> = { left: true } as any
         const b = whenLeft(a, (c): Either<Nothing, BarError> => (c ? { left: Nothing } : { right: new BarError() }))
         let x = rightToMaybe(b)
@@ -98,7 +96,6 @@ describe('maybeToRight', () => {
     })
 
     test('union', () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const a: Maybe<BarError> | Maybe<FooError> = new BarError() as any
         let x = maybeToRight(a, Nothing)
         expect(x).toEqual({ right: new BarError() })
@@ -134,7 +131,6 @@ describe('maybeToLeft', () => {
     })
 
     test('union', () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const a: Maybe<BarError> | Maybe<FooError> = new BarError() as any
         let x = maybeToLeft(a, Nothing)
         expect(x).toEqual({ left: new BarError() })

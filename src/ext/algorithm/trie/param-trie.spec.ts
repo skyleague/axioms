@@ -197,7 +197,7 @@ test('parametrized find xs x == x', () => {
         )
         expect(trie.find(xs.map(([, , v]) => v))).toEqual([
             value,
-            xs.map(([param, k, v]) => (param ? [k, v] : undefined))?.filter(isDefined),
+            xs.map(([param, k, v]) => (param ? [k, v] : undefined)).filter(isDefined),
         ])
     })
 })

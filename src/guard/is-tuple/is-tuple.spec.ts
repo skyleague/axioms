@@ -3,11 +3,11 @@ import { isTuple } from './is-tuple'
 import { array, forAll, integer, tuple, unknown } from '../..'
 
 test('for x is not tuple, isTuple xs === false', () => {
-    forAll(tuple(unknown({ array: false }), integer()), ([xs, l]) => isTuple(l, xs) === false)
+    forAll(tuple(unknown({ array: false }), integer()), ([xs, l]) => !isTuple(l, xs))
 })
 
 test('|xs| === L, isTuple L xs === true', () => {
-    forAll(array(unknown()), (xs) => isTuple(xs.length, xs) === true)
+    forAll(array(unknown()), (xs) => isTuple(xs.length, xs))
 })
 
 test('|xs| !== L, isTuple L xs === false', () => {

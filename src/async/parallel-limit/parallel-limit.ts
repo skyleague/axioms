@@ -29,7 +29,7 @@
 export function parallelLimit(concurrency: number) {
     concurrency = Math.max(concurrency, 1)
     let activeCount = 0
-    const queue: Array<() => Promise<unknown>> = []
+    const queue: (() => Promise<unknown>)[] = []
 
     function next() {
         --activeCount
@@ -48,7 +48,7 @@ export function parallelLimit(concurrency: number) {
                 } catch (err) {
                     reject(err)
                 } finally {
-                    void next()
+                    next()
                 }
             }
 
