@@ -1,10 +1,19 @@
 import { pick, pickBy } from '.'
 
 import { keysOf } from '..'
+import { isNumber } from '../../guard'
 import { all, equal } from '../../iterator'
 import { forAll, dict, unknown, deterministicBoolean } from '../../random'
 
 describe('pickBy', () => {
+    test('simple', () => {
+        expect(pickBy({ foo: 1, bar: 'foo' }, ([, v]) => isNumber(v))).toMatchInlineSnapshot(`
+            {
+              "foo": 1,
+            }
+        `)
+    })
+
     test('pickBy true x === identity', () => {
         forAll(dict(unknown()), (x) =>
             equal(
