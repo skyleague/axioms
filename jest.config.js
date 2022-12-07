@@ -1,6 +1,7 @@
 module.exports = {
     roots: ['<rootDir>/src/', '<rootDir>/test/'],
     setupFilesAfterEnv: ['./test/__test__/setup.ts'],
+    globalSetup: './test/__test__/global.ts',
     collectCoverageFrom: ['src/**/*.{ts,tsx}', '!**/*.d.{ts,tsx}', '!**/node_modules/**'],
     testRegex: '.spec.ts$',
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
