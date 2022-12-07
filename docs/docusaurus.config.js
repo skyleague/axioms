@@ -1,5 +1,4 @@
 // @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
 
 const package = require('../package.json')
 const [organizationName, projectName] = package.name.replace('@', '').split('/')
@@ -65,9 +64,9 @@ const config = {
       navbar: {
         title: package.name,
         logo: {
-          alt: 'SkyLeague Logo',
-          src: 'img/skyleague.png',
-          srcDark: 'img/skyleaguew.png',
+          alt: 'Logo',
+          src: 'img/logo.png',
+          srcDark: 'img/logow.png',
         },
         items: [
           {
