@@ -162,9 +162,7 @@ export type ArgJusts<Xs> = Xs extends [infer X, ...infer Rest]
     : Xs extends []
     ? []
     : Xs extends (infer I)[]
-    ? I extends infer J
-        ? Just<J>
-        : never[]
+    ? (I extends infer J ? Just<J> : never)[]
     : []
 
 /**
