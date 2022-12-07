@@ -77,7 +77,7 @@ export interface DatetimeGenerator {
  * ```
  *
  * @param constraints - The constraints.
- * @returns An arbitrary that generates a date value.
+ * @returns An arbitrary that generates a datetime value.
  *
  * @group Arbitrary
  */
