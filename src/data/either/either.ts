@@ -43,9 +43,9 @@ export type ArgLefts<Xs> = Xs extends [infer X, ...infer Rest]
     : Xs extends []
     ? []
     : Xs extends (infer I)[]
-    ? I extends Left<infer L>
+    ? (I extends Left<infer L>
         ? L
-        : never[]
+        : never)[]
     : []
 
 /**
