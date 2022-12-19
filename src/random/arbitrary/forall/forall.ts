@@ -77,7 +77,9 @@ export function forAll<T>(
     })
 
     if (isJust(maybeCounterExample)) {
-        throw new FalsifiedError(maybeCounterExample, { seed })
+        const error = new FalsifiedError(maybeCounterExample, { seed })
+        Error.captureStackTrace(error, forAll)
+        throw error
     }
 }
 
@@ -147,6 +149,8 @@ export async function asyncForAll<T>(
     })
 
     if (isJust(maybeCounterExample)) {
-        throw new FalsifiedError(maybeCounterExample, { seed })
+        const error = new FalsifiedError(maybeCounterExample, { seed })
+        Error.captureStackTrace(error, asyncForAll)
+        throw error
     }
 }
