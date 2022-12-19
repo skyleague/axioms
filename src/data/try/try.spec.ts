@@ -13,6 +13,7 @@ import {
 
 import { isFailure } from '../../guard/is-failure'
 import { isSuccess } from '../../guard/is-success'
+import { isThrown } from '../../guard/is-thrown'
 import { asyncForAll, forAll, primitive, string, tuple } from '../../random'
 import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type'
 import { Nothing } from '../../type'
@@ -22,14 +23,14 @@ describe('asTry', () => {
     test('const', () => {
         forAll(primitive(), (x) => {
             const value: Try<typeof x> = asTry(x)
-            return value === x
+            return value === x && !isThrown(value)
         })
     })
 
     test('const fn', () => {
         forAll(primitive(), (x) => {
             const value: Try<typeof x> = asTry(() => x)
-            return isSuccess(value) && value === x
+            return isSuccess(value) && value === x && !isThrown(value)
         })
     })
 
@@ -38,28 +39,28 @@ describe('asTry', () => {
             const value: Try<typeof x> = asTry((): string => {
                 throw new Error(x)
             })
-            return isFailure(value) && value.message === x
+            return isFailure(value) && value.message === x && isThrown(value)
         })
     })
 
     test('async const', async () => {
         await asyncForAll(primitive(), async (x) => {
             const value: Try<typeof x> = await asTry(async () => await Promise.resolve(x))
-            return isSuccess(value) && value === x
+            return isSuccess(value) && value === x && !isThrown(x)
         })
     })
 
     test('async const rejects', async () => {
         await asyncForAll(string(), async (x) => {
             const value: Try<typeof x> = await asTry(async (): Promise<string> => await Promise.reject(new Error(x)))
-            return isFailure(value) && value.message === x
+            return isFailure(value) && value.message === x && isThrown(value)
         })
     })
 
     test('async const rejects no await', async () => {
         await asyncForAll(string(), async (x) => {
             const value: Try<typeof x> = await asTry(async (): Promise<string> => Promise.reject(new Error(x)))
-            return isFailure(value) && value.message === x
+            return isFailure(value) && value.message === x && isThrown(value)
         })
     })
 
@@ -69,7 +70,7 @@ describe('asTry', () => {
             const value: Try<typeof x> = await asTry(async (): Promise<string> => {
                 throw new Error(x)
             })
-            return isFailure(value) && value.message === x
+            return isFailure(value) && value.message === x && isThrown(value)
         })
     })
 

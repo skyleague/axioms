@@ -3,6 +3,7 @@ import { isFailure } from '../../guard/is-failure'
 import { isPromise } from '../../guard/is-promise'
 import { isRight } from '../../guard/is-right'
 import { isSuccess } from '../../guard/is-success'
+import { thrown } from '../../guard/is-thrown'
 import type { AsyncConstExpr, Either, Success, Try } from '../../type'
 import { Nothing } from '../../type'
 import type { Failure } from '../../type/try/try'
@@ -79,11 +80,11 @@ export function asTry<T extends AsyncConstExpr>(x: T): AsTry<T> {
     try {
         const evaluated = evaluate(x)
         if (isPromise(evaluated)) {
-            return evaluated.then((e) => e).catch((e) => failure(e)) as AsTry<T>
+            return evaluated.then((e) => e).catch((e) => thrown(failure(e))) as AsTry<T>
         }
         return evaluated as AsTry<T>
     } catch (e) {
-        return failure(e) as AsTry<T>
+        return thrown(failure(e)) as AsTry<T>
     }
 }
 
