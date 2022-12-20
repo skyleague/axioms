@@ -1,5 +1,7 @@
 import { omitUndefined, omit, omitBy } from '.'
 
+import type { OmitUndefined } from './omit'
+
 import { keysOf, pickBy } from '..'
 import { all, equal } from '../../iterator'
 import { forAll, dict, unknown, deterministicBoolean } from '../../random'
@@ -21,6 +23,17 @@ describe('omitUndefined', () => {
             const filtered = omitUndefined(x)
             return all(keysOf(x), (k) => (x[k] !== undefined ? k in filtered : !(k in filtered) && k in x))
         })
+    })
+
+    test('type is valid', () => {
+        type Foo = {
+            foo: string
+            bar: string | undefined
+        }
+        const _foo: OmitUndefined<Foo> = {
+            foo: 'foo',
+        }
+        const _bar: { foo: string; bar?: string } = { foo: 'foo' } as OmitUndefined<Foo>
     })
 })
 
