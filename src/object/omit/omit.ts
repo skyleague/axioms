@@ -1,9 +1,17 @@
 import type { SimplifyOnce } from '../../type'
 import { pickBy } from '../pick'
 
-export type OmitUndefined<T> = {
-    [k in keyof T]: Exclude<T[k], undefined>
-}
+export type OmitUndefined<T> = SimplifyOnce<
+    {
+        [k in {
+            [l in keyof T]: undefined extends T[l] ? l : never
+        }[keyof T]]?: Exclude<T[k], undefined>
+    } & {
+        [k in {
+            [l in keyof T]: undefined extends T[l] ? never : l
+        }[keyof T]]: Exclude<T[k], undefined>
+    }
+>
 
 export function omitUndefined<T extends ArrayLike<unknown> | {}>(obj: T): OmitUndefined<T> {
     return pickBy(obj, ([, v]) => v !== undefined) as unknown as OmitUndefined<T>
