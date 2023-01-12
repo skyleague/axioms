@@ -26,7 +26,7 @@ describe('omitUndefined', () => {
     })
 
     test('type is valid', () => {
-        type Foo = {
+        interface Foo {
             foo: string
             bar: string | undefined
         }
