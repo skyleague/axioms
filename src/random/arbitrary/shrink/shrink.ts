@@ -1,5 +1,5 @@
-import { map } from '../../../iterator'
-import type { Traversable } from '../../../type'
+import { map } from '../../../iterator/index.js'
+import type { Traversable } from '../../../type/index.js'
 
 /**
  * @internal
@@ -47,7 +47,7 @@ export function* halvesf(x: number): Traversable<number, void> {
  */
 export function* shrinkOne<T>(xs: T[]): Traversable<[T[], T, T[]], void> {
     for (let i = 0; i < xs.length; ++i) {
-        yield [xs.slice(0, i), xs[i], xs.slice(i + 1)]
+        yield [xs.slice(0, i), xs[i]!, xs.slice(i + 1)]
     }
 }
 
@@ -63,5 +63,5 @@ export function shrinkX<T>(xs: T[], p: number): T[] {
  * @internal
  */
 export class InfeasibleTree extends Error {
-    public name = 'Tree is found infeasible'
+    public override name = 'Tree is found infeasible'
 }

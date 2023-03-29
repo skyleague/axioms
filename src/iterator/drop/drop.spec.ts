@@ -1,6 +1,6 @@
-import { drop, dropWhile } from '.'
+import { drop, dropWhile } from './index.js'
 
-import { collect } from '../../array'
+import { collect } from '../../array/index.js'
 
 describe('drop', () => {
     test('string', () => {

@@ -1,1 +1,1 @@
-export { chunk } from './chunk'
+export { chunk } from './chunk.js'

@@ -1,1 +1,1 @@
-export { isDigits } from './is-digit'
+export { isDigits } from './is-digit.js'

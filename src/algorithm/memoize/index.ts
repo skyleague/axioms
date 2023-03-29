@@ -1,4 +1,4 @@
-export { Memoized, memoize } from './memoize'
-export { memoizeGetters } from './getters'
-export { MemoizeAttributes, memoizeAttributes } from './attributes'
-export { ttlCacheResolver, cacheResolver } from './resolver'
+export { Memoized, memoize } from './memoize.js'
+export { memoizeGetters } from './getters.js'
+export { MemoizeAttributes, memoizeAttributes } from './attributes.js'
+export { ttlCacheResolver, cacheResolver } from './resolver.js'

@@ -1,6 +1,6 @@
-import type { Dependent } from '../../arbitrary/dependent'
-import { constant } from '../helper'
-import { oneOf } from '../one-of/one-of'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { constant } from '../helper/index.js'
+import { oneOf } from '../one-of/one-of.js'
 
 /**
  * A function that generates a dependent type for a given set of enumerated values.

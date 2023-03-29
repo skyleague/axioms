@@ -1,1 +1,1 @@
-export { curryTuple } from './tuple'
+export { curryTuple } from './tuple.js'

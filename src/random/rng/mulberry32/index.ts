@@ -1,1 +1,1 @@
-export { mulberry32, Mulberry32Generator } from './mulberry32'
+export { mulberry32, Mulberry32Generator } from './mulberry32.js'

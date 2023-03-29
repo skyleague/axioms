@@ -1,1 +1,1 @@
-export { isPrimitive } from './is-primitive'
+export { isPrimitive } from './is-primitive.js'

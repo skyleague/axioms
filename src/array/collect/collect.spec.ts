@@ -1,7 +1,7 @@
-import { collect } from './collect'
+import { collect } from './collect.js'
 
-import { counter } from '../../generator'
-import { take } from '../../iterator'
+import { counter } from '../../generator/index.js'
+import { take } from '../../iterator/index.js'
 
 test('simple', () => {
     expect(collect(take(counter(), 4))).toMatchInlineSnapshot(`

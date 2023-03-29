@@ -1,1 +1,1 @@
-export { RandomGenerator } from './random'
+export { RandomGenerator } from './random.js'

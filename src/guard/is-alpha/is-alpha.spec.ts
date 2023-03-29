@@ -1,6 +1,6 @@
-import { isAlpha } from '.'
+import { isAlpha } from './index.js'
 
-import { alpha, forAll, integer } from '../..'
+import { alpha, forAll, integer } from '../../index.js'
 
 test('alpha', () => {
     forAll(alpha({ minLength: 1 }), (x) => isAlpha(x))

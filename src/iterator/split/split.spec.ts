@@ -1,7 +1,7 @@
-import { splitAt, splitLast } from '.'
+import { splitAt, splitLast } from './index.js'
 
-import { collect } from '../../array'
-import { maybeAsValue } from '../../data'
+import { collect } from '../../array/index.js'
+import { maybeAsValue } from '../../data/index.js'
 describe('splitAt', () => {
     test('string', () => {
         const [init, rest] = splitAt('hello world!', 6)

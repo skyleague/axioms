@@ -1,1 +1,1 @@
-export { isGenerator, isGeneratorFunction } from './is-generator'
+export { isGenerator, isGeneratorFunction } from './is-generator.js'

@@ -1,4 +1,4 @@
-import type { Either } from '../../type'
+import type { Either } from '../../type/index.js'
 
 export function attempt<F, T>(fn: () => T, fallback: F): Either<F, T> {
     try {

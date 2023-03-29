@@ -1,1 +1,1 @@
-export { ValueOf } from './value-of'
+export { ValueOf } from './value-of.js'

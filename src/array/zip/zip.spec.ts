@@ -1,9 +1,9 @@
-import { zip, zipWith } from '.'
+import { zip, zipWith } from './index.js'
 
-import { collect } from '..'
-import { counter } from '../../generator'
-import { allEqual } from '../../iterator'
-import { forAll, array, unknown } from '../../random'
+import { counter } from '../../generator/index.js'
+import { allEqual } from '../../iterator/index.js'
+import { forAll, array, unknown } from '../../random/index.js'
+import { collect } from '../index.js'
 
 describe('zip', () => {
     test('simple', () => {

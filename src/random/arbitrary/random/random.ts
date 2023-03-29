@@ -1,6 +1,6 @@
-import type { Arbitrary } from '../arbitrary'
-import type { ArbitraryContext } from '../context'
-import { arbitraryContext } from '../context'
+import type { Arbitrary } from '../arbitrary/index.js'
+import type { ArbitraryContext } from '../context/index.js'
+import { arbitraryContext } from '../context/index.js'
 
 /**
  * It takes an arbitrary and a context, and returns a random value of the type that arbitrary generates

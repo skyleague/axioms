@@ -1,5 +1,5 @@
-import { isArray } from '../../guard'
-import { Nothing } from '../../type'
+import { isArray } from '../../guard/index.js'
+import { Nothing } from '../../type/index.js'
 
 /**
  * If the type of the argument is an array, return its length, otherwise return Nothing.

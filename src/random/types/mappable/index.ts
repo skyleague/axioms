@@ -1,1 +1,1 @@
-export { mappableFunc } from './mappable'
+export { mappableFunc } from './mappable.js'

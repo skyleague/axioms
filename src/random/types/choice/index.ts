@@ -1,1 +1,1 @@
-export { weightedChoice } from './choice'
+export { weightedChoice } from './choice.js'

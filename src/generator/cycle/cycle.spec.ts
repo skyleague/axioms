@@ -1,9 +1,9 @@
-import { cycle } from '.'
+import { cycle } from './index.js'
 
-import { repeat } from '..'
-import { collect } from '../../array'
-import { allEqual, take } from '../../iterator'
-import { array, forAll, mappableFunc, natural, tuple, unknown } from '../../random'
+import { collect } from '../../array/index.js'
+import { allEqual, take } from '../../iterator/index.js'
+import { array, forAll, mappableFunc, natural, tuple, unknown } from '../../random/index.js'
+import { repeat } from '../index.js'
 
 test('simple', () => {
     expect(collect(take(cycle([1, 2, 3]), 10))).toMatchInlineSnapshot(`

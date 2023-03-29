@@ -1,1 +1,1 @@
-export { unique } from './unique'
+export { unique } from './unique.js'

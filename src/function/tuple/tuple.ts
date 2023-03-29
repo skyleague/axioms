@@ -1,5 +1,5 @@
-import type { CurriedVariadic } from '../curry'
-import { curryVariadic } from '../curry'
+import type { CurriedVariadic } from '../curry/index.js'
+import { curryVariadic } from '../curry/index.js'
 
 /**
  * @experimental

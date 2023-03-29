@@ -1,4 +1,4 @@
-import type { InfiniteGenerator } from '../../type'
+import type { InfiniteGenerator } from '../../type/index.js'
 
 /**
  * Creates a generator that counts each iteration.

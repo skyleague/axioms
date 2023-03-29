@@ -1,4 +1,4 @@
-import type { InfiniteGenerator, Traversable } from '../../type'
+import type { InfiniteGenerator, Traversable } from '../../type/index.js'
 
 /**
  * Filters items from the {@link Traversable} that do not satisfy the given predicate.

@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * Creates a new {@link Traversable} by applying the map function over each element and returning

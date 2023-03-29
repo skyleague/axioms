@@ -1,1 +1,1 @@
-export { filter, filterWithMemory } from './filter'
+export { filter, filterWithMemory } from './filter.js'

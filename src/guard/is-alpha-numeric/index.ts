@@ -1,1 +1,1 @@
-export { isAlphaNumeric } from './is-alpha-numeric'
+export { isAlphaNumeric } from './is-alpha-numeric.js'

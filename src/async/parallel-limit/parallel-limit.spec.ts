@@ -1,6 +1,6 @@
-import { parallelLimit } from './parallel-limit'
+import { parallelLimit } from './parallel-limit.js'
 
-import { sleep } from '../sleep'
+import { sleep } from '../sleep/index.js'
 
 test('simple', async () => {
     const limit = parallelLimit(2)

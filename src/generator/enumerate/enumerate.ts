@@ -1,5 +1,5 @@
-import { map } from '../../iterator/map'
-import type { Traversable } from '../../type/traversable'
+import { map } from '../../iterator/map/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Creates a generator that enumerates each value of the given {@link Traversable},

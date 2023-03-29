@@ -1,7 +1,7 @@
-import { isIterable } from '.'
+import { isIterable } from './index.js'
 
-import { isArray } from '..'
-import { forAll, array, unknown } from '../../random'
+import { forAll, array, unknown } from '../../random/index.js'
+import { isArray } from '../index.js'
 
 test('array is iterable', () => {
     forAll(array(unknown()), (xs) => isArray(xs))
@@ -14,6 +14,6 @@ test('unknown is not iterable', () => {
 test('inferrence', () => {
     const xs: number[] | number = [1, 2, 3] as unknown as number[] | number
     if (isIterable(xs)) {
-        expect(xs[0] * 2).toBe(2)
+        expect(xs[0]! * 2).toBe(2)
     }
 })

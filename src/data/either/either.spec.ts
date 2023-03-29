@@ -9,13 +9,13 @@ import {
     whenLefts,
     whenRight,
     whenRights,
-} from './either'
+} from './either.js'
 
-import { collect } from '../../array/collect'
-import { concat } from '../../iterator/concat'
-import { equal } from '../../iterator/equal'
-import { array, deterministicInteger, forAll, integer, shuffle, tuple, unknown } from '../../random'
-import { identity } from '../../util'
+import { collect } from '../../array/collect/index.js'
+import { concat } from '../../iterator/concat/index.js'
+import { equal } from '../../iterator/equal/index.js'
+import { array, deterministicInteger, forAll, integer, shuffle, tuple, unknown } from '../../random/index.js'
+import { identity } from '../../util/index.js'
 
 describe('eitherAsValue', () => {
     test('simple', () => {

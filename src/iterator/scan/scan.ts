@@ -1,5 +1,5 @@
-import { drop } from '../../iterator/drop'
-import type { Traversable } from '../../type/traversable'
+import { drop } from '../../iterator/drop/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Reduces the given traversable with the reducer function, but yields all the intermediate

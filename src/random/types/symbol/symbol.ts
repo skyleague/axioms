@@ -1,7 +1,7 @@
-import { mapTree } from '../../../algorithm/tree'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { alphaNumeric } from '../string'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { alphaNumeric } from '../string/index.js'
 
 /**
  * It returns an arbitrary that generates a symbol.

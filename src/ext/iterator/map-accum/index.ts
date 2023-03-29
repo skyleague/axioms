@@ -1,1 +1,1 @@
-export { mapAccumL } from './map-accum'
+export { mapAccumL } from './map-accum.js'

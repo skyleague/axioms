@@ -1,1 +1,1 @@
-export { objectHasher } from './hash'
+export { objectHasher } from './hash.js'

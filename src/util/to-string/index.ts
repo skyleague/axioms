@@ -1,1 +1,1 @@
-export { toString } from './to-string'
+export { toString } from './to-string.js'

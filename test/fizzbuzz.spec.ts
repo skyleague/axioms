@@ -1,7 +1,7 @@
-import { collect } from '../src/array'
-import { counter } from '../src/generator'
-import { take } from '../src/iterator'
-import type { Traversable } from '../src/type'
+import { collect } from '../src/array/index.js'
+import { counter } from '../src/generator/index.js'
+import { take } from '../src/iterator/index.js'
+import type { Traversable } from '../src/type/index.js'
 
 test('fizzbuzz', () => {
     const factors = [

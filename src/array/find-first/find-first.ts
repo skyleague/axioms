@@ -1,5 +1,5 @@
-import type { Traversable, Maybe } from '../../type'
-import { Nothing } from '../../type'
+import type { Traversable, Maybe } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
 
 /**
  * Find the first element in a {@link Traversable} by a given predicate.

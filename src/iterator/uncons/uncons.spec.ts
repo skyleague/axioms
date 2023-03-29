@@ -1,7 +1,7 @@
-import { uncons } from '.'
+import { uncons } from './index.js'
 
-import { array, forAll, unknown } from '../../random'
-import { Nothing, toTraversable } from '../../type'
+import { array, forAll, unknown } from '../../random/index.js'
+import { Nothing, toTraversable } from '../../type/index.js'
 
 test('simple', () => {
     expect(uncons([1, 2, 3])).toMatchInlineSnapshot(`

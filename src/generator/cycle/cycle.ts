@@ -1,6 +1,6 @@
-import { applicative } from '../../iterator'
-import type { Mappable, InfiniteGenerator } from '../../type'
-import { toTraversable } from '../../type'
+import { applicative } from '../../iterator/index.js'
+import type { Mappable, InfiniteGenerator } from '../../type/index.js'
+import { toTraversable } from '../../type/index.js'
 
 /**
  * Creates a generator cycles through the given {@link Mappable}.

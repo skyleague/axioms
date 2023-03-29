@@ -1,7 +1,7 @@
-import { any } from '.'
+import { any } from './index.js'
 
-import { concat } from '../../iterator'
-import { forAll, unknown, array, tuple, constant } from '../../random'
+import { concat } from '../../iterator/index.js'
+import { forAll, unknown, array, tuple, constant } from '../../random/index.js'
 
 test('any true xs === true', () => {
     forAll(array(unknown(), { minLength: 1 }), (xs) => any(xs, () => true))

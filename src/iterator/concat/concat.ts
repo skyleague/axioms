@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * Creates a generator that concatenates the given {@link Traversable}s to each other

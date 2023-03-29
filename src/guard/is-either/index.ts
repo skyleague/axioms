@@ -1,1 +1,1 @@
-export { isEither } from './is-either'
+export { isEither } from './is-either.js'

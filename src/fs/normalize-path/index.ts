@@ -1,1 +1,1 @@
-export { normalizePath } from './normalize-path'
+export { normalizePath } from './normalize-path.js'

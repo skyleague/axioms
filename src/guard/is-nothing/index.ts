@@ -1,1 +1,1 @@
-export { isNothing } from './is-nothing'
+export { isNothing } from './is-nothing.js'

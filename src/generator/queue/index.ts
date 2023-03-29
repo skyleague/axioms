@@ -1,1 +1,1 @@
-export { QueueGenerator, queue } from './queue'
+export { QueueGenerator, queue } from './queue.js'

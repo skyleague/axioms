@@ -1,5 +1,5 @@
-import type { Either, Traversable } from '../../type'
-import { toTraverser } from '../../type'
+import type { Either, Traversable } from '../../type/index.js'
+import { toTraverser } from '../../type/index.js'
 
 /**
  * A generator that allows looking into the next value, before iterating onto it.

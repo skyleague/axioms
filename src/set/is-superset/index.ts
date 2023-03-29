@@ -1,1 +1,1 @@
-export { isSuperset } from './is-super'
+export { isSuperset } from './is-super.js'

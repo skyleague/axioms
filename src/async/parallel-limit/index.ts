@@ -1,1 +1,1 @@
-export { parallelLimit } from './parallel-limit'
+export { parallelLimit } from './parallel-limit.js'

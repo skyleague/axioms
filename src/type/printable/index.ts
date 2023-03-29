@@ -1,1 +1,1 @@
-export { Printable } from './showable'
+export { Printable } from './showable.js'

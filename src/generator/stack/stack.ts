@@ -1,7 +1,7 @@
-import { next } from '../../generator/next'
-import { isLeft, isRight } from '../../guard'
-import type { Traversable, Traverser } from '../../type'
-import { toTraverser } from '../../type'
+import { next } from '../../generator/next/index.js'
+import { isLeft, isRight } from '../../guard/index.js'
+import type { Traversable, Traverser } from '../../type/index.js'
+import { toTraverser } from '../../type/index.js'
 
 /**
  * A stack generator type.
@@ -39,11 +39,11 @@ export function stack<T>(initialize: Traversable<T> = []): StackGenerator<T> {
     const pending: Traverser<T>[] = [toTraverser(initialize)]
     const generator: StackGenerator<T> = (function* () {
         while (pending.length > 0) {
-            let node = next(pending[pending.length - 1])
+            let node = next(pending[pending.length - 1]!)
             while (isLeft(node) && pending.length > 0) {
                 pending.pop()
                 if (pending.length > 0) {
-                    node = next(pending[pending.length - 1])
+                    node = next(pending[pending.length - 1]!)
                 }
             }
             if (isRight(node)) {

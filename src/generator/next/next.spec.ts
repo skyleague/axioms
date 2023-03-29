@@ -1,10 +1,10 @@
-import { next } from '.'
+import { next } from './index.js'
 
-import { counter, repeat } from '..'
-import { collect } from '../../array'
-import { take } from '../../iterator'
-import { forAll, tuple, array, unknown } from '../../random'
-import { toTraverser, toGenerator } from '../../type'
+import { collect } from '../../array/index.js'
+import { take } from '../../iterator/index.js'
+import { forAll, tuple, array, unknown } from '../../random/index.js'
+import { toTraverser, toGenerator } from '../../type/index.js'
+import { counter, repeat } from '../index.js'
 
 test('take n X === right [X_1 + ... X_{n-1}] + left X_n', () => {
     forAll(tuple(array(unknown()), unknown()), ([xs, x]) => {

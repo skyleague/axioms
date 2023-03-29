@@ -1,5 +1,5 @@
-import { stack } from '../../generator/stack'
-import type { Traversable } from '../../type'
+import { stack } from '../../generator/stack/index.js'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * A type that represents a binary tree (which has a maximum of 2 children; left, and right).

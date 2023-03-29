@@ -1,7 +1,7 @@
-import { isGenerator, isGeneratorFunction } from '.'
+import { isGenerator, isGeneratorFunction } from './index.js'
 
-import { counter } from '../../generator'
-import { forAll, unknown } from '../../random'
+import { counter } from '../../generator/index.js'
+import { forAll, unknown } from '../../random/index.js'
 
 test('unknown is not a generator', () => {
     forAll(unknown(), (x) => !isGenerator(x))

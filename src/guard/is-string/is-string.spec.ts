@@ -1,6 +1,6 @@
-import { isString } from '.'
+import { isString } from './index.js'
 
-import { forAll, string, unknown } from '../../random'
+import { forAll, string, unknown } from '../../random/index.js'
 
 test('string is string', () => {
     expect(isString('foo')).toEqual(true)

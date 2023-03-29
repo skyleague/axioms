@@ -1,1 +1,1 @@
-export { max, maxBy } from './max'
+export { max, maxBy } from './max.js'

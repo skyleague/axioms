@@ -1,9 +1,9 @@
-import { disjointSet } from '.'
+import { disjointSet } from './index.js'
 
-import { maybeAsValue } from '../../../data/maybe/maybe'
-import { range } from '../../../generator'
-import { isJust } from '../../../guard'
-import { forAll, set, string, natural } from '../../../random'
+import { maybeAsValue } from '../../../data/maybe/maybe.js'
+import { range } from '../../../generator/index.js'
+import { isJust } from '../../../guard/index.js'
+import { forAll, set, string, natural } from '../../../random/index.js'
 
 test('disjointSet x == find x', () => {
     forAll(set(string()), (xs) => {

@@ -1,5 +1,5 @@
-import type { Traversable } from '../../type/traversable'
-import { foldl } from '../fold'
+import type { Traversable } from '../../type/traversable/index.js'
+import { foldl } from '../fold/index.js'
 
 /**
  * It takes a list of values and a function that maps each value to a key, and returns a dictionary of

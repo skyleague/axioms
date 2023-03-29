@@ -1,1 +1,1 @@
-export { allOf } from './all-of'
+export { allOf } from './all-of.js'

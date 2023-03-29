@@ -1,4 +1,4 @@
-import type { SimplifyOnce } from '../../type/simplify'
+import type { SimplifyOnce } from '../../type/simplify/index.js'
 
 /**
  * Create a new object with all the properties for which the predicate hold true.

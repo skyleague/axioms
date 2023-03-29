@@ -1,6 +1,6 @@
-import { asyncMap } from './async-map'
+import { asyncMap } from './async-map.js'
 
-import { asyncCollect } from '../async-collect'
+import { asyncCollect } from '../async-collect/index.js'
 
 test('simple', async () => {
     expect(await asyncCollect(asyncMap([1, 2, 3], (x) => x + 1))).toMatchInlineSnapshot(`

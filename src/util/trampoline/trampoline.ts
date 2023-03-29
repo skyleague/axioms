@@ -1,4 +1,4 @@
-import { isDefined, isFunction } from '../../guard'
+import { isDefined, isFunction } from '../../guard/index.js'
 
 export type RecurrentGenerator<R> = readonly [R, (() => RecurrentGenerator<R>) | undefined]
 export function itrampoline<T extends readonly unknown[], R>(f: (...args: [...T]) => RecurrentGenerator<R>) {

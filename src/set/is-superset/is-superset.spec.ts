@@ -1,4 +1,4 @@
-import { isSuperset } from './is-super'
+import { isSuperset } from './is-super.js'
 
 test('simple', () => {
     expect(isSuperset([1, 2, 3], [2, 3, 4])).toBeFalse()

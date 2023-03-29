@@ -1,6 +1,6 @@
-import { identity } from '.'
+import { identity } from './index.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('self', () => {
     expect(identity(1)).toEqual(1)

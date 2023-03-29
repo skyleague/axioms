@@ -1,4 +1,4 @@
-import type { RandomGenerator } from '../random'
+import type { RandomGenerator } from '../random/index.js'
 
 export interface Mulberry32Generator extends Generator<number, number>, RandomGenerator {}
 

@@ -1,6 +1,6 @@
-import { uncons } from '../../iterator/uncons'
-import type { Maybe } from '../../type/maybe'
-import type { Traversable } from '../../type/traversable'
+import { uncons } from '../../iterator/uncons/index.js'
+import type { Maybe } from '../../type/maybe/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Take the first element of the {@link Traversable}.

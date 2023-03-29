@@ -1,7 +1,7 @@
-import type { Maybe } from '../../type'
-import { Nothing } from '../../type'
-import type { Traversable } from '../../type/traversable'
-import { reverse } from '../reverse'
+import type { Maybe } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
+import { reverse } from '../reverse/index.js'
 
 /**
  * Find the last element in a {@link Traversable} by a given predicate.

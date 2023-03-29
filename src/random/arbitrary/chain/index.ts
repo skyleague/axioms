@@ -1,1 +1,1 @@
-export { collapseArbitraryTree, chainArbitrary } from './chain'
+export { collapseArbitraryTree, chainArbitrary } from './chain.js'

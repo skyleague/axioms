@@ -1,7 +1,7 @@
-import { asyncForAll, forAll } from '.'
+import { asyncForAll, forAll } from './index.js'
 
-import { sleep } from '../../../async'
-import { utf16, tuple, integer, array, FalsifiedError } from '../../../random'
+import { sleep } from '../../../async/index.js'
+import { utf16, tuple, integer, array, FalsifiedError } from '../../../random/index.js'
 
 test('abs smaller than six', () => {
     expect(() => {
@@ -14,7 +14,7 @@ test('abs smaller than six', () => {
         600001"
     `)
     expect(() => {
-        forAll(array(integer()), (i) => i.length === 0 || Math.abs(i[0]) <= 600000, { seed: 42n })
+        forAll(array(integer()), (i) => i.length === 0 || Math.abs(i[0]!) <= 600000, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 4 tests (seed: 42n)
         Shrunk 18 time(s)

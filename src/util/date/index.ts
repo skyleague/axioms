@@ -1,1 +1,1 @@
-export { toISO8601Date } from './date'
+export { toISO8601Date } from './date.js'

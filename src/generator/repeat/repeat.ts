@@ -1,5 +1,5 @@
-import { isFunction, isGeneratorFunction } from '../../guard'
-import type { InfiniteGenerator } from '../../type'
+import { isFunction, isGeneratorFunction } from '../../guard/index.js'
+import type { InfiniteGenerator } from '../../type/index.js'
 
 /**
  * Creates a generator repeats the given values as {@link InfiniteGenerator}.

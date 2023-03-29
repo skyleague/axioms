@@ -1,1 +1,1 @@
-export { cycle } from './cycle'
+export { cycle } from './cycle.js'

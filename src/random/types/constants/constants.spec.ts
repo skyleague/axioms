@@ -1,9 +1,9 @@
-import { constants } from './constants'
+import { constants } from './constants.js'
 
-import { forAll, random } from '../../arbitrary'
-import { object } from '../object'
-import { string } from '../string'
-import { tuple } from '../tuple'
+import { forAll, random } from '../../arbitrary/index.js'
+import { object } from '../object/index.js'
+import { string } from '../string/index.js'
+import { tuple } from '../tuple/index.js'
 
 test('simple', () => {
     const aFoo = object({ foo: string() })

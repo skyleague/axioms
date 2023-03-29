@@ -1,9 +1,9 @@
-import { isJust } from '../../guard/is-just'
-import type { Maybe } from '../../type/maybe'
-import { Nothing } from '../../type/maybe'
-import { toTraversable } from '../../type/traversable'
-import type { Traversable } from '../../type/traversable'
-import { uncons } from '../uncons'
+import { isJust } from '../../guard/is-just/index.js'
+import type { Maybe } from '../../type/maybe/index.js'
+import { Nothing } from '../../type/maybe/index.js'
+import { toTraversable } from '../../type/traversable/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
+import { uncons } from '../uncons/index.js'
 
 /**
  * Takes a collection of values, a reducer function, and an initial value, and return the result of

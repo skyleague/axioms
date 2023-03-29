@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * The function tests whether all elements in the {@link Traversable} satisfy the predicate.

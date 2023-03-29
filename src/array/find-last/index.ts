@@ -1,1 +1,1 @@
-export { findLast } from './find-last'
+export { findLast } from './find-last.js'

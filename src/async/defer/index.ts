@@ -1,1 +1,1 @@
-export { defer, Deferred } from './defer'
+export { defer, Deferred } from './defer.js'

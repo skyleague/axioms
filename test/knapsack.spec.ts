@@ -1,5 +1,5 @@
-import { sum } from '../src/array'
-import { enumerate, range } from '../src/generator'
+import { sum } from '../src/array/index.js'
+import { enumerate, range } from '../src/generator/index.js'
 
 test('knapsack', () => {
     const items: [string, number, number][] = [
@@ -36,17 +36,17 @@ test('knapsack', () => {
 
         for (const [j, [, weight, val]] of enumerate(its)) {
             for (const w of range(1, maxWeight + 1)) {
-                cache[j + 1][w] = weight > w ? cache[j][w] : Math.max(cache[j][w], cache[j][w - weight] + val)
+                cache[j + 1]![w] = weight > w ? cache[j]![w]! : Math.max(cache[j]![w]!, cache[j]![w - weight]! + val)
             }
         }
 
         const result = []
         let w = maxWeight
         for (let j = its.length; j > 0; --j) {
-            const added = cache[j][w] !== cache[j - 1][w]
+            const added = cache[j]![w]! !== cache[j - 1]![w]!
             if (added) {
-                const [, weight] = its[j - 1]
-                result.push(its[j - 1])
+                const [, weight] = its[j - 1]!
+                result.push(its[j - 1]!)
                 w -= weight
             }
         }

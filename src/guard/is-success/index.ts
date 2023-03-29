@@ -1,1 +1,1 @@
-export { isSuccess } from './is-success'
+export { isSuccess } from './is-success.js'

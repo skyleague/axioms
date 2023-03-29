@@ -1,6 +1,6 @@
-import type { Traversable } from '../../type'
-import { equal } from '../equal'
-import { filterWithMemory } from '../filter'
+import type { Traversable } from '../../type/index.js'
+import { equal } from '../equal/index.js'
+import { filterWithMemory } from '../filter/index.js'
 
 /**
  * Take the {@link Traversable} and remove all items that are duplicated. Duplications

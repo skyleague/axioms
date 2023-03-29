@@ -9,4 +9,4 @@ export {
     tryToError,
     tryAsValue,
     failure,
-} from './try'
+} from './try.js'

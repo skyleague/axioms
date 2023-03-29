@@ -1,5 +1,5 @@
-import { foldl } from '../../iterator/fold'
-import type { Traversable } from '../../type/traversable'
+import { foldl } from '../../iterator/fold/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Take the {@link Traversable} and return the sum of its elements.

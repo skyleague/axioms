@@ -1,13 +1,13 @@
-import { isJust } from '../../../guard'
-import { replicate } from '../../../iterator/replicate'
-import { Nothing } from '../../../type/maybe'
-import type { Maybe } from '../../../type/maybe'
-import { xoroshiro128plus } from '../../rng/xoroshiro128plus'
-import type { Arbitrary } from '../arbitrary'
-import type { ArbitraryContext } from '../context'
-import { falsify, FalsifiedError } from '../falsify'
-import { asyncFalsify } from '../falsify/falsify'
-import { InfeasibleTree } from '../shrink'
+import { isJust } from '../../../guard/index.js'
+import { replicate } from '../../../iterator/replicate/index.js'
+import { Nothing } from '../../../type/maybe/index.js'
+import type { Maybe } from '../../../type/maybe/index.js'
+import { xoroshiro128plus } from '../../rng/xoroshiro128plus/index.js'
+import type { Arbitrary } from '../arbitrary/index.js'
+import type { ArbitraryContext } from '../context/index.js'
+import { asyncFalsify } from '../falsify/falsify.js'
+import { falsify, FalsifiedError } from '../falsify/index.js'
+import { InfeasibleTree } from '../shrink/index.js'
 
 export interface ForallOptions<T> {
     tests: number

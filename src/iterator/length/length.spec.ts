@@ -1,7 +1,7 @@
-import { length } from '.'
+import { length } from './index.js'
 
-import { isArray, isNothing } from '../../guard'
-import { forAll, unknown, array, filterArbitrary } from '../../random'
+import { isArray, isNothing } from '../../guard/index.js'
+import { forAll, unknown, array, filterArbitrary } from '../../random/index.js'
 
 test('only defined for arrays', () => {
     forAll(array(unknown()), (xs) => length(xs) === xs.length)

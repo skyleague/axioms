@@ -8,4 +8,4 @@ export {
     whenJusts,
     whenNothing,
     just,
-} from './maybe'
+} from './maybe.js'

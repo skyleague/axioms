@@ -1,1 +1,1 @@
-export { isSubset } from './is-subset'
+export { isSubset } from './is-subset.js'

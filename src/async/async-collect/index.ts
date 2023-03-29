@@ -1,1 +1,1 @@
-export { asyncCollect } from './async-collect'
+export { asyncCollect } from './async-collect.js'

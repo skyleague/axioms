@@ -1,6 +1,6 @@
-import { isPrimitive } from '.'
+import { isPrimitive } from './index.js'
 
-import { forAll, primitive } from '../../random'
+import { forAll, primitive } from '../../random/index.js'
 
 test('primitive is primitive', () => {
     forAll(primitive(), (x) => isPrimitive(x))

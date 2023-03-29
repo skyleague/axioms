@@ -13,4 +13,4 @@ export {
     ascii,
     utf16,
     utf16Surrogate,
-} from './string'
+} from './string.js'

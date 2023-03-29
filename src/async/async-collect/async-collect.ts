@@ -1,4 +1,4 @@
-import type { AsyncTraversable } from '../../type/async/async'
+import type { AsyncTraversable } from '../../type/async/async.js'
 
 /**
  * Collect the values from an {@link AsyncTraversable} and return them as an array.

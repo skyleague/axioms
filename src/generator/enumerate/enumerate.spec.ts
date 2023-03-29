@@ -1,9 +1,9 @@
-import { enumerate } from '.'
+import { enumerate } from './index.js'
 
-import { counter, range } from '..'
-import { collect, zip } from '../../array'
-import { allEqual, map } from '../../iterator'
-import { forAll, array, unknown } from '../../random'
+import { collect, zip } from '../../array/index.js'
+import { allEqual, map } from '../../iterator/index.js'
+import { forAll, array, unknown } from '../../random/index.js'
+import { counter, range } from '../index.js'
 
 test('enumerate == zip counter()', () => {
     forAll(array(unknown()), (xs) => allEqual(enumerate(xs), zip(counter(), xs)))

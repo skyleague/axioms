@@ -1,1 +1,1 @@
-export { isDisjoint } from './is-disjoint'
+export { isDisjoint } from './is-disjoint.js'

@@ -1,7 +1,7 @@
-import { all } from '.'
+import { all } from './index.js'
 
-import { concat } from '../../iterator'
-import { forAll, unknown, array, tuple, constant } from '../../random'
+import { concat } from '../../iterator/index.js'
+import { forAll, unknown, array, tuple, constant } from '../../random/index.js'
 
 test('all true xs === true', () => {
     forAll(array(unknown()), (xs) => all(xs, () => true))

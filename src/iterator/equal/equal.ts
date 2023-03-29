@@ -1,5 +1,5 @@
-import type { Traversable } from '../../type'
-import { toTraverser } from '../../type'
+import type { Traversable } from '../../type/index.js'
+import { toTraverser } from '../../type/index.js'
 
 import deepEqual from 'fast-deep-equal/es6'
 

@@ -1,1 +1,1 @@
-export { splitAt, splitLast } from './split'
+export { splitAt, splitLast } from './split.js'

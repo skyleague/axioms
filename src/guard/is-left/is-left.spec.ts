@@ -1,6 +1,6 @@
-import { isLeft } from '.'
+import { isLeft } from './index.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('unknown is not left', () => {
     forAll(unknown(), (x) => !isLeft(x))

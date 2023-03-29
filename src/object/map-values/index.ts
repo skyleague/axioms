@@ -1,1 +1,1 @@
-export { mapValues } from './map-values'
+export { mapValues } from './map-values.js'

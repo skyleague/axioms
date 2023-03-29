@@ -1,5 +1,5 @@
-import type { BinaryTree } from '.'
-import { dfsNLR, dfsLRN } from '.'
+import type { BinaryTree } from './index.js'
+import { dfsNLR, dfsLRN } from './index.js'
 
 test('preorder', () => {
     const tree: BinaryTree<number> = {

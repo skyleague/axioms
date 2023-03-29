@@ -1,5 +1,5 @@
-import { isFunction } from '../../guard/is-function'
-import type { ConstExpr } from '../../type/function'
+import { isFunction } from '../../guard/is-function/index.js'
+import type { ConstExpr } from '../../type/function/index.js'
 
 export type Evaluated<T extends ConstExpr> = T extends () => infer V ? V : T
 

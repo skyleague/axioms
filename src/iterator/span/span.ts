@@ -1,7 +1,7 @@
-import { next } from '../../generator/next'
-import { isRight } from '../../guard/is-right'
-import type { Traversable, Traverser } from '../../type/traversable'
-import { takeWhile } from '../take'
+import { next } from '../../generator/next/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import type { Traversable, Traverser } from '../../type/traversable/index.js'
+import { takeWhile } from '../take/index.js'
 
 /**
  * Returns a tuple where first element is longest prefix of `xs` of elements

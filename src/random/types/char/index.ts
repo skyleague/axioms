@@ -11,4 +11,4 @@ export {
     asciiChar,
     utf16Char,
     utf16SurrogateChar,
-} from './char'
+} from './char.js'

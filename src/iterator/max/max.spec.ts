@@ -1,6 +1,6 @@
-import { max, maxBy } from './max'
+import { max, maxBy } from './max.js'
 
-import type { ComparablePrimitive, Mappable } from '../..'
+import type { ComparablePrimitive, Mappable } from '../../index.js'
 import {
     all,
     applicative,
@@ -18,7 +18,7 @@ import {
     string,
     toTraversable,
     tuple,
-} from '../..'
+} from '../../index.js'
 
 test('simple', () => {
     const n: number = max([1, 2, 3] as const)

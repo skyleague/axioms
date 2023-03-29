@@ -1,6 +1,6 @@
-import { partition } from './partition'
+import { partition } from './partition.js'
 
-import type { Mappable } from '../..'
+import type { Mappable } from '../../index.js'
 import {
     array,
     boolean,
@@ -16,7 +16,7 @@ import {
     toTraversable,
     tuple,
     xoroshiro128plus,
-} from '../..'
+} from '../../index.js'
 
 function* interleave<X, Y>(xs: X[], ys: Y[], seed: number) {
     const rng = xoroshiro128plus(BigInt(seed))

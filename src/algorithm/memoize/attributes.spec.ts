@@ -1,6 +1,6 @@
-import { memoizeAttributes } from './attributes'
+import { memoizeAttributes } from './attributes.js'
 
-import { mapValues } from '../../object'
+import { mapValues } from '../../object/index.js'
 
 test('memoizeAttributes', () => {
     let i = 0

@@ -1,18 +1,18 @@
 // #region json
 
-import type { Json } from '../../../type/json'
-import { Nothing } from '../../../type/maybe'
-import type { RelaxedPartial } from '../../../type/partial'
-import type { Dependent } from '../../arbitrary/dependent'
-import { array } from '../array'
-import { boolean } from '../boolean'
-import { dict } from '../dict'
-import { float } from '../float'
-import { constant } from '../helper'
-import { integer } from '../integer'
-import { oneOf } from '../one-of'
-import { string, utf16, utf16Surrogate } from '../string'
-import { symbol } from '../symbol'
+import type { Json } from '../../../type/json/index.js'
+import { Nothing } from '../../../type/maybe/index.js'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { array } from '../array/index.js'
+import { boolean } from '../boolean/index.js'
+import { dict } from '../dict/index.js'
+import { float } from '../float/index.js'
+import { constant } from '../helper/index.js'
+import { integer } from '../integer/index.js'
+import { oneOf } from '../one-of/index.js'
+import { string, utf16, utf16Surrogate } from '../string/index.js'
+import { symbol } from '../symbol/index.js'
 
 /**
  * Describes how json values are allowed to be generated.

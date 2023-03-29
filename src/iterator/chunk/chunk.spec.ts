@@ -1,6 +1,6 @@
-import { collect } from '../../array'
-import { range } from '../../generator'
-import { chunk } from '../../iterator'
+import { collect } from '../../array/index.js'
+import { range } from '../../generator/index.js'
+import { chunk } from '../../iterator/index.js'
 
 test('simple chunk function', () => {
     expect(collect(chunk([1, 2, 3, 4, 5], 1))).toEqual([[1], [2], [3], [4], [5]])

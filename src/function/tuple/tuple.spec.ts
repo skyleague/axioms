@@ -1,4 +1,4 @@
-import { curryTuple } from '.'
+import { curryTuple } from './index.js'
 
 test('tuple', () => {
     expect(curryTuple(1)(1)).toMatchInlineSnapshot(`

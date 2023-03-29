@@ -1,1 +1,1 @@
-export { FalsifyOptions, Falsified, FalsifiedError, falsify } from './falsify'
+export { FalsifyOptions, Falsified, FalsifiedError, falsify } from './falsify.js'

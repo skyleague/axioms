@@ -1,6 +1,6 @@
-import { span } from '.'
+import { span } from './index.js'
 
-import { collect } from '../../array'
+import { collect } from '../../array/index.js'
 
 test('simple', () => {
     const [init, rest] = span([1, 2, 3, 4, 5, 1, 2, 3], (x) => x < 3)

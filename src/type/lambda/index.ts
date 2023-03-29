@@ -1,1 +1,1 @@
-export { Lambda } from './lambda'
+export { Lambda } from './lambda.js'

@@ -1,1 +1,1 @@
-export { peekable, PeekableGenerator } from './peekable'
+export { peekable, PeekableGenerator } from './peekable.js'

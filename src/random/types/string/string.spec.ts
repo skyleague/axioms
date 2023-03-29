@@ -1,13 +1,24 @@
-import { alpha, alphaNumeric, ascii, base64, hex, lowerAlpha, lowerAlphaNumeric, string, utf16, utf16Surrogate } from './string'
+import {
+    alpha,
+    alphaNumeric,
+    ascii,
+    base64,
+    hex,
+    lowerAlpha,
+    lowerAlphaNumeric,
+    string,
+    utf16,
+    utf16Surrogate,
+} from './string.js'
 
-import { groupBy, replicate } from '../../../iterator'
-import { mapValues } from '../../../object'
-import { arbitraryContext, forAll } from '../../arbitrary'
-import { xoroshiro128plus } from '../../rng'
-import { integer } from '../integer'
-import { tuple } from '../tuple'
+import { groupBy, replicate } from '../../../iterator/index.js'
+import { mapValues } from '../../../object/index.js'
+import { arbitraryContext, forAll } from '../../arbitrary/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { integer } from '../integer/index.js'
+import { tuple } from '../tuple/index.js'
 
-import util from 'util'
+import util from 'node:util'
 
 describe('string', () => {
     test('length is parametrized', () => {

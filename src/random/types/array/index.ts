@@ -1,1 +1,1 @@
-export { ArrayGenerator, array, arrayWith } from './array'
+export { ArrayGenerator, array, arrayWith } from './array.js'

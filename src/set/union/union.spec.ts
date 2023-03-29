@@ -1,4 +1,4 @@
-import { union } from './union'
+import { union } from './union.js'
 
 test('simple', () => {
     expect(union(new Set([1, 2, 3]), new Set([2, 3, 4]))).toMatchInlineSnapshot(`

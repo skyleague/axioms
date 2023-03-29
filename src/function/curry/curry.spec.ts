@@ -1,5 +1,5 @@
-import type { Curried, CurriedVariadic } from '.'
-import { curry, curryVariadic } from '.'
+import type { Curried, CurriedVariadic } from './index.js'
+import { curry, curryVariadic } from './index.js'
 
 describe('curry', () => {
     test('simple', () => {
@@ -33,7 +33,7 @@ describe('curry', () => {
 
 describe('curryVariadic', () => {
     test('simple', () => {
-        const foo = (x: string, y: number, z: boolean) => z
+        const foo = (_x: string, _y: number, z: boolean) => z
         const f = curryVariadic(foo, 3)('hello')(2)
         expect(f(true)).toMatchInlineSnapshot(`true`)
     })

@@ -1,4 +1,4 @@
-import { isDefined } from '../../guard'
+import { isDefined } from '../../guard/index.js'
 
 /**
  * Creates a generator of numbers from start to exclusive end. If the end end is not specified,

@@ -1,7 +1,7 @@
-import { last } from '.'
+import { last } from './index.js'
 
-import { isNothing } from '../../guard'
-import { forAll, array, unknown } from '../../random'
+import { isNothing } from '../../guard/index.js'
+import { forAll, array, unknown } from '../../random/index.js'
 
 test('simple', () => {
     expect(last([1, 2, 3])).toMatchInlineSnapshot(`3`)

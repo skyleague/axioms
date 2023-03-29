@@ -1,4 +1,4 @@
-import type { BuildTuple } from '../tuple'
+import type { BuildTuple } from '../tuple/index.js'
 
 export type Subtract<A extends number, B extends number> = BuildTuple<A> extends [...infer R, ...BuildTuple<B>] ? R['length'] : 0
 

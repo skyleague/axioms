@@ -1,1 +1,1 @@
-export { Json } from './json'
+export { Json } from './json.js'

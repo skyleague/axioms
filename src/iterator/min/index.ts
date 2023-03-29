@@ -1,1 +1,1 @@
-export { min, minBy } from './min'
+export { min, minBy } from './min.js'

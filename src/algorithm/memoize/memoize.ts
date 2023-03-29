@@ -1,7 +1,7 @@
-import type { Resolver } from './resolver'
-import { cacheResolver } from './resolver'
+import type { Resolver } from './resolver.js'
+import { cacheResolver } from './resolver.js'
 
-import type { ConstExpr } from '../../type/function'
+import type { ConstExpr } from '../../type/function/index.js'
 
 /**
  * A memoized function.

@@ -1,4 +1,4 @@
-import { isDigits } from '.'
+import { isDigits } from './index.js'
 
 test('alpha', () => {
     expect(isDigits('0')).toBeTrue()

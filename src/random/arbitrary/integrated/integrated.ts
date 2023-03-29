@@ -1,11 +1,11 @@
-import type { Tree } from '../../../algorithm'
-import { applicativeTree } from '../../../algorithm'
-import type { Arbitrary } from '../arbitrary'
-import { chainArbitrary } from '../chain'
-import type { ArbitraryContext, BiasedArbitraryContext } from '../context'
-import { arbitraryContext } from '../context'
-import type { Dependent } from '../dependent'
-import { filterArbitrary, mapArbitrary } from '../transform'
+import type { Tree } from '../../../algorithm/index.js'
+import { applicativeTree } from '../../../algorithm/index.js'
+import type { Arbitrary } from '../arbitrary/index.js'
+import { chainArbitrary } from '../chain/index.js'
+import type { ArbitraryContext, BiasedArbitraryContext } from '../context/index.js'
+import { arbitraryContext } from '../context/index.js'
+import type { Dependent } from '../dependent/index.js'
+import { filterArbitrary, mapArbitrary } from '../transform/index.js'
 
 export interface Integrated<C, T> extends Arbitrary<T> {
     constraints: C

@@ -1,6 +1,6 @@
-import { ensureValues } from './ensure-values'
+import { ensureValues } from './ensure-values.js'
 
-import { constant, dict, forAll, oneOf, unknown } from '../../random'
+import { constant, dict, forAll, oneOf, unknown } from '../../random/index.js'
 
 test('ensure-values', () => {
     forAll(dict(oneOf(constant(undefined), unknown({ undefined: false }))), (x) => {

@@ -1,1 +1,1 @@
-export { disjointSet, DisjointPartition } from './disjoint-set'
+export { disjointSet, DisjointPartition } from './disjoint-set.js'

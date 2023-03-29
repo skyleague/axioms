@@ -1,1 +1,1 @@
-export { element } from './element'
+export { element } from './element.js'

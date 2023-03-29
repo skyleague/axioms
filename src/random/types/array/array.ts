@@ -1,12 +1,12 @@
-import { unique } from '../../../iterator'
-import { replicate, replicateWithMemory } from '../../../iterator/replicate'
-import type { RelaxedPartial } from '../../../type/partial'
-import { filterArbitrary, mapArbitrary } from '../../arbitrary'
-import type { Arbitrary } from '../../arbitrary/arbitrary'
-import { interleaveList } from '../../arbitrary/arbitrary'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { integer } from '../integer/integer'
+import { unique } from '../../../iterator/index.js'
+import { replicate, replicateWithMemory } from '../../../iterator/replicate/index.js'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import { interleaveList } from '../../arbitrary/arbitrary/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { filterArbitrary, mapArbitrary } from '../../arbitrary/index.js'
+import { integer } from '../integer/integer.js'
 
 /**
  * Describes how arrays are allowed to be generated.

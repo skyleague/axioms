@@ -1,7 +1,7 @@
-import { isNothing } from './is-nothing'
+import { isNothing } from './is-nothing.js'
 
-import { forAll, unknown } from '../../random'
-import { Nothing } from '../../type'
+import { forAll, unknown } from '../../random/index.js'
+import { Nothing } from '../../type/index.js'
 
 export const OtherNothing = Symbol.for('(Nothing)')
 

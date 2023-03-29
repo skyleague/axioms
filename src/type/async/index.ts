@@ -1,1 +1,1 @@
-export { AsyncMappable, AsyncTraversable, AsyncTraverser } from './async'
+export { AsyncMappable, AsyncTraversable, AsyncTraverser } from './async.js'

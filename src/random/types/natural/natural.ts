@@ -1,6 +1,6 @@
-import type { RelaxedPartial } from '../../../type/partial'
-import type { Integrated } from '../../arbitrary/integrated'
-import { integer } from '../integer'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Integrated } from '../../arbitrary/integrated/index.js'
+import { integer } from '../integer/index.js'
 
 /**
  * Describes how natural numbers are allowed to be generated.

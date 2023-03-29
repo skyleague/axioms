@@ -1,1 +1,1 @@
-export { zip, zipWith } from './zip'
+export { zip, zipWith } from './zip.js'

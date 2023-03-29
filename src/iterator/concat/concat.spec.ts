@@ -1,9 +1,9 @@
-import { concat } from '.'
+import { concat } from './index.js'
 
-import { allEqual, take } from '..'
-import { collect } from '../../array'
-import { range, repeat } from '../../generator'
-import { forAll, tuple, array, unknown } from '../../random'
+import { collect } from '../../array/index.js'
+import { range, repeat } from '../../generator/index.js'
+import { forAll, tuple, array, unknown } from '../../random/index.js'
+import { allEqual, take } from '../index.js'
 
 test('multiple variadic', () => {
     const foo = collect(concat(['1', '2', '3'], [4, 5, 6], [true, false, true]))

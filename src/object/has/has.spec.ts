@@ -1,8 +1,8 @@
-import { has } from '.'
+import { has } from './index.js'
 
-import { all } from '../../iterator'
-import { keysOf } from '../../object'
-import { forAll, dict, unknown } from '../../random'
+import { all } from '../../iterator/index.js'
+import { keysOf } from '../../object/index.js'
+import { forAll, dict, unknown } from '../../random/index.js'
 
 test('all has keysOf o', () => {
     forAll(dict(unknown()), (o) => all(keysOf(o), (k) => has(o, k)))

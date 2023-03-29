@@ -1,10 +1,10 @@
-import { isNothing } from '../../guard'
-import { isJust } from '../../guard/is-just'
-import { isLeft } from '../../guard/is-left'
-import { isRight } from '../../guard/is-right'
-import type { Either, Left, Right } from '../../type/either'
-import type { Just, Maybe } from '../../type/maybe'
-import { Nothing } from '../../type/maybe'
+import { isNothing } from '../../guard/index.js'
+import { isJust } from '../../guard/is-just/index.js'
+import { isLeft } from '../../guard/is-left/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import type { Either, Left, Right } from '../../type/either/index.js'
+import type { Just, Maybe } from '../../type/maybe/index.js'
+import { Nothing } from '../../type/maybe/index.js'
 
 /**
  * If the input is a Left, return the Left's value wrapped in a Just, otherwise return Nothing.

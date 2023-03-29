@@ -1,4 +1,4 @@
-import type { NoUndefinedFields } from '../../type'
+import type { NoUndefinedFields } from '../../type/index.js'
 
 /**
  *

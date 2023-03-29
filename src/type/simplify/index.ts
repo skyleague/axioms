@@ -1,1 +1,1 @@
-export { Simplify, SimplifyOnce } from './simplify'
+export { Simplify, SimplifyOnce } from './simplify.js'

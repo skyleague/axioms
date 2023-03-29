@@ -1,5 +1,5 @@
-import { enumerate } from '../../generator/enumerate'
-import type { Traversable } from '../../type'
+import { enumerate } from '../../generator/enumerate/index.js'
+import type { Traversable } from '../../type/index.js'
 
 export type Partition<U, T> = [T[], Exclude<U, T>[]]
 

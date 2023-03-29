@@ -9,15 +9,15 @@ import {
     tryToEither,
     tryToError,
     tryToMaybe,
-} from './try'
+} from './try.js'
 
-import { isFailure } from '../../guard/is-failure'
-import { isSuccess } from '../../guard/is-success'
-import { isThrown } from '../../guard/is-thrown'
-import { asyncForAll, forAll, primitive, string, tuple } from '../../random'
-import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type'
-import { Nothing } from '../../type'
-import { left, right } from '../either'
+import { isFailure } from '../../guard/is-failure/index.js'
+import { isSuccess } from '../../guard/is-success/index.js'
+import { isThrown } from '../../guard/is-thrown/index.js'
+import { asyncForAll, forAll, primitive, string, tuple } from '../../random/index.js'
+import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import { left, right } from '../either/index.js'
 
 describe('asTry', () => {
     test('const', () => {

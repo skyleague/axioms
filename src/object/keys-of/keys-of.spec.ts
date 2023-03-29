@@ -1,6 +1,6 @@
-import { keysOf } from '.'
+import { keysOf } from './index.js'
 
-import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random'
+import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
 test('keysOf === Object.keys', () => {
     forAll(dict(unknown()), (o) => {

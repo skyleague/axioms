@@ -1,15 +1,15 @@
-import { set, subsuper } from './set'
+import { set, subsuper } from './set.js'
 
-import { collect } from '../../../array/collect'
-import { repeat } from '../../../generator'
-import { take } from '../../../iterator'
-import { unique } from '../../../iterator/unique'
-import { difference } from '../../../set/difference'
-import { isSuperset } from '../../../set/is-superset/is-super'
-import { forAll } from '../../arbitrary/forall'
-import { xoroshiro128plus } from '../../rng'
-import { unknown } from '../complex'
-import { integer } from '../integer'
+import { collect } from '../../../array/collect/index.js'
+import { repeat } from '../../../generator/index.js'
+import { take } from '../../../iterator/index.js'
+import { unique } from '../../../iterator/unique/index.js'
+import { difference } from '../../../set/difference/index.js'
+import { isSuperset } from '../../../set/is-superset/is-super.js'
+import { forAll } from '../../arbitrary/forall/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { unknown } from '../complex/index.js'
+import { integer } from '../integer/index.js'
 
 describe('set', () => {
     test('all unique - number', () => {

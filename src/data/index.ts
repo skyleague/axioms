@@ -1,3 +1,3 @@
-export * from './either'
-export * from './maybe'
-export * from './try'
+export * from './either/index.js'
+export * from './maybe/index.js'
+export * from './try/index.js'

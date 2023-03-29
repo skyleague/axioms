@@ -1,10 +1,10 @@
-import { mapTree } from '../../../algorithm/tree'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { element } from '../element'
-import { integer } from '../integer'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { element } from '../element/index.js'
+import { integer } from '../integer/index.js'
 
-import { toUSVString } from 'util'
+import { toUSVString } from 'node:util'
 
 /**
  * Describes how characters are allowed to be generated.

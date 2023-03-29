@@ -1,4 +1,4 @@
-import { isArray } from '.'
+import { isArray } from './index.js'
 
 test('simple', () => {
     expect(isArray([])).toBeTrue()

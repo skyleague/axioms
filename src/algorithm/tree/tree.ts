@@ -1,10 +1,10 @@
-import { queue } from '../../generator/queue'
-import { stack } from '../../generator/stack'
-import { applicative } from '../../iterator/applicative'
-import { concat } from '../../iterator/concat'
-import { filter } from '../../iterator/filter'
-import { map } from '../../iterator/map'
-import type { Printable, Traversable } from '../../type'
+import { queue } from '../../generator/queue/index.js'
+import { stack } from '../../generator/stack/index.js'
+import { applicative } from '../../iterator/applicative/index.js'
+import { concat } from '../../iterator/concat/index.js'
+import { filter } from '../../iterator/filter/index.js'
+import { map } from '../../iterator/map/index.js'
+import type { Printable, Traversable } from '../../type/index.js'
 
 /**
  * A type that represents a tree with an enumerable amount of children.

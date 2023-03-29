@@ -1,7 +1,7 @@
-import { mapTree } from '../../../algorithm/tree'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { integer } from '../integer'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { integer } from '../integer/index.js'
 
 /**
  * It returns an arbitrary that takes a random element from the array.

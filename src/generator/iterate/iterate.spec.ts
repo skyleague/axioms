@@ -1,9 +1,9 @@
-import { iterate } from '.'
+import { iterate } from './index.js'
 
-import { counter } from '..'
-import { collect } from '../../array'
-import { allEqual, take } from '../../iterator'
-import { forAll, float } from '../../random'
+import { collect } from '../../array/index.js'
+import { allEqual, take } from '../../iterator/index.js'
+import { forAll, float } from '../../random/index.js'
+import { counter } from '../index.js'
 
 test('iterate x + 1 === counter x', () => {
     forAll(float(), (x) =>

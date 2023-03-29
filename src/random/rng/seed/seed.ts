@@ -14,6 +14,8 @@ export function* splitmix64(seed = 0n) {
         z = z ^ ((z >> 27n) * 0x94d049bb133111ebn)
         yield z ^ (z >> 31n)
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
     return x
 }
 /**

@@ -1,6 +1,6 @@
-import { isNothing, isJust } from '../../../guard'
-import type { Maybe } from '../../../type'
-import { Nothing } from '../../../type'
+import { isNothing, isJust } from '../../../guard/index.js'
+import type { Maybe } from '../../../type/index.js'
+import { Nothing } from '../../../type/index.js'
 
 export interface DisjointPartition<T> {
     value: T

@@ -1,6 +1,6 @@
-import { asyncChunk } from './async-chunk'
+import { asyncChunk } from './async-chunk.js'
 
-import { asyncCollect } from '../async-collect'
+import { asyncCollect } from '../async-collect/index.js'
 
 test('simple chunk function', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], 1))).toEqual([[1], [2], [3], [4], [5]])

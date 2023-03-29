@@ -1,1 +1,1 @@
-export { Integrated, integratedArbitrary } from './integrated'
+export { Integrated, integratedArbitrary } from './integrated.js'

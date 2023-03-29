@@ -1,5 +1,5 @@
-import type { Traverser, Maybe, Traversable } from '../../type'
-import { Nothing, toTraverser } from '../../type'
+import type { Traverser, Maybe, Traversable } from '../../type/index.js'
+import { Nothing, toTraverser } from '../../type/index.js'
 
 /**
  * Take the {@link Traversable}, pick the first element and return a pair with the

@@ -1,1 +1,1 @@
-export { domain, subdomain } from './domain'
+export { domain, subdomain } from './domain.js'

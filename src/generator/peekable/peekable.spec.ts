@@ -1,11 +1,11 @@
-import { peekable } from '.'
+import { peekable } from './index.js'
 
-import { repeat, next, range } from '..'
-import { collect, zip } from '../../array'
-import { isRight } from '../../guard/is-right'
-import { take, map, concat } from '../../iterator'
-import { forAll, array, unknown, tuple } from '../../random'
-import { toGenerator } from '../../type'
+import { collect, zip } from '../../array/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import { take, map, concat } from '../../iterator/index.js'
+import { forAll, array, unknown, tuple } from '../../random/index.js'
+import { toGenerator } from '../../type/index.js'
+import { repeat, next, range } from '../index.js'
 
 test('peekable xs === xs', () => {
     forAll(array(unknown()), (xs) => {

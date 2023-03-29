@@ -1,5 +1,5 @@
-import { all } from '../../iterator/all'
-import type { Traversable } from '../../type'
+import { all } from '../../iterator/all/index.js'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * A set is a superset of the subset if every element in the subset is also in the superset.

@@ -1,1 +1,1 @@
-export { isFunction } from './is-function'
+export { isFunction } from './is-function.js'

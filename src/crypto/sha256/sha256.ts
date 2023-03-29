@@ -1,4 +1,4 @@
-import { createHash } from 'crypto'
+import { createHash } from 'node:crypto'
 
 /**
  * Calculate the sha256 hash of the given string input.

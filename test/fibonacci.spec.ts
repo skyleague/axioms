@@ -1,5 +1,5 @@
-import { collect } from '../src/array'
-import { take } from '../src/iterator'
+import { collect } from '../src/array/index.js'
+import { take } from '../src/iterator/index.js'
 
 test('simple', () => {
     function* fibonacci() {

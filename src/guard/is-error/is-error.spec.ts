@@ -1,6 +1,6 @@
-import { isError } from '.'
+import { isError } from './index.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('unknown is not error', () => {
     forAll(unknown(), (x) => !isError(x))

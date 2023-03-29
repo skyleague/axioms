@@ -1,6 +1,6 @@
-import { allEqual } from '.'
+import { allEqual } from './index.js'
 
-import { array, forAll, mappableFunc, toTraversable, tuple, unknown } from '../..'
+import { array, forAll, mappableFunc, toTraversable, tuple, unknown } from '../../index.js'
 
 test('xs === mappable(xs)', () => {
     forAll(

@@ -1,1 +1,1 @@
-export { take, takeWhile } from './take'
+export { take, takeWhile } from './take.js'

@@ -1,1 +1,1 @@
-export { isIterator } from './is-iterator'
+export { isIterator } from './is-iterator.js'

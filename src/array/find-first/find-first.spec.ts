@@ -1,9 +1,9 @@
-import { findFirst } from '.'
+import { findFirst } from './index.js'
 
-import { counter } from '../../generator/counter'
-import { isNothing } from '../../guard'
-import { take } from '../../iterator'
-import { forAll, array, unknown, natural } from '../../random'
+import { counter } from '../../generator/counter/index.js'
+import { isNothing } from '../../guard/index.js'
+import { take } from '../../iterator/index.js'
+import { forAll, array, unknown, natural } from '../../random/index.js'
 
 test('first in array without predicate', () => {
     forAll(array(unknown()), (xs) => {

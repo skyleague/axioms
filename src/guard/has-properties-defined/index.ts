@@ -1,1 +1,1 @@
-export { hasPropertiesDefined } from './has-properties-defined'
+export { hasPropertiesDefined } from './has-properties-defined.js'

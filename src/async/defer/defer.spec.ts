@@ -1,4 +1,4 @@
-import { defer } from './defer'
+import { defer } from './defer.js'
 
 test('deferred can be resolved', async () => {
     const p = defer<string>()

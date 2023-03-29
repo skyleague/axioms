@@ -1,4 +1,4 @@
-import { difference, symmetricDifference } from './difference'
+import { difference, symmetricDifference } from './difference.js'
 
 describe('difference', () => {
     test('simple', () => {

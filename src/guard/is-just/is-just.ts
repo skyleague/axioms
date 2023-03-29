@@ -1,6 +1,6 @@
-import type { Maybe } from '../../type/maybe'
-import type { Just } from '../../type/maybe/maybe'
-import { nothingSymbol } from '../../type/maybe/maybe'
+import type { Maybe } from '../../type/maybe/index.js'
+import type { Just } from '../../type/maybe/maybe.js'
+import { nothingSymbol } from '../../type/maybe/maybe.js'
 
 /**
  * Checks if `x` is not {@link Nothing}.

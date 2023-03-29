@@ -1,1 +1,1 @@
-export { Dependent, dependentArbitrary } from './dependent'
+export { Dependent, dependentArbitrary } from './dependent.js'

@@ -1,1 +1,1 @@
-export { partition } from './partition'
+export { partition } from './partition.js'

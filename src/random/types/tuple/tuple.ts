@@ -1,8 +1,8 @@
-import type { Arbitrary } from '../../arbitrary/arbitrary'
-import { interleave } from '../../arbitrary/arbitrary'
-import type { ArbitraryContext } from '../../arbitrary/context'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
+import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import { interleave } from '../../arbitrary/arbitrary/index.js'
+import type { ArbitraryContext } from '../../arbitrary/context/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 
 /**
  * It takes an arbitrary number of arbitraries and returns a new arbitrary that generates tuples of the

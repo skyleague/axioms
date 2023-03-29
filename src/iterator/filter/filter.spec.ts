@@ -1,7 +1,7 @@
-import { filter } from '.'
+import { filter } from './index.js'
 
-import { all, equal } from '../../iterator'
-import { forAll, array, unknown, integer } from '../../random'
+import { all, equal } from '../../iterator/index.js'
+import { forAll, array, unknown, integer } from '../../random/index.js'
 
 test('filter true xs === xs', () => {
     forAll(array(unknown()), (xs) => equal([...filter(xs, () => true)], xs))

@@ -1,12 +1,12 @@
-import { evaluate } from '../../function'
-import { isFailure } from '../../guard/is-failure'
-import { isPromise } from '../../guard/is-promise'
-import { isRight } from '../../guard/is-right'
-import { isSuccess } from '../../guard/is-success'
-import { thrown } from '../../guard/is-thrown'
-import type { AsyncConstExpr, Either, Success, Try } from '../../type'
-import { Nothing } from '../../type'
-import type { Failure } from '../../type/try/try'
+import { evaluate } from '../../function/index.js'
+import { isFailure } from '../../guard/is-failure/index.js'
+import { isPromise } from '../../guard/is-promise/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import { isSuccess } from '../../guard/is-success/index.js'
+import { thrown } from '../../guard/is-thrown/index.js'
+import type { AsyncConstExpr, Either, Success, Try } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import type { Failure } from '../../type/try/try.js'
 
 /**
  * @internal

@@ -1,1 +1,1 @@
-export { isFailure } from './is-failure'
+export { isFailure } from './is-failure.js'

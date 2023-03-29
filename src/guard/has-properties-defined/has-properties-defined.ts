@@ -1,6 +1,6 @@
-import { all } from '../../iterator/all'
-import type { KeyOf, RequireKeys } from '../../type/keys'
-import { asArray } from '../as-array'
+import { all } from '../../iterator/all/index.js'
+import type { KeyOf, RequireKeys } from '../../type/keys/index.js'
+import { asArray } from '../as-array/index.js'
 
 /**
  * Creates a function that acts as a typeguard that makes all given properties required, by checking if all values

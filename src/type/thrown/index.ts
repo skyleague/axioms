@@ -1,1 +1,1 @@
-export { Thrown } from './thrown'
+export { Thrown } from './thrown.js'

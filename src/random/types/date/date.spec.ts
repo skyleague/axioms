@@ -1,9 +1,9 @@
-import { date, datetime } from './date'
+import { date, datetime } from './date.js'
 
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { take } from '../../../iterator'
-import { xoroshiro128plus } from '../../rng'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { take } from '../../../iterator/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
 
 describe('datetime', () => {
     test('random sample', () => {
