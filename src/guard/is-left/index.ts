@@ -1,1 +1,1 @@
-export { isLeft } from './is-left'
+export { isLeft } from './is-left.js'

@@ -1,6 +1,6 @@
-import { isEither } from '.'
+import { isEither } from './index.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('unknown is not either', () => {
     forAll(unknown(), (x) => !isEither(x))

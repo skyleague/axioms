@@ -1,1 +1,1 @@
-export { isJust } from './is-just'
+export { isJust } from './is-just.js'

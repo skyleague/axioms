@@ -1,11 +1,11 @@
-import { tuple } from './tuple'
+import { tuple } from './tuple.js'
 
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { take } from '../../../iterator'
-import { forAll } from '../../arbitrary/forall'
-import { xoroshiro128plus } from '../../rng'
-import { integer } from '../integer'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { take } from '../../../iterator/index.js'
+import { forAll } from '../../arbitrary/forall/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { integer } from '../integer/index.js'
 
 test('counter example - equal', () => {
     expect(() => forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`

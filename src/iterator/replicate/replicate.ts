@@ -1,6 +1,6 @@
-import { repeat } from '../../generator/repeat'
-import { filterWithMemory } from '../filter'
-import { take } from '../take'
+import { repeat } from '../../generator/repeat/index.js'
+import { filterWithMemory } from '../filter/index.js'
+import { take } from '../take/index.js'
 
 /**
  * Replicate the given value `n` times.

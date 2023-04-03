@@ -1,8 +1,8 @@
-import { next } from '../../generator/next'
-import { peekable } from '../../generator/peekable'
-import { isRight } from '../../guard/is-right'
-import type { Traversable, Traverser } from '../../type/traversable'
-import { toTraverser } from '../../type/traversable'
+import { next } from '../../generator/next/index.js'
+import { peekable } from '../../generator/peekable/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import type { Traversable, Traverser } from '../../type/traversable/index.js'
+import { toTraverser } from '../../type/traversable/index.js'
 
 /**
  * Create a slice of the traversable with the first `n` elements.

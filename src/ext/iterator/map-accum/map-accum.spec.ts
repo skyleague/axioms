@@ -1,7 +1,7 @@
-import { mapAccumL } from '.'
+import { mapAccumL } from './index.js'
 
-import { collect } from '../../../array'
-import { toGenerator } from '../../../type'
+import { collect } from '../../../array/index.js'
+import { toGenerator } from '../../../type/index.js'
 
 test('simple', () => {
     const ml = mapAccumL([9, 6, 3], (a, b) => [a, a * b], 5)

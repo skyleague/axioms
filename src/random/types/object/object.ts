@@ -1,11 +1,11 @@
-import { mapTree } from '../../../algorithm/tree'
-import { zip } from '../../../array/zip'
-import type { Arbitrary } from '../../arbitrary/arbitrary'
-import type { ArbitraryContext } from '../../arbitrary/context'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { constant } from '../helper'
-import { tuple } from '../tuple'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import { zip } from '../../../array/zip/index.js'
+import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import type { ArbitraryContext } from '../../arbitrary/context/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { constant } from '../helper/index.js'
+import { tuple } from '../tuple/index.js'
 
 export interface ObjectGenerator {}
 

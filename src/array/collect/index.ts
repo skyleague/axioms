@@ -1,1 +1,1 @@
-export { collect } from './collect'
+export { collect } from './collect.js'

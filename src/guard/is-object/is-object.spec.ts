@@ -1,6 +1,6 @@
-import { isObject } from '.'
+import { isObject } from './index.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('object', () => {
     expect(isObject({})).toEqual(true)

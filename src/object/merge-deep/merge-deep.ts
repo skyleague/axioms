@@ -1,4 +1,4 @@
-import { isObject } from '../../guard'
+import { isObject } from '../../guard/index.js'
 
 /**
  * Merge two objects recursively.

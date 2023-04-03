@@ -1,5 +1,5 @@
-import { splitLast } from '../../iterator/split'
-import type { Traversable } from '../../type/traversable'
+import { splitLast } from '../../iterator/split/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Take the {@link Traversable}, and returns it without the last element.

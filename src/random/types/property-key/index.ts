@@ -1,1 +1,1 @@
-export { PropertyKeyGenerator, propertyKey } from './property-key'
+export { PropertyKeyGenerator, propertyKey } from './property-key.js'

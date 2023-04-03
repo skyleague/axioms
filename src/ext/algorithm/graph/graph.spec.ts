@@ -1,4 +1,4 @@
-import { Graph, topologicalSort } from '.'
+import { Graph, topologicalSort } from './index.js'
 
 test('simple', () => {
     const G = new Graph<number, number>()

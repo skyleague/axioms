@@ -1,7 +1,7 @@
-import { halves, halvesf, shrinkOne, towards, towardsf } from '.'
+import { halves, halvesf, shrinkOne, towards, towardsf } from './index.js'
 
-import { collect } from '../../../array'
-import { take } from '../../../iterator'
+import { collect } from '../../../array/index.js'
+import { take } from '../../../iterator/index.js'
 
 describe('towards', () => {
     test('simple', () => {

@@ -1,4 +1,4 @@
-import type { Either } from '../../type/either'
+import type { Either } from '../../type/either/index.js'
 
 /**
  * Check whether given `x` is of type {@link Either}.

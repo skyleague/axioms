@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Cast } from '../../type/cast'
-import type { Item } from '../../type/item'
-import type { DeepMutable } from '../../type/mutable'
+import type { Cast } from '../../type/cast/index.js'
+import type { Item } from '../../type/item/index.js'
+import type { DeepMutable } from '../../type/mutable/index.js'
 
 export type FromEntries<T> = T extends [infer Key, any][]
     ? { [K in Cast<Key, string>]: Extract<Item<T>, [K, any]>[1] }

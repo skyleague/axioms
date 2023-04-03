@@ -1,1 +1,1 @@
-export { Try, Success, Failure } from './try'
+export { Try, Success, Failure } from './try.js'

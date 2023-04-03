@@ -1,5 +1,5 @@
-import { Thrown } from '../../type'
-import { isObject } from '../is-object'
+import { Thrown } from '../../type/index.js'
+import { isObject } from '../is-object/index.js'
 
 /**
  * Checks if `x` was tagged as thrown.

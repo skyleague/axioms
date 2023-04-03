@@ -1,8 +1,8 @@
-import { reverse } from '.'
+import { reverse } from './index.js'
 
-import { collect } from '..'
-import { allEqual } from '../../iterator'
-import { forAll, array, unknown } from '../../random'
+import { allEqual } from '../../iterator/index.js'
+import { forAll, array, unknown } from '../../random/index.js'
+import { collect } from '../index.js'
 
 test('reverse reverse === identity', () => {
     forAll(array(unknown()), (xs) => allEqual(collect(reverse(reverse(xs))), xs))

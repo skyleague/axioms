@@ -1,7 +1,7 @@
-import { xoroshiro128plus } from '.'
+import { xoroshiro128plus } from './index.js'
 
-import { sum, collect } from '../../../array'
-import { take } from '../../../iterator'
+import { sum, collect } from '../../../array/index.js'
+import { take } from '../../../iterator/index.js'
 
 test('snapshot', () => {
     expect(collect(take(xoroshiro128plus(42n), 20))).toMatchInlineSnapshot(`

@@ -1,6 +1,6 @@
-import { isDefined } from '.'
+import { isDefined } from './index.js'
 
-import { forAll, unknown } from '../..'
+import { forAll, unknown } from '../../index.js'
 
 test('isDefined', () => {
     expect(isDefined([])).toBeTrue()

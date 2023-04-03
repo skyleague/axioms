@@ -1,5 +1,5 @@
-import { isLeft, isRight } from '../../guard'
-import type { Left, Right, Either } from '../../type'
+import { isLeft, isRight } from '../../guard/index.js'
+import type { Left, Right, Either } from '../../type/index.js'
 
 /**
  * If the Either is a Left, return the Left value, otherwise return the Right value.

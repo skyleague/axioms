@@ -1,1 +1,1 @@
-export { keysOf } from './keys-of'
+export { keysOf } from './keys-of.js'

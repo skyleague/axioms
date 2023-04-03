@@ -1,6 +1,6 @@
-import { isJust, isNothing } from '../../../guard'
-import type { Maybe } from '../../../type/maybe'
-import { Nothing } from '../../../type/maybe'
+import { isJust, isNothing } from '../../../guard/index.js'
+import type { Maybe } from '../../../type/maybe/index.js'
+import { Nothing } from '../../../type/maybe/index.js'
 
 export interface Trie<T> {
     value: Maybe<T>

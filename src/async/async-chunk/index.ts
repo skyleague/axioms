@@ -1,1 +1,1 @@
-export { asyncChunk } from './async-chunk'
+export { asyncChunk } from './async-chunk.js'

@@ -1,1 +1,1 @@
-export { Maybe, Just, Nothing } from './maybe'
+export { Maybe, Just, Nothing } from './maybe.js'

@@ -1,5 +1,5 @@
-import type { Failure, Try } from '../../type/try'
-import { isError } from '../is-error'
+import type { Failure, Try } from '../../type/try/index.js'
+import { isError } from '../is-error/index.js'
 
 /**
  * Checks if `x` is a {@link Failure}.

@@ -1,10 +1,10 @@
-import { mapTree } from '../../../algorithm/tree'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { array } from '../array'
-import { lowerAlphaNumericChar } from '../char'
-import { lowerAlphaNumeric } from '../string'
-import { tuple } from '../tuple'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { array } from '../array/index.js'
+import { lowerAlphaNumericChar } from '../char/index.js'
+import { lowerAlphaNumeric } from '../string/index.js'
+import { tuple } from '../tuple/index.js'
 
 /**
  * It returns an arbitrary that generates valid domains according to https://www.ietf.org/rfc/rfc1034.txt

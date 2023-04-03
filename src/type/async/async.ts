@@ -1,4 +1,4 @@
-import type { Mappable, Traversable, Traverser } from '../traversable'
+import type { Mappable, Traversable, Traverser } from '../traversable/index.js'
 
 export type AsyncTraverser<T, R = unknown> = AsyncIterator<T, R, void> | Traverser<T, R>
 export type AsyncTraversable<T, R = unknown> =

@@ -1,4 +1,4 @@
-import { scanl, scanl1 } from '.'
+import { scanl, scanl1 } from './index.js'
 
 describe('scanl', () => {
     const div = (a: number, b: number) => a / b

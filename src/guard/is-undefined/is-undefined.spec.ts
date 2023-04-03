@@ -1,6 +1,6 @@
-import { isUndefined } from '.'
+import { isUndefined } from './index.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('undefined', () => {
     expect(isUndefined(undefined)).toEqual(true)

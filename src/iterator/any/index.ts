@@ -1,1 +1,1 @@
-export { any, some } from './any'
+export { any, some } from './any.js'

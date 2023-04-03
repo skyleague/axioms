@@ -1,1 +1,1 @@
-export { NaturalConstraints, natural } from './natural'
+export { NaturalConstraints, natural } from './natural.js'

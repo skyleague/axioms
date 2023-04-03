@@ -1,9 +1,9 @@
-import { queue } from '../../../generator/queue'
-import { stack } from '../../../generator/stack'
-import { map } from '../../../iterator'
-import type { Maybe, Traversable } from '../../../type'
-import { Nothing } from '../../../type'
-import { disjointSet } from '../disjoint-set'
+import { queue } from '../../../generator/queue/index.js'
+import { stack } from '../../../generator/stack/index.js'
+import { map } from '../../../iterator/index.js'
+import type { Maybe, Traversable } from '../../../type/index.js'
+import { Nothing } from '../../../type/index.js'
+import { disjointSet } from '../disjoint-set/index.js'
 
 export interface GraphNode<T> {
     name: string
@@ -46,12 +46,12 @@ export class Graph<T, E = never> {
             this._fromToAdjacency[name] = {} as Record<GraphNodeName, GraphEdge<T, E>>
             this._edges.set(node, new WeakSet<GraphEdge<T, E>>())
         }
-        return this._nodes[name]
+        return this._nodes[name]!
     }
 
     public setEdge(a: GraphNodeName, b: GraphNodeName, ...value: [E] extends [never] ? [undefined?] : [E]): void
     public setEdge(a: GraphNodeName, b: GraphNodeName, value?: E): void {
-        this._fromToAdjacency[a][b] = { value: value as E, from: this._nodes[a], to: this._nodes[b] }
+        this._fromToAdjacency[a]![b] = { value: value as E, from: this._nodes[a]!, to: this._nodes[b]! }
     }
 
     public nodes(): Traversable<GraphNode<T>> {
@@ -69,7 +69,7 @@ export class Graph<T, E = never> {
         for (const x of nodes) {
             if (!visited.has(x)) {
                 yield x
-                nodes.enqueue(map(Object.keys(this._fromToAdjacency[x.name]), (n) => this._nodes[n]))
+                nodes.enqueue(map(Object.keys(this._fromToAdjacency[x.name]!), (n) => this._nodes[n]!))
                 visited.add(x)
             } else {
                 // cyclic
@@ -82,7 +82,7 @@ export class Graph<T, E = never> {
         for (const x of nodes) {
             if (!visited.has(x)) {
                 yield x
-                nodes.push(map(Object.keys(this._fromToAdjacency[x.name]), (n) => this._nodes[n]))
+                nodes.push(map(Object.keys(this._fromToAdjacency[x.name]!), (n) => this._nodes[n]!))
                 visited.add(x)
             } else {
                 // cyclic

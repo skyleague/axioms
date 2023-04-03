@@ -1,4 +1,4 @@
-import { Nothing } from '.'
+import { Nothing } from './index.js'
 
 test('Nothing serializes', () => {
     expect(`${Nothing.toString()}`).toEqual('Symbol((Nothing))')

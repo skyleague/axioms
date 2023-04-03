@@ -1,9 +1,9 @@
-import { domain, subdomain } from './domain'
+import { domain, subdomain } from './domain.js'
 
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { take } from '../../../iterator'
-import { xoroshiro128plus } from '../../rng'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { take } from '../../../iterator/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
 
 describe('domain', () => {
     test('random sample', () => {

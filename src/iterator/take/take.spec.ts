@@ -1,7 +1,7 @@
-import { take, takeWhile } from '.'
+import { take, takeWhile } from './index.js'
 
-import { collect } from '../../array'
-import { repeat, range } from '../../generator'
+import { collect } from '../../array/index.js'
+import { repeat, range } from '../../generator/index.js'
 
 describe('take', () => {
     test('string', () => {

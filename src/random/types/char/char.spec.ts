@@ -9,12 +9,12 @@ import {
     lowerAlphaNumericChar,
     utf16Char,
     utf16SurrogateChar,
-} from './char'
+} from './char.js'
 
-import { forAll } from '../../arbitrary'
-import { utf16 } from '../string'
+import { forAll } from '../../arbitrary/index.js'
+import { utf16 } from '../string/index.js'
 
-import util from 'util'
+import util from 'node:util'
 
 describe('char', () => {
     test('length is always 1', () => {

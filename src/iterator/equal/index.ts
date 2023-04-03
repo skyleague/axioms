@@ -1,1 +1,1 @@
-export { allEqual, equal } from './equal'
+export { allEqual, equal } from './equal.js'

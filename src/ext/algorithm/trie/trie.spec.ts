@@ -1,8 +1,8 @@
-import { trie } from '.'
+import { trie } from './index.js'
 
-import { equal } from '../../../iterator'
-import { forAll, tuple, array, string, unknown, set } from '../../../random'
-import { Nothing } from '../../../type'
+import { equal } from '../../../iterator/index.js'
+import { forAll, tuple, array, string, unknown, set } from '../../../random/index.js'
+import { Nothing } from '../../../type/index.js'
 
 test('simple', () => {
     const t = trie<number>()

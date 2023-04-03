@@ -1,1 +1,1 @@
-export { counter } from './counter'
+export { counter } from './counter.js'

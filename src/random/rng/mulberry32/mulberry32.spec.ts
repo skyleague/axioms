@@ -1,7 +1,7 @@
-import { mulberry32 } from '.'
+import { mulberry32 } from './index.js'
 
-import { sum, collect } from '../../../array'
-import { take } from '../../../iterator'
+import { sum, collect } from '../../../array/index.js'
+import { take } from '../../../iterator/index.js'
 
 test('snapshot', () => {
     expect(collect(take(mulberry32(42), 20))).toMatchInlineSnapshot(`

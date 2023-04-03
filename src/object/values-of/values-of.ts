@@ -1,4 +1,4 @@
-import type { KeyOf } from '../../type'
+import type { KeyOf } from '../../type/index.js'
 
 export type ValuesOf<T> = T extends (infer I)[] ? I[] : T[KeyOf<T>][]
 

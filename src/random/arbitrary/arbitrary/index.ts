@@ -1,1 +1,1 @@
-export { Arbitrary, TypeOfArbitrary, TypeOfArbitraries, interleaveTree, interleave, interleaveList } from './arbitrary'
+export { Arbitrary, TypeOfArbitrary, TypeOfArbitraries, interleaveTree, interleave, interleaveList } from './arbitrary.js'

@@ -1,10 +1,10 @@
-import { omitUndefined, omit, omitBy } from '.'
+import { omitUndefined, omit, omitBy } from './index.js'
 
-import type { OmitUndefined } from './omit'
+import type { OmitUndefined } from './omit.js'
 
-import { keysOf, pickBy } from '..'
-import { all, equal } from '../../iterator'
-import { forAll, dict, unknown, deterministicBoolean } from '../../random'
+import { all, equal } from '../../iterator/index.js'
+import { forAll, dict, unknown, deterministicBoolean } from '../../random/index.js'
+import { keysOf, pickBy } from '../index.js'
 
 describe('omitUndefined', () => {
     test('omitUndefined x === identity, if all values defined', () => {

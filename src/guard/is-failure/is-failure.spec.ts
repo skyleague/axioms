@@ -1,4 +1,4 @@
-import { isFailure } from './is-failure'
+import { isFailure } from './is-failure.js'
 
 test('simple', () => {
     expect(isFailure('foobar')).toBeFalse()

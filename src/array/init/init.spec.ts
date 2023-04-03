@@ -1,6 +1,6 @@
-import { init } from '.'
+import { init } from './index.js'
 
-import { forAll, array, unknown } from '../../random'
+import { forAll, array, unknown } from '../../random/index.js'
 
 test('simple', () => {
     expect(init([1, 2, 3])).toMatchInlineSnapshot(`

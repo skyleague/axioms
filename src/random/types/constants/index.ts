@@ -1,1 +1,1 @@
-export { constants } from './constants'
+export { constants } from './constants.js'

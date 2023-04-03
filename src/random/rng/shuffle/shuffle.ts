@@ -1,5 +1,5 @@
-import { collect } from '../../../array'
-import type { Traversable } from '../../../type'
+import { collect } from '../../../array/index.js'
+import type { Traversable } from '../../../type/index.js'
 
 /**
  * It takes a traversable and returns a new array with the same elements in a random order.
@@ -23,8 +23,8 @@ export function shuffle<T>(xs: Traversable<T>, random: () => number = Math.rando
     const axs = collect(xs)
     for (let i = axs.length - 1; i > 0; i--) {
         const j = Math.floor(random() * (i + 1))
-        const temp = axs[i]
-        axs[i] = axs[j]
+        const temp = axs[i]!
+        axs[i] = axs[j]!
         axs[j] = temp
     }
     return axs

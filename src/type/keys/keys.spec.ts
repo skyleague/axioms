@@ -1,4 +1,4 @@
-import type { RequireKeys } from '.'
+import type { RequireKeys } from './index.js'
 
 test('RequireKeys is distributive on union types', () => {
     type U = { a?: string; x: string } | { a?: string; y: string } | { z: string }

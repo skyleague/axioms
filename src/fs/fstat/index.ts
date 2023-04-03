@@ -1,1 +1,1 @@
-export { fstat } from './fstat'
+export { fstat } from './fstat.js'

@@ -1,9 +1,9 @@
-import { pick, pickBy } from '.'
+import { pick, pickBy } from './index.js'
 
-import { keysOf } from '..'
-import { isNumber } from '../../guard'
-import { all, equal } from '../../iterator'
-import { forAll, dict, unknown, deterministicBoolean } from '../../random'
+import { isNumber } from '../../guard/index.js'
+import { all, equal } from '../../iterator/index.js'
+import { forAll, dict, unknown, deterministicBoolean } from '../../random/index.js'
+import { keysOf } from '../index.js'
 
 describe('pickBy', () => {
     test('simple', () => {

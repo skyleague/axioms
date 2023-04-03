@@ -1,5 +1,5 @@
-import type { Mappable } from '../../type'
-import { toTraversable } from '../../type'
+import type { Mappable } from '../../type/index.js'
+import { toTraversable } from '../../type/index.js'
 
 /**
  * Converts a {@link Mappable} to an array.

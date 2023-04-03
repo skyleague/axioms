@@ -1,7 +1,7 @@
-import { evaluate } from './evaluate'
+import { evaluate } from './evaluate.js'
 
-import { sleep } from '../../async'
-import { asyncForAll, forAll, unknown } from '../../random'
+import { sleep } from '../../async/index.js'
+import { asyncForAll, forAll, unknown } from '../../random/index.js'
 
 test('constant', () => {
     forAll(unknown(), (x) => evaluate(x) === x)

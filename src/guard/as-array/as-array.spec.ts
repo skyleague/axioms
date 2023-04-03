@@ -1,7 +1,7 @@
-import { asArray } from './as-array'
+import { asArray } from './as-array.js'
 
-import { array, forAll, unknown } from '../../random'
-import { isArray } from '../is-array'
+import { array, forAll, unknown } from '../../random/index.js'
+import { isArray } from '../is-array/index.js'
 
 test('primitive is converted', () => {
     forAll(unknown({ array: false }), (x) => isArray(asArray(x)))

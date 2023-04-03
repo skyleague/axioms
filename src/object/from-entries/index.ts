@@ -1,1 +1,1 @@
-export { FromEntries, FromEntriesWithReadOnly, fromEntries } from './from-entries'
+export { FromEntries, FromEntriesWithReadOnly, fromEntries } from './from-entries.js'

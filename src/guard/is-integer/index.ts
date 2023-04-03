@@ -1,1 +1,1 @@
-export { isInteger } from './is-integer'
+export { isInteger } from './is-integer.js'

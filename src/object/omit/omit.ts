@@ -1,5 +1,5 @@
-import type { SimplifyOnce } from '../../type'
-import { pickBy } from '../pick'
+import type { SimplifyOnce } from '../../type/index.js'
+import { pickBy } from '../pick/index.js'
 
 export type OmitUndefined<T> = SimplifyOnce<
     {

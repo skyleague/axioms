@@ -1,1 +1,1 @@
-export { replicate, replicateWithMemory } from './replicate'
+export { replicate, replicateWithMemory } from './replicate.js'

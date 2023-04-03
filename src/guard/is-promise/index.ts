@@ -1,1 +1,1 @@
-export { isPromise } from './is-promise'
+export { isPromise } from './is-promise.js'

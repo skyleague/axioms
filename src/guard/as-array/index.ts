@@ -1,1 +1,1 @@
-export { asArray } from './as-array'
+export { asArray } from './as-array.js'

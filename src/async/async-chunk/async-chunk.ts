@@ -1,4 +1,4 @@
-import type { AsyncTraversable } from '../../type/async'
+import type { AsyncTraversable } from '../../type/async/index.js'
 
 /**
  * Creates an async generator that splits the given {@link AsyncTraversable} into chunks of the required size. If

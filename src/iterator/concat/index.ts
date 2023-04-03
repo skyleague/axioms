@@ -1,1 +1,1 @@
-export { concat } from './concat'
+export { concat } from './concat.js'

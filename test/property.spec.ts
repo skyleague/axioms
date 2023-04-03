@@ -1,4 +1,4 @@
-import { array, forAll, integer, string, tuple } from '../src'
+import { array, forAll, integer, string, tuple } from '../src/index.js'
 
 describe('sorting', () => {
     function sort(xs: number[]): number[] {
@@ -7,7 +7,7 @@ describe('sorting', () => {
 
     function isSorted(xs: number[]): boolean {
         for (let i = 1; i < xs.length; ++i) {
-            if (xs[i - 1] > xs[i]) {
+            if (xs[i - 1]! > xs[i]!) {
                 return false
             }
         }

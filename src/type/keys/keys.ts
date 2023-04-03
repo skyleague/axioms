@@ -1,5 +1,5 @@
-import type { NoUndefinedFields } from '../fields'
-import type { SimplifyOnce } from '../simplify'
+import type { NoUndefinedFields } from '../fields/index.js'
+import type { SimplifyOnce } from '../simplify/index.js'
 
 export type KeyOf<T> = T extends unknown ? keyof T : never
 export type KeysOfType<T, U> = { [K in keyof T]: T[K] extends U ? K : never }[keyof T]

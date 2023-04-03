@@ -1,8 +1,8 @@
-import type { Memoized } from './memoize'
-import { memoize } from './memoize'
+import type { Memoized } from './memoize.js'
+import { memoize } from './memoize.js'
 
-import { mapValues } from '../../object/map-values'
-import type { Dict } from '../../type/dict'
+import { mapValues } from '../../object/map-values/index.js'
+import type { Dict } from '../../type/dict/index.js'
 
 export type MemoizeAttributes<T extends Dict<() => unknown>> = { [K in keyof T]: Memoized<T[K]> }
 /**

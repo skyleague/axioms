@@ -1,1 +1,1 @@
-export { tuple } from './tuple'
+export { tuple } from './tuple.js'

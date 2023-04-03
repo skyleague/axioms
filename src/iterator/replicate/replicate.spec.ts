@@ -1,9 +1,9 @@
-import { replicate } from '.'
+import { replicate } from './index.js'
 
-import { foldl, all } from '..'
-import { zip, collect } from '../../array'
-import { range } from '../../generator'
-import { forAll, tuple, natural, unknown } from '../../random'
+import { zip, collect } from '../../array/index.js'
+import { range } from '../../generator/index.js'
+import { forAll, tuple, natural, unknown } from '../../random/index.js'
+import { foldl, all } from '../index.js'
 
 test('simple', () => {
     expect(collect(replicate(1, 2))).toMatchInlineSnapshot(`

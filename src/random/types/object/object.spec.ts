@@ -1,13 +1,13 @@
-import { object } from './object'
+import { object } from './object.js'
 
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { take } from '../../../iterator'
-import { xoroshiro128plus } from '../../rng'
-import { json } from '../complex'
-import { integer } from '../integer'
-import { oneOf } from '../one-of'
-import { utf16 } from '../string'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { take } from '../../../iterator/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { json } from '../complex/index.js'
+import { integer } from '../integer/index.js'
+import { oneOf } from '../one-of/index.js'
+import { utf16 } from '../string/index.js'
 
 describe('object', () => {
     test('random sample', () => {

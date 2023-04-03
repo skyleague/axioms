@@ -1,4 +1,4 @@
-import { isSubset } from './is-subset'
+import { isSubset } from './is-subset.js'
 
 test('simple', () => {
     expect(isSubset([1, 2, 3], [2, 3, 4])).toBeFalse()

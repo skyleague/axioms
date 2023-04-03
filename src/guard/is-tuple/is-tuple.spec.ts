@@ -1,6 +1,6 @@
-import { isTuple } from './is-tuple'
+import { isTuple } from './is-tuple.js'
 
-import { array, forAll, integer, tuple, unknown } from '../..'
+import { array, forAll, integer, tuple, unknown } from '../../index.js'
 
 test('for x is not tuple, isTuple xs === false', () => {
     forAll(tuple(unknown({ array: false }), integer()), ([xs, l]) => !isTuple(l, xs))

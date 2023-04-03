@@ -1,9 +1,9 @@
-import { applicative } from '.'
+import { applicative } from './index.js'
 
-import { collect } from '../../array'
-import { range } from '../../generator'
-import { allEqual, take } from '../../iterator'
-import { array, forAll, unknown } from '../../random'
+import { collect } from '../../array/index.js'
+import { range } from '../../generator/index.js'
+import { allEqual, take } from '../../iterator/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 
 test('make reentrant', () => {
     const xs = range(1, 5)

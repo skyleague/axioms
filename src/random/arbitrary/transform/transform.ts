@@ -1,7 +1,7 @@
-import { mapTree, filterTree } from '../../../algorithm/tree'
-import type { Arbitrary } from '../arbitrary'
-import { dependentArbitrary } from '../dependent'
-import type { Dependent } from '../dependent'
+import { mapTree, filterTree } from '../../../algorithm/tree/index.js'
+import type { Arbitrary } from '../arbitrary/index.js'
+import { dependentArbitrary } from '../dependent/index.js'
+import type { Dependent } from '../dependent/index.js'
 
 /**
  * @internal

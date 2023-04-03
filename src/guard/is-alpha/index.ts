@@ -1,1 +1,1 @@
-export { isAlpha } from './is-alpha'
+export { isAlpha } from './is-alpha.js'

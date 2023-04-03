@@ -1,8 +1,8 @@
-import { fromEntries } from './from-entries'
+import { fromEntries } from './from-entries.js'
 
-import { equal } from '../../iterator'
-import { dict, forAll, unknown } from '../../random'
-import { entriesOf } from '../entries-of'
+import { equal } from '../../iterator/index.js'
+import { dict, forAll, unknown } from '../../random/index.js'
+import { entriesOf } from '../entries-of/index.js'
 
 test('fromEntries o entriesOf === identity', () => {
     forAll(dict(unknown()), (x) => equal(fromEntries(entriesOf(x)), x))

@@ -1,1 +1,1 @@
-export { symbol } from './symbol'
+export { symbol } from './symbol.js'

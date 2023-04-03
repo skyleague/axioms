@@ -1,1 +1,1 @@
-export { cloneDeep } from './clone-deep'
+export { cloneDeep } from './clone-deep.js'

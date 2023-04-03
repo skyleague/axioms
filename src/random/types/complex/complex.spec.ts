@@ -1,12 +1,12 @@
-import { json, primitive, unknown } from '.'
+import { json, primitive, unknown } from './index.js'
 
-import { oneOf, constant } from '..'
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { isObject } from '../../../guard'
-import { equal, take } from '../../../iterator'
-import { forAll } from '../../../random/arbitrary'
-import { xoroshiro128plus } from '../../rng'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { isObject } from '../../../guard/index.js'
+import { equal, take } from '../../../iterator/index.js'
+import { forAll } from '../../../random/arbitrary/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { oneOf, constant } from '../index.js'
 
 describe('json', () => {
     test('random sample - default', () => {

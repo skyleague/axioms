@@ -1,1 +1,1 @@
-export { reverse } from './reverse'
+export { reverse } from './reverse.js'

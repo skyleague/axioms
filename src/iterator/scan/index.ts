@@ -1,1 +1,1 @@
-export { scanl, scanl1 } from './scan'
+export { scanl, scanl1 } from './scan.js'

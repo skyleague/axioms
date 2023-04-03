@@ -1,4 +1,4 @@
-export { BinaryTree, dfsNLR, dfsLRN } from './binary-tree'
+export { BinaryTree, dfsNLR, dfsLRN } from './binary-tree.js'
 export {
     Tree,
     tree,
@@ -14,4 +14,4 @@ export {
     dfsPostOrder,
     bfs,
     showTree,
-} from './tree'
+} from './tree.js'

@@ -1,4 +1,4 @@
-import { trampoline } from '.'
+import { trampoline } from './index.js'
 
 test('non trampoline', () => {
     const sumBelow = (n: number, sum = 0): number => (n === 0 ? sum : sumBelow(n - 1, sum + n))

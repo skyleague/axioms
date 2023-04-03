@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * Creates a stateful generator that iterates over a predicates output given an initial value.

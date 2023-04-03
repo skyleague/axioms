@@ -1,1 +1,1 @@
-export { repeat } from './repeat'
+export { repeat } from './repeat.js'

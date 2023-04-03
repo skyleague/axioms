@@ -1,8 +1,8 @@
-import { unique } from '.'
+import { unique } from './index.js'
 
-import { collect } from '../../array'
-import { groupBy } from '../../iterator'
-import { array, forAll, json, unknown } from '../../random'
+import { collect } from '../../array/index.js'
+import { groupBy } from '../../iterator/index.js'
+import { array, forAll, json, unknown } from '../../random/index.js'
 
 test('simple', () => {
     expect(collect(unique([1, 1, 2, 3, 3]))).toEqual([1, 2, 3])

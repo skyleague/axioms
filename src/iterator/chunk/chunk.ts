@@ -1,8 +1,8 @@
-import { toTraversable } from '../../type/traversable'
-import type { Traversable } from '../../type/traversable'
-import { itrampoline } from '../../util/trampoline'
-import type { RecurrentGenerator } from '../../util/trampoline'
-import { splitAt } from '../split'
+import { toTraversable } from '../../type/traversable/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
+import { itrampoline } from '../../util/trampoline/index.js'
+import type { RecurrentGenerator } from '../../util/trampoline/index.js'
+import { splitAt } from '../split/index.js'
 
 function _chunk<T>(xs: Traversable<T>, size: number): RecurrentGenerator<T[]> {
     const [init, rest] = splitAt(xs, size)

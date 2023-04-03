@@ -1,11 +1,11 @@
-import { allOf } from './all-of'
+import { allOf } from './all-of.js'
 
-import { isString } from '../../../guard'
-import { chainArbitrary, forAll } from '../../arbitrary'
-import { constant } from '../helper'
-import { object } from '../object'
-import { string } from '../string'
-import { tuple } from '../tuple'
+import { isString } from '../../../guard/index.js'
+import { chainArbitrary, forAll } from '../../arbitrary/index.js'
+import { constant } from '../helper/index.js'
+import { object } from '../object/index.js'
+import { string } from '../string/index.js'
+import { tuple } from '../tuple/index.js'
 
 test('simple', () => {
     const aFoo = object({ foo: string() })

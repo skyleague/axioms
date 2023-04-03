@@ -1,9 +1,9 @@
-import { expandTree, tree } from '../../../algorithm'
-import type { Tree } from '../../../algorithm'
-import type { RelaxedPartial } from '../../../type'
-import { integratedArbitrary, towards } from '../../arbitrary'
-import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../../arbitrary'
-import { weightedChoice } from '../choice'
+import { expandTree, tree } from '../../../algorithm/index.js'
+import type { Tree } from '../../../algorithm/index.js'
+import type { RelaxedPartial } from '../../../type/index.js'
+import { integratedArbitrary, towards } from '../../arbitrary/index.js'
+import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../../arbitrary/index.js'
+import { weightedChoice } from '../choice/index.js'
 
 /**
  * Describes how integers are allowed to be generated.
@@ -21,7 +21,7 @@ export interface IntegerConstraints {
     max: number
 }
 
-const nearZeroBias = weightedChoice([
+const nearZeroBias = /* @__PURE__ */ weightedChoice([
     [2, ({ logMin, logMax }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min: -logMin, max: logMax })],
     [1, ({ logMax, max }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min: max - logMax, max })],
     [1, ({ logMin, min }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min, max: min + logMin })],

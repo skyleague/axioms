@@ -1,1 +1,1 @@
-export * from './map-accum'
+export * from './map-accum/index.js'

@@ -1,9 +1,9 @@
-import type { Tree } from '../../../algorithm/tree'
-import type { Arbitrary } from '../arbitrary'
-import { chainArbitrary } from '../chain'
-import { arbitraryContext } from '../context'
-import type { ArbitraryContext } from '../context'
-import { filterArbitrary, mapArbitrary } from '../transform'
+import type { Tree } from '../../../algorithm/tree/index.js'
+import type { Arbitrary } from '../arbitrary/index.js'
+import { chainArbitrary } from '../chain/index.js'
+import { arbitraryContext } from '../context/index.js'
+import type { ArbitraryContext } from '../context/index.js'
+import { filterArbitrary, mapArbitrary } from '../transform/index.js'
 
 export interface Dependent<T> extends Arbitrary<T> {
     sample(context: ArbitraryContext): T

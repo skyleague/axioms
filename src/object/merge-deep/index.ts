@@ -1,1 +1,1 @@
-export { mergeDeep } from './merge-deep'
+export { mergeDeep } from './merge-deep.js'

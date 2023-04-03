@@ -1,1 +1,1 @@
-export { InfiniteGenerator } from './generator'
+export { InfiniteGenerator } from './generator.js'

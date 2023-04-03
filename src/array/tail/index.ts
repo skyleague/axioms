@@ -1,1 +1,1 @@
-export { tail } from './tail'
+export { tail } from './tail.js'

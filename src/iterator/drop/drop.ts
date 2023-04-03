@@ -1,7 +1,7 @@
-import { peekable } from '../../generator/peekable'
-import { isRight } from '../../guard/is-right'
-import { toTraverser, toTraversable } from '../../type/traversable'
-import type { Traversable } from '../../type/traversable'
+import { peekable } from '../../generator/peekable/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import { toTraverser, toTraversable } from '../../type/traversable/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Removes `n` elements from the {@link Traversable}.

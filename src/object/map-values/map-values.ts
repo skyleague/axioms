@@ -1,5 +1,5 @@
-import { entriesOf } from '../entries-of'
-import { fromEntries } from '../from-entries'
+import { entriesOf } from '../entries-of/index.js'
+import { fromEntries } from '../from-entries/index.js'
 
 /**
  * Returns an object with same keys, where the original values are converted using a mapper.

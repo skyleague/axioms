@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type/traversable'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Take two sets and return a new set that contains all the elements of the

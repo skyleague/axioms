@@ -1,6 +1,6 @@
-import { hasPropertiesDefined } from './has-properties-defined'
+import { hasPropertiesDefined } from './has-properties-defined.js'
 
-import { all, collect, dict, float, forAll, keysOf, shuffle, take, tuple, unknown } from '../..'
+import { all, collect, dict, float, forAll, keysOf, shuffle, take, tuple, unknown } from '../../index.js'
 
 test('defined properties are defined', () => {
     forAll(tuple(dict(unknown()), float({ min: 0, max: 1 })), ([xs, r]) => {

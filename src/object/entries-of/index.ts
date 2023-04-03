@@ -1,1 +1,1 @@
-export { entriesOf } from './entries-of'
+export { entriesOf } from './entries-of.js'

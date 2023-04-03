@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * Calculate the intersection between the given {@link Traversable}s.

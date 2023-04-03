@@ -1,6 +1,6 @@
-import { collect } from '../../src/array'
-import { equal, replicate } from '../../src/iterator'
-import { filterArbitrary, array, integer, forAll, tuple, natural, constant, chainArbitrary } from '../../src/random'
+import { collect } from '../../src/array/index.js'
+import { equal, replicate } from '../../src/iterator/index.js'
+import { filterArbitrary, array, integer, forAll, tuple, natural, constant, chainArbitrary } from '../../src/random/index.js'
 
 describe('shrinking challenge', () => {
     // https://github.com/jlink/shrinking-challenge
@@ -34,8 +34,8 @@ describe('shrinking challenge', () => {
                 filterArbitrary(array(natural({ max: 10 })), (xs) => xs.every((v) => v < xs.length)),
                 (xs) => {
                     for (let i = 0; i !== xs.length; ++i) {
-                        const j = xs[i]
-                        if (i !== j && xs[j] === i) {
+                        const j = xs[i]!
+                        if (i !== j && xs[j]! === i) {
                             return false
                         }
                     }
@@ -57,7 +57,7 @@ describe('shrinking challenge', () => {
             forAll(
                 filterArbitrary(tuple(array(integer()), natural({ max: 10 })), ([xs, i]) => i < xs.length),
                 ([xs, i]) => {
-                    const x = xs[i]
+                    const x = xs[i]!
                     const copyWithoutX = [...xs.slice(0, i), ...xs.slice(i + 1)]
                     return !copyWithoutX.includes(x)
                 },

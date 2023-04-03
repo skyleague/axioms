@@ -1,6 +1,6 @@
-import { splitLast } from '../../iterator/split'
-import type { Maybe } from '../../type/maybe'
-import type { Traversable } from '../../type/traversable'
+import { splitLast } from '../../iterator/split/index.js'
+import type { Maybe } from '../../type/maybe/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Take the {@link Traversable} and return the last element.

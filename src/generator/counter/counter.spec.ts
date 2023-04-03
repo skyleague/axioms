@@ -1,9 +1,9 @@
-import { counter } from '.'
+import { counter } from './index.js'
 
-import { range } from '..'
-import { collect } from '../../array'
-import { take, allEqual } from '../../iterator'
-import { forAll, natural, tuple } from '../../random'
+import { collect } from '../../array/index.js'
+import { take, allEqual } from '../../iterator/index.js'
+import { forAll, natural, tuple } from '../../random/index.js'
+import { range } from '../index.js'
 
 test('simple', () => {
     expect(collect(take(counter(), 10))).toEqual(collect(range(10)))

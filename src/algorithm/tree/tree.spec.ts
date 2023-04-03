@@ -1,9 +1,9 @@
-import type { Tree } from '.'
-import { mapTree } from '.'
+import type { Tree } from './index.js'
+import { mapTree } from './index.js'
 
-import { dfsPreOrder, dfsPostOrder, bfs, tree, showTree, mapApplicativeTree, filterTree, filterApplicativeTree } from './tree'
+import { dfsPreOrder, dfsPostOrder, bfs, tree, showTree, mapApplicativeTree, filterTree, filterApplicativeTree } from './tree.js'
 
-import { sum } from '../../array'
+import { sum } from '../../array/index.js'
 
 test('map tree', () => {
     const t = mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)

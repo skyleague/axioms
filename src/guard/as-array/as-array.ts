@@ -1,4 +1,4 @@
-import { isArray } from '../is-array'
+import { isArray } from '../is-array/index.js'
 
 /**
  * Returns `x` as array if it is not an array type.

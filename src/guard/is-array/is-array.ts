@@ -1,4 +1,4 @@
-import type { Traversable } from '../../type'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * Checks if `xs` is classified as {@link Array}.

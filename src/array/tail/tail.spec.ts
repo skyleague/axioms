@@ -1,9 +1,9 @@
-import { tail } from '.'
+import { tail } from './index.js'
 
-import { collect } from '..'
-import { allEqual } from '../../iterator'
-import { forAll, array, unknown } from '../../random'
-import { toTraversable } from '../../type'
+import { allEqual } from '../../iterator/index.js'
+import { forAll, array, unknown } from '../../random/index.js'
+import { toTraversable } from '../../type/index.js'
+import { collect } from '../index.js'
 
 test('tail simple', () => {
     expect(collect(tail([1, 2, 3]))).toMatchInlineSnapshot(`

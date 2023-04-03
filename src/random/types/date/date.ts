@@ -1,9 +1,9 @@
-import { mapTree } from '../../../algorithm/tree'
-import type { RelaxedPartial } from '../../../type/partial'
-import { toISO8601Date } from '../../../util/date'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { integer } from '../integer'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import { toISO8601Date } from '../../../util/date/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { integer } from '../integer/index.js'
 
 /**
  * Describes how timestamps are allowed to be generated.

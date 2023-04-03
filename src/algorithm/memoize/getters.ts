@@ -1,8 +1,8 @@
-import type { Memoized } from './memoize'
-import { memoize } from './memoize'
+import type { Memoized } from './memoize.js'
+import { memoize } from './memoize.js'
 
-import { isDefined } from '../../guard/is-defined'
-import { unique } from '../../iterator/unique'
+import { isDefined } from '../../guard/is-defined/index.js'
+import { unique } from '../../iterator/unique/index.js'
 
 /**
  * @experimental

@@ -1,1 +1,1 @@
-export { difference, symmetricDifference } from './difference'
+export { difference, symmetricDifference } from './difference.js'

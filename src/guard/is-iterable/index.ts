@@ -1,1 +1,1 @@
-export { isIterable } from './is-iterable'
+export { isIterable } from './is-iterable.js'

@@ -1,7 +1,7 @@
-import { sum, collect } from '../src/array'
-import { range } from '../src/generator'
-import { replicate, map } from '../src/iterator'
-import { xoroshiro128plus } from '../src/random'
+import { sum, collect } from '../src/array/index.js'
+import { range } from '../src/generator/index.js'
+import { replicate, map } from '../src/iterator/index.js'
+import { xoroshiro128plus } from '../src/random/index.js'
 
 test('pi', () => {
     const rng = xoroshiro128plus(42n)

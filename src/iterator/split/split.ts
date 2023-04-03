@@ -1,9 +1,9 @@
-import { next } from '../../generator/next'
-import { isRight } from '../../guard/is-right'
-import type { Maybe } from '../../type/maybe'
-import { Nothing } from '../../type/maybe'
-import type { Traversable, Traverser } from '../../type/traversable'
-import { take } from '../take'
+import { next } from '../../generator/next/index.js'
+import { isRight } from '../../guard/is-right/index.js'
+import type { Maybe } from '../../type/maybe/index.js'
+import { Nothing } from '../../type/maybe/index.js'
+import type { Traversable, Traverser } from '../../type/traversable/index.js'
+import { take } from '../take/index.js'
 
 /**
  * It takes a traversable and a number, and returns a tuple of the first `n` elements of the traversable

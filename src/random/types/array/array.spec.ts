@@ -1,10 +1,10 @@
-import { array } from './array'
+import { array } from './array.js'
 
-import { collect } from '../../../array'
-import { isArray, isInteger } from '../../../guard'
-import { all, unique } from '../../../iterator'
-import { forAll } from '../../arbitrary'
-import { integer } from '../integer'
+import { collect } from '../../../array/index.js'
+import { isArray, isInteger } from '../../../guard/index.js'
+import { all, unique } from '../../../iterator/index.js'
+import { forAll } from '../../arbitrary/index.js'
+import { integer } from '../integer/index.js'
 
 describe('array', () => {
     test('simple', () => {

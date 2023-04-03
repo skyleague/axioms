@@ -12,4 +12,4 @@ export {
     whenRights,
     right,
     left,
-} from './either'
+} from './either.js'

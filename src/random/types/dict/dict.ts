@@ -1,12 +1,12 @@
-import { mapTree } from '../../../algorithm/tree'
-import { isArray } from '../../../guard/is-array'
-import type { RelaxedPartial } from '../../../type/partial'
-import type { Arbitrary } from '../../arbitrary/arbitrary'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { set } from '../set'
-import { string } from '../string'
-import { tuple } from '../tuple'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import { isArray } from '../../../guard/is-array/index.js'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { set } from '../set/index.js'
+import { string } from '../string/index.js'
+import { tuple } from '../tuple/index.js'
 
 export interface DictGenerator {
     minLength: number

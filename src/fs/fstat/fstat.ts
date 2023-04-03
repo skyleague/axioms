@@ -1,10 +1,10 @@
-import { isObject } from '../../guard/is-object'
-import type { Either } from '../../type/either'
-import type { Maybe } from '../../type/maybe'
-import { Nothing } from '../../type/maybe'
+import { isObject } from '../../guard/is-object/index.js'
+import type { Either } from '../../type/either/index.js'
+import type { Maybe } from '../../type/maybe/index.js'
+import { Nothing } from '../../type/maybe/index.js'
 
-import type { Stats } from 'fs'
-import { promises } from 'fs'
+import type { Stats } from 'node:fs'
+import { promises } from 'node:fs'
 
 /**
  * Return the fstat results with improved edge case handling.

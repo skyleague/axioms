@@ -1,1 +1,1 @@
-export { isTuple } from './is-tuple'
+export { isTuple } from './is-tuple.js'

@@ -1,1 +1,1 @@
-export { intersection } from './intersection'
+export { intersection } from './intersection.js'

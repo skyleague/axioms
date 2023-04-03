@@ -1,10 +1,10 @@
-import type { Integrated } from '../../arbitrary/integrated'
-import { mulberry32 } from '../../rng/mulberry32'
-import { seederFromStr } from '../../rng/seed'
-import { boolean } from '../../types/boolean'
-import { float } from '../../types/float'
-import { integer } from '../../types/integer'
-import { objectHasher } from '../hash'
+import type { Integrated } from '../../arbitrary/integrated/index.js'
+import { mulberry32 } from '../../rng/mulberry32/index.js'
+import { seederFromStr } from '../../rng/seed/index.js'
+import { boolean } from '../../types/boolean/index.js'
+import { float } from '../../types/float/index.js'
+import { integer } from '../../types/integer/index.js'
+import { objectHasher } from '../hash/index.js'
 
 function deterministicValue<T>(arbitrary: Integrated<unknown, T>, seed: unknown): T {
     return arbitrary.sample({ rng: mulberry32(seederFromStr(objectHasher.hash(seed))) })

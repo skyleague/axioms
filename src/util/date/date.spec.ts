@@ -1,6 +1,6 @@
-import { toISO8601Date } from './date'
+import { toISO8601Date } from './date.js'
 
-import { date, datetime, forAll } from '../..'
+import { date, datetime, forAll } from '../../index.js'
 
 import { formatISO } from 'date-fns'
 

@@ -1,6 +1,6 @@
-import { isArray, isRight } from '../../guard'
-import type { Either, Traversable } from '../../type'
-import { toTraverser } from '../../type'
+import { isArray, isRight } from '../../guard/index.js'
+import type { Either, Traversable } from '../../type/index.js'
+import { toTraverser } from '../../type/index.js'
 
 /**
  * It takes a traversable and returns a traversable that buffers the values of the original traversable.

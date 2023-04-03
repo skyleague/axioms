@@ -1,5 +1,5 @@
-import { uncons } from '../../iterator/uncons'
-import type { Traversable, Traverser } from '../../type/traversable'
+import { uncons } from '../../iterator/uncons/index.js'
+import type { Traversable, Traverser } from '../../type/traversable/index.js'
 
 /**
  * Take the {@link Traversable}, and returns the iterator without the first element.

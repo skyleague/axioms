@@ -1,4 +1,4 @@
-import type { Subtract, Simplify } from '../../type'
+import type { Subtract, Simplify } from '../../type/index.js'
 
 type UnconsArgsHelper<T extends unknown[], L extends number, I extends unknown[] = [], F = (...a: T) => void> = number extends L
     ? UnconsArgsHelper<T, 10, I>

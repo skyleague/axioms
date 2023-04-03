@@ -1,1 +1,1 @@
-export { next } from './next'
+export { next } from './next.js'

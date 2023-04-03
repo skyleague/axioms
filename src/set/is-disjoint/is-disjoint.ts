@@ -1,5 +1,5 @@
-import { all } from '../../iterator/all'
-import type { Traversable } from '../../type'
+import { all } from '../../iterator/all/index.js'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * Two sets of elements are disjoint when they have no members in common.

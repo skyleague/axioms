@@ -1,7 +1,7 @@
-import { evaluate } from '../../function/evaluate'
-import { isLeft } from '../../guard/is-left'
-import type { Either } from '../../type/either'
-import type { ConstExpr } from '../../type/function'
+import { evaluate } from '../../function/evaluate/index.js'
+import { isLeft } from '../../guard/is-left/index.js'
+import type { Either } from '../../type/either/index.js'
+import type { ConstExpr } from '../../type/function/index.js'
 
 /**
  * A resolver function.

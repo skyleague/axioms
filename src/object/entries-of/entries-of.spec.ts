@@ -1,6 +1,6 @@
-import { entriesOf } from '.'
+import { entriesOf } from './index.js'
 
-import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random'
+import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
 test('entriesOf === Object.entries', () => {
     forAll(dict(unknown()), (o) => {

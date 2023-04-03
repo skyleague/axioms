@@ -1,11 +1,11 @@
-import type { Tree } from '../../../algorithm'
-import { enumerate } from '../../../generator'
-import { isJust, isDefined } from '../../../guard'
-import type { Traversable, Maybe } from '../../../type'
-import { Nothing } from '../../../type'
-import { toString } from '../../../util'
+import type { Tree } from '../../../algorithm/index.js'
+import { enumerate } from '../../../generator/index.js'
+import { isJust, isDefined } from '../../../guard/index.js'
+import type { Traversable, Maybe } from '../../../type/index.js'
+import { Nothing } from '../../../type/index.js'
+import { toString } from '../../../util/index.js'
 
-import { performance } from 'perf_hooks'
+import { performance } from 'node:perf_hooks'
 
 export interface FalsifyOptions<T> {
     values: () => Traversable<Tree<T>>

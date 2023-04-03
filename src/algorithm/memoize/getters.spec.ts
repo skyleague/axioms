@@ -1,4 +1,4 @@
-import { memoizeGetters } from './getters'
+import { memoizeGetters } from './getters.js'
 
 test('memoizeGetters', () => {
     let i = 0

@@ -1,9 +1,9 @@
-import { sum } from '../../../array/sum'
-import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { weightedChoice } from '../choice/choice'
-import { integer } from '../integer/integer'
+import { sum } from '../../../array/sum/index.js'
+import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { weightedChoice } from '../choice/choice.js'
+import { integer } from '../integer/integer.js'
 
 /**
  * It generates an integer between 0 and the number of arbitraries passed in, and then generates a

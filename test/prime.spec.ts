@@ -1,6 +1,6 @@
-import { collect } from '../src/array'
-import { counter, next } from '../src/generator'
-import { filter, take } from '../src/iterator'
+import { collect } from '../src/array/index.js'
+import { counter, next } from '../src/generator/index.js'
+import { filter, take } from '../src/iterator/index.js'
 
 test('prime', () => {
     function* primes() {

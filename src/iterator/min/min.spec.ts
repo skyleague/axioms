@@ -1,6 +1,6 @@
-import { min, minBy } from './min'
+import { min, minBy } from './min.js'
 
-import type { ComparablePrimitive, Mappable } from '../..'
+import type { ComparablePrimitive, Mappable } from '../../index.js'
 import {
     all,
     applicative,
@@ -18,7 +18,7 @@ import {
     string,
     toTraversable,
     tuple,
-} from '../..'
+} from '../../index.js'
 
 test('min xs <= all y', () => {
     forAll(

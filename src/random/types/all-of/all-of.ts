@@ -1,8 +1,8 @@
-import { mergeDeep, omitUndefined } from '../../../object'
-import type { UnionToIntersection } from '../../../type/set'
-import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary'
-import type { Dependent } from '../../arbitrary/dependent'
-import { tuple } from '../tuple'
+import { mergeDeep, omitUndefined } from '../../../object/index.js'
+import type { UnionToIntersection } from '../../../type/set/index.js'
+import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { tuple } from '../tuple/index.js'
 
 /**
  * It takes an arbitrary number of arbitraries, and returns an arbitrary that generates objects that

@@ -1,6 +1,6 @@
-import { sum } from '.'
+import { sum } from './index.js'
 
-import { forAll, array, integer, float } from '../../random'
+import { forAll, array, integer, float } from '../../random/index.js'
 
 test('tail simple', () => {
     expect(sum([1, 2, 3])).toMatchInlineSnapshot(`6`)

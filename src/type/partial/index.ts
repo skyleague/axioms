@@ -1,1 +1,1 @@
-export { DeepPartial, RelaxedPartial } from './partial'
+export { DeepPartial, RelaxedPartial } from './partial.js'

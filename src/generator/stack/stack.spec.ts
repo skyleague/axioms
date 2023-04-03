@@ -1,8 +1,8 @@
-import { stack } from '.'
+import { stack } from './index.js'
 
-import { collect, sum } from '../../array'
-import { take, allEqual, map } from '../../iterator'
-import { forAll, array, unknown } from '../../random'
+import { collect, sum } from '../../array/index.js'
+import { take, allEqual, map } from '../../iterator/index.js'
+import { forAll, array, unknown } from '../../random/index.js'
 
 test('simple', () => {
     expect(collect(stack([1, 2, 3, 4]))).toMatchInlineSnapshot(`

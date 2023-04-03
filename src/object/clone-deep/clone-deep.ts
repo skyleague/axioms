@@ -1,5 +1,5 @@
-import { isArray, isObject } from '../../guard'
-import type { Dict } from '../../type'
+import { isArray, isObject } from '../../guard/index.js'
+import type { Dict } from '../../type/index.js'
 
 /**
  * If the input is an array, map over it and recursively call cloneDeep on each element. If the input

@@ -1,12 +1,12 @@
-import { natural } from '.'
+import { natural } from './index.js'
 
-import { tuple } from '..'
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { groupBy, replicate, take } from '../../../iterator'
-import { mapValues } from '../../../object'
-import { arbitraryContext, forAll } from '../../arbitrary'
-import { xoroshiro128plus } from '../../rng'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { groupBy, replicate, take } from '../../../iterator/index.js'
+import { mapValues } from '../../../object/index.js'
+import { arbitraryContext, forAll } from '../../arbitrary/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { tuple } from '../index.js'
 
 test('distribution', () => {
     const context = arbitraryContext({

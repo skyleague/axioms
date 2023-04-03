@@ -1,5 +1,5 @@
-import type { RandomGenerator } from '../../rng'
-import { xoroshiro128plus } from '../../rng'
+import type { RandomGenerator } from '../../rng/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
 
 export interface ArbitraryContext {
     rng: RandomGenerator
@@ -10,7 +10,7 @@ export type BiasedArbitraryContext = ArbitraryContext & {
     bias: number
 }
 
-export const defaultRng = xoroshiro128plus(BigInt(Math.round(new Date().getTime() * Math.random())))
+export const defaultRng = /* @__PURE__ */ (() => xoroshiro128plus(BigInt(Math.round(new Date().getTime() * Math.random()))))()
 
 export function arbitraryContext(context: Partial<ArbitraryContext> = {}): ArbitraryContext & { parametrized: false } {
     return {

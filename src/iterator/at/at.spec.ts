@@ -1,8 +1,8 @@
-import { at, first, second } from './at'
+import { at, first, second } from './at.js'
 
-import { array, chainArbitrary, forAll, integer, tuple, unknown } from '../../random'
-import { Nothing } from '../../type'
-import { drop } from '../drop'
+import { array, chainArbitrary, forAll, integer, tuple, unknown } from '../../random/index.js'
+import { Nothing } from '../../type/index.js'
+import { drop } from '../drop/index.js'
 
 describe('at', () => {
     test('first on array', () => {

@@ -1,6 +1,6 @@
-import { isSuccess } from './is-success'
+import { isSuccess } from './is-success.js'
 
-import { forAll, unknown } from '../../random'
+import { forAll, unknown } from '../../random/index.js'
 
 test('simple', () => {
     expect(isSuccess('foobar')).toBeTrue()

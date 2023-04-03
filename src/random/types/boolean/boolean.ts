@@ -1,7 +1,7 @@
-import type { Tree } from '../../../algorithm'
-import { tree } from '../../../algorithm'
-import type { ArbitraryContext, Integrated } from '../../arbitrary'
-import { integratedArbitrary } from '../../arbitrary'
+import type { Tree } from '../../../algorithm/index.js'
+import { tree } from '../../../algorithm/index.js'
+import type { ArbitraryContext, Integrated } from '../../arbitrary/index.js'
+import { integratedArbitrary } from '../../arbitrary/index.js'
 
 export interface BooleanConstraints {}
 

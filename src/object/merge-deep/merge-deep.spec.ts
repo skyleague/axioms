@@ -1,4 +1,4 @@
-import { mergeDeep } from './merge-deep'
+import { mergeDeep } from './merge-deep.js'
 
 test('simple', () => {
     expect(

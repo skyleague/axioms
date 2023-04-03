@@ -1,1 +1,1 @@
-export { drop, dropWhile } from './drop'
+export { drop, dropWhile } from './drop.js'

@@ -1,9 +1,9 @@
-import { mapTree } from '../../../algorithm/tree'
-import type { RelaxedPartial } from '../../../type/partial'
-import type { Arbitrary } from '../../arbitrary/arbitrary'
-import type { Dependent } from '../../arbitrary/dependent'
-import { dependentArbitrary } from '../../arbitrary/dependent'
-import { array } from '../array'
+import { mapTree } from '../../../algorithm/tree/index.js'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
+import { array } from '../array/index.js'
 import {
     alphaChar,
     alphaNumericChar,
@@ -15,7 +15,7 @@ import {
     lowerAlphaNumericChar,
     utf16Char,
     utf16SurrogateChar,
-} from '../char'
+} from '../char/index.js'
 
 /**
  * Describes how strings are allowed to be generated.

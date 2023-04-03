@@ -1,11 +1,11 @@
-import type { Tree } from '../../../algorithm'
-import { mapTree } from '../../../algorithm'
-import { applicative } from '../../../iterator/applicative'
-import { concat } from '../../../iterator/concat'
-import { map } from '../../../iterator/map'
-import type { Arbitrary } from '../arbitrary'
-import type { Dependent } from '../dependent'
-import { dependentArbitrary } from '../dependent'
+import type { Tree } from '../../../algorithm/index.js'
+import { mapTree } from '../../../algorithm/index.js'
+import { applicative } from '../../../iterator/applicative/index.js'
+import { concat } from '../../../iterator/concat/index.js'
+import { map } from '../../../iterator/map/index.js'
+import type { Arbitrary } from '../arbitrary/index.js'
+import type { Dependent } from '../dependent/index.js'
+import { dependentArbitrary } from '../dependent/index.js'
 
 /**
  * @internal

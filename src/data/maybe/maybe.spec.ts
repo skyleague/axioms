@@ -1,12 +1,12 @@
-import { leftToMaybe, maybeAsValue, maybeToLeft, maybeToRight, rightToMaybe, whenJust, whenJusts, whenNothing } from './maybe'
+import { leftToMaybe, maybeAsValue, maybeToLeft, maybeToRight, rightToMaybe, whenJust, whenJusts, whenNothing } from './maybe.js'
 
-import { isJust, isLeft, isNothing, isRight } from '../../guard'
-import { concat } from '../../iterator'
-import { equal } from '../../iterator/equal'
-import { array, deterministicInteger, forAll, integer, object, shuffle, unknown } from '../../random'
-import type { Either, Maybe } from '../../type'
-import { Nothing } from '../../type'
-import { whenLeft, whenRight } from '../either'
+import { isJust, isLeft, isNothing, isRight } from '../../guard/index.js'
+import { equal } from '../../iterator/equal/index.js'
+import { concat } from '../../iterator/index.js'
+import { array, deterministicInteger, forAll, integer, object, shuffle, unknown } from '../../random/index.js'
+import type { Either, Maybe } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import { whenLeft, whenRight } from '../either/index.js'
 
 class FooError extends Error {
     public foo() {

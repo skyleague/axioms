@@ -1,6 +1,6 @@
-import { isJust, isRight } from '../../../guard'
-import type { Either, Maybe } from '../../../type'
-import { Nothing } from '../../../type'
+import { isJust, isRight } from '../../../guard/index.js'
+import type { Either, Maybe } from '../../../type/index.js'
+import { Nothing } from '../../../type/index.js'
 
 export interface ParamTrie<T> {
     value: Either<Nothing, T>

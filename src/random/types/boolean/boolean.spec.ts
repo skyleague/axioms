@@ -1,6 +1,6 @@
-import { groupBy, replicate } from '../../../iterator'
-import { mapValues } from '../../../object'
-import { boolean, forAll, arbitraryContext, xoroshiro128plus } from '../../../random'
+import { groupBy, replicate } from '../../../iterator/index.js'
+import { mapValues } from '../../../object/index.js'
+import { boolean, forAll, arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
 
 test('distribution', () => {
     const context = arbitraryContext({

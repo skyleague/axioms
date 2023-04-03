@@ -1,2 +1,2 @@
-export * from './normalize-path'
-export * from './fstat'
+export * from './normalize-path/index.js'
+export * from './fstat/index.js'

@@ -1,1 +1,1 @@
-export { applicative } from './applicative'
+export { applicative } from './applicative.js'

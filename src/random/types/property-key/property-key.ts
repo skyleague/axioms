@@ -1,10 +1,10 @@
-import type { RelaxedPartial } from '../../../type/partial'
-import type { Dependent } from '../../arbitrary/dependent'
-import { float } from '../float'
-import { integer } from '../integer'
-import { oneOf } from '../one-of'
-import { alphaNumeric } from '../string/string'
-import { symbol } from '../symbol'
+import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { float } from '../float/index.js'
+import { integer } from '../integer/index.js'
+import { oneOf } from '../one-of/index.js'
+import { alphaNumeric } from '../string/string.js'
+import { symbol } from '../symbol/index.js'
 
 /**
  * Describes how property key values are allowed to be generated.

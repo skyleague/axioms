@@ -1,4 +1,4 @@
-import type { AsyncTraversable } from '../../type/async'
+import type { AsyncTraversable } from '../../type/async/index.js'
 
 /**
  * Map over an {@link AsyncTraversable}, and give the results back as an {@link AsyncTraversable} generator.

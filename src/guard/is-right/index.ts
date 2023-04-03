@@ -1,1 +1,1 @@
-export { isRight } from './is-right'
+export { isRight } from './is-right.js'

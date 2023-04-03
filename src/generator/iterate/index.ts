@@ -1,1 +1,1 @@
-export { iterate } from './iterate'
+export { iterate } from './iterate.js'

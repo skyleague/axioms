@@ -1,8 +1,8 @@
-import type { Tree } from '../../../algorithm'
-import { expandTree, tree } from '../../../algorithm'
-import type { RelaxedPartial } from '../../../type'
-import type { ArbitraryContext, Integrated } from '../../arbitrary'
-import { integratedArbitrary, towardsf } from '../../arbitrary'
+import type { Tree } from '../../../algorithm/index.js'
+import { expandTree, tree } from '../../../algorithm/index.js'
+import type { RelaxedPartial } from '../../../type/index.js'
+import type { ArbitraryContext, Integrated } from '../../arbitrary/index.js'
+import { integratedArbitrary, towardsf } from '../../arbitrary/index.js'
 
 /**
  * Describes how floats are allowed to be generated.

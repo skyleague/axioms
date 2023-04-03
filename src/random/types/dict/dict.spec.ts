@@ -1,10 +1,10 @@
-import { dict } from './dict'
+import { dict } from './dict.js'
 
-import { collect } from '../../../array'
-import { repeat } from '../../../generator'
-import { take } from '../../../iterator'
-import { xoroshiro128plus } from '../../rng'
-import { string } from '../string'
+import { collect } from '../../../array/index.js'
+import { repeat } from '../../../generator/index.js'
+import { take } from '../../../iterator/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { string } from '../string/index.js'
 
 describe('dict', () => {
     test('random sample', () => {

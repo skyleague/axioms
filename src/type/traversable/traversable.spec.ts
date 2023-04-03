@@ -1,6 +1,6 @@
-import { toTraversable } from '.'
+import { toTraversable } from './index.js'
 
-import { allEqual, array, float, forAll, mappableFunc, oneOf, string, tuple } from '../..'
+import { allEqual, array, float, forAll, mappableFunc, oneOf, string, tuple } from '../../index.js'
 
 describe('toTraversable', () => {
     test('should be able to work with union of arrays', () => {

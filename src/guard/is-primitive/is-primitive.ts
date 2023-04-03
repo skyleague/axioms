@@ -1,4 +1,4 @@
-import type { Dict } from '../../type'
+import type { Dict } from '../../type/index.js'
 
 /**
  * Checks if `x` is a primitive.

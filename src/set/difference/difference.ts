@@ -1,5 +1,5 @@
-import { applicative } from '../../iterator'
-import type { Traversable } from '../../type/traversable'
+import { applicative } from '../../iterator/index.js'
+import type { Traversable } from '../../type/traversable/index.js'
 
 /**
  * Return a set of all the elements in the first set that are not in the second set.

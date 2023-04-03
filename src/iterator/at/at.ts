@@ -1,8 +1,8 @@
-import { head } from '../../array'
-import { isArray } from '../../guard'
-import type { BuildTuple, Maybe, Traversable } from '../../type'
-import { Nothing } from '../../type'
-import { drop } from '../drop'
+import { head } from '../../array/index.js'
+import { isArray } from '../../guard/index.js'
+import type { BuildTuple, Maybe, Traversable } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import { drop } from '../drop/index.js'
 
 export type Nth<N extends number, T> = T extends readonly any[] ? T[N] : never
 
@@ -34,7 +34,7 @@ export function at<Xs extends any[], N extends number>(
 export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T>
 export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T> {
     if (isArray<T>(xs)) {
-        return n >= xs.length ? Nothing : xs[n]
+        return n >= xs.length ? Nothing : xs[n]!
     }
     // slow iterator compatible version
     return head(drop(xs, n))
