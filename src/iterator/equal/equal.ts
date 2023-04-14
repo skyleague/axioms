@@ -1,7 +1,7 @@
 import type { Traversable } from '../../type/index.js'
 import { toTraverser } from '../../type/index.js'
 
-import deepEqual from 'fast-deep-equal/es6'
+import deepEqual from 'fast-deep-equal/es6/index.js'
 
 /**
  * Take two traversables and an equality function and returns `true` if all the elements of
