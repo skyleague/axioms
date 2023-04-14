@@ -28,7 +28,7 @@ describe('esbuild', () => {
             var Thrown = Symbol.for(thrownSymbol);
 
             // src/iterator/equal/equal.ts
-            import deepEqual from "fast-deep-equal/es6";
+            import deepEqual from "fast-deep-equal/es6/index.js";
 
             // src/guard/is-right/is-right.ts
             function isRight(x) {
