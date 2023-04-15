@@ -1,6 +1,8 @@
 import { union } from './union.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(union(new Set([1, 2, 3]), new Set([2, 3, 4]))).toMatchInlineSnapshot(`
         Set {
           1,
@@ -11,7 +13,7 @@ test('simple', () => {
     `)
 })
 
-test('iterator', () => {
+it('iterator', () => {
     expect(union([1, 2, 3], [2, 3, 4])).toMatchInlineSnapshot(`
         Set {
           1,
@@ -22,7 +24,7 @@ test('iterator', () => {
     `)
 })
 
-test('mixed', () => {
+it('mixed', () => {
     expect(union(new Set([1, 2, 3]), new Set(['2', '3', '4']))).toMatchInlineSnapshot(`
         Set {
           1,

@@ -6,14 +6,16 @@ import { forAll, tuple, array, unknown } from '../../random/index.js'
 import { toTraverser, toGenerator } from '../../type/index.js'
 import { counter, repeat } from '../index.js'
 
-test('take n X === right [X_1 + ... X_{n-1}] + left X_n', () => {
+import { expect, it } from 'vitest'
+
+it('take n X === right [X_1 + ... X_{n-1}] + left X_n', () => {
     forAll(tuple(array(unknown()), unknown()), ([xs, x]) => {
         const n = xs.length
-        const it = toTraverser(toGenerator(xs, x))
+        const iterator = toTraverser(toGenerator(xs, x))
         expect(
             collect(
                 take(
-                    repeat(() => next(it)),
+                    repeat(() => next(iterator)),
                     n
                 )
             )
@@ -22,13 +24,13 @@ test('take n X === right [X_1 + ... X_{n-1}] + left X_n', () => {
                 right: y,
             }))
         )
-        expect(next(it)).toEqual({
+        expect(next(iterator)).toEqual({
             left: x,
         })
     })
 })
 
-test('simple', () => {
+it('simple', () => {
     expect(next(counter())).toMatchInlineSnapshot(`
         {
           "right": 0,
@@ -36,7 +38,7 @@ test('simple', () => {
     `)
 })
 
-test('array', () => {
+it('array', () => {
     expect(next(toTraverser([1234, 456]))).toMatchInlineSnapshot(`
         {
           "right": 1234,
@@ -44,18 +46,18 @@ test('array', () => {
     `)
 })
 
-test('done', () => {
+it('done', () => {
     function* done() {
         yield 1
         return 'done'
     }
-    const it = toTraverser(done())
-    expect(next(it)).toMatchInlineSnapshot(`
+    const iterator = toTraverser(done())
+    expect(next(iterator)).toMatchInlineSnapshot(`
         {
           "right": 1,
         }
     `)
-    expect(next(it)).toMatchInlineSnapshot(`
+    expect(next(iterator)).toMatchInlineSnapshot(`
         {
           "left": "done",
         }

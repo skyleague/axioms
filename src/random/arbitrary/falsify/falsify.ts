@@ -23,8 +23,6 @@ export interface Falsified<T> {
 }
 
 export class FalsifiedError<T> extends Error {
-    public falsified: Falsified<T>
-    public matcherResult?: unknown
     public constructor(falsified: Falsified<T>, { seed }: { seed: bigint }) {
         const counterExampleStr = [
             `Counter example found after ${falsified.tests} tests (seed: ${seed}n)`,
@@ -36,12 +34,16 @@ export class FalsifiedError<T> extends Error {
 
         super([counterExampleStr, ...(isJust(falsified.error) ? ['', falsified.error.message] : [])].join('\n'))
         this.name = 'FalsifiedError'
-        this.falsified = falsified
         if (isJust(falsified.error) && isDefined(falsified.error.stack)) {
             this.cause = falsified.error
-            // jest adds information to the stack, so input the falsify information there if needed
-            this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
-            this.matcherResult = (this.falsified.error as FalsifiedError<unknown>).matcherResult
+            if (process.env.JEST_WORKER_ID !== undefined) {
+                // jest adds information to the stack, so input the falsify information there if needed
+                this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+                Object.defineProperty(this, 'matcherResult', (falsified.error as { matcherResult?: any }).matcherResult)
+            } else {
+                this.stack = falsified.error.stack
+            }
         }
     }
 }

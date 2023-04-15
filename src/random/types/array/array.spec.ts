@@ -6,14 +6,16 @@ import { all, unique } from '../../../iterator/index.js'
 import { forAll } from '../../arbitrary/index.js'
 import { integer } from '../integer/index.js'
 
+import { describe, it } from 'vitest'
+
 describe('array', () => {
-    test('simple', () => {
+    it('simple', () => {
         forAll(array(integer()), (xs) => {
             return isArray(xs) && all(xs, isInteger)
         })
     })
 
-    test('unique', () => {
+    it('unique', () => {
         forAll(array(integer(), { uniqueItems: true }), (xs) => {
             return isArray(xs) && all(xs, isInteger) && collect(unique(xs)).length === xs.length
         })

@@ -3,7 +3,9 @@ import { range } from '../src/generator/index.js'
 import { replicate, map } from '../src/iterator/index.js'
 import { xoroshiro128plus } from '../src/random/index.js'
 
-test('pi', () => {
+import { expect, it } from 'vitest'
+
+it('pi', () => {
     const rng = xoroshiro128plus(42n)
     const approxPi = (n: number): number =>
         (sum(

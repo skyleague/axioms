@@ -5,7 +5,9 @@ import { range } from '../../generator/index.js'
 import { allEqual, take } from '../../iterator/index.js'
 import { array, forAll, unknown } from '../../random/index.js'
 
-test('make reentrant', () => {
+import { expect, it, vi } from 'vitest'
+
+it('make reentrant', () => {
     const xs = range(1, 5)
     expect(collect(xs)).toMatchInlineSnapshot(`
         [
@@ -36,8 +38,8 @@ test('make reentrant', () => {
     `)
 })
 
-test('make reentrant - lazy', () => {
-    const fn = jest.fn()
+it('make reentrant - lazy', () => {
+    const fn = vi.fn()
     function* gen() {
         for (const x of range(5)) {
             fn()
@@ -75,6 +77,6 @@ test('make reentrant - lazy', () => {
     expect(fn).toHaveBeenCalledTimes(5)
 })
 
-test('identity', () => {
+it('identity', () => {
     forAll(array(unknown()), (xs) => allEqual(applicative(xs), xs))
 })

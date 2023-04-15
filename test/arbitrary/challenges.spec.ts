@@ -2,9 +2,11 @@ import { collect } from '../../src/array/index.js'
 import { equal, replicate } from '../../src/iterator/index.js'
 import { filterArbitrary, array, integer, forAll, tuple, natural, constant, chainArbitrary } from '../../src/random/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('shrinking challenge', () => {
     // https://github.com/jlink/shrinking-challenge
-    test('bound 5', () => {
+    it('bound 5', () => {
         const sum16 = (a: number, b: number) => {
             let s = a + b
             while (s > 32767) s -= 65536
@@ -28,7 +30,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('coupling', () => {
+    it('coupling', () => {
         expect(() =>
             forAll(
                 filterArbitrary(array(natural({ max: 10 })), (xs) => xs.every((v) => v < xs.length)),
@@ -52,7 +54,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('deletion', () => {
+    it('deletion', () => {
         expect(() =>
             forAll(
                 filterArbitrary(tuple(array(integer()), natural({ max: 10 })), ([xs, i]) => i < xs.length),
@@ -72,7 +74,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('distinct', () => {
+    it('distinct', () => {
         expect(() =>
             forAll(
                 array(integer()),
@@ -90,7 +92,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('nested list', () => {
+    it('nested list', () => {
         expect(() =>
             forAll(
                 array(array(constant(0))),
@@ -108,7 +110,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('length list', () => {
+    it('length list', () => {
         const aint = integer({ min: 1, max: 100 })
         const alist = chainArbitrary(aint, (n) => {
             return tuple(...collect(replicate(natural({ max: 1000 }), n)))
@@ -130,7 +132,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('large union list', () => {
+    it('large union list', () => {
         expect(() => forAll(array(array(integer())), (xs) => new Set(xs.flat()).size < 5, { seed: 42n }))
             .toThrowErrorMatchingInlineSnapshot(`
             "Counter example found after 37 tests (seed: 42n)
@@ -141,7 +143,7 @@ describe('shrinking challenge', () => {
         `)
     })
 
-    test('reverse', () => {
+    it('reverse', () => {
         expect(() => forAll(array(integer()), (xs) => equal(xs, [...xs].reverse()), { seed: 42n }))
             .toThrowErrorMatchingInlineSnapshot(`
             "Counter example found after 2 tests (seed: 42n)

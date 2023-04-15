@@ -4,7 +4,9 @@ import { isDefined } from '../../../guard/index.js'
 import { forAll, tuple, array, string, unknown, boolean } from '../../../random/index.js'
 import { Nothing } from '../../../type/index.js'
 
-test('insert', () => {
+import { expect, it } from 'vitest'
+
+it('insert', () => {
     const trie = parameterTrie<number>()
 
     trie.insert([{ right: 'foo' }, { right: 'bar' }], 2)
@@ -90,7 +92,7 @@ test('insert', () => {
     `)
 })
 
-test('simple', () => {
+it('simple', () => {
     const trie = parameterTrie<number>()
 
     trie.insert([{ right: 'foo' }, { right: 'bar' }], 2)
@@ -128,7 +130,7 @@ test('simple', () => {
     expect(trie.find(['foo', 'bar'])).toEqual([2, []])
 })
 
-test('find', () => {
+it('find', () => {
     const trie = parameterTrie<number>()
 
     trie.insert([{ right: 'foo' }, { right: 'bar' }], 2)
@@ -148,7 +150,7 @@ test('find', () => {
     expect(trie.find(['foobar', 'foo', 'baf'])).toEqual(Nothing)
 })
 
-test('double insert is immutable', () => {
+it('double insert is immutable', () => {
     const trie = parameterTrie<number>()
 
     trie.insert([{ right: 'foo' }, { right: 'bar' }], 2)
@@ -157,7 +159,7 @@ test('double insert is immutable', () => {
     expect(trie.find(['foo', 'bar'])).toEqual([2, []])
 })
 
-test('performance', () => {
+it('performance', () => {
     const trie = parameterTrie<number>()
 
     trie.insert([{ right: 'foo' }, { right: 'bar' }], 2)
@@ -177,7 +179,7 @@ test('performance', () => {
     }
 })
 
-test('find xs x == x', () => {
+it('find xs x == x', () => {
     forAll(tuple(array(string()), unknown()), ([xs, v]) => {
         const trie = parameterTrie<unknown>()
         trie.insert(
@@ -188,7 +190,7 @@ test('find xs x == x', () => {
     })
 })
 
-test('parametrized find xs x == x', () => {
+it('parametrized find xs x == x', () => {
     forAll(tuple(array(tuple(boolean(), string(), string())), unknown()), ([xs, value]) => {
         const trie = parameterTrie<unknown>()
         trie.insert(
@@ -202,7 +204,7 @@ test('parametrized find xs x == x', () => {
     })
 })
 
-test('does not throw on random retrieval', () => {
+it('does not throw on random retrieval', () => {
     forAll(tuple(array(tuple(boolean(), string(), string())), unknown(), array(array(string()))), ([xs, value, tests]) => {
         const trie = parameterTrie<unknown>()
         trie.insert(

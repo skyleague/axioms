@@ -3,7 +3,9 @@ import { mulberry32 } from './index.js'
 import { sum, collect } from '../../../array/index.js'
 import { take } from '../../../iterator/index.js'
 
-test('snapshot', () => {
+import { expect, it } from 'vitest'
+
+it('snapshot', () => {
     expect(collect(take(mulberry32(42), 20))).toMatchInlineSnapshot(`
         [
           0.6011037519201636,
@@ -30,7 +32,7 @@ test('snapshot', () => {
     `)
 })
 
-test('jump', () => {
+it('jump', () => {
     const gen = mulberry32(42)
     gen.jump()
     expect(collect(take(gen, 20))).toMatchInlineSnapshot(`
@@ -59,7 +61,7 @@ test('jump', () => {
     `)
 })
 
-test('sample', () => {
+it('sample', () => {
     const gen = mulberry32(42)
     expect(gen.sample()).toMatchInlineSnapshot(`0.6011037519201636`)
     expect(gen.sample()).toMatchInlineSnapshot(`0.44829055899754167`)
@@ -68,7 +70,7 @@ test('sample', () => {
     expect(gen.sample()).toMatchInlineSnapshot(`0.17481389874592423`)
 })
 
-test('[0,1) interval', () => {
+it('[0,1) interval', () => {
     const gen = mulberry32(new Date().getTime())
     const total = 50000
     let mean = 0

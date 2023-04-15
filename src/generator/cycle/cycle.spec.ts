@@ -5,7 +5,9 @@ import { allEqual, take } from '../../iterator/index.js'
 import { array, forAll, mappableFunc, natural, tuple, unknown } from '../../random/index.js'
 import { repeat } from '../index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(collect(take(cycle([1, 2, 3]), 10))).toMatchInlineSnapshot(`
         [
           1,
@@ -22,7 +24,7 @@ test('simple', () => {
     `)
 })
 
-test('generator', () => {
+it('generator', () => {
     function* foo() {
         yield 1
         yield 2
@@ -44,7 +46,7 @@ test('generator', () => {
     `)
 })
 
-test('take n * |X| X === n * X', () => {
+it('take n * |X| X === n * X', () => {
     forAll(tuple(array(unknown()), natural({ max: 100 })), ([xs, n]) => {
         expect(collect(take(cycle(xs), n * xs.length))).toEqual(
             collect(
@@ -57,7 +59,7 @@ test('take n * |X| X === n * X', () => {
     })
 })
 
-test('take n cycle(mappable(xs)) === take n repeat(*xs)', () => {
+it('take n cycle(mappable(xs)) === take n repeat(*xs)', () => {
     forAll(tuple(natural({ max: 10000 }), array(unknown(), { minLength: 1 }), mappableFunc()), ([n, xs, fn]) => {
         return allEqual(
             take(cycle(fn(xs)), n),
@@ -71,13 +73,13 @@ test('take n cycle(mappable(xs)) === take n repeat(*xs)', () => {
     })
 })
 
-test('given n === 0, |take n cycle(X)| === 0', () => {
+it('given n === 0, |take n cycle(X)| === 0', () => {
     forAll(tuple(natural({ max: 0 }), array(unknown(), { maxLength: 10 }), mappableFunc()), ([n, xs, fn]) => {
         return collect(take(cycle(fn(xs)), n)).length === 0
     })
 })
 
-test('small', () => {
+it('small', () => {
     expect(collect(take(cycle([1, 2]), 4))).toMatchInlineSnapshot(`
         [
           1,
@@ -88,7 +90,7 @@ test('small', () => {
     `)
 })
 
-test('small reentrant', () => {
+it('small reentrant', () => {
     function* foobar() {
         yield 'foo'
         yield 'bar'

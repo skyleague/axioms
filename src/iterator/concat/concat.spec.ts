@@ -5,7 +5,9 @@ import { range, repeat } from '../../generator/index.js'
 import { forAll, tuple, array, unknown } from '../../random/index.js'
 import { allEqual, take } from '../index.js'
 
-test('multiple variadic', () => {
+import { expect, it } from 'vitest'
+
+it('multiple variadic', () => {
     const foo = collect(concat(['1', '2', '3'], [4, 5, 6], [true, false, true]))
     expect(foo).toMatchInlineSnapshot(`
         [
@@ -22,7 +24,7 @@ test('multiple variadic', () => {
     `)
 })
 
-test('multiple variadic 2', () => {
+it('multiple variadic 2', () => {
     const a = ['1', '2', '3']
     const b = [4, 5, 6]
     const c = [true, false, true]
@@ -42,11 +44,11 @@ test('multiple variadic 2', () => {
     `)
 })
 
-test('concat xs ys === xs ++ ys', () => {
+it('concat xs ys === xs ++ ys', () => {
     forAll(tuple(array(unknown()), array(unknown())), ([xs, ys]) => allEqual(concat(xs, ys), [...xs, ...ys]))
 })
 
-test('concat range 1 3 range 3 7 === 1 ... 6', () => {
+it('concat range 1 3 range 3 7 === 1 ... 6', () => {
     expect(collect(concat(range(1, 3), range(3, 7)))).toMatchInlineSnapshot(`
         [
           1,
@@ -59,7 +61,7 @@ test('concat range 1 3 range 3 7 === 1 ... 6', () => {
     `)
 })
 
-test('concat abc def === abcdef', () => {
+it('concat abc def === abcdef', () => {
     expect(collect(concat('abc', 'def'))).toMatchInlineSnapshot(`
         [
           "a",
@@ -72,7 +74,7 @@ test('concat abc def === abcdef', () => {
     `)
 })
 
-test('concat take 2 repeat 1 take 2 repeat 2 === 1 1 2 2', () => {
+it('concat take 2 repeat 1 take 2 repeat 2 === 1 1 2 2', () => {
     expect(
         collect(
             concat(

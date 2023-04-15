@@ -2,37 +2,39 @@ import { isString } from './index.js'
 
 import { forAll, string, unknown } from '../../random/index.js'
 
-test('string is string', () => {
+import { expect, it } from 'vitest'
+
+it('string is string', () => {
     expect(isString('foo')).toEqual(true)
 })
-test('symbol is not string', () => {
+it('symbol is not string', () => {
     const sym = Symbol.for('error')
     expect(isString(sym)).toEqual(false)
 })
 
-test('undefined is not string', () => {
+it('undefined is not string', () => {
     expect(isString(undefined)).toEqual(false)
 })
 
-test('null is not string', () => {
+it('null is not string', () => {
     expect(isString(null)).toEqual(false)
 })
 
-test('object is not string', () => {
+it('object is not string', () => {
     expect(isString({})).toEqual(false)
 })
 
-test('typeguard works', () => {
+it('typeguard works', () => {
     const foo: number | string = 'foo'
     if (isString(foo)) {
         expect(foo.length).toEqual(3)
     }
 })
 
-test('unknown is not string', () => {
+it('unknown is not string', () => {
     forAll(unknown({ string: false }), (x) => !isString(x))
 })
 
-test('string is string', () => {
+it('string is string', () => {
     forAll(string(), isString)
 })

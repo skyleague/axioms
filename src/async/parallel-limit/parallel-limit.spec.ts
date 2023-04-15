@@ -2,7 +2,9 @@ import { parallelLimit } from './parallel-limit.js'
 
 import { sleep } from '../sleep/index.js'
 
-test('simple', async () => {
+import { expect, it } from 'vitest'
+
+it('simple', async () => {
     const limit = parallelLimit(2)
     const tasks = [
         limit(async () => {

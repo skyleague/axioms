@@ -2,7 +2,9 @@ import { groupBy, replicate } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { boolean, forAll, arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
 
-test('distribution', () => {
+import { expect, it } from 'vitest'
+
+it('distribution', () => {
     const context = arbitraryContext({
         rng: xoroshiro128plus(42n),
     })
@@ -24,7 +26,7 @@ test('distribution', () => {
     `)
 })
 
-test('counter example - true', () => {
+it('counter example - true', () => {
     expect(() => forAll(boolean(), (v) => v, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 6 tests (seed: 42n)
         Shrunk 0 time(s)
@@ -34,7 +36,7 @@ test('counter example - true', () => {
     `)
 })
 
-test('counter example - false', () => {
+it('counter example - false', () => {
     expect(() => forAll(boolean(), (v) => !v, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 1 tests (seed: 42n)
         Shrunk 0 time(s)

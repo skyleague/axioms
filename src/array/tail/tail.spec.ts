@@ -5,7 +5,9 @@ import { forAll, array, unknown } from '../../random/index.js'
 import { toTraversable } from '../../type/index.js'
 import { collect } from '../index.js'
 
-test('tail simple', () => {
+import { expect, it } from 'vitest'
+
+it('tail simple', () => {
     expect(collect(tail([1, 2, 3]))).toMatchInlineSnapshot(`
         [
           2,
@@ -14,7 +16,7 @@ test('tail simple', () => {
     `)
 })
 
-test('generator', () => {
+it('generator', () => {
     function* foobar() {
         yield 'foo'
         yield 'bar'
@@ -26,6 +28,6 @@ test('generator', () => {
     `)
 })
 
-test('tail xs === xs[1:]', () => {
+it('tail xs === xs[1:]', () => {
     forAll(array(unknown()), (xs) => allEqual(toTraversable(tail(xs)), xs.slice(1)))
 })

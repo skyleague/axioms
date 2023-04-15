@@ -2,13 +2,15 @@ import { isDefined } from './index.js'
 
 import { forAll, unknown } from '../../index.js'
 
-test('isDefined', () => {
-    expect(isDefined([])).toBeTrue()
-    expect(isDefined([1])).toBeTrue()
-    expect(isDefined(null)).toBeFalse()
-    expect(isDefined(undefined)).toBeFalse()
+import { expect, it } from 'vitest'
+
+it('isDefined', () => {
+    expect(isDefined([])).toBe(true)
+    expect(isDefined([1])).toBe(true)
+    expect(isDefined(null)).toBe(false)
+    expect(isDefined(undefined)).toBe(false)
 })
 
-test('isDefined', () => {
+it('isDefined', () => {
     forAll(unknown(), (x) => isDefined(x) === (x !== undefined && x !== null))
 })

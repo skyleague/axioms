@@ -5,8 +5,10 @@ import { sleep } from '../../async/index.js'
 import { range } from '../../generator/index.js'
 import { asyncForAll, forAll, integer, tuple, unknown } from '../../random/index.js'
 
+import { expect, describe, it, vi } from 'vitest'
+
 describe('cache resolver', () => {
-    test('simple', () => {
+    it('simple', () => {
         let i = 0
         const mem = memoize(() => i++)
         expect(mem()).toEqual(0)
@@ -16,16 +18,16 @@ describe('cache resolver', () => {
         expect(mem()).toEqual(1)
     })
 
-    test('mem x = x', () => {
+    it('mem x = x', () => {
         forAll(unknown(), (x) => {
             const mem = memoize(() => x)
             expect(mem()).toEqual(x)
         })
     })
 
-    test('mem x only called once', () => {
+    it('mem x only called once', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
-            const fn = jest.fn(() => x)
+            const fn = vi.fn(() => x)
             const mem = memoize(fn)
             for (const _ of range(n)) {
                 expect(mem()).toEqual(x)
@@ -34,9 +36,9 @@ describe('cache resolver', () => {
         })
     })
 
-    test('async mem x only called once', async () => {
+    it('async mem x only called once', async () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 1000 })), async ([x, n]) => {
-            const fn = jest.fn(async () => x)
+            const fn = vi.fn(async () => x)
             const mem = memoize(fn)
             for (const _ of range(n)) {
                 expect(await mem()).toEqual(x)
@@ -45,9 +47,9 @@ describe('cache resolver', () => {
         })
     })
 
-    test('clear mem x only called once', () => {
+    it('clear mem x only called once', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
-            const fn = jest.fn(() => x)
+            const fn = vi.fn(() => x)
             const mem = memoize(fn)
             for (const _ of range(n)) {
                 expect(mem()).toEqual(x)
@@ -60,7 +62,7 @@ describe('cache resolver', () => {
         })
     })
 
-    test('clear mem x = undefined', () => {
+    it('clear mem x = undefined', () => {
         forAll(unknown(), (x) => {
             const mem = memoize(() => x)
             expect(mem.clear()).toBeUndefined()
@@ -69,7 +71,7 @@ describe('cache resolver', () => {
 })
 
 describe('ttl cache resolver', () => {
-    test('simple', () => {
+    it('simple', () => {
         let i = 0
         const mem = memoize(() => i++, ttlCacheResolver(1_000))
         expect(mem()).toEqual(0)
@@ -79,16 +81,16 @@ describe('ttl cache resolver', () => {
         expect(mem()).toEqual(1)
     })
 
-    test('mem x = x', () => {
+    it('mem x = x', () => {
         forAll(unknown(), (x) => {
             const mem = memoize(() => x, ttlCacheResolver(1_000))
             expect(mem()).toEqual(x)
         })
     })
 
-    test('mem x only called once', () => {
+    it('mem x only called once', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
-            const fn = jest.fn(() => x)
+            const fn = vi.fn(() => x)
             const mem = memoize(fn, ttlCacheResolver(1_000))
             for (const _ of range(n)) {
                 expect(mem()).toEqual(x)
@@ -97,9 +99,9 @@ describe('ttl cache resolver', () => {
         })
     })
 
-    test('async mem x only called once', async () => {
+    it('async mem x only called once', async () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 1000 })), async ([x, n]) => {
-            const fn = jest.fn(async () => x)
+            const fn = vi.fn(async () => x)
             const mem = memoize(fn, ttlCacheResolver(1_000))
             for (const _ of range(n)) {
                 expect(await mem()).toEqual(x)
@@ -108,15 +110,15 @@ describe('ttl cache resolver', () => {
         })
     })
 
-    test('async mem x called twice after timeout', async () => {
+    it('async mem x called twice after timeout', async () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 500 })), async ([x, n]) => {
-            const fn = jest.fn(async () => x)
+            const fn = vi.fn(async () => x)
             const mem = memoize(fn, ttlCacheResolver(5))
             for (const _ of range(n)) {
                 expect(await mem()).toEqual(x)
             }
 
-            jest.setSystemTime(new Date().getTime() + 10)
+            vi.setSystemTime(new Date().getTime() + 10)
 
             for (const _ of range(n)) {
                 expect(await mem()).toEqual(x)
@@ -126,9 +128,9 @@ describe('ttl cache resolver', () => {
         })
     })
 
-    test('async mem resolves', async () => {
+    it('async mem resolves', async () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 10 })), async ([x, n]) => {
-            const fn = jest.fn(async () => {
+            const fn = vi.fn(async () => {
                 await sleep(0)
                 return x
             })
@@ -140,9 +142,9 @@ describe('ttl cache resolver', () => {
         })
     })
 
-    test('clear mem x only called once', () => {
+    it('clear mem x only called once', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
-            const fn = jest.fn(() => x)
+            const fn = vi.fn(() => x)
             const mem = memoize(fn, ttlCacheResolver(1_000))
             for (const _ of range(n)) {
                 expect(mem()).toEqual(x)
@@ -155,7 +157,7 @@ describe('ttl cache resolver', () => {
         })
     })
 
-    test('clear mem x = undefined', () => {
+    it('clear mem x = undefined', () => {
         forAll(unknown(), (x) => {
             const mem = memoize(() => x, ttlCacheResolver(1_000))
             expect(mem.clear()).toBeUndefined()

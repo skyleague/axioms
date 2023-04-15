@@ -2,14 +2,16 @@ import { isEither } from './index.js'
 
 import { forAll, unknown } from '../../random/index.js'
 
-test('unknown is not either', () => {
+import { expect, it } from 'vitest'
+
+it('unknown is not either', () => {
     forAll(unknown(), (x) => !isEither(x))
 })
 
-test('left property is either', () => {
-    expect(isEither({ left: 'foo' })).toBeTrue()
+it('left property is either', () => {
+    expect(isEither({ left: 'foo' })).toBe(true)
 })
 
-test('right property is either', () => {
-    expect(isEither({ right: 'foo' })).toBeTrue()
+it('right property is either', () => {
+    expect(isEither({ right: 'foo' })).toBe(true)
 })

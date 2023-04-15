@@ -5,8 +5,10 @@ import { allEqual } from '../../iterator/index.js'
 import { forAll, array, unknown } from '../../random/index.js'
 import { collect } from '../index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('zip', () => {
-    test('simple', () => {
+    it('simple', () => {
         const zipped = collect(zip([1, 2, 3], [1, 2, 3]))
         expect(zipped).toEqual([
             [1, 1],
@@ -15,17 +17,17 @@ describe('zip', () => {
         ])
     })
 
-    test('empty', () => {
+    it('empty', () => {
         const zipped = collect(zip([]))
         expect(zipped).toEqual([])
     })
 
-    test('zip empty', () => {
+    it('zip empty', () => {
         const zipped = zip([])
         expect(collect(zip(...zipped))).toEqual([])
     })
 
-    test('array argument', () => {
+    it('array argument', () => {
         expect(collect(zip([1, 2, 3], [1, 2, 3]))).toEqual([
             [1, 1],
             [2, 2],
@@ -33,7 +35,7 @@ describe('zip', () => {
         ])
     })
 
-    test('variadic argument', () => {
+    it('variadic argument', () => {
         expect(collect(zip([1, 2, 3], ['1', '2', '3']))).toEqual([
             [1, '1'],
             [2, '2'],
@@ -41,35 +43,35 @@ describe('zip', () => {
         ])
     })
 
-    test('zipzip', () => {
+    it('zipzip', () => {
         expect(collect(zip(...zip([1, 2, 3], [1, 2, 3])))).toEqual([
             [1, 2, 3],
             [1, 2, 3],
         ])
     })
 
-    test('uneven', () => {
+    it('uneven', () => {
         expect(collect(zip([1, 2, 3, 4], [1, 2, 3, 4], [1, 2]))).toEqual([
             [1, 1, 1],
             [2, 2, 2],
         ])
     })
 
-    test('strings', () => {
+    it('strings', () => {
         expect(collect(zip([...'ABCD'], [...'ABCD'], [...'AB']))).toEqual([
             ['A', 'A', 'A'],
             ['B', 'B', 'B'],
         ])
     })
 
-    test('with generator', () => {
+    it('with generator', () => {
         expect(collect(zip([...'ABCD'], [...'ABCD'], [...'AB'], counter()))).toEqual([
             ['A', 'A', 'A', 0],
             ['B', 'B', 'B', 1],
         ])
     })
 
-    test('with multiple finite generators', () => {
+    it('with multiple finite generators', () => {
         function* foo() {
             yield 1
             yield 2
@@ -86,15 +88,15 @@ describe('zip', () => {
         ])
     })
 
-    test('nothing', () => {
+    it('nothing', () => {
         expect(collect(zip([], []))).toEqual([])
     })
 
-    test('zip zip xs === xs, n > 0', () => {
+    it('zip zip xs === xs, n > 0', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => allEqual(zip(...zip(xs, xs)), [xs, xs]))
     })
 
-    test('zip zip xs === xs, n === 0', () => {
+    it('zip zip xs === xs, n === 0', () => {
         forAll(array(unknown(), { maxLength: 0 }), (xs) => allEqual(zip(...zip(xs, xs)), []))
     })
 })
@@ -102,7 +104,7 @@ describe('zip', () => {
 describe('zipWith', () => {
     const add = (a: number, b: number) => a + b
 
-    test('simple', () => {
+    it('simple', () => {
         expect(collect(zipWith(add, [1, 2, 3], [3, 2, 1]))).toMatchInlineSnapshot(`
             [
               4,

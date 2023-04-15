@@ -5,7 +5,9 @@ import { dfsPreOrder, dfsPostOrder, bfs, tree, showTree, mapApplicativeTree, fil
 
 import { sum } from '../../array/index.js'
 
-test('map tree', () => {
+import { expect, it } from 'vitest'
+
+it('map tree', () => {
     const t = mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)
     expect(showTree(t)).toMatchInlineSnapshot(`
         "└─ 2
@@ -15,7 +17,7 @@ test('map tree', () => {
     expect(showTree(t)).toMatchInlineSnapshot(`"└─ 2"`)
 })
 
-test('map applicative tree', () => {
+it('map applicative tree', () => {
     const t = mapApplicativeTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)
     expect(showTree(t)).toMatchInlineSnapshot(`
         "└─ 2
@@ -29,7 +31,7 @@ test('map applicative tree', () => {
     `)
 })
 
-test('map tree', () => {
+it('map tree', () => {
     expect(showTree(mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1))).toMatchInlineSnapshot(`
         "└─ 2
             ├─ 3
@@ -37,7 +39,7 @@ test('map tree', () => {
     `)
 })
 
-test('filter tree', () => {
+it('filter tree', () => {
     const t = filterTree(tree(1, [tree(2, [tree(5)]), tree(3)]), (x) => x < 4)
     expect(showTree(t)).toMatchInlineSnapshot(`
         "└─ 1
@@ -47,7 +49,7 @@ test('filter tree', () => {
     expect(showTree(t)).toMatchInlineSnapshot(`"└─ 1"`)
 })
 
-test('filter applicative tree', () => {
+it('filter applicative tree', () => {
     const t = filterApplicativeTree(tree(1, [tree(2, [tree(5)]), tree(3)]), (x) => x < 4)
     expect(showTree(t)).toMatchInlineSnapshot(`
         "└─ 1
@@ -61,7 +63,7 @@ test('filter applicative tree', () => {
     `)
 })
 
-test('preorder', () => {
+it('preorder', () => {
     const t: Tree<number> = {
         value: 1,
         children: [
@@ -95,7 +97,7 @@ test('preorder', () => {
     `)
 })
 
-test('postorder', () => {
+it('postorder', () => {
     const t: Tree<number> = {
         value: 1,
         children: [
@@ -129,7 +131,7 @@ test('postorder', () => {
     `)
 })
 
-test('bfs', () => {
+it('bfs', () => {
     const t: Tree<number> = {
         value: 1,
         children: [
@@ -163,7 +165,7 @@ test('bfs', () => {
     `)
 })
 
-test('tree', () => {
+it('tree', () => {
     const root = tree(1, [tree(2, [tree(4), tree(5)]), tree(3, [tree(6), tree(7)])])
 
     expect([...bfs(root)]).toMatchInlineSnapshot(`

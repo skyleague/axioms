@@ -18,6 +18,8 @@ import {
     xoroshiro128plus,
 } from '../../index.js'
 
+import { expect, it } from 'vitest'
+
 function* interleave<X, Y>(xs: X[], ys: Y[], seed: number) {
     const rng = xoroshiro128plus(BigInt(seed))
 
@@ -30,7 +32,7 @@ function* interleave<X, Y>(xs: X[], ys: Y[], seed: number) {
     }
 }
 
-test('simple', () => {
+it('simple', () => {
     const xs = ['a', 0, 'b', 'c', 1, 'd', 2, 3]
     expect(partition(xs, isString)).toEqual([
         ['a', 'b', 'c', 'd'],
@@ -38,7 +40,7 @@ test('simple', () => {
     ])
 })
 
-test('for [xs, ys] = partition zs, |zs| == |xs| + |ys|', () => {
+it('for [xs, ys] = partition zs, |zs| == |xs| + |ys|', () => {
     forAll(
         tuple(mappableFunc(), array(oneOf(float(), string(), boolean()))),
         ([f, zs]: [<T>(us: T[]) => Mappable<T>, (boolean | number | string)[]]) => {
@@ -50,7 +52,7 @@ test('for [xs, ys] = partition zs, |zs| == |xs| + |ys|', () => {
     )
 })
 
-test('partition (interleave xs, ys), isX == [xs, ys]', () => {
+it('partition (interleave xs, ys), isX == [xs, ys]', () => {
     forAll(
         tuple(mappableFunc(), array(string()), array(float()), integer()),
         ([f, xs, ys, seed]: [<T>(us: T[]) => Mappable<T>, string[], number[], number]) => {

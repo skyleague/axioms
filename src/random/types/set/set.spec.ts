@@ -11,13 +11,15 @@ import { xoroshiro128plus } from '../../rng/index.js'
 import { unknown } from '../complex/index.js'
 import { integer } from '../integer/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('set', () => {
-    test('all unique - number', () => {
+    it('all unique - number', () => {
         const size = 1000
         forAll(set(integer({ min: 0, max: size })), (xs) => xs.length === collect(unique(xs)).length, { seed: 1638968569864n })
     })
 
-    test('always larger than minsize', () => {
+    it('always larger than minsize', () => {
         const size = 3
         forAll(set(integer(), { minLength: size, maxLength: 100 }), (xs) => {
             return xs.length >= size
@@ -25,7 +27,7 @@ describe('set', () => {
     })
 })
 
-test('always larger than minsize', () => {
+it('always larger than minsize', () => {
     const size = 3
     forAll(set(integer(), { minLength: size, maxLength: 100 }), (xs) => {
         return xs.length >= size
@@ -33,7 +35,7 @@ test('always larger than minsize', () => {
 })
 
 describe('subsuper', () => {
-    test('random sample', () => {
+    it('random sample', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = subsuper(integer({ min: 0, max: 100 }))
         expect(
@@ -299,11 +301,11 @@ describe('subsuper', () => {
         `)
     })
 
-    test('S U X, S C X', () => {
+    it('S U X, S C X', () => {
         forAll(subsuper(unknown()), ([sub, superset]) => isSuperset(superset, sub))
     })
 
-    test('S U X, ~ X C S \\ X', () => {
+    it('S U X, ~ X C S \\ X', () => {
         forAll(subsuper(unknown()), ([sub, superset]) => {
             const complement = [...difference(superset, sub)]
             return complement.length === 0 || !isSuperset(sub, complement)

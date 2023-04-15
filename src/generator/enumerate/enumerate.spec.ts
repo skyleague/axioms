@@ -5,11 +5,13 @@ import { allEqual, map } from '../../iterator/index.js'
 import { forAll, array, unknown } from '../../random/index.js'
 import { counter, range } from '../index.js'
 
-test('enumerate == zip counter()', () => {
+import { expect, it } from 'vitest'
+
+it('enumerate == zip counter()', () => {
     forAll(array(unknown()), (xs) => allEqual(enumerate(xs), zip(counter(), xs)))
 })
 
-test('map first enumerate == range', () => {
+it('map first enumerate == range', () => {
     forAll(array(unknown()), (xs) =>
         allEqual(
             map(enumerate(xs), (x) => x[0]),
@@ -18,7 +20,7 @@ test('map first enumerate == range', () => {
     )
 })
 
-test('map second enumerate == identity', () => {
+it('map second enumerate == identity', () => {
     forAll(array(unknown()), (xs) =>
         allEqual(
             map(enumerate(xs), (x) => x[1]),
@@ -27,7 +29,7 @@ test('map second enumerate == identity', () => {
     )
 })
 
-test('simple', () => {
+it('simple', () => {
     expect(collect(enumerate(range(10, 14)))).toMatchInlineSnapshot(`
         [
           [

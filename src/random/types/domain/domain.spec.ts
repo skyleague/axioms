@@ -5,8 +5,10 @@ import { repeat } from '../../../generator/index.js'
 import { take } from '../../../iterator/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('domain', () => {
-    test('random sample', () => {
+    it('random sample', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = domain()
         expect(
@@ -34,7 +36,7 @@ describe('domain', () => {
 })
 
 describe('subdomain', () => {
-    test('random sample', () => {
+    it('random sample', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = subdomain()
         expect(

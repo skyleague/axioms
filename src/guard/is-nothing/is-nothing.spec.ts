@@ -3,16 +3,18 @@ import { isNothing } from './is-nothing.js'
 import { forAll, unknown } from '../../random/index.js'
 import { Nothing } from '../../type/index.js'
 
+import { expect, it } from 'vitest'
+
 export const OtherNothing = Symbol.for('(Nothing)')
 
-test('just values are not Nothing', () => {
+it('just values are not Nothing', () => {
     forAll(unknown({ nothing: false }), (x) => !isNothing(x))
 })
 
-test('nothing is Nothing', () => {
-    expect(isNothing(Nothing)).toBeTrue()
+it('nothing is Nothing', () => {
+    expect(isNothing(Nothing)).toBe(true)
 })
 
-test('OtherNothing is Nothing', () => {
-    expect(isNothing(OtherNothing)).toBeTrue()
+it('OtherNothing is Nothing', () => {
+    expect(isNothing(OtherNothing)).toBe(true)
 })

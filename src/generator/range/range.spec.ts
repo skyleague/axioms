@@ -3,7 +3,9 @@ import { range } from './index.js'
 import { collect } from '../../array/index.js'
 import { forAll, tuple, integer } from '../../random/index.js'
 
-test('is [x,y[', () => {
+import { expect, it } from 'vitest'
+
+it('is [x,y[', () => {
     forAll(
         tuple(integer({ max: 100 }), integer({ min: 3, max: 100 })),
         ([x, y]: [number, number]) => {
@@ -14,7 +16,7 @@ test('is [x,y[', () => {
     )
 })
 
-test('floor y/2 + x is in [x,y[', () => {
+it('floor y/2 + x is in [x,y[', () => {
     forAll(tuple(integer({ max: 100 }), integer({ min: 3, max: 100 })), ([x, y]) => {
         const to = x + y
         const half = Math.floor(y / 2) + x
@@ -22,7 +24,7 @@ test('floor y/2 + x is in [x,y[', () => {
     })
 })
 
-test('singular', () => {
+it('singular', () => {
     expect(collect(range(5))).toMatchInlineSnapshot(`
         [
           0,
@@ -34,11 +36,11 @@ test('singular', () => {
     `)
 })
 
-test('negative', () => {
+it('negative', () => {
     expect(collect(range(-5))).toMatchInlineSnapshot(`[]`)
 })
 
-test('steps', () => {
+it('steps', () => {
     expect(collect(range(0, 20, 5))).toMatchInlineSnapshot(`
         [
           0,

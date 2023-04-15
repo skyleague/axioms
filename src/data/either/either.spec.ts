@@ -17,20 +17,22 @@ import { equal } from '../../iterator/equal/index.js'
 import { array, deterministicInteger, forAll, integer, shuffle, tuple, unknown } from '../../random/index.js'
 import { identity } from '../../util/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('eitherAsValue', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(eitherAsValue({ left: 'foo' })).toMatchInlineSnapshot(`"foo"`)
         expect(eitherAsValue({ right: 'bar' })).toMatchInlineSnapshot(`"bar"`)
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
             ([x, either]) => x === eitherAsValue(either)
         )
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
             ([x, either]) => x === eitherAsValue(either)
@@ -39,7 +41,7 @@ describe('eitherAsValue', () => {
 })
 
 describe('mapRight', () => {
-    test('simple', () => {
+    it('simple', () => {
         const fn = (x: string) => `${x}${x}`
         expect(mapRight({ left: 'foo' }, fn)).toMatchInlineSnapshot(`
             {
@@ -53,14 +55,14 @@ describe('mapRight', () => {
         `)
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
             ([x, either]) => equal({ left: x }, mapRight(either, deterministicInteger))
         )
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(
             unknown().map((x) => [deterministicInteger(x), { right: x }] as const),
             ([x, either]) => equal({ right: x }, mapRight(either, deterministicInteger))
@@ -69,7 +71,7 @@ describe('mapRight', () => {
 })
 
 describe('mapRights', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(mapRights([{ left: 0 }, { right: 'a' }], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`
                     {
                       "left": 0,
@@ -96,7 +98,7 @@ describe('mapRights', () => {
         `)
     })
 
-    test('all right', () => {
+    it('all right', () => {
         forAll(array(integer()), (xs) =>
             equal(
                 { right: deterministicInteger(xs) },
@@ -108,7 +110,7 @@ describe('mapRights', () => {
         )
     })
 
-    test('first left', () => {
+    it('first left', () => {
         forAll(tuple(array(integer()), integer(), integer()), ([xs, left1, left2]) =>
             equal(
                 { left: left1 },
@@ -132,7 +134,7 @@ describe('mapRights', () => {
 })
 
 describe('whenRight', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenRight({ left: 0 }, identity)).toMatchInlineSnapshot(`
                   {
                     "left": 0,
@@ -141,14 +143,14 @@ describe('whenRight', () => {
         expect(whenRight({ right: 0 }, identity)).toMatchInlineSnapshot(`0`)
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
             ([x, either]) => equal({ left: x }, whenRight(either, deterministicInteger))
         )
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
             ([x, either]) => deterministicInteger(x) === whenRight(either, deterministicInteger)
@@ -157,7 +159,7 @@ describe('whenRight', () => {
 })
 
 describe('whenRights', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenRights([{ left: 0 }, { right: 'a' }], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`
                   {
                     "left": 0,
@@ -181,7 +183,7 @@ describe('whenRights', () => {
         expect(whenRights([{ right: 'foo' }, { right: 'bar' }], ([x0, x1]) => `${x0}${x1}`)).toMatchInlineSnapshot(`"foobar"`)
     })
 
-    test('all right', () => {
+    it('all right', () => {
         forAll(array(integer()), (xs) =>
             equal(
                 deterministicInteger(xs),
@@ -193,7 +195,7 @@ describe('whenRights', () => {
         )
     })
 
-    test('first left', () => {
+    it('first left', () => {
         forAll(tuple(array(integer()), integer(), integer()), ([xs, left1, left2]) =>
             equal(
                 { left: left1 },
@@ -217,7 +219,7 @@ describe('whenRights', () => {
 })
 
 describe('mapLeft', () => {
-    test('simple', () => {
+    it('simple', () => {
         const fn = (x: string) => `${x}${x}`
         expect(mapLeft({ left: 'foo' }, fn)).toMatchInlineSnapshot(`
             {
@@ -231,14 +233,14 @@ describe('mapLeft', () => {
         `)
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
             ([x, either]) => equal({ right: x }, mapLeft(either, deterministicInteger))
         )
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(
             unknown().map((x) => [deterministicInteger(x), { left: x }] as const),
             ([x, either]) => equal({ left: x }, mapLeft(either, deterministicInteger))
@@ -247,7 +249,7 @@ describe('mapLeft', () => {
 })
 
 describe('mapLefts', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(mapLefts([{ left: 0 }, { right: 'a' }], ([_x0, x1]) => [x1])).toMatchInlineSnapshot(`
             {
               "right": "a",
@@ -267,7 +269,7 @@ describe('mapLefts', () => {
         `)
     })
 
-    test('all left', () => {
+    it('all left', () => {
         forAll(array(integer()), (xs) =>
             equal(
                 { left: deterministicInteger(xs) },
@@ -279,7 +281,7 @@ describe('mapLefts', () => {
         )
     })
 
-    test('first right', () => {
+    it('first right', () => {
         forAll(tuple(array(integer()), integer(), integer()), ([xs, right1, right2]) =>
             equal(
                 { right: right1 },
@@ -303,7 +305,7 @@ describe('mapLefts', () => {
 })
 
 describe('whenLeft', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenLeft({ left: 0 }, identity)).toMatchInlineSnapshot(`0`)
         expect(whenLeft({ right: 0 }, identity)).toMatchInlineSnapshot(`
             {
@@ -312,14 +314,14 @@ describe('whenLeft', () => {
         `)
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
             ([x, either]) => equal({ right: x }, whenLeft(either, deterministicInteger))
         )
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
             ([x, either]) => deterministicInteger(x) === whenLeft(either, deterministicInteger)
@@ -328,7 +330,7 @@ describe('whenLeft', () => {
 })
 
 describe('whenLefts', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenLefts([{ left: 0 }, { right: 'a' }], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`
             {
               "right": "a",
@@ -349,7 +351,7 @@ describe('whenLefts', () => {
         `)
     })
 
-    test('all left', () => {
+    it('all left', () => {
         forAll(array(integer()), (xs) =>
             equal(
                 deterministicInteger(xs),
@@ -361,7 +363,7 @@ describe('whenLefts', () => {
         )
     })
 
-    test('first right', () => {
+    it('first right', () => {
         forAll(tuple(array(integer()), integer(), integer()), ([xs, right1, right2]) =>
             equal(
                 { right: right1 },
@@ -385,7 +387,7 @@ describe('whenLefts', () => {
 })
 
 describe('swapEither', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(swapEither({ left: 'foo' })).toMatchInlineSnapshot(`
                       {
                         "right": "foo",

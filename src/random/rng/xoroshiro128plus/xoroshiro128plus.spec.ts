@@ -3,7 +3,9 @@ import { xoroshiro128plus } from './index.js'
 import { sum, collect } from '../../../array/index.js'
 import { take } from '../../../iterator/index.js'
 
-test('snapshot', () => {
+import { expect, it } from 'vitest'
+
+it('snapshot', () => {
     expect(collect(take(xoroshiro128plus(42n), 20))).toMatchInlineSnapshot(`
         [
           17588299989574477559n,
@@ -30,7 +32,7 @@ test('snapshot', () => {
     `)
 })
 
-test('jump', () => {
+it('jump', () => {
     const gen = xoroshiro128plus(42n)
     gen.jump()
     expect(collect(take(gen, 20))).toMatchInlineSnapshot(`
@@ -59,7 +61,7 @@ test('jump', () => {
     `)
 })
 
-test('sample', () => {
+it('sample', () => {
     const gen = xoroshiro128plus(42n)
     expect(gen.sample()).toMatchInlineSnapshot(`0.9534636529511711`)
     expect(gen.sample()).toMatchInlineSnapshot(`0.8909167130589575`)
@@ -68,7 +70,7 @@ test('sample', () => {
     expect(gen.sample()).toMatchInlineSnapshot(`0.1637393807255222`)
 })
 
-test('[0,1) interval', () => {
+it('[0,1) interval', () => {
     const gen = xoroshiro128plus(BigInt(new Date().getTime()))
     const total = 50000
     let mean = 0

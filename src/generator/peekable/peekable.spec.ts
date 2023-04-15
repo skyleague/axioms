@@ -7,22 +7,24 @@ import { forAll, array, unknown, tuple } from '../../random/index.js'
 import { toGenerator } from '../../type/index.js'
 import { repeat, next, range } from '../index.js'
 
-test('peekable xs === xs', () => {
+import { expect, it } from 'vitest'
+
+it('peekable xs === xs', () => {
     forAll(array(unknown()), (xs) => {
         const n = xs.length
         expect(collect(take(peekable(xs), n))).toEqual(xs)
     })
 })
 
-test('has +1 lookahead', () => {
+it('has +1 lookahead', () => {
     forAll(tuple(array(unknown()), unknown()), ([xs, x]) => {
         const n = xs.length
-        const it = peekable(toGenerator(xs, x))
+        const iterator = peekable(toGenerator(xs, x))
         expect(
             collect(
                 take(
                     repeat(() => {
-                        return [it.peek(), next(it)]
+                        return [iterator.peek(), next(iterator)]
                     }),
                     n
                 )
@@ -37,19 +39,19 @@ test('has +1 lookahead', () => {
                 ])
             )
         )
-        expect(it.peek()).toEqual({ left: x })
-        expect(next(it)).toEqual({ left: x })
-        expect(it.peek()).toEqual({ left: x })
+        expect(iterator.peek()).toEqual({ left: x })
+        expect(next(iterator)).toEqual({ left: x })
+        expect(iterator.peek()).toEqual({ left: x })
     })
 })
 
-test('simple', () => {
+it('simple', () => {
     const values = []
     const iterator = peekable(range(3))
-    let it = next(iterator)
-    while (isRight(it)) {
-        values.push([it, iterator.peek()])
-        it = next(iterator)
+    let its = next(iterator)
+    while (isRight(its)) {
+        values.push([its, iterator.peek()])
+        its = next(iterator)
     }
     expect(values).toMatchInlineSnapshot(`
         [

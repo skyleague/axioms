@@ -1,28 +1,30 @@
 import { isArray } from './index.js'
 
-test('simple', () => {
-    expect(isArray([])).toBeTrue()
+import { expect, it } from 'vitest'
+
+it('simple', () => {
+    expect(isArray([])).toBe(true)
 })
 
-test('simple', () => {
+it('simple', () => {
     const array = [2, 3]
-    expect(isArray(array)).toBeTrue()
+    expect(isArray(array)).toBe(true)
 })
 
-test('not array', () => {
-    expect(isArray(2)).toBeFalse()
+it('not array', () => {
+    expect(isArray(2)).toBe(false)
 })
 
-test('object with length', () => {
+it('object with length', () => {
     const fakeArray: Record<number, string | undefined> & { length: number } = { length: 1 }
     fakeArray[0] = 'x'
-    expect(isArray(fakeArray)).toBeFalse()
+    expect(isArray(fakeArray)).toBe(false)
 })
 
-test('null', () => {
-    expect(isArray(null)).toBeFalse()
+it('null', () => {
+    expect(isArray(null)).toBe(false)
 })
 
-test('undefined', () => {
-    expect(isArray(undefined)).toBeFalse()
+it('undefined', () => {
+    expect(isArray(undefined)).toBe(false)
 })

@@ -1,6 +1,8 @@
 import { intersection } from './intersection.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(intersection(new Set([1, 2, 3]), new Set([2, 3, 4]))).toMatchInlineSnapshot(`
         Set {
           2,
@@ -9,7 +11,7 @@ test('simple', () => {
     `)
 })
 
-test('iterator', () => {
+it('iterator', () => {
     expect(intersection([1, 2, 3], [2, 3, 4])).toMatchInlineSnapshot(`
         Set {
           2,

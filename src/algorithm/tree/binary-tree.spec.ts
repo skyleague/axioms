@@ -1,7 +1,9 @@
 import type { BinaryTree } from './index.js'
 import { dfsNLR, dfsLRN } from './index.js'
 
-test('preorder', () => {
+import { expect, it } from 'vitest'
+
+it('preorder', () => {
     const tree: BinaryTree<number> = {
         value: 1,
         left: { value: 2, left: { value: 4 }, right: { value: 5 } },
@@ -21,7 +23,7 @@ test('preorder', () => {
     `)
 })
 
-test('postorder', () => {
+it('postorder', () => {
     const tree: BinaryTree<number> = {
         value: 1,
         left: { value: 2, left: { value: 4 }, right: { value: 5 } },

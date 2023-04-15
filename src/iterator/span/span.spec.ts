@@ -2,7 +2,9 @@ import { span } from './index.js'
 
 import { collect } from '../../array/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     const [init, rest] = span([1, 2, 3, 4, 5, 1, 2, 3], (x) => x < 3)
     expect(init).toMatchInlineSnapshot(`
         [
@@ -22,7 +24,7 @@ test('simple', () => {
     `)
 })
 
-test('all', () => {
+it('all', () => {
     const [init, rest] = span([1, 2, 3], (x) => x < 9)
     expect(init).toMatchInlineSnapshot(`
         [
@@ -34,7 +36,7 @@ test('all', () => {
     expect(collect(rest)).toMatchInlineSnapshot(`[]`)
 })
 
-test('none', () => {
+it('none', () => {
     const [init, rest] = span([1, 2, 3], (x) => x < 0)
     expect(init).toMatchInlineSnapshot(`[]`)
     expect(collect(rest)).toMatchInlineSnapshot(`

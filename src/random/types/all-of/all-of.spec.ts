@@ -7,7 +7,9 @@ import { object } from '../object/index.js'
 import { string } from '../string/index.js'
 import { tuple } from '../tuple/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     const aFoo = object({ foo: string() })
     const aBar = object({ bar: string() })
     forAll(allOf(aFoo, aBar), (x) => {
@@ -15,7 +17,7 @@ test('simple', () => {
     })
 })
 
-test('merge order', () => {
+it('merge order', () => {
     const aFoo = object({ foo: string(), bar: string() })
     const aBar = object({ bar: string() })
 

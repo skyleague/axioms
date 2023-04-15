@@ -3,8 +3,10 @@ import { take, takeWhile } from './index.js'
 import { collect } from '../../array/index.js'
 import { repeat, range } from '../../generator/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('take', () => {
-    test('string', () => {
+    it('string', () => {
         expect(collect(take('hello world!', 5))).toMatchInlineSnapshot(`
             [
               "h",
@@ -16,7 +18,7 @@ describe('take', () => {
         `)
     })
 
-    test('short', () => {
+    it('short', () => {
         expect(collect(take([1, 2], 6))).toMatchInlineSnapshot(`
             [
               1,
@@ -25,19 +27,19 @@ describe('take', () => {
         `)
     })
 
-    test('empty', () => {
+    it('empty', () => {
         expect(collect(take([], 6))).toMatchInlineSnapshot(`[]`)
     })
 
-    test('negative', () => {
+    it('negative', () => {
         expect(collect(take([1, 2], -1))).toMatchInlineSnapshot(`[]`)
     })
 
-    test('zero', () => {
+    it('zero', () => {
         expect(collect(take([1, 2], 0))).toMatchInlineSnapshot(`[]`)
     })
 
-    test('simple', () => {
+    it('simple', () => {
         expect(collect(take([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5))).toMatchInlineSnapshot(`
             [
               1,
@@ -49,7 +51,7 @@ describe('take', () => {
         `)
     })
 
-    test('repeat', () => {
+    it('repeat', () => {
         expect(collect(take(repeat('foo'), 5))).toMatchInlineSnapshot(`
             [
               "foo",
@@ -63,7 +65,7 @@ describe('take', () => {
 })
 
 describe('takeWhile', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(collect(takeWhile([1, 2, 3, 4, 5, 1, 2, 3], (x) => x < 3))).toMatchInlineSnapshot(`
             [
               1,
@@ -72,7 +74,7 @@ describe('takeWhile', () => {
         `)
     })
 
-    test('all', () => {
+    it('all', () => {
         expect(collect(takeWhile([1, 2, 3], (x) => x < 9))).toMatchInlineSnapshot(`
             [
               1,
@@ -82,15 +84,15 @@ describe('takeWhile', () => {
         `)
     })
 
-    test('none', () => {
+    it('none', () => {
         expect(collect(takeWhile([1, 2, 3], (x) => x < 0))).toMatchInlineSnapshot(`[]`)
     })
 
-    test('large size', () => {
+    it('large size', () => {
         expect(collect(takeWhile(range(32768), (x) => x < 32700))).toEqual(collect(range(32700)))
     })
 
-    test('vs for loop', () => {
+    it('vs for loop', () => {
         const arr = []
         for (const x of range(32768)) {
             if (x >= 32700) {

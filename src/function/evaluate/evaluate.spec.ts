@@ -3,15 +3,17 @@ import { evaluate } from './evaluate.js'
 import { sleep } from '../../async/index.js'
 import { asyncForAll, forAll, unknown } from '../../random/index.js'
 
-test('constant', () => {
+import { it } from 'vitest'
+
+it('constant', () => {
     forAll(unknown(), (x) => evaluate(x) === x)
 })
 
-test('fn', () => {
+it('fn', () => {
     forAll(unknown(), (x) => evaluate(() => x) === x)
 })
 
-test('async fn', async () => {
+it('async fn', async () => {
     await asyncForAll(unknown(), async (x) => {
         return (
             (await evaluate(async () => {

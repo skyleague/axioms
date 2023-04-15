@@ -5,7 +5,9 @@ import { range } from '../../generator/index.js'
 import { forAll, tuple, natural, unknown } from '../../random/index.js'
 import { foldl, all } from '../index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(collect(replicate(1, 2))).toMatchInlineSnapshot(`
         [
           1,
@@ -20,7 +22,7 @@ test('simple', () => {
     `)
 })
 
-test('correct length', () => {
+it('correct length', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
         ([n, p]) => {
@@ -31,7 +33,7 @@ test('correct length', () => {
     )
 })
 
-test('all same primitive', () => {
+it('all same primitive', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
         ([n, p]) => {
@@ -42,7 +44,7 @@ test('all same primitive', () => {
     )
 })
 
-test('all same primitive from function', () => {
+it('all same primitive from function', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
         ([n, p]) => {
@@ -53,7 +55,7 @@ test('all same primitive from function', () => {
     )
 })
 
-test('range from function with index', () => {
+it('range from function with index', () => {
     forAll(
         natural({ max: 20000 }),
         (n) => {
@@ -69,7 +71,7 @@ test('range from function with index', () => {
     )
 })
 
-test('spread', () => {
+it('spread', () => {
     expect(collect(replicate(() => false, 10))).toMatchInlineSnapshot(`
         [
           false,

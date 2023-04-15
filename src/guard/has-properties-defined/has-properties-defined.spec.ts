@@ -2,7 +2,9 @@ import { hasPropertiesDefined } from './has-properties-defined.js'
 
 import { all, collect, dict, float, forAll, keysOf, shuffle, take, tuple, unknown } from '../../index.js'
 
-test('defined properties are defined', () => {
+import { expect, it } from 'vitest'
+
+it('defined properties are defined', () => {
     forAll(tuple(dict(unknown()), float({ min: 0, max: 1 })), ([xs, r]) => {
         const keys = keysOf(xs)
         const selectedKeys = collect(take(shuffle(keys), r * keys.length))
@@ -10,7 +12,7 @@ test('defined properties are defined', () => {
     })
 })
 
-test('filters with correct assertion', () => {
+it('filters with correct assertion', () => {
     const original: { foo: string | undefined }[] = [{ foo: 'bar' }, { foo: undefined }]
 
     const filtered: { foo: string }[] = original.filter(hasPropertiesDefined('foo'))
@@ -23,7 +25,7 @@ test('filters with correct assertion', () => {
     `)
 })
 
-test('multiple', () => {
+it('multiple', () => {
     const original = [{ foo: 'bar', bar: 'fooz' }, { foo: undefined }]
     const filtered = original.filter(hasPropertiesDefined(['foo', 'bar']))
     expect(filtered).toEqual([{ foo: 'bar', bar: 'fooz' }])

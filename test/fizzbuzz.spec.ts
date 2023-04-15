@@ -3,7 +3,9 @@ import { counter } from '../src/generator/index.js'
 import { take } from '../src/iterator/index.js'
 import type { Traversable } from '../src/type/index.js'
 
-test('fizzbuzz', () => {
+import { expect, it } from 'vitest'
+
+it('fizzbuzz', () => {
     const factors = [
         [15, 'fizzbuzz'],
         [5, 'buzz'],

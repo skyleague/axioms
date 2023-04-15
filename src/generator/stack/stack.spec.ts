@@ -4,7 +4,9 @@ import { collect, sum } from '../../array/index.js'
 import { take, allEqual, map } from '../../iterator/index.js'
 import { forAll, array, unknown } from '../../random/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(collect(stack([1, 2, 3, 4]))).toMatchInlineSnapshot(`
         [
           1,
@@ -15,7 +17,7 @@ test('simple', () => {
     `)
 })
 
-test('continued', () => {
+it('continued', () => {
     const q = stack([1, 2, 3, 4])
     q.push([5, 6, 7])
     expect(collect(take(q, 3))).toMatchInlineSnapshot(`
@@ -41,7 +43,7 @@ test('continued', () => {
     expect(collect(q)).toMatchInlineSnapshot(`[]`)
 })
 
-test('continued 2', () => {
+it('continued 2', () => {
     const q = stack([1])
     q.push([2, 3])
     q.push([4, 5])
@@ -70,11 +72,11 @@ test('continued 2', () => {
     expect(collect(q)).toMatchInlineSnapshot(`[]`)
 })
 
-test('take n stack xs === xs', () => {
+it('take n stack xs === xs', () => {
     forAll(array(unknown()), (xs) => allEqual(take(stack(xs), xs.length), xs))
 })
 
-test('take n stack.push(...xss) === reverse xs', () => {
+it('take n stack.push(...xss) === reverse xs', () => {
     forAll(array(array(unknown())), (xss) => {
         const values = stack()
         values.push(...xss)

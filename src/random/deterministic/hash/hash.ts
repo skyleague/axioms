@@ -1,3 +1,3 @@
-import hasher from 'node-object-hash'
+import { hasher } from 'node-object-hash'
 
-export const objectHasher = /* @__PURE__ */ hasher({ sort: false, coerce: false })
+export const objectHasher = hasher({ sort: false, coerce: false })
