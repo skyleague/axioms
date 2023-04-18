@@ -5,7 +5,9 @@ import { range } from '../../../generator/index.js'
 import { isJust } from '../../../guard/index.js'
 import { forAll, set, string, natural } from '../../../random/index.js'
 
-test('disjointSet x == find x', () => {
+import { expect, it } from 'vitest'
+
+it('disjointSet x == find x', () => {
     forAll(set(string()), (xs) => {
         const xss = disjointSet<string>(...xs)
         for (const x of xs) {
@@ -14,7 +16,7 @@ test('disjointSet x == find x', () => {
     })
 })
 
-test('root x == find x', () => {
+it('root x == find x', () => {
     forAll(set(string()), (xs) => {
         const xss = disjointSet<string>()
         for (const x of xs) {
@@ -24,7 +26,7 @@ test('root x == find x', () => {
     })
 })
 
-test('intersect disjoint even/uneven === null', () => {
+it('intersect disjoint even/uneven === null', () => {
     const size = 1000
     forAll(set(natural({ min: 2, max: size })), (xs) => {
         const xss = disjointSet<number>(...[0, 1], ...xs)
@@ -52,7 +54,7 @@ test('intersect disjoint even/uneven === null', () => {
     })
 })
 
-test('union xs as - 1', () => {
+it('union xs as - 1', () => {
     const size = 1000
     forAll(
         set(natural({ min: 2, max: size })),

@@ -9,8 +9,10 @@ import { integer } from '../integer/index.js'
 import { oneOf } from '../one-of/index.js'
 import { utf16 } from '../string/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('object', () => {
-    test('random sample', () => {
+    it('random sample', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = object({ foo: integer() })
         expect(
@@ -56,7 +58,7 @@ describe('object', () => {
         `)
     })
 
-    test('foo', () => {
+    it('foo', () => {
         const aobject = object({
             foo: oneOf(utf16(), integer()),
             bar: utf16(),
@@ -69,7 +71,7 @@ describe('object', () => {
             `)
     })
 
-    test('foo2', () => {
+    it('foo2', () => {
         const aobject = object({
             foo: oneOf(utf16(), integer()),
             bar: object({
@@ -88,46 +90,46 @@ describe('object', () => {
             `)
     })
 
-    test('foo3', () => {
+    it('foo3', () => {
         const aobject = json()
         expect(aobject.value({ rng: xoroshiro128plus(48n) }).value).toMatchInlineSnapshot(`
-            {
-              "&"<9#w<6": null,
-              "@\\Q*cM]": "=m",
-              "BR": [
-                " eDZl3zqf",
-                null,
-                false,
-                -1220394099.677001,
-                -1465129464,
-                null,
-                -1068526350.6912618,
-                false,
-                "rQ9Ro",
-              ],
-              "D6Ss@CGln": {
-                ":PNH>:": "",
-                "jS:#%>]u": 1267711513.3051472,
-                "}X": false,
-              },
-              "F)O?Fb[m": [
-                -1883886852,
-                "la",
-              ],
-              "NW": [
-                -406554418,
-                false,
-                502462132,
-                null,
-                false,
-              ],
-              "P;2(}c": null,
-              "kWb^u": -1613173730.4950776,
-            }
+          {
+            "&\\"<9#w<6": null,
+            "@\\\\Q*cM]": "=m",
+            "BR": [
+              " eDZl3zqf",
+              null,
+              false,
+              -1220394099.677001,
+              -1465129464,
+              null,
+              -1068526350.6912618,
+              false,
+              "rQ9Ro",
+            ],
+            "D6Ss@CGln": {
+              ":PNH>:": "",
+              "jS:#%>]u": 1267711513.3051472,
+              "}X": false,
+            },
+            "F)O?Fb[m": [
+              -1883886852,
+              "la",
+            ],
+            "NW": [
+              -406554418,
+              false,
+              502462132,
+              null,
+              false,
+            ],
+            "P;2(}c": null,
+            "kWb^u": -1613173730.4950776,
+          }
         `)
     })
 
-    test('foo4', () => {
+    it('foo4', () => {
         const aobject = object({})
         expect(aobject.random({ rng: xoroshiro128plus(42n) })).toMatchInlineSnapshot(`{}`)
     })

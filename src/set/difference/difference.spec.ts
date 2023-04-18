@@ -1,7 +1,9 @@
 import { difference, symmetricDifference } from './difference.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('difference', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(difference(new Set([1, 2, 3]), new Set([2, 3, 4]))).toMatchInlineSnapshot(`
                     Set {
                       1,
@@ -9,7 +11,7 @@ describe('difference', () => {
             `)
     })
 
-    test('iterator', () => {
+    it('iterator', () => {
         expect(difference([1, 2, 3], [2, 3, 4])).toMatchInlineSnapshot(`
                     Set {
                       1,
@@ -19,7 +21,7 @@ describe('difference', () => {
 })
 
 describe('symmetricDifference', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(symmetricDifference(new Set([1, 2, 3]), new Set([2, 3, 4]))).toMatchInlineSnapshot(`
             Set {
               1,
@@ -28,7 +30,7 @@ describe('symmetricDifference', () => {
         `)
     })
 
-    test('iterator', () => {
+    it('iterator', () => {
         expect(symmetricDifference([1, 2, 3], [2, 3, 4])).toMatchInlineSnapshot(`
             Set {
               1,

@@ -1,7 +1,9 @@
 import { collect } from '../src/array/index.js'
 import { take } from '../src/iterator/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     function* fibonacci() {
         let prev = 0
         let curr = 1

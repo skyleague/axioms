@@ -2,8 +2,10 @@ import { drop, dropWhile } from './index.js'
 
 import { collect } from '../../array/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('drop', () => {
-    test('string', () => {
+    it('string', () => {
         expect(collect(drop('hello world!', 6))).toMatchInlineSnapshot(`
             [
               "w",
@@ -16,11 +18,11 @@ describe('drop', () => {
         `)
     })
 
-    test('short', () => {
+    it('short', () => {
         expect(collect(drop([1, 2], 6))).toMatchInlineSnapshot(`[]`)
     })
 
-    test('negative', () => {
+    it('negative', () => {
         expect(collect(drop([1, 2], -1))).toMatchInlineSnapshot(`
             [
               1,
@@ -29,7 +31,7 @@ describe('drop', () => {
         `)
     })
 
-    test('zero', () => {
+    it('zero', () => {
         expect(collect(drop([1, 2], 0))).toMatchInlineSnapshot(`
             [
               1,
@@ -38,7 +40,7 @@ describe('drop', () => {
         `)
     })
 
-    test('simple', () => {
+    it('simple', () => {
         expect(collect(drop([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5))).toMatchInlineSnapshot(`
             [
               6,
@@ -52,7 +54,7 @@ describe('drop', () => {
 })
 
 describe('dropWhile', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(collect(dropWhile([1, 2, 3, 4, 5, 1, 2, 3], (x) => x < 3))).toMatchInlineSnapshot(`
             [
               3,
@@ -65,11 +67,11 @@ describe('dropWhile', () => {
         `)
     })
 
-    test('all', () => {
+    it('all', () => {
         expect(collect(dropWhile([1, 2, 3], (x) => x < 9))).toMatchInlineSnapshot(`[]`)
     })
 
-    test('none', () => {
+    it('none', () => {
         expect(collect(dropWhile([1, 2, 3], (x) => x < 0))).toMatchInlineSnapshot(`
             [
               1,

@@ -1,6 +1,8 @@
 import { mapValues } from './map-values.js'
 
-test('infers correct type', () => {
+import { expect, it } from 'vitest'
+
+it('infers correct type', () => {
     const original = {
         foo: 'bar' as const,
         fooz: 'baz' as const,

@@ -2,7 +2,9 @@ import { init } from './index.js'
 
 import { forAll, array, unknown } from '../../random/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(init([1, 2, 3])).toMatchInlineSnapshot(`
         [
           1,
@@ -11,7 +13,7 @@ test('simple', () => {
     `)
 })
 
-test('generator', () => {
+it('generator', () => {
     function* foobar() {
         yield 'foo'
         yield 'bar'
@@ -23,7 +25,7 @@ test('generator', () => {
     `)
 })
 
-test('init xs === xs[:-1]', () => {
+it('init xs === xs[:-1]', () => {
     forAll(array(unknown()), (xs) => {
         expect(init(xs)).toEqual(xs.slice(0, xs.length - 1))
     })

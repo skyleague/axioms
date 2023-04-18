@@ -1,6 +1,8 @@
 import { isPromise } from './is-promise.js'
 
-test('simple', () => {
-    expect(isPromise(Promise.resolve(1))).toBeTrue()
-    expect(isPromise(1)).toBeFalse()
+import { expect, it } from 'vitest'
+
+it('simple', () => {
+    expect(isPromise(Promise.resolve(1))).toBe(true)
+    expect(isPromise(1)).toBe(false)
 })

@@ -1,6 +1,8 @@
 import { memoizeGetters } from './getters.js'
 
-test('memoizeGetters', () => {
+import { expect, it } from 'vitest'
+
+it('memoizeGetters', () => {
     let i = 0
     const x = {
         x: 0,

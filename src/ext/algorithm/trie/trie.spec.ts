@@ -4,7 +4,9 @@ import { equal } from '../../../iterator/index.js'
 import { forAll, tuple, array, string, unknown, set } from '../../../random/index.js'
 import { Nothing } from '../../../type/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     const t = trie<number>()
 
     t.insert(['foo', 'bar'], 2)
@@ -33,7 +35,7 @@ test('simple', () => {
     expect(t.find(['foo', 'bar'])).toEqual(2)
 })
 
-test('find', () => {
+it('find', () => {
     const t = trie<number>()
 
     t.insert(['foo', 'bar'], 2)
@@ -44,7 +46,7 @@ test('find', () => {
     expect(t.find(['foo', 'baz'])).toEqual(Nothing)
 })
 
-test('double insert is immutable', () => {
+it('double insert is immutable', () => {
     const t = trie<number>()
 
     t.insert(['foo', 'bar'], 2)
@@ -53,7 +55,7 @@ test('double insert is immutable', () => {
     expect(t.find(['foo', 'bar'])).toEqual(2)
 })
 
-test('performance', () => {
+it('performance', () => {
     const t = trie<number>()
 
     t.insert(['foo', 'bar'], 2)
@@ -65,7 +67,7 @@ test('performance', () => {
     }
 })
 
-test('find xs x == x', () => {
+it('find xs x == x', () => {
     forAll(tuple(array(string()), unknown()), ([xs, v]) => {
         const t = trie<unknown>()
         t.insert(xs, v)
@@ -73,11 +75,11 @@ test('find xs x == x', () => {
     })
 })
 
-test('forall x of xs, find xs x == x - uniqueness', () => {
+it('forall x of xs, find xs x == x - uniqueness', () => {
     forAll(set(tuple(array(string()), unknown()), { eq: ([as], [bs]) => equal(as, bs) }), (xss) => {
         const t = trie<unknown>()
         for (const [xs, v] of xss) {
-            expect(t.insert(xs, v)).toBeTrue()
+            expect(t.insert(xs, v)).toBe(true)
         }
         for (const [xs, v] of xss) {
             expect(t.find(xs)).toEqual(v)
@@ -85,10 +87,10 @@ test('forall x of xs, find xs x == x - uniqueness', () => {
     })
 })
 
-test('does not throw on random retrieval', () => {
+it('does not throw on random retrieval', () => {
     forAll(tuple(array(string()), unknown(), array(array(string()))), ([xs, v, tests]) => {
         const t = trie<unknown>()
-        expect(t.insert(xs, v)).toBeTrue()
+        expect(t.insert(xs, v)).toBe(true)
         for (const test of tests) {
             t.find(test)
         }

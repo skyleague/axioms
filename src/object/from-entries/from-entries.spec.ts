@@ -4,11 +4,13 @@ import { equal } from '../../iterator/index.js'
 import { dict, forAll, unknown } from '../../random/index.js'
 import { entriesOf } from '../entries-of/index.js'
 
-test('fromEntries o entriesOf === identity', () => {
+import { expect, it } from 'vitest'
+
+it('fromEntries o entriesOf === identity', () => {
     forAll(dict(unknown()), (x) => equal(fromEntries(entriesOf(x)), x))
 })
 
-test('infers correct type', () => {
+it('infers correct type', () => {
     const original = {
         foo: 'bar' as const,
         fooz: 'baz' as const,

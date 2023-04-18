@@ -1,7 +1,9 @@
 import { sum } from '../src/array/index.js'
 import { enumerate, range } from '../src/generator/index.js'
 
-test('knapsack', () => {
+import { expect, it } from 'vitest'
+
+it('knapsack', () => {
     const items: [string, number, number][] = [
         ['map', 9, 150],
         ['compass', 13, 35],

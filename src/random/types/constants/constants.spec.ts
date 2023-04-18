@@ -5,7 +5,9 @@ import { object } from '../object/index.js'
 import { string } from '../string/index.js'
 import { tuple } from '../tuple/index.js'
 
-test('simple', () => {
+import { it } from 'vitest'
+
+it('simple', () => {
     const aFoo = object({ foo: string() })
     const aBar = object({ bar: string() })
     forAll(tuple(aFoo, aBar), ([a, b]) => {

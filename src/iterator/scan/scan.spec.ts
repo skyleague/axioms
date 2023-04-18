@@ -1,9 +1,11 @@
 import { scanl, scanl1 } from './index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('scanl', () => {
     const div = (a: number, b: number) => a / b
     const max = (a: number, b: number) => Math.max(a, b)
-    test('divide', () => {
+    it('divide', () => {
         expect([...scanl([4, 2, 4], div, 64)]).toMatchInlineSnapshot(`
             [
               64,
@@ -14,7 +16,7 @@ describe('scanl', () => {
         `)
     })
 
-    test('empty input', () => {
+    it('empty input', () => {
         expect([...scanl([], div, 3)]).toMatchInlineSnapshot(`
             [
               3,
@@ -22,7 +24,7 @@ describe('scanl', () => {
         `)
     })
 
-    test('max', () => {
+    it('max', () => {
         expect([...scanl([1, 2, 3, 4], max, 5)]).toMatchInlineSnapshot(`
             [
               5,
@@ -34,7 +36,7 @@ describe('scanl', () => {
         `)
     })
 
-    test('max 2', () => {
+    it('max 2', () => {
         expect([...scanl([1, 2, 3, 4, 5, 6, 7], max, 5)]).toMatchInlineSnapshot(`
             [
               5,
@@ -49,7 +51,7 @@ describe('scanl', () => {
         `)
     })
 
-    test('lambda', () => {
+    it('lambda', () => {
         expect([...scanl([1, 2, 3, 4, 5, 6, 7], (x, y) => 2 * x + y, 5)]).toMatchInlineSnapshot(`
             [
               5,
@@ -68,7 +70,7 @@ describe('scanl', () => {
 describe('scanl1', () => {
     const plus = (a: number, b: number) => a + b
     const div = (a: number, b: number) => a / b
-    test('plus', () => {
+    it('plus', () => {
         expect([...scanl1([1, 2, 3, 4], plus)]).toMatchInlineSnapshot(`
             [
               1,
@@ -79,7 +81,7 @@ describe('scanl1', () => {
         `)
     })
 
-    test('divide', () => {
+    it('divide', () => {
         expect([...scanl1([64, 4, 2, 8], div)]).toMatchInlineSnapshot(`
             [
               64,
@@ -90,7 +92,7 @@ describe('scanl1', () => {
         `)
     })
 
-    test('single input', () => {
+    it('single input', () => {
         expect([...scanl1([12], div)]).toMatchInlineSnapshot(`
             [
               12,
@@ -98,7 +100,7 @@ describe('scanl1', () => {
         `)
     })
 
-    test('and', () => {
+    it('and', () => {
         expect([...scanl1([3 > 1, 3 > 2, 4 > 6, 5 === 5], (a, b) => a && b)]).toMatchInlineSnapshot(`
             [
               true,

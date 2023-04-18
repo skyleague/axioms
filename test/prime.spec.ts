@@ -2,7 +2,9 @@ import { collect } from '../src/array/index.js'
 import { counter, next } from '../src/generator/index.js'
 import { filter, take } from '../src/iterator/index.js'
 
-test('prime', () => {
+import { expect, it } from 'vitest'
+
+it('prime', () => {
     function* primes() {
         let xs = counter(2)
 

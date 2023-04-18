@@ -2,19 +2,21 @@ import { keysOf } from './index.js'
 
 import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
-test('keysOf === Object.keys', () => {
+import { expect, it } from 'vitest'
+
+it('keysOf === Object.keys', () => {
     forAll(dict(unknown()), (o) => {
         expect(keysOf(o)).toStrictEqual(Object.keys(o))
     })
 })
 
-test('keysOf [xs] === Object.keys', () => {
+it('keysOf [xs] === Object.keys', () => {
     forAll(array(string()), (o) => {
         expect(keysOf(o)).toStrictEqual(Object.keys(o))
     })
 })
 
-test('keysOf [1, 2, 3]', () => {
+it('keysOf [1, 2, 3]', () => {
     expect(keysOf([1, 2, 3])).toMatchInlineSnapshot(`
         [
           "0",
@@ -24,7 +26,7 @@ test('keysOf [1, 2, 3]', () => {
     `)
 })
 
-test('keysOf union object and array', () => {
+it('keysOf union object and array', () => {
     forAll(oneOf(array(string()), dict([integer(), integer()])), (o) => {
         expect(keysOf(o)).toStrictEqual(Object.keys(o))
     })

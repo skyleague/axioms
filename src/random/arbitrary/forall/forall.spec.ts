@@ -1,9 +1,11 @@
 import { asyncForAll, forAll } from './index.js'
 
 import { sleep } from '../../../async/index.js'
-import { utf16, tuple, integer, array, FalsifiedError } from '../../../random/index.js'
+import { utf16, tuple, integer, array } from '../../../random/index.js'
 
-test('abs smaller than six', () => {
+import { expect, describe, it } from 'vitest'
+
+it('abs smaller than six', () => {
     expect(() => {
         forAll(integer(), (i) => Math.abs(i) <= 600000, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
@@ -27,17 +29,17 @@ test('abs smaller than six', () => {
 const contains = (text: string, pattern: string) => text.includes(pattern)
 describe('properties', () => {
     // string text always contains itself
-    test('should always contain itself', () => {
+    it('should always contain itself', () => {
         forAll(utf16(), (text) => contains(text, text))
     })
-    test('should always contain its substrings', () => {
+    it('should always contain its substrings', () => {
         forAll(tuple(utf16(), utf16(), utf16()), ([a, b, c]) => {
             return contains(a + b + c, b)
         })
     })
 })
 
-test('counter example with jest expect', () => {
+it('counter example with jest expect', () => {
     expect(() => {
         forAll(
             integer(),
@@ -46,10 +48,10 @@ test('counter example with jest expect', () => {
             },
             { seed: 42n }
         )
-    }).toThrowWithMessage(FalsifiedError, /^Counter example found after 3 tests \(seed: 42n\)/)
+    }).toThrow(/^Counter example found after 3 tests \(seed: 42n\)/)
 })
 
-test('timeout async', async () => {
+it('timeout async', async () => {
     await expect(
         asyncForAll(
             integer(),
@@ -59,5 +61,5 @@ test('timeout async', async () => {
             },
             { seed: 42n }
         )
-    ).rejects.toThrowWithMessage(FalsifiedError, /^Counter example found after/)
+    ).rejects.toThrow(/^Counter example found after/)
 })

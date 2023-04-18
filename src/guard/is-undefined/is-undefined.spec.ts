@@ -2,18 +2,20 @@ import { isUndefined } from './index.js'
 
 import { forAll, unknown } from '../../random/index.js'
 
-test('undefined', () => {
+import { expect, it } from 'vitest'
+
+it('undefined', () => {
     expect(isUndefined(undefined)).toEqual(true)
 })
 
-test('null', () => {
+it('null', () => {
     expect(isUndefined(null!)).toEqual(false)
 })
 
-test('void', () => {
+it('void', () => {
     expect(isUndefined(void 0)).toEqual(true)
 })
 
-test('primitive is not undefined', () => {
+it('primitive is not undefined', () => {
     forAll(unknown({ undefined: false }), (x) => !isUndefined(x))
 })

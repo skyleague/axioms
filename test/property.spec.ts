@@ -1,5 +1,7 @@
 import { array, forAll, integer, string, tuple } from '../src/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('sorting', () => {
     function sort(xs: number[]): number[] {
         return xs.sort()
@@ -14,12 +16,12 @@ describe('sorting', () => {
         return true
     }
 
-    test('sorts the numbers', () => {
+    it('sorts the numbers', () => {
         expect(sort([1, 2, 3])).toEqual([1, 2, 3])
-        expect(isSorted(sort([1, 2, 3]))).toBeTrue()
+        expect(isSorted(sort([1, 2, 3]))).toBe(true)
     })
 
-    test.failing('sorts the numbers - arbitrary', () => {
+    it.fails('sorts the numbers - arbitrary', () => {
         forAll(array(integer()), (xs) => isSorted(sort(xs)))
     })
 
@@ -27,7 +29,7 @@ describe('sorting', () => {
         return xs.sort((a, z) => a - z)
     }
 
-    test('sorts the numbers correctly - arbitrary', () => {
+    it('sorts the numbers correctly - arbitrary', () => {
         forAll(array(integer()), (xs) => isSorted(sort2(xs)))
     })
 })
@@ -35,11 +37,11 @@ describe('sorting', () => {
 describe('contains', () => {
     const contains = (text: string, pattern: string) => text.includes(pattern)
 
-    test('should always contain itself', () => {
+    it('should always contain itself', () => {
         forAll(string(), (text) => contains(text, text))
     })
 
-    test('should always contain its substrings', () => {
+    it('should always contain its substrings', () => {
         forAll(tuple(string(), string(), string()), ([a, b, c]) => {
             return contains(`${a}${b}${c}`, b)
         })

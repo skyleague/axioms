@@ -2,7 +2,9 @@ import { asyncCollect } from './async-collect.js'
 
 import { sleep } from '../sleep/index.js'
 
-test('is ordered', async () => {
+import { expect, it } from 'vitest'
+
+it('is ordered', async () => {
     const xs: number[] = []
 
     expect(

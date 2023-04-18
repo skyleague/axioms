@@ -2,7 +2,9 @@ import { memoizeAttributes } from './attributes.js'
 
 import { mapValues } from '../../object/index.js'
 
-test('memoizeAttributes', () => {
+import { expect, it } from 'vitest'
+
+it('memoizeAttributes', () => {
     let i = 0
     const x = {
         x: () => ++i,

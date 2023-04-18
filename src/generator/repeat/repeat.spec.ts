@@ -3,7 +3,9 @@ import { repeat } from './repeat.js'
 import { collect } from '../../array/collect/index.js'
 import { take } from '../../iterator/index.js'
 
-test('constant', () => {
+import { expect, it } from 'vitest'
+
+it('constant', () => {
     expect(collect(take(repeat('foobar'), 4))).toMatchInlineSnapshot(`
         [
           "foobar",
@@ -14,7 +16,7 @@ test('constant', () => {
     `)
 })
 
-test('function', () => {
+it('function', () => {
     expect(
         collect(
             take(

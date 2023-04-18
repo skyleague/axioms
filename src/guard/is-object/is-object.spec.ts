@@ -2,28 +2,30 @@ import { isObject } from './index.js'
 
 import { forAll, unknown } from '../../random/index.js'
 
-test('object', () => {
+import { expect, it } from 'vitest'
+
+it('object', () => {
     expect(isObject({})).toEqual(true)
     expect(isObject({ foo: 'bar' })).toEqual(true)
 })
 
-test('array', () => {
+it('array', () => {
     expect(isObject([])).toEqual(false)
 })
 
-test('function', () => {
+it('function', () => {
     expect(isObject((x: number) => x)).toEqual(false)
 })
 
-test('null', () => {
+it('null', () => {
     expect(isObject(null)).toEqual(false)
 })
 
-test('undefined', () => {
+it('undefined', () => {
     expect(isObject(undefined)).toEqual(false)
 })
 
-test('object isObject', () => {
+it('object isObject', () => {
     forAll(
         unknown({
             float: false,

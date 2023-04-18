@@ -18,10 +18,12 @@ import { xoroshiro128plus } from '../../rng/index.js'
 import { integer } from '../integer/index.js'
 import { tuple } from '../tuple/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 import util from 'node:util'
 
 describe('string', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -32,7 +34,7 @@ describe('string', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -62,13 +64,13 @@ describe('string', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(string(), (str) => str.split('').every((c) => 32 <= c.charCodeAt(0) && c.charCodeAt(0) <= 126))
     })
 })
 
 describe('hex', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -79,7 +81,7 @@ describe('hex', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -109,13 +111,13 @@ describe('hex', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(hex(), (str) => str.split('').every((c) => '0123456789abcdef'.includes(c)))
     })
 })
 
 describe('base64', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -130,7 +132,7 @@ describe('base64', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -153,7 +155,7 @@ describe('base64', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(base64(), (str) =>
             str.split('').every((c) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.includes(c))
         )
@@ -161,7 +163,7 @@ describe('base64', () => {
 })
 
 describe('alpha', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -172,7 +174,7 @@ describe('alpha', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -202,11 +204,11 @@ describe('alpha', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(alpha(), (str) => str.split('').every((c) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.includes(c)))
     })
 
-    test('extra characters', () => {
+    it('extra characters', () => {
         forAll(
             utf16().chain((extra) => alpha({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) =>
@@ -216,7 +218,7 @@ describe('alpha', () => {
 })
 
 describe('lowerAlpha', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -227,7 +229,7 @@ describe('lowerAlpha', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -257,11 +259,11 @@ describe('lowerAlpha', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(lowerAlpha(), (str) => str.split('').every((c) => 'abcdefghijklmnopqrstuvwxy'.includes(c)))
     })
 
-    test('extra characters', () => {
+    it('extra characters', () => {
         forAll(
             utf16().chain((extra) => lowerAlpha({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c))
@@ -270,7 +272,7 @@ describe('lowerAlpha', () => {
 })
 
 describe('alphaNumeric', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -281,7 +283,7 @@ describe('alphaNumeric', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -311,13 +313,13 @@ describe('alphaNumeric', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(alphaNumeric(), (str) =>
             str.split('').every((c) => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.includes(c))
         )
     })
 
-    test('extra characters', () => {
+    it('extra characters', () => {
         forAll(
             utf16().chain((extra) => alphaNumeric({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) =>
@@ -327,7 +329,7 @@ describe('alphaNumeric', () => {
 })
 
 describe('lowerAlphaNumeric', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -338,7 +340,7 @@ describe('lowerAlphaNumeric', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -368,11 +370,11 @@ describe('lowerAlphaNumeric', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(lowerAlphaNumeric(), (str) => str.split('').every((c) => 'abcdefghijklmnopqrstuvwxyz0123456789'.includes(c)))
     })
 
-    test('extra characters', () => {
+    it('extra characters', () => {
         forAll(
             utf16().chain((extra) => lowerAlphaNumeric({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c))
@@ -381,7 +383,7 @@ describe('lowerAlphaNumeric', () => {
 })
 
 describe('ascii', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -392,7 +394,7 @@ describe('ascii', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -422,14 +424,14 @@ describe('ascii', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         // eslint-disable-next-line no-control-regex
         forAll(ascii(), (str) => str.split('').every((c) => /[\x00-\x7F]/.test(c)))
     })
 })
 
 describe('utf16', () => {
-    test('length is parametrized', () => {
+    it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
@@ -440,7 +442,7 @@ describe('utf16', () => {
         )
     })
 
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -470,13 +472,13 @@ describe('utf16', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(utf16(), (str) => util.toUSVString(str) === str)
     })
 })
 
 describe('utf16Surrogate', () => {
-    test('distribution', () => {
+    it('distribution', () => {
         const context = arbitraryContext({
             rng: xoroshiro128plus(42n),
         })
@@ -515,7 +517,7 @@ describe('utf16Surrogate', () => {
         `)
     })
 
-    test('allowed characters', () => {
+    it('allowed characters', () => {
         forAll(utf16Surrogate(), (str) => util.toUSVString(str) === str)
     })
 })

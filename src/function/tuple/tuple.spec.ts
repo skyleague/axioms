@@ -1,6 +1,8 @@
 import { curryTuple } from './index.js'
 
-test('tuple', () => {
+import { expect, it } from 'vitest'
+
+it('tuple', () => {
     expect(curryTuple(1)(1)).toMatchInlineSnapshot(`
         [
           1,

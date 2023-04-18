@@ -1,20 +1,22 @@
 import { defer } from './defer.js'
 
-test('deferred can be resolved', async () => {
+import { expect, it } from 'vitest'
+
+it('deferred can be resolved', async () => {
     const p = defer<string>()
     await expect(Promise.race([p, Promise.resolve('second')])).resolves.toEqual('second')
     p.resolve('first')
     await expect(Promise.race([p, Promise.resolve('second')])).resolves.toEqual('first')
 })
 
-test('deferred can be rejected', async () => {
+it('deferred can be rejected', async () => {
     const p = defer<string>()
     await expect(Promise.race([p, Promise.resolve('second')])).resolves.toEqual('second')
     p.reject(new Error('first'))
     await expect(Promise.race([p, Promise.resolve('second')])).rejects.toThrowError('first')
 })
 
-test('deferred resolves to the first resolved value', async () => {
+it('deferred resolves to the first resolved value', async () => {
     const p = defer<string>()
     p.resolve('first')
     await expect(p).resolves.toEqual('first')
@@ -22,7 +24,7 @@ test('deferred resolves to the first resolved value', async () => {
     await expect(p).resolves.toEqual('first')
 })
 
-test('deferred rejects to the first rejected value', async () => {
+it('deferred rejects to the first rejected value', async () => {
     const p = defer<string>()
     p.reject(new Error('first'))
     await expect(p).rejects.toThrowError('first')
@@ -30,7 +32,7 @@ test('deferred rejects to the first rejected value', async () => {
     await expect(p).rejects.toThrowError('first')
 })
 
-test('deferred resolves when resolve is called first', async () => {
+it('deferred resolves when resolve is called first', async () => {
     const p = defer<string>()
     p.resolve('first')
     await expect(p).resolves.toEqual('first')
@@ -38,7 +40,7 @@ test('deferred resolves when resolve is called first', async () => {
     await expect(p).resolves.toEqual('first')
 })
 
-test('deferred rejects when reject is called first', async () => {
+it('deferred rejects when reject is called first', async () => {
     const p = defer<string>()
     p.reject(new Error('first'))
     await expect(p).rejects.toThrowError('first')

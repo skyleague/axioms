@@ -2,7 +2,9 @@ import { ensureValues } from './ensure-values.js'
 
 import { constant, dict, forAll, oneOf, unknown } from '../../random/index.js'
 
-test('ensure-values', () => {
+import { it } from 'vitest'
+
+it('ensure-values', () => {
     forAll(dict(oneOf(constant(undefined), unknown({ undefined: false }))), (x) => {
         const config = ensureValues(x)
         for (const k of [...Object.keys(x), ...Object.getOwnPropertySymbols(x)] as (keyof typeof x)[]) {

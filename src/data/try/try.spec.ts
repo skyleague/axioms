@@ -19,22 +19,24 @@ import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type/
 import { Nothing } from '../../type/index.js'
 import { left, right } from '../either/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('asTry', () => {
-    test('const', () => {
+    it('const', () => {
         forAll(primitive(), (x) => {
             const value: Try<typeof x> = asTry(x)
             return value === x && !isThrown(value)
         })
     })
 
-    test('const fn', () => {
+    it('const fn', () => {
         forAll(primitive(), (x) => {
             const value: Try<typeof x> = asTry(() => x)
             return isSuccess(value) && value === x && !isThrown(value)
         })
     })
 
-    test('const fn throws', () => {
+    it('const fn throws', () => {
         forAll(string(), (x) => {
             const value: Try<typeof x> = asTry((): string => {
                 throw new Error(x)
@@ -43,28 +45,28 @@ describe('asTry', () => {
         })
     })
 
-    test('async const', async () => {
+    it('async const', async () => {
         await asyncForAll(primitive(), async (x) => {
             const value: Try<typeof x> = await asTry(async () => await Promise.resolve(x))
             return isSuccess(value) && value === x && !isThrown(x)
         })
     })
 
-    test('async const rejects', async () => {
+    it('async const rejects', async () => {
         await asyncForAll(string(), async (x) => {
             const value: Try<typeof x> = await asTry(async (): Promise<string> => await Promise.reject(new Error(x)))
             return isFailure(value) && value.message === x && isThrown(value)
         })
     })
 
-    test('async const rejects no await', async () => {
+    it('async const rejects no await', async () => {
         await asyncForAll(string(), async (x) => {
             const value: Try<typeof x> = await asTry(async (): Promise<string> => Promise.reject(new Error(x)))
             return isFailure(value) && value.message === x && isThrown(value)
         })
     })
 
-    test('async const throws', async () => {
+    it('async const throws', async () => {
         await asyncForAll(string(), async (x) => {
             // eslint-disable-next-line @typescript-eslint/require-await
             const value: Try<typeof x> = await asTry(async (): Promise<string> => {
@@ -74,46 +76,46 @@ describe('asTry', () => {
         })
     })
 
-    test('distributed type', async () => {
+    it('distributed type', async () => {
         const fn: AsyncConstExpr<string> = (() => 'foobar') as AsyncConstExpr<string>
         const _x: Try<string> = await asTry(fn)
     })
 
-    test('promisable type', async () => {
+    it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
         const _x: Try<string> = await asTry(fn)
     })
 
-    test('async tryexpr type', async () => {
+    it('async tryexpr type', async () => {
         // eslint-disable-next-line @typescript-eslint/require-await
         const fn = async () => asTry(() => 'foo') as Try<string>
         const _x: Try<string> = await asTry(fn)
     })
 
-    test('tryexpr type', () => {
+    it('tryexpr type', () => {
         const fn = () => asTry(() => 'foo') as Try<string>
         const _x: Try<string> = asTry(fn)
     })
 })
 
 describe('transformTry', () => {
-    test('promisable type', async () => {
+    it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
         const _x: Try<string> = await transformTry('foobar', fn, fn)
     })
 
-    test('promisable try type', async () => {
+    it('promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
         const _x: Try<string> = await transformTry('foobar', fn, fn)
     })
 
-    test('mixed promisable try type', async () => {
+    it('mixed promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
         const fn2 = () => 'foobar'
         const _x: Try<string> = await transformTry('foobar', fn, fn2)
     })
 
-    test('inferred type', async () => {
+    it('inferred type', async () => {
         const _x: Try<string> = await transformTry(
             'foobar',
             async () => Promise.resolve('foobar'),
@@ -124,79 +126,79 @@ describe('transformTry', () => {
 })
 
 describe('mapTry', () => {
-    test('success is mapped', () => {
+    it('success is mapped', () => {
         forAll(tuple(primitive(), primitive()), ([x1, x2]) => {
             const value: Try<typeof x2> = mapTry(x1, () => x2)
             return value === x2
         })
     })
 
-    test('failure is not mapped', () => {
+    it('failure is not mapped', () => {
         forAll(tuple(primitive().map(failure), primitive()), ([x1, x2]) => {
             const value: Try<typeof x2> = mapTry(x1, () => x2)
             expect(value).toEqual(x1)
         })
     })
 
-    test('promisable type', async () => {
+    it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
         const _x: Try<string> = await mapTry('foobar', fn)
     })
 
-    test('promisable try type', async () => {
+    it('promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
         const _x: Try<string> = await mapTry('foobar', fn)
     })
 
-    test('inferred type', async () => {
+    it('inferred type', async () => {
         const _x: Try<string> = await mapTry('foobar', async () => Promise.resolve('foobar'))
     })
 })
 
 describe('recoverTry', () => {
-    test('failure is mapped', () => {
+    it('failure is mapped', () => {
         forAll(tuple(primitive().map(failure), primitive()), ([x1, x2]) => {
             const value: Try<typeof x2> = recoverTry(x1, () => x2)
             expect(value).toEqual(x2)
         })
     })
 
-    test('success is not mapped', () => {
+    it('success is not mapped', () => {
         forAll(tuple(primitive(), primitive()), ([x1, x2]) => {
             const value: Try<typeof x2> = recoverTry(x1, () => x2)
             expect(value).toEqual(x1)
         })
     })
 
-    test('promisable type', async () => {
+    it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
         const _x: Try<string> = await recoverTry('foobar', fn)
     })
 
-    test('promisable try type', async () => {
+    it('promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
         const _x: Try<string> = await recoverTry('foobar', fn)
     })
 
-    test('inferred type', async () => {
+    it('inferred type', async () => {
         const _x: Try<string> = await recoverTry('foobar', async () => Promise.resolve('foobar'))
     })
 })
 
 describe('tryToEither', () => {
-    test('simple', () => {
+    it('simple', () => {
         const x: Try<string> = 'foobar'
         const either: Either<Error, string> = tryToEither(x)
         expect(either).toEqual({ right: x })
     })
 
-    test('failure is left', () => {
+    it('failure is left', () => {
         forAll(primitive().map(failure), (x) => {
             expect(tryToEither(x)).toEqual({ left: x })
         })
     })
 
-    test('success is right', () => {
+    it('success is right', () => {
         forAll(tuple(primitive()), ([x]) => {
             expect(tryToEither(x)).toEqual({ right: x })
         })
@@ -204,25 +206,25 @@ describe('tryToEither', () => {
 })
 
 describe('tryFromEither', () => {
-    test('simple', () => {
+    it('simple', () => {
         const either = { right: 'foobar' }
         const x: Try<string> = tryFromEither(either)
         expect(x).toEqual('foobar')
     })
 
-    test('left is failure', () => {
+    it('left is failure', () => {
         forAll(primitive().map(left), (x) => {
             expect(tryFromEither(x)).toEqual(failure(x.left))
         })
     })
 
-    test('primitive left is failure', () => {
+    it('primitive left is failure', () => {
         forAll(primitive().map(left), (x) => {
             expect(tryFromEither(x)).toEqual(failure(x.left))
         })
     })
 
-    test('right is success', () => {
+    it('right is success', () => {
         forAll(primitive().map(right), (x) => {
             expect(tryFromEither(x)).toEqual(x.right)
         })
@@ -230,19 +232,19 @@ describe('tryFromEither', () => {
 })
 
 describe('tryToMaybe', () => {
-    test('simple', () => {
+    it('simple', () => {
         const val = 'foobar'
         const x: Maybe<string> = tryToMaybe(val)
         expect(x).toEqual('foobar')
     })
 
-    test('failure is nothing', () => {
+    it('failure is nothing', () => {
         forAll(primitive().map(failure), (x) => {
             expect(tryToMaybe(x)).toEqual(Nothing)
         })
     })
 
-    test('success is just', () => {
+    it('success is just', () => {
         forAll(primitive(), (x) => {
             expect(tryToMaybe(x)).toEqual(x)
         })
@@ -250,19 +252,19 @@ describe('tryToMaybe', () => {
 })
 
 describe('tryAsValue', () => {
-    test('simple', () => {
+    it('simple', () => {
         const val = 'foobar'
         const x: string | undefined = tryAsValue(val)
         expect(x).toEqual('foobar')
     })
 
-    test('failure is undefined', () => {
+    it('failure is undefined', () => {
         forAll(primitive().map(failure), (x) => {
             expect(tryAsValue(x)).toEqual(undefined)
         })
     })
 
-    test('success is just', () => {
+    it('success is just', () => {
         forAll(primitive(), (x) => {
             expect(tryAsValue(x)).toEqual(x)
         })
@@ -270,26 +272,26 @@ describe('tryAsValue', () => {
 })
 
 describe('tryToError', () => {
-    test('simple', () => {
+    it('simple', () => {
         const val = 'foobar'
         const x: string = tryToError(val)
         expect(x).toEqual('foobar')
     })
 
-    test('simple failure', () => {
+    it('simple failure', () => {
         const val = failure('foobar')
         expect(() => {
             const _x: never = tryToError(val)
         }).toThrowError()
     })
 
-    test('failure is throwing', () => {
+    it('failure is throwing', () => {
         forAll(primitive().map(failure), (x) => {
             expect(() => tryToError(x)).toThrowError()
         })
     })
 
-    test('success is value', () => {
+    it('success is value', () => {
         forAll(primitive(), (x) => {
             expect(tryToError(x)).toEqual(x)
         })

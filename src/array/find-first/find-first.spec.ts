@@ -5,7 +5,9 @@ import { isNothing } from '../../guard/index.js'
 import { take } from '../../iterator/index.js'
 import { forAll, array, unknown, natural } from '../../random/index.js'
 
-test('first in array without predicate', () => {
+import { expect, it } from 'vitest'
+
+it('first in array without predicate', () => {
     forAll(array(unknown()), (xs) => {
         const found = findFirst(xs, () => true)
         if (xs.length === 0) {
@@ -16,7 +18,7 @@ test('first in array without predicate', () => {
     })
 })
 
-test('finds randomly inserted', () => {
+it('finds randomly inserted', () => {
     forAll(array(natural()), (xs, { rng }) => {
         const randomIndex = Math.floor(rng.sample() * xs.length)
         xs.splice(randomIndex, 0, -1)
@@ -24,7 +26,7 @@ test('finds randomly inserted', () => {
     })
 })
 
-test('finds first randomly inserted', () => {
+it('finds first randomly inserted', () => {
     forAll(array(natural()), (xs, { rng }) => {
         const randomIndex = Math.floor(rng.sample() * xs.length)
         const randomIndex2 = Math.floor(rng.sample() * (xs.length - randomIndex)) + randomIndex + 1
@@ -39,11 +41,11 @@ test('finds first randomly inserted', () => {
     })
 })
 
-test('simple', () => {
+it('simple', () => {
     expect(findFirst(counter(), (i) => i > 10)).toMatchInlineSnapshot(`11`)
 })
 
-test('generator', () => {
+it('generator', () => {
     function* foobar() {
         yield 'foo'
         yield 'bar'
@@ -51,6 +53,6 @@ test('generator', () => {
     expect(findFirst(foobar(), (str) => str.startsWith('b'))).toMatchInlineSnapshot(`"bar"`)
 })
 
-test('Nothing when nothing found', () => {
+it('Nothing when nothing found', () => {
     expect(findFirst(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`Symbol((Nothing))`)
 })

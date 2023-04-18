@@ -1,6 +1,8 @@
 import { groupBy } from './group-by.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(groupBy([1, 2, 3, 4, 5], (x) => (x % 2 === 0 ? 'even' : 'odd'))).toMatchInlineSnapshot(`
         {
           "even": [

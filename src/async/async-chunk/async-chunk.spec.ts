@@ -2,26 +2,28 @@ import { asyncChunk } from './async-chunk.js'
 
 import { asyncCollect } from '../async-collect/index.js'
 
-test('simple chunk function', async () => {
+import { expect, it } from 'vitest'
+
+it('simple chunk function', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], 1))).toEqual([[1], [2], [3], [4], [5]])
 })
 
-test('simple chunk function, other offset 3', async () => {
+it('simple chunk function, other offset 3', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], 3))).toEqual([
         [1, 2, 3],
         [4, 5],
     ])
 })
 
-test('simple chunk function, other offset 5', async () => {
+it('simple chunk function, other offset 5', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], 5))).toEqual([[1, 2, 3, 4, 5]])
 })
 
-test('simple chunk function larger than array', async () => {
+it('simple chunk function larger than array', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], 10))).toEqual([[1, 2, 3, 4, 5]])
 })
 
-test('simple chunk function offset 0', async () => {
+it('simple chunk function offset 0', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], 0))).toMatchInlineSnapshot(`
         [
           [
@@ -43,7 +45,7 @@ test('simple chunk function offset 0', async () => {
     `)
 })
 
-test('simple chunk function offset negative', async () => {
+it('simple chunk function offset negative', async () => {
     expect(await asyncCollect(asyncChunk([1, 2, 3, 4, 5], -5))).toMatchInlineSnapshot(`
         [
           [
@@ -65,6 +67,6 @@ test('simple chunk function offset negative', async () => {
     `)
 })
 
-// test('tco', async () => {
+// it('tco', async () => {
 //     expect((await asyncCollect(asyncChunk(range(32768), 3))).flat()).toEqual(collect(range(32768)))
 // })

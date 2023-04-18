@@ -5,7 +5,9 @@ import { allEqual, take } from '../../iterator/index.js'
 import { forAll, float } from '../../random/index.js'
 import { counter } from '../index.js'
 
-test('iterate x + 1 === counter x', () => {
+import { expect, it } from 'vitest'
+
+it('iterate x + 1 === counter x', () => {
     forAll(float(), (x) =>
         allEqual(
             take(
@@ -17,7 +19,7 @@ test('iterate x + 1 === counter x', () => {
     )
 })
 
-test('simple', () => {
+it('simple', () => {
     expect(
         collect(
             take(

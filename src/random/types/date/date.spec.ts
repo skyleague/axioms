@@ -5,8 +5,10 @@ import { repeat } from '../../../generator/index.js'
 import { take } from '../../../iterator/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('datetime', () => {
-    test('random sample', () => {
+    it('random sample', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = datetime()
         expect(
@@ -32,7 +34,7 @@ describe('datetime', () => {
         `)
     })
 
-    test('random sample - days', () => {
+    it('random sample - days', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = datetime({ precision: 'days' })
         expect(
@@ -60,7 +62,7 @@ describe('datetime', () => {
 })
 
 describe('date', () => {
-    test('random sample', () => {
+    it('random sample', () => {
         const ctx = { rng: xoroshiro128plus(1638968569864n) }
         const aint = date()
         expect(

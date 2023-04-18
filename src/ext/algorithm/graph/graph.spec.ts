@@ -1,6 +1,8 @@
 import { Graph, topologicalSort } from './index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     const G = new Graph<number, number>()
     G.addNode('a', 1)
     G.addNode('b', 2)

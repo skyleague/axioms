@@ -4,32 +4,34 @@ import { array, chainArbitrary, forAll, integer, tuple, unknown } from '../../ra
 import { Nothing } from '../../type/index.js'
 import { drop } from '../drop/index.js'
 
+import { describe, it } from 'vitest'
+
 describe('at', () => {
-    test('first on array', () => {
+    it('first on array', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
             return at(xs, 0) === xs[0]
         })
     })
 
-    test('first on array === first', () => {
+    it('first on array === first', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
             return at(xs, 0) === first(xs)
         })
     })
 
-    test('second on array', () => {
+    it('second on array', () => {
         forAll(array(unknown(), { minLength: 2 }), (xs) => {
             return at(xs, 1) === xs[1]
         })
     })
 
-    test('second on array === second', () => {
+    it('second on array === second', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
             return at(xs, 1) === second(xs)
         })
     })
 
-    test('ith index on array - index in bounds', () => {
+    it('ith index on array - index in bounds', () => {
         forAll(
             chainArbitrary(integer({ min: 1, max: 50 }), (n) =>
                 tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n }))
@@ -40,7 +42,7 @@ describe('at', () => {
         )
     })
 
-    test('ith index on array - index out of bounds', () => {
+    it('ith index on array - index out of bounds', () => {
         forAll(
             chainArbitrary(integer({ min: 0, max: 50 }), (n) =>
                 tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 }))
@@ -51,31 +53,31 @@ describe('at', () => {
         )
     })
 
-    test('first on iterator', () => {
+    it('first on iterator', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
             return at(drop(xs, 0), 0) === xs[0]
         })
     })
 
-    test('first on iterator === first', () => {
+    it('first on iterator === first', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
             return at(drop(xs, 0), 0) === first(drop(xs, 0))
         })
     })
 
-    test('second on iterator', () => {
+    it('second on iterator', () => {
         forAll(array(unknown(), { minLength: 2 }), (xs) => {
             return at(drop(xs, 0), 1) === xs[1]
         })
     })
 
-    test('second on iterator === second', () => {
+    it('second on iterator === second', () => {
         forAll(array(unknown(), { minLength: 2 }), (xs) => {
             return at(drop(xs, 0), 1) === second(drop(xs, 0))
         })
     })
 
-    test('ith index on iterator', () => {
+    it('ith index on iterator', () => {
         forAll(
             chainArbitrary(integer({ min: 1, max: 50 }), (n) =>
                 tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: 0, max: n - 1 }))
@@ -86,7 +88,7 @@ describe('at', () => {
         )
     })
 
-    // test('overloaded types are correct', () => {
+    // it('overloaded types are correct', () => {
     //     const _foo1: 1 = at(0, [1, 2, 3] as const)
     //     const _bar1: Nothing = at(0, [] as const)
     //     const _foo2: 2 = at(1, [1, 2, 3] as const)

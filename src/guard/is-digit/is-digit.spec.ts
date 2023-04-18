@@ -1,9 +1,11 @@
 import { isDigits } from './index.js'
 
-test('alpha', () => {
-    expect(isDigits('0')).toBeTrue()
+import { expect, it } from 'vitest'
+
+it('alpha', () => {
+    expect(isDigits('0')).toBe(true)
 })
 
-test('special characters', () => {
-    expect(isDigits('%')).toBeFalse()
+it('special characters', () => {
+    expect(isDigits('%')).toBe(false)
 })

@@ -7,7 +7,9 @@ import { forAll } from '../../arbitrary/forall/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { integer } from '../integer/index.js'
 
-test('counter example - equal', () => {
+import { expect, it } from 'vitest'
+
+it('counter example - equal', () => {
     expect(() => forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 43 tests (seed: 42n)
         Shrunk 0 time(s)
@@ -17,7 +19,7 @@ test('counter example - equal', () => {
     `)
 })
 
-test('random sample', () => {
+it('random sample', () => {
     const ctx = { rng: xoroshiro128plus(1638968569864n) }
     const aint = tuple(integer(), integer())
     expect(

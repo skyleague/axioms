@@ -2,19 +2,21 @@ import { valuesOf } from './index.js'
 
 import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
-test('valuesOf === Object.values', () => {
+import { expect, it } from 'vitest'
+
+it('valuesOf === Object.values', () => {
     forAll(dict(unknown()), (o) => {
         expect(valuesOf(o)).toStrictEqual(Object.values(o))
     })
 })
 
-test('valuesOf [xs] === Object.values', () => {
+it('valuesOf [xs] === Object.values', () => {
     forAll(array(string()), (o) => {
         expect(valuesOf(o)).toStrictEqual(Object.values(o))
     })
 })
 
-test('valuesOf [1, 2, 3]', () => {
+it('valuesOf [1, 2, 3]', () => {
     expect(valuesOf([1, 2, 3])).toMatchInlineSnapshot(`
         [
           1,
@@ -24,7 +26,7 @@ test('valuesOf [1, 2, 3]', () => {
     `)
 })
 
-test('valuesOf union object and array', () => {
+it('valuesOf union object and array', () => {
     forAll(oneOf(array(string()), dict([integer(), integer()])), (o) => {
         expect(valuesOf(o)).toStrictEqual(Object.values(o))
     })

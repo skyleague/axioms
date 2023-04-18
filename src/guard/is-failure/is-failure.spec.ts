@@ -1,6 +1,8 @@
 import { isFailure } from './is-failure.js'
 
-test('simple', () => {
-    expect(isFailure('foobar')).toBeFalse()
-    expect(isFailure(new Error())).toBeTrue()
+import { expect, it } from 'vitest'
+
+it('simple', () => {
+    expect(isFailure('foobar')).toBe(false)
+    expect(isFailure(new Error())).toBe(true)
 })

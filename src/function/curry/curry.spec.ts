@@ -1,14 +1,16 @@
 import type { Curried, CurriedVariadic } from './index.js'
 import { curry, curryVariadic } from './index.js'
 
+import { expect, describe, it } from 'vitest'
+
 describe('curry', () => {
-    test('simple', () => {
+    it('simple', () => {
         const foo = (x: string, y: number, z: boolean) => z
         const f = curry(foo)('hello')(2)
         expect(f(true)).toMatchInlineSnapshot(`true`)
     })
 
-    test('types', () => {
+    it('types', () => {
         function sum4(a: number, b: number, c: number, d: number) {
             return a + b + c + d
         }
@@ -19,7 +21,7 @@ describe('curry', () => {
         expect(result).toEqual(10)
     })
 
-    test('add', () => {
+    it('add', () => {
         function sum3(a: number, b: number, c: number) {
             return a + b + c
         }
@@ -32,13 +34,13 @@ describe('curry', () => {
 })
 
 describe('curryVariadic', () => {
-    test('simple', () => {
+    it('simple', () => {
         const foo = (_x: string, _y: number, z: boolean) => z
         const f = curryVariadic(foo, 3)('hello')(2)
         expect(f(true)).toMatchInlineSnapshot(`true`)
     })
 
-    test('types', () => {
+    it('types', () => {
         function sum4(a: number, b: number, c: number, d: number) {
             return a + b + c + d
         }
@@ -49,7 +51,7 @@ describe('curryVariadic', () => {
         expect(result).toEqual(10)
     })
 
-    test('types 2', () => {
+    it('types 2', () => {
         function sumAll(...xs: number[]): number {
             return xs.reduce((a, b) => a + b, 0)
         }
@@ -60,7 +62,7 @@ describe('curryVariadic', () => {
         expect(result).toEqual(10)
     })
 
-    test('add', () => {
+    it('add', () => {
         function sum3(a: number, b: number, c: number) {
             return a + b + c
         }
@@ -70,7 +72,7 @@ describe('curryVariadic', () => {
         expect(curriedSum(1, 2)(3)).toEqual(6)
     })
 
-    test('add variadic', () => {
+    it('add variadic', () => {
         function sumAll<T extends number[]>(...xs: [...T]): number {
             return xs.reduce((a, b) => a + b, 0)
         }
@@ -80,7 +82,7 @@ describe('curryVariadic', () => {
         expect(curriedSum(1, 2)(3)).toEqual(6)
     })
 
-    test('add variadic - many arguments', () => {
+    it('add variadic - many arguments', () => {
         function sumAll<T extends number[]>(...xs: [...T]): number {
             return xs.reduce((a, b) => a + b, 0)
         }
@@ -90,7 +92,7 @@ describe('curryVariadic', () => {
         expect(curriedSum(1, 2)(3, 0, 0, 0, 0, 0, 0, 0, 0, 0)).toEqual(6)
     })
 
-    test('add variadic - TS error on unsupported types', () => {
+    it('add variadic - TS error on unsupported types', () => {
         function sumAll<T extends number[]>(...xs: [...T]): number {
             return xs.reduce((a, b) => a + b, 0)
         }

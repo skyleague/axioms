@@ -2,14 +2,16 @@ import { isAlpha } from './index.js'
 
 import { alpha, forAll, integer } from '../../index.js'
 
-test('alpha', () => {
+import { expect, it } from 'vitest'
+
+it('alpha', () => {
     forAll(alpha({ minLength: 1 }), (x) => isAlpha(x))
 })
 
-test('numeric', () => {
+it('numeric', () => {
     forAll(integer(), (x) => !isAlpha(x.toString()))
 })
 
-test('special characters', () => {
-    expect(isAlpha('%')).toBeFalse()
+it('special characters', () => {
+    expect(isAlpha('%')).toBe(false)
 })

@@ -4,7 +4,9 @@ import { collect, sum } from '../../array/index.js'
 import { take, allEqual, map } from '../../iterator/index.js'
 import { forAll, array, unknown } from '../../random/index.js'
 
-test('simple', () => {
+import { expect, it } from 'vitest'
+
+it('simple', () => {
     expect(collect(queue([1, 2, 3, 4]))).toMatchInlineSnapshot(`
         [
           1,
@@ -15,7 +17,7 @@ test('simple', () => {
     `)
 })
 
-test('continued', () => {
+it('continued', () => {
     const q = queue([1, 2, 3, 4])
     q.enqueue([5, 6, 7])
     expect(collect(take(q, 3))).toMatchInlineSnapshot(`
@@ -41,11 +43,11 @@ test('continued', () => {
     expect(collect(q)).toMatchInlineSnapshot(`[]`)
 })
 
-test('take n queue xs === xs', () => {
+it('take n queue xs === xs', () => {
     forAll(array(unknown()), (xs) => allEqual(take(queue(xs), xs.length), xs))
 })
 
-test('take n queue ...xss === xs', () => {
+it('take n queue ...xss === xs', () => {
     forAll(array(array(unknown())), (xss) => {
         const vals = queue()
         vals.enqueue(...xss)

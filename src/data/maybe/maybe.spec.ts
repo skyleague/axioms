@@ -8,6 +8,8 @@ import type { Either, Maybe } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
 import { whenLeft, whenRight } from '../either/index.js'
 
+import { expect, describe, it } from 'vitest'
+
 class FooError extends Error {
     public foo() {
         return 'foo'
@@ -20,20 +22,20 @@ class BarError extends Error {
 }
 
 describe('leftToMaybe', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(leftToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`"foo"`)
         expect(leftToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`Symbol((Nothing))`)
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(unknown(), (x) => leftToMaybe({ left: x }) === x)
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(unknown(), (x) => isNothing(leftToMaybe({ right: x })))
     })
 
-    test('unions', () => {
+    it('unions', () => {
         const a: Either<FooError, boolean> = { right: true } as any
         const b = whenRight(a, (c): Either<BarError, Nothing> => (c ? { right: Nothing } : { left: new BarError() }))
         let x = leftToMaybe(b)
@@ -46,20 +48,20 @@ describe('leftToMaybe', () => {
 })
 
 describe('rightToMaybe', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(rightToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`"foo"`)
         expect(rightToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`Symbol((Nothing))`)
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(unknown(), (x) => rightToMaybe({ right: x }) === x)
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(unknown(), (x) => isNothing(rightToMaybe({ left: x })))
     })
 
-    test('unions', () => {
+    it('unions', () => {
         const a: Either<boolean, FooError> = { left: true } as any
         const b = whenLeft(a, (c): Either<Nothing, BarError> => (c ? { left: Nothing } : { right: new BarError() }))
         let x = rightToMaybe(b)
@@ -72,7 +74,7 @@ describe('rightToMaybe', () => {
 })
 
 describe('maybeToRight', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(maybeToRight('foo', 'foobar')).toMatchInlineSnapshot(`
             {
               "right": "foo",
@@ -85,17 +87,17 @@ describe('maybeToRight', () => {
         `)
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(object({ right: unknown({ nothing: false }), left: unknown() }), ({ right, left }) =>
             equal(maybeToRight(right, left), { right })
         )
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(unknown(), (left) => equal(maybeToRight(Nothing, left), { left }))
     })
 
-    test('union', () => {
+    it('union', () => {
         const a: Maybe<BarError> | Maybe<FooError> = new BarError() as any
         let x = maybeToRight(a, Nothing)
         expect(x).toEqual({ right: new BarError() })
@@ -107,7 +109,7 @@ describe('maybeToRight', () => {
 })
 
 describe('maybeToLeft', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(maybeToLeft('foo', 'foobar')).toMatchInlineSnapshot(`
             {
               "left": "foo",
@@ -120,17 +122,17 @@ describe('maybeToLeft', () => {
         `)
     })
 
-    test('left', () => {
+    it('left', () => {
         forAll(object({ left: unknown({ nothing: false }), right: unknown() }), ({ right, left }) =>
             equal(maybeToLeft(left, right), { left })
         )
     })
 
-    test('right', () => {
+    it('right', () => {
         forAll(unknown(), (right) => equal(maybeToLeft(Nothing, right), { right }))
     })
 
-    test('union', () => {
+    it('union', () => {
         const a: Maybe<BarError> | Maybe<FooError> = new BarError() as any
         let x = maybeToLeft(a, Nothing)
         expect(x).toEqual({ left: new BarError() })
@@ -142,29 +144,29 @@ describe('maybeToLeft', () => {
 })
 
 describe('maybeAsValue', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(maybeAsValue('foobar')).toMatchInlineSnapshot(`"foobar"`)
         expect(maybeAsValue(Nothing)).toMatchInlineSnapshot(`undefined`)
     })
 
-    test('just', () => {
+    it('just', () => {
         forAll(unknown({ nothing: false }), (just) => maybeAsValue(just) === just)
     })
 })
 
 describe('whenJust', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenJust(0, (x) => `${x}${x}`)).toMatchInlineSnapshot(`"00"`)
         expect(whenJust<string>(Nothing, (x) => `${x}${x}`)).toMatchInlineSnapshot(`Symbol((Nothing))`)
     })
 
-    test('just', () => {
+    it('just', () => {
         forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
     })
 })
 
 describe('whenJusts', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenJusts([Nothing, 'a'], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`Symbol((Nothing))`)
         expect(whenJusts([0, 'a'], ([x0, x1]) => [x0, x1])).toMatchInlineSnapshot(`
                   [
@@ -184,22 +186,22 @@ describe('whenJusts', () => {
         expect(whenJusts(['foo', 'bar'], ([x0, x1]) => `${x0}${x1}`)).toMatchInlineSnapshot(`"foobar"`)
     })
 
-    test('all just', () => {
+    it('all just', () => {
         forAll(array(integer()), (xs) => equal(deterministicInteger(xs), whenJusts(xs, deterministicInteger)))
     })
 
-    test('first nothing', () => {
+    it('first nothing', () => {
         forAll(array(integer()), (xs) => isNothing(whenJusts(shuffle(concat(xs, [Nothing])), deterministicInteger)))
     })
 })
 
 describe('whenNothing', () => {
-    test('simple', () => {
+    it('simple', () => {
         expect(whenNothing(Nothing, () => `foobar`)).toMatchInlineSnapshot(`"foobar"`)
         expect(whenNothing(0, () => `foobar`)).toMatchInlineSnapshot(`0`)
     })
 
-    test('just', () => {
+    it('just', () => {
         forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
     })
 })
