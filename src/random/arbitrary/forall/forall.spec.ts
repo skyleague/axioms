@@ -9,20 +9,20 @@ it('abs smaller than six', () => {
     expect(() => {
         forAll(integer(), (i) => Math.abs(i) <= 600000, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 3 tests (seed: 42n)
-        Shrunk 20 time(s)
-        Counter example:
+      "Counter example found after 3 tests (seed: 42n)
+      Shrunk 20 time(s)
+      Counter example:
 
-        600001"
+      600001"
     `)
     expect(() => {
         forAll(array(integer()), (i) => i.length === 0 || Math.abs(i[0]!) <= 600000, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 4 tests (seed: 42n)
-        Shrunk 18 time(s)
-        Counter example:
+      "Counter example found after 4 tests (seed: 42n)
+      Shrunk 18 time(s)
+      Counter example:
 
-        [ 600001 ]"
+      [ 600001 ]"
     `)
 })
 
