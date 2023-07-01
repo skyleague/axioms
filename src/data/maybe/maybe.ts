@@ -3,7 +3,7 @@ import { isJust } from '../../guard/is-just/index.js'
 import { isLeft } from '../../guard/is-left/index.js'
 import { isRight } from '../../guard/is-right/index.js'
 import type { Either, Left, Right } from '../../type/either/index.js'
-import type { Just, Maybe } from '../../type/maybe/index.js'
+import type { Maybe, Just } from '../../type/maybe/index.js'
 import { Nothing } from '../../type/maybe/index.js'
 
 /**
@@ -240,4 +240,31 @@ export function whenNothing<T, M = T>(x: Maybe<T>, f: () => M): M | T {
  */
 export function just<T extends Just<unknown>>(x: T): T {
     return x
+}
+
+/**
+ * Creates a Maybe from the given value.
+ *
+ * ### Example
+ * ```ts
+ * asMaybe("foobar")
+ * // => "foobar"
+ *
+ * asMaybe("foobar", "foobar")
+ * // => Nothing
+ *
+ * asMaybe("foobar", "barfoo")
+ * // => "foobar"
+ * ```
+ *
+ * @param x - The value to unpack.
+ * @param nothingValue - The value to use as Nothing.
+ * @returns The maybe value.
+ *
+ * @typeParam T - The Maybe type.
+ *
+ * @group Combinators
+ */
+export function asMaybe<T, N = undefined>(x: T, nothingValue?: N): Maybe<Exclude<T, N>> {
+    return x !== nothingValue ? (x as Exclude<T, N>) : Nothing
 }
