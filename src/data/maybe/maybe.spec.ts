@@ -1,4 +1,14 @@
-import { leftToMaybe, maybeAsValue, maybeToLeft, maybeToRight, rightToMaybe, whenJust, whenJusts, whenNothing } from './maybe.js'
+import {
+    asMaybe,
+    leftToMaybe,
+    maybeAsValue,
+    maybeToLeft,
+    maybeToRight,
+    rightToMaybe,
+    whenJust,
+    whenJusts,
+    whenNothing,
+} from './maybe.js'
 
 import { isJust, isLeft, isNothing, isRight } from '../../guard/index.js'
 import { equal } from '../../iterator/equal/index.js'
@@ -8,7 +18,7 @@ import type { Either, Maybe } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
 import { whenLeft, whenRight } from '../either/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, assertType } from 'vitest'
 
 class FooError extends Error {
     public foo() {
@@ -203,5 +213,24 @@ describe('whenNothing', () => {
 
     it('just', () => {
         forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
+    })
+})
+
+describe('asMaybe', () => {
+    it('simple', () => {
+        expect(asMaybe('foobar')).toMatchInlineSnapshot(`"foobar"`)
+        expect(asMaybe(undefined)).toMatchInlineSnapshot(`Symbol((Nothing))`)
+    })
+
+    it('type exclusion', () => {
+        assertType<Maybe<'foobar'>>(asMaybe('foobar'))
+        assertType<Nothing>(asMaybe('foobar', 'foobar'))
+        const foo: string | undefined = undefined as unknown as string | undefined
+        assertType<Maybe<string>>(asMaybe(foo))
+        assertType<Maybe<undefined>>(asMaybe(foo, 'foobar'))
+    })
+
+    it('just', () => {
+        forAll(unknown({ undefined: false }), (just) => asMaybe(just) === just)
     })
 })
