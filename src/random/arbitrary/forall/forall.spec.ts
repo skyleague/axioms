@@ -37,6 +37,18 @@ describe('properties', () => {
             return contains(a + b + c, b)
         })
     })
+
+    it('allows an actual tuple as tuple', () => {
+        forAll([utf16(), utf16(), utf16()] as const, ([a, b, c]) => {
+            return contains(a + b + c, b)
+        })
+    })
+
+    it('allows an object as literal', () => {
+        forAll({ a: utf16(), b: utf16(), c: utf16() }, ({ a, b, c }) => {
+            return contains(a + b + c, b)
+        })
+    })
 })
 
 it('counter example with jest expect', () => {

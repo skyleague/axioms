@@ -6,14 +6,10 @@ import { forAll, tuple, integer } from '../../random/index.js'
 import { expect, it } from 'vitest'
 
 it('is [x,y[', () => {
-    forAll(
-        tuple(integer({ max: 100 }), integer({ min: 3, max: 100 })),
-        ([x, y]: [number, number]) => {
-            const to = x + y
-            return collect(range(x, to)).includes(x) && !collect(range(x, to)).includes(to)
-        },
-        { counterExample: [0, 3] }
-    )
+    forAll(tuple(integer({ max: 100 }), integer({ min: 3, max: 100 })), ([x, y]: [number, number]) => {
+        const to = x + y
+        return collect(range(x, to)).includes(x) && !collect(range(x, to)).includes(to)
+    })
 })
 
 it('floor y/2 + x is in [x,y[', () => {
