@@ -23,3 +23,7 @@ it('infers correct type', () => {
 
     expect(original).toEqual(constructed)
 })
+
+it('handles empty array', () => {
+    expect(fromEntries([])).toEqual({})
+})
