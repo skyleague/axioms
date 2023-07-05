@@ -1,13 +1,28 @@
-import { isJust } from '../../../guard/index.js'
+import { isJust, isObject } from '../../../guard/index.js'
 import { replicate } from '../../../iterator/replicate/index.js'
 import { Nothing } from '../../../type/maybe/index.js'
 import type { Maybe } from '../../../type/maybe/index.js'
+import { object } from '../../index.js'
 import { xoroshiro128plus } from '../../rng/xoroshiro128plus/index.js'
-import type { Arbitrary } from '../arbitrary/index.js'
+import { tuple } from '../../types/tuple/tuple.js'
+import type { Arbitrary, ArbitraryOrLiteral, AsArbitrary, TypeOfArbitrary } from '../arbitrary/arbitrary.js'
 import type { ArbitraryContext } from '../context/index.js'
 import { asyncFalsify } from '../falsify/falsify.js'
 import { falsify, FalsifiedError } from '../falsify/index.js'
 import { InfeasibleTree } from '../shrink/index.js'
+
+/**
+ * @internal
+ */
+export function asArbitrary<T extends ArbitraryOrLiteral<unknown>>(a: T): AsArbitrary<T> {
+    if (Array.isArray(a)) {
+        return tuple(...a) as unknown as AsArbitrary<T>
+    }
+    if (isObject<Arbitrary<unknown>>(a) && !('value' in a)) {
+        return object(a) as unknown as AsArbitrary<T>
+    }
+    return a as AsArbitrary<T>
+}
 
 export interface ForallOptions<T> {
     tests: number
@@ -18,9 +33,9 @@ export interface ForallOptions<T> {
     counterExample?: T
 }
 
-export function forAll<T>(
-    arbitrary: Arbitrary<T>,
-    predicate: (x: T, context: ArbitraryContext) => boolean | void,
+export function forAll<T extends ArbitraryOrLiteral<any>>(
+    arbitrary: T,
+    predicate: (x: TypeOfArbitrary<AsArbitrary<T>>, context: ArbitraryContext) => boolean | void,
     {
         tests = 100,
         shrinks = 200,
@@ -28,13 +43,14 @@ export function forAll<T>(
         seed = BigInt(Math.floor(new Date().getTime() * Math.random())),
         period = 13,
         counterExample,
-    }: Partial<ForallOptions<T>> = {}
+    }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
 ): void {
+    const evaluatedArbitrary = asArbitrary(arbitrary)
     const context: ArbitraryContext = {
         rng: xoroshiro128plus(BigInt(seed)),
         bias: undefined,
     }
-    function safePredicate(x: T): [boolean, Maybe<Error>] {
+    function safePredicate(x: TypeOfArbitrary<AsArbitrary<T>>): [boolean, Maybe<Error>] {
         let holds: boolean | undefined | void
         let error: Maybe<Error> = Nothing
         try {
@@ -46,13 +62,13 @@ export function forAll<T>(
         // void returned a proper result, which means the predicate held
         return [typeof holds === 'boolean' ? holds : true, error]
     }
-    const maybeCounterExample = falsify<T>({
+    const maybeCounterExample = falsify<TypeOfArbitrary<AsArbitrary<T>>>({
         predicate: safePredicate,
         values: (ctx = { skips: 0 }) =>
             replicate((i) => {
                 while (ctx.skips < maxSkips) {
                     try {
-                        const value = arbitrary.value({
+                        const value = evaluatedArbitrary.value({
                             ...context,
                             bias: context.rng.sample() < 1 / (1 + Math.log(i + 1)) ? context.rng.sample() : undefined,
                             // bias: undefined,
@@ -87,9 +103,9 @@ export interface AsyncForallOptions<T> extends ForallOptions<T> {
     timeout?: number
 }
 
-export async function asyncForAll<T>(
-    arbitrary: Arbitrary<T>,
-    predicate: (x: T, context: ArbitraryContext) => Promise<boolean | void>,
+export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
+    arbitrary: T,
+    predicate: (x: TypeOfArbitrary<AsArbitrary<T>>, context: ArbitraryContext) => Promise<boolean | void>,
     {
         tests = 100,
         shrinks = 200,
@@ -98,13 +114,14 @@ export async function asyncForAll<T>(
         period = 13,
         timeout = 4_500,
         counterExample,
-    }: Partial<AsyncForallOptions<T>> = {}
+    }: Partial<AsyncForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
 ): Promise<void> {
+    const evaluatedArbitrary = asArbitrary(arbitrary)
     const context: ArbitraryContext = {
         rng: xoroshiro128plus(BigInt(seed)),
         bias: undefined,
     }
-    async function safePredicate(x: T): Promise<[boolean, Maybe<Error>]> {
+    async function safePredicate(x: TypeOfArbitrary<AsArbitrary<T>>): Promise<[boolean, Maybe<Error>]> {
         let holds: boolean | undefined | void
         let error: Maybe<Error> = Nothing
         try {
@@ -116,13 +133,13 @@ export async function asyncForAll<T>(
         // void returned a proper result, which means the predicate held
         return [typeof holds === 'boolean' ? holds : true, error]
     }
-    const maybeCounterExample = await asyncFalsify<T>({
+    const maybeCounterExample = await asyncFalsify<TypeOfArbitrary<AsArbitrary<T>>>({
         predicate: safePredicate,
         values: (ctx = { skips: 0 }) =>
             replicate((i) => {
                 while (ctx.skips < maxSkips) {
                     try {
-                        const value = arbitrary.value({
+                        const value = evaluatedArbitrary.value({
                             ...context,
                             bias: context.rng.sample() < 1 / (1 + Math.log(i + 1)) ? context.rng.sample() : undefined,
                             // bias: undefined,

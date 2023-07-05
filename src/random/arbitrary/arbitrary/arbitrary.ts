@@ -5,7 +5,7 @@ import { curryTuple } from '../../../function/tuple/index.js'
 import { next } from '../../../generator/index.js'
 import { isRight } from '../../../guard/index.js'
 import { concat, map } from '../../../iterator/index.js'
-import type { Traversable } from '../../../type/index.js'
+import type { SimplifyOnce, Traversable } from '../../../type/index.js'
 import { toTraverser } from '../../../type/index.js'
 import type { ArbitraryContext } from '../context/index.js'
 import { shrinkX, shrinkOne } from '../shrink/index.js'
@@ -13,6 +13,20 @@ import { shrinkX, shrinkOne } from '../shrink/index.js'
 export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>
 }
+
+export type AsArbitrary<T extends ArbitraryOrLiteral<unknown>> = T extends readonly unknown[]
+    ? Arbitrary<
+          SimplifyOnce<{
+              [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
+          }>
+      >
+    : T extends Arbitrary<infer U>
+    ? Arbitrary<U>
+    : T extends Record<PropertyKey, Arbitrary<unknown>>
+    ? Arbitrary<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }>
+    : Arbitrary<T>
+
+export type ArbitraryOrLiteral<T> = Arbitrary<T> | T
 
 /**
  * @internal
