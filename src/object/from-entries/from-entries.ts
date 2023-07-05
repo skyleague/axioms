@@ -30,6 +30,6 @@ export type FromEntriesWithReadOnly<T> = FromEntries<DeepMutable<T>>
  *
  * @group Object
  */
-export function fromEntries<T extends any[]>(obj: T): FromEntriesWithReadOnly<T> {
+export function fromEntries<T extends [PropertyKey, unknown][]>(obj: T): FromEntriesWithReadOnly<T> {
     return Object.fromEntries(obj) as FromEntriesWithReadOnly<T>
 }
