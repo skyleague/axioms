@@ -166,8 +166,8 @@ export function mapTry<U, T>(x: Try<T>, fn: (e: T) => U): AsTry<U> {
  *
  * @group Combinators
  */
-export function recoverTry<U, T>(x: Try<T>, recover: (e: Failure) => U): AsTry<U> {
-    return (isFailure(x) ? asTry(() => recover(x)) : x) as AsTry<U>
+export function recoverTry<U, T>(x: Try<T>, recover: (e: Failure) => U): AsTry<U> | Try<T> {
+    return (isFailure(x) ? asTry(() => recover(x)) : x) as AsTry<U> | Try<T>
 }
 
 /**
