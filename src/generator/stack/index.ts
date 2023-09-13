@@ -1,1 +1,1 @@
-export { StackGenerator, stack } from './stack.js'
+export { type StackGenerator, stack } from './stack.js'

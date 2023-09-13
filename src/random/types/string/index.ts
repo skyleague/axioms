@@ -1,7 +1,7 @@
 export {
-    StringGenerator,
-    AlphaNumericGenerator,
-    AlphaGenerator,
+    type StringGenerator,
+    type AlphaNumericGenerator,
+    type AlphaGenerator,
     stringGenerator,
     string,
     hex,

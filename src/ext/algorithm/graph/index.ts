@@ -1,1 +1,1 @@
-export { GraphNode, GraphEdge, GraphNodeName, Graph, kruskal, topologicalSort } from './graph.js'
+export { type GraphNode, type GraphEdge, type GraphNodeName, Graph, kruskal, topologicalSort } from './graph.js'

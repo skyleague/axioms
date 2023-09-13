@@ -27,7 +27,9 @@ it('distribution', () => {
 })
 
 it('counter example - true', () => {
-    expect(() => forAll(boolean(), (v) => v, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
+    expect(() => {
+        forAll(boolean(), (v) => v, { seed: 42n })
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 6 tests (seed: 42n)
         Shrunk 0 time(s)
         Counter example:
@@ -37,7 +39,9 @@ it('counter example - true', () => {
 })
 
 it('counter example - false', () => {
-    expect(() => forAll(boolean(), (v) => !v, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
+    expect(() => {
+        forAll(boolean(), (v) => !v, { seed: 42n })
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 1 tests (seed: 42n)
         Shrunk 0 time(s)
         Counter example:

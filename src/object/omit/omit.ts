@@ -37,7 +37,7 @@ export function omitUndefined<T extends ArrayLike<unknown> | {}>(obj: T): OmitUn
  */
 export function omitBy<
     T extends ArrayLike<unknown> | {},
-    Predicate extends ([key, value]: [key: keyof T, value: T[keyof T]]) => boolean
+    Predicate extends ([key, value]: [key: keyof T, value: T[keyof T]]) => boolean,
 >(obj: T, predicate: Predicate): Partial<T> {
     return Object.fromEntries(
         Object.entries(obj).filter(([k, v]) => !predicate([k as keyof T, v as T[keyof T]]))

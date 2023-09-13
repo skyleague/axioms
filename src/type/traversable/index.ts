@@ -1,8 +1,8 @@
 export {
-    Traverser,
-    Traversable,
-    TraversableItem,
-    Mappable,
+    type Traverser,
+    type Traversable,
+    type TraversableItem,
+    type Mappable,
     toTraverser,
     toTraversable,
     lazy,

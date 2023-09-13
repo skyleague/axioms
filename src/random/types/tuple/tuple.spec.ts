@@ -10,12 +10,14 @@ import { integer } from '../integer/index.js'
 import { expect, it } from 'vitest'
 
 it('counter example - equal', () => {
-    expect(() => forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 43 tests (seed: 42n)
-        Shrunk 0 time(s)
-        Counter example:
+    expect(() => {
+        forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n })
+    }).toThrowErrorMatchingInlineSnapshot(`
+      "Counter example found after 64 tests (seed: 42n)
+      Shrunk 0 time(s)
+      Counter example:
 
-        [ 2147483645, 2147483645 ]"
+      [ 2147483641, 2147483641 ]"
     `)
 })
 

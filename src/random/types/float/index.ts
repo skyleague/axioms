@@ -1,1 +1,1 @@
-export { FloatConstraints, float } from './float.js'
+export { type FloatConstraints, float } from './float.js'

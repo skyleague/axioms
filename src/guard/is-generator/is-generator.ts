@@ -5,6 +5,7 @@ export function isGeneratorFunction<T, R, A extends unknown[] | unknown = unknow
         fn !== undefined &&
         fn !== null &&
         typeof fn === 'function' &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         fn.constructor !== null &&
         fn.constructor.name === 'GeneratorFunction'
     )

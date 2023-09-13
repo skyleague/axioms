@@ -1,1 +1,1 @@
-export { Subtract, Add } from './arithmetic.js'
+export { type Subtract, type Add } from './arithmetic.js'

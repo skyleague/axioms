@@ -477,11 +477,11 @@ describe('json', () => {
     })
 
     it('parse stringify x | undefined == x fails (nodejs bug)', () => {
-        expect(() =>
+        expect(() => {
             forAll(oneOf(json({ type: 'value' }), constant(undefined)), (j) => equal(JSON.parse(JSON.stringify(j)), j), {
                 seed: 42n,
             })
-        ).toThrowErrorMatchingInlineSnapshot(`
+        }).toThrowErrorMatchingInlineSnapshot(`
                     "Counter example found after 2 tests (seed: 42n)
                     Shrunk 0 time(s)
                     Counter example:
@@ -493,8 +493,9 @@ describe('json', () => {
     })
 
     it('parse stringify x != x fails', () => {
-        expect(() => forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n }))
-            .toThrowErrorMatchingInlineSnapshot(`
+        expect(() => {
+            forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n })
+        }).toThrowErrorMatchingInlineSnapshot(`
             "Counter example found after 11 tests (seed: 42n)
             Shrunk 1 time(s)
             Counter example:

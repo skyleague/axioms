@@ -50,7 +50,9 @@ it('distribution', () => {
 })
 
 it('counter example - positive', () => {
-    expect(() => forAll(integer(), (v) => v > 0, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
+    expect(() => {
+        forAll(integer(), (v) => v > 0, { seed: 42n })
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 2 tests (seed: 42n)
         Shrunk 1 time(s)
         Counter example:
@@ -60,7 +62,9 @@ it('counter example - positive', () => {
 })
 
 it('counter example - negative', () => {
-    expect(() => forAll(integer(), (v) => v <= 0, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
+    expect(() => {
+        forAll(integer(), (v) => v <= 0, { seed: 42n })
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 1 tests (seed: 42n)
         Shrunk 3 time(s)
         Counter example:
@@ -70,7 +74,9 @@ it('counter example - negative', () => {
 })
 
 it('counter example - equal', () => {
-    expect(() => forAll(integer(), (v) => v !== 0, { seed: 42n })).toThrowErrorMatchingInlineSnapshot(`
+    expect(() => {
+        forAll(integer(), (v) => v !== 0, { seed: 42n })
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 87 tests (seed: 42n)
         Shrunk 1 time(s)
         Counter example:
@@ -81,7 +87,7 @@ it('counter example - equal', () => {
 
 // next two tests are heavily inspired by https://github.com/dubzzz/fast-check/blob/e645c3612fc76055ea0f5bab1a80c6c73ecfc1af/test/e2e/ComplexShrink.spec.ts
 it('counter example - asymmetric', () => {
-    expect(() =>
+    expect(() => {
         forAll(
             tuple(natural({ max: 1000000 }), natural({ max: 1000000 })),
             ([a, b]) => {
@@ -93,7 +99,7 @@ it('counter example - asymmetric', () => {
             },
             { seed: 42n, tests: 2000 }
         )
-    ).toThrowErrorMatchingInlineSnapshot(`
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 1025 tests (seed: 42n)
         Shrunk 9 time(s)
         Counter example:
@@ -103,7 +109,7 @@ it('counter example - asymmetric', () => {
 })
 
 it('counter example - symmetric', () => {
-    expect(() =>
+    expect(() => {
         forAll(
             tuple(natural({ max: 1000000 }), natural({ max: 1000000 })),
             ([a, b]) => {
@@ -114,7 +120,7 @@ it('counter example - symmetric', () => {
             },
             { seed: 42n, tests: 2000 }
         )
-    ).toThrowErrorMatchingInlineSnapshot(`
+    }).toThrowErrorMatchingInlineSnapshot(`
         "Counter example found after 1001 tests (seed: 42n)
         Shrunk 12 time(s)
         Counter example:

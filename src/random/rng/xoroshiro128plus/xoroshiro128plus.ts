@@ -23,6 +23,7 @@ export interface Xoroshiro128plusGenerator extends Generator<bigint, bigint>, Ra
 export function xoroshiro128plus(seed: bigint | [bigint, bigint]) {
     let [s0, s1] = Array.isArray(seed) ? seed : seeder2(seed)
     const generator: Xoroshiro128plusGenerator = (function* () {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while (true) {
             // s1 ^= s0;
             const xors1 = s1 ^ s0

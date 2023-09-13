@@ -1,6 +1,6 @@
-export { BinaryTree, dfsNLR, dfsLRN } from './binary-tree.js'
+export { type BinaryTree, dfsNLR, dfsLRN } from './binary-tree.js'
 export {
-    Tree,
+    type Tree,
     tree,
     applicativeTree,
     mapTree,

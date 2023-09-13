@@ -1,1 +1,1 @@
-export { DictGenerator, dict } from './dict.js'
+export { type DictGenerator, dict } from './dict.js'
