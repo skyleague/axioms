@@ -7,7 +7,7 @@ import { integer } from '../integer/index.js'
 
 type ToMappable<Xs extends Mappable<unknown>> = Xs extends Mappable<infer T, infer R> ? Mappable<T, R> : never
 type MappableFunc = <Xs extends Mappable<unknown>>(m: Xs) => ToMappable<Xs>
-const mappableFuncs: MappableFunc[] = /* @__PURE__ */ [
+const mappableFuncs: MappableFunc[] = [
     <Xs extends Mappable<unknown>>(xs: Xs) => [...toTraversable(xs)] as unknown as ToMappable<Xs>,
     toTraversable,
     toTraverser,

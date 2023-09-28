@@ -1,10 +1,10 @@
 import type { RandomGenerator } from '../random/index.js'
 import { seeder2 } from '../seed/index.js'
 
-const R123_0x1p_53 = /* @__PURE__ */ (() => 1 / (4294967296 * 2097152))()
+const R123_0x1p_53 = 1 / (4294967296 * 2097152)
 // const R123_0x1p_64 = 1 / (4294967296 * 4294967296)
 
-const b64Mask = /* @__PURE__ */ (() => (1n << 64n) - 1n)()
+const b64Mask = (1n << 64n) - 1n
 
 export interface Xoroshiro128plusGenerator extends Generator<bigint, bigint>, RandomGenerator {}
 
