@@ -1,1 +1,1 @@
-export { Printable } from './showable.js'
+export { type Printable } from './showable.js'

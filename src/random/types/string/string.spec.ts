@@ -425,7 +425,6 @@ describe('ascii', () => {
     })
 
     it('allowed characters', () => {
-        // eslint-disable-next-line no-control-regex
         forAll(ascii(), (str) => str.split('').every((c) => /[\x00-\x7F]/.test(c)))
     })
 })

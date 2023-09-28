@@ -1,1 +1,1 @@
-export { Dependent, dependentArbitrary } from './dependent.js'
+export { type Dependent, dependentArbitrary } from './dependent.js'

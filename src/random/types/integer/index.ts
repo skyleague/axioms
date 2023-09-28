@@ -1,1 +1,1 @@
-export { IntegerConstraints, integer } from './integer.js'
+export { type IntegerConstraints, integer } from './integer.js'

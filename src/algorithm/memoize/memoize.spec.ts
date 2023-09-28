@@ -61,13 +61,6 @@ describe('cache resolver', () => {
             expect(fn.mock.calls.length).toBe(2)
         })
     })
-
-    it('clear mem x = undefined', () => {
-        forAll(unknown(), (x) => {
-            const mem = memoize(() => x)
-            expect(mem.clear()).toBeUndefined()
-        })
-    })
 })
 
 describe('ttl cache resolver', () => {
@@ -154,13 +147,6 @@ describe('ttl cache resolver', () => {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(2)
-        })
-    })
-
-    it('clear mem x = undefined', () => {
-        forAll(unknown(), (x) => {
-            const mem = memoize(() => x, ttlCacheResolver(1_000))
-            expect(mem.clear()).toBeUndefined()
         })
     })
 })

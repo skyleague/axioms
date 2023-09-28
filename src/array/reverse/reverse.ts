@@ -34,6 +34,7 @@ import type { Traversable } from '../../type/index.js'
 export function* reverse<T>(xs: Traversable<T>): Generator<T, void> {
     if (isArray<T>(xs)) {
         for (let i = xs.length - 1; i >= 0; --i) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             yield xs[i]!
         }
     } else {

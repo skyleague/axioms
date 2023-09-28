@@ -1,1 +1,1 @@
-export { ForallOptions, forAll, asyncForAll } from './forall.js'
+export { type ForallOptions, forAll, asyncForAll } from './forall.js'

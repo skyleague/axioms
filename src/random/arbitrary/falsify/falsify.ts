@@ -76,7 +76,7 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample }: Fals
             const strLength = str.length ?? -1
 
             const [, error] = predicate(foundCounterExample.value)
-            if ((smallest === undefined || smallest[1] > strLength) ?? (0 || (smallest[1] === strLength && smallest[0] > str))) {
+            if (smallest === undefined || smallest[1] > strLength || (smallest[1] === strLength && smallest[0] > str)) {
                 smallest = [
                     str,
                     strLength,
@@ -162,10 +162,10 @@ export async function asyncFalsify<T>({
             const found = await asyncFindSmallest({ tree, predicate, depth: maxDepth, timeBudget })
             foundCounterExample = found.tree
             const str = toString(foundCounterExample.value)
-            const strLength = str.length ?? -1
+            const strLength = str.length
 
             const [, error] = await predicate(foundCounterExample.value)
-            if ((smallest === undefined || smallest[1] > strLength) ?? (0 || (smallest[1] === strLength && smallest[0] > str))) {
+            if (smallest === undefined || smallest[1] > strLength || (smallest[1] === strLength && smallest[0] > str)) {
                 smallest = [
                     str,
                     strLength,

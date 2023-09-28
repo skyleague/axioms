@@ -353,6 +353,7 @@ export function swapEither<L, R>(x: Either<L, R>): Either<R, L> {
  */
 export function eitherToError<L, R>(x: Either<L, R>): R {
     if (isLeft(x)) {
+        // eslint-disable-next-line @typescript-eslint/no-throw-literal
         throw x.left
     }
     return x.right

@@ -52,7 +52,9 @@ export interface Memoized<T> {
 export function memoize<T>(getter: ConstExpr<T>, resolver: Resolver<T> = cacheResolver()): Memoized<T> {
     const memoized: Memoized<T> = () => resolver(getter)
 
-    memoized.clear = () => resolver.clear()
+    memoized.clear = () => {
+        resolver.clear()
+    }
 
     return memoized
 }

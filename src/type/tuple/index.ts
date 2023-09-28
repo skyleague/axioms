@@ -1,1 +1,1 @@
-export { BuildTuple } from './tuple.js'
+export { type BuildTuple } from './tuple.js'

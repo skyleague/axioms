@@ -1,1 +1,1 @@
-export { UnionToIntersection, IsUnion } from './union.js'
+export { type UnionToIntersection, type IsUnion } from './union.js'

@@ -1,1 +1,1 @@
-export { QueueGenerator, queue } from './queue.js'
+export { type QueueGenerator, queue } from './queue.js'

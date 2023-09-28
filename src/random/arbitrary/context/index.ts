@@ -1,1 +1,1 @@
-export { ArbitraryContext, BiasedArbitraryContext, arbitraryContext } from './context.js'
+export { type ArbitraryContext, type BiasedArbitraryContext, arbitraryContext } from './context.js'

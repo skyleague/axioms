@@ -1,1 +1,1 @@
-export { Tail } from './tail.js'
+export { type Tail } from './tail.js'

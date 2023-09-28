@@ -122,7 +122,6 @@ describe('asciiChar', () => {
     })
 
     it('allowed characters', () => {
-        // eslint-disable-next-line no-control-regex
         forAll(asciiChar(), (c) => /[\x00-\x7F]/.test(c))
     })
 })

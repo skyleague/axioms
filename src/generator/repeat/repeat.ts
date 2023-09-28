@@ -32,6 +32,7 @@ import type { InfiniteGenerator } from '../../type/index.js'
 export function* repeat<T>(x: T | (() => Generator<T>) | ((i: number) => T)): InfiniteGenerator<T> {
     let i = 0
     if (isFunction(x)) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while (true) {
             if (isGeneratorFunction<T, void>(x)) {
                 yield* x()
@@ -41,6 +42,7 @@ export function* repeat<T>(x: T | (() => Generator<T>) | ((i: number) => T)): In
             ++i
         }
     } else {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while (true) {
             yield x
             ++i

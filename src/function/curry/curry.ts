@@ -8,7 +8,7 @@ type UnconsArgsHelper<T extends unknown[], L extends number, I extends unknown[]
               ? L extends 0
                   ? { init: T; tail: [] }[]
                   : UnconsArgsHelper<Z, Subtract<L, 1>, [...I, A]>
-              : { init: T; tail: [] }[])
+              : { init: T; tail: [] }[]),
       ]
 export type UnconsArgs<T extends unknown[], L extends number> = UnconsArgsHelper<T, L>[L]
 

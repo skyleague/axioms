@@ -1,1 +1,1 @@
-export { trampoline, itrampoline, RecurrentGenerator } from './trampoline.js'
+export { trampoline, itrampoline, type RecurrentGenerator } from './trampoline.js'

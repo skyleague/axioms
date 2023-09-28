@@ -1,1 +1,1 @@
-export { Lambda } from './lambda.js'
+export { type Lambda } from './lambda.js'

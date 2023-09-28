@@ -37,7 +37,7 @@ import deepEqual from 'fast-deep-equal/es6/index.js'
 export function allEqual<
     Xs extends Traversable<unknown>,
     As extends Xs extends Traversable<infer S> ? Traversable<S> : never,
-    T = Xs extends Traversable<infer S> ? S : never
+    T = Xs extends Traversable<infer S> ? S : never,
 >(xs: Xs, as: As, eq: (a: T, b: T) => boolean = equal): boolean {
     const ixs = toTraverser(xs)
     const ias = toTraverser(as)

@@ -1,1 +1,1 @@
-export { DateGenerator, date, DatetimeGenerator, datetime } from './date.js'
+export { type DateGenerator, date, type DatetimeGenerator, datetime } from './date.js'

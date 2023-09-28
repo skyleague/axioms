@@ -1,1 +1,1 @@
-export { Promisable } from './promise.js'
+export { type Promisable } from './promise.js'

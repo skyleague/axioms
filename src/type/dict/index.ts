@@ -1,1 +1,1 @@
-export { Dict } from './dict.js'
+export { type Dict } from './dict.js'

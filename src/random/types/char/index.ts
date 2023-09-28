@@ -2,7 +2,7 @@ export {
     alphaChar,
     lowerAlphaChar,
     char,
-    CharGenerator,
+    type CharGenerator,
     charGenerator,
     hexChar,
     base64Char,
