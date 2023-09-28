@@ -21,7 +21,7 @@ export interface IntegerConstraints {
     max: number
 }
 
-const nearZeroBias = /* @__PURE__ */ weightedChoice([
+const nearZeroBias = weightedChoice([
     [2, ({ logMin, logMax }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min: -logMin, max: logMax })],
     [1, ({ logMax, max }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min: max - logMax, max })],
     [1, ({ logMin, min }: IntegerConstraints & { logMin: number; logMax: number }) => ({ min, max: min + logMin })],

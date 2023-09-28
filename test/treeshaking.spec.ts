@@ -24,21 +24,10 @@ describe('esbuild', () => {
             }).then((x) => x.outputFiles.map((y) => y.text))
         ).resolves.toMatchInlineSnapshot(`
           [
-            "// src/type/thrown/thrown.ts
-          var thrownSymbol = \\"(Thrown)\\";
-          var Thrown = Symbol.for(thrownSymbol);
-
-          // src/iterator/equal/equal.ts
-          import deepEqual from \\"fast-deep-equal/es6/index.js\\";
-
-          // src/guard/is-right/is-right.ts
+            "// src/guard/is-right/is-right.ts
           function isRight(x) {
             return x !== null && x !== void 0 && typeof x === \\"object\\" && \\"right\\" in x;
           }
-
-          // src/random/deterministic/hash/hash.ts
-          import { hasher } from \\"node-object-hash\\";
-          var objectHasher = hasher({ sort: false, coerce: false });
 
           // test/stdin.ts
           if (isRight({ left: \\"\\" })) {
