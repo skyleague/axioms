@@ -87,7 +87,8 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
                         }
                     }
                 }
-                throw new InfeasibleTree()
+                console.warn("Couldn't generate a value in a reasonable amount of time")
+                return new InfeasibleTree()
             }, tests),
         maxDepth: shrinks,
         counterExample,

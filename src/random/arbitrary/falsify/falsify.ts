@@ -1,14 +1,14 @@
 import type { Tree } from '../../../algorithm/index.js'
 import { enumerate } from '../../../generator/index.js'
-import { isJust, isDefined } from '../../../guard/index.js'
-import type { Traversable, Maybe } from '../../../type/index.js'
+import { isJust, isDefined, isFailure } from '../../../guard/index.js'
+import type { Traversable, Maybe, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { toString } from '../../../util/index.js'
 
 import { performance } from 'node:perf_hooks'
 
 export interface FalsifyOptions<T> {
-    values: () => Traversable<Tree<T>>
+    values: () => Traversable<Try<Tree<T>>>
     predicate: (x: T) => [boolean, Maybe<Error>]
     maxDepth: number
     counterExample: T | undefined
@@ -66,7 +66,12 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample }: Fals
         return Nothing
     }
     let smallest = undefined
+    let failure: Error | undefined = undefined
     for (const [i, tree] of enumerate(values())) {
+        if (isFailure(tree)) {
+            failure = tree
+            continue
+        }
         let foundCounterExample: Maybe<Tree<T>> = Nothing
         const [holds] = predicate(tree.value)
         if (!holds) {
@@ -94,6 +99,9 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample }: Fals
     if (smallest) {
         return smallest[2]
     }
+    if (isDefined(failure)) {
+        throw failure
+    }
     return Nothing
 }
 
@@ -119,7 +127,7 @@ export function findSmallest<T>({
 }
 
 export interface AsyncFalsifyOptions<T> {
-    values: () => Traversable<Tree<T>>
+    values: () => Traversable<Try<Tree<T>>>
     predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
     maxDepth: number
     counterExample: T | undefined
@@ -152,8 +160,13 @@ export async function asyncFalsify<T>({
         return Nothing
     }
     let smallest = undefined
+    let failure: Error | undefined = undefined
     const startTime = performance.now()
     for (const [i, tree] of enumerate(values())) {
+        if (isFailure(tree)) {
+            failure = tree
+            continue
+        }
         const timeLeft = timeout - (performance.now() - startTime)
         const timeBudget = timeLeft / (tests - i)
         let foundCounterExample: Maybe<Tree<T>> = Nothing
@@ -182,6 +195,9 @@ export async function asyncFalsify<T>({
     }
     if (smallest) {
         return smallest[2]
+    }
+    if (isDefined(failure)) {
+        throw failure
     }
     return Nothing
 }
