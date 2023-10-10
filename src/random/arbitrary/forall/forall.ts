@@ -64,8 +64,8 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
     }
     const maybeCounterExample = falsify<TypeOfArbitrary<AsArbitrary<T>>>({
         predicate: safePredicate,
-        values: (ctx = { skips: 0 }) =>
-            replicate((i) => {
+        values: () =>
+            replicate((i, ctx = { skips: 0 }) => {
                 while (ctx.skips < maxSkips) {
                     try {
                         const value = evaluatedArbitrary.value({
@@ -77,6 +77,7 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
                         if (i > 0 && i % period === 0) {
                             context.rng.jump()
                         }
+                        ctx.skips = 0
                         return value
                     } catch (e) {
                         if (e instanceof InfeasibleTree) {
