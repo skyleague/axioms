@@ -39,27 +39,19 @@ function biasInteger({ min, max }: IntegerConstraints, { rng, bias }: BiasedArbi
     if (min === max) {
         return { min, max }
     } else if (min < 0 && max > 0) {
-        // min < 0 && max > 0
+        // Both min and max are non-zero
         const logMin = integerLogLike(-min) * bias
         const logMax = integerLogLike(max) * bias
 
         return nearZeroBias(rng.sample())({ min, max, logMin, logMax })
     }
-    // // Either min < 0 && max <= 0
-    // // Or min >= 0, so max >= 0
-    const length = (max - min) * bias
+    // Either min or max is zero
 
+    const length = (max - min) * bias
     const choices = weightedChoice([
         [1, { min, max: Math.floor(min + length) }],
         [1, { min: Math.floor(max - length), max }],
     ])
-
-    // const logGap = integerLogLike((max - min) as any) // max-min !== 0
-    // const arbCloseToMin = new Ctor(min, max, min, (min as any) + logGap) // close to min
-    // const arbCloseToMax = new Ctor(min, max, (max - logGap) as any, max) // close to max
-    // return min < 0
-    //     ? new BiasedNumericArbitrary(arbCloseToMax, arbCloseToMin) // max is closer to zero
-    //     : new BiasedNumericArbitrary(arbCloseToMin, arbCloseToMax) // min is closer to zero
     return choices(rng.sample())
 }
 

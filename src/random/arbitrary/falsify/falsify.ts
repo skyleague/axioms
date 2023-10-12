@@ -4,6 +4,7 @@ import { isJust, isDefined, isFailure } from '../../../guard/index.js'
 import type { Traversable, Maybe, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { toString } from '../../../util/index.js'
+import { InfeasibleTree } from '../index.js'
 
 import { performance } from 'node:perf_hooks'
 
@@ -116,9 +117,15 @@ export function findSmallest<T>({
 }): { tree: Tree<T>; depth: number } {
     if (depth > 0) {
         for (const child of tree.children) {
-            const [holds] = predicate(child.value)
-            if (!holds) {
-                return findSmallest({ tree: child, predicate, depth: depth - 1 })
+            try {
+                const [holds] = predicate(child.value)
+                if (!holds) {
+                    return findSmallest({ tree: child, predicate, depth: depth - 1 })
+                }
+            } catch (e) {
+                if (!(e instanceof InfeasibleTree)) {
+                    throw e
+                }
             }
         }
     }
@@ -221,9 +228,15 @@ export async function asyncFindSmallest<T>({
             if (timeSinceStart > timeBudget) {
                 return { tree, depth }
             }
-            const [holds] = await predicate(child.value)
-            if (!holds) {
-                return asyncFindSmallest({ tree: child, predicate, depth: depth - 1, timeBudget, startTime })
+            try {
+                const [holds] = await predicate(child.value)
+                if (!holds) {
+                    return asyncFindSmallest({ tree: child, predicate, depth: depth - 1, timeBudget, startTime })
+                }
+            } catch (e) {
+                if (!(e instanceof InfeasibleTree)) {
+                    throw e
+                }
             }
         }
     }

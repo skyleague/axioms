@@ -65,11 +65,11 @@ it('counter example - negative', () => {
     expect(() => {
         forAll(integer(), (v) => v <= 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 1 tests (seed: 42n)
-        Shrunk 3 time(s)
-        Counter example:
+      "Counter example found after 1 tests (seed: 42n)
+      Shrunk 3 time(s)
+      Counter example:
 
-        1"
+      1"
     `)
 })
 
