@@ -137,8 +137,8 @@ export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
     }
     const maybeCounterExample = await asyncFalsify<TypeOfArbitrary<AsArbitrary<T>>>({
         predicate: safePredicate,
-        values: (ctx = { skips: 0 }) =>
-            replicate((i) => {
+        values: () =>
+            replicate((i, ctx = { skips: 0 }) => {
                 while (ctx.skips < maxSkips) {
                     try {
                         const value = evaluatedArbitrary.value({
@@ -150,6 +150,7 @@ export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
                         if (i > 0 && i % period === 0) {
                             context.rng.jump()
                         }
+                        ctx.skips = 0
                         return value
                     } catch (e) {
                         if (e instanceof InfeasibleTree) {
@@ -159,7 +160,8 @@ export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
                         }
                     }
                 }
-                throw new InfeasibleTree()
+                console.warn("Couldn't generate a value in a reasonable amount of time")
+                return new InfeasibleTree()
             }, tests),
         maxDepth: shrinks,
         counterExample,
