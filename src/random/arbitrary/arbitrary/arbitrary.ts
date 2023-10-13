@@ -91,6 +91,7 @@ export function interleaveList<T>(xs: Traversable<Tree<T>>, options: { minLength
     return tree(
         axs.map((x) => x.value),
         concat(
+            ...[axs.length > minLength ? [interleaveList(axs.slice(0, minLength), options)] : []],
             // half first to dissect
             ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(shrinkX(axs, 0.5), options)] : []],
             ...map(shrinkOne(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList(concat(as, [c], cs), options))),
