@@ -482,25 +482,25 @@ describe('json', () => {
                 seed: 42n,
             })
         }).toThrowErrorMatchingInlineSnapshot(`
-                    "Counter example found after 2 tests (seed: 42n)
-                    Shrunk 0 time(s)
-                    Counter example:
+          "Counter example found after 2 tests (seed: 42n)
+          Shrunk 0 time(s)
+          Counter example:
 
-                    undefined
+          undefined
 
-                    Unexpected token u in JSON at position 0"
-            `)
+          Unexpected token u in JSON at position 0"
+        `)
     })
 
     it('parse stringify x != x fails', () => {
         expect(() => {
             forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n })
         }).toThrowErrorMatchingInlineSnapshot(`
-            "Counter example found after 11 tests (seed: 42n)
-            Shrunk 1 time(s)
-            Counter example:
+          "Counter example found after 11 tests (seed: 42n)
+          Shrunk 1 time(s)
+          Counter example:
 
-            0"
+          0"
         `)
     })
 
@@ -508,11 +508,11 @@ describe('json', () => {
         expect(() => {
             forAll(json({ type: 'value' }), (j) => !isObject(j), { seed: 42n })
         }).toThrowErrorMatchingInlineSnapshot(`
-            "Counter example found after 5 tests (seed: 42n)
-            Shrunk 10 time(s)
-            Counter example:
+          "Counter example found after 5 tests (seed: 42n)
+          Shrunk 1 time(s)
+          Counter example:
 
-            {}"
+          {}"
         `)
     })
 })
