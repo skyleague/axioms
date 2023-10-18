@@ -1,6 +1,6 @@
 import type { Tree } from '../../../algorithm/index.js'
 import { enumerate } from '../../../generator/index.js'
-import { isJust, isDefined, isFailure } from '../../../guard/index.js'
+import { isDefined, isFailure, isJust } from '../../../guard/index.js'
 import type { Traversable, Maybe, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { toString } from '../../../util/index.js'
@@ -42,6 +42,10 @@ export class FalsifiedError<T> extends Error {
                 this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
                 Object.defineProperty(this, 'matcherResult', (falsified.error as { matcherResult?: any }).matcherResult)
+            } else if (process.env.VITEST_WORKER_ID !== undefined) {
+                const origMessage = this.message
+                Object.assign(this, falsified.error)
+                this.message = origMessage
             } else {
                 this.stack = falsified.error.stack
             }
