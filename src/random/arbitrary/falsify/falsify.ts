@@ -8,13 +8,6 @@ import { InfeasibleTree } from '../index.js'
 
 import { performance } from 'node:perf_hooks'
 
-export interface FalsifyOptions<T> {
-    values: () => Traversable<Try<Tree<T>>>
-    predicate: (x: T) => [boolean, Maybe<Error>]
-    maxDepth: number
-    counterExample: T | undefined
-}
-
 export interface Falsified<T> {
     counterExample: T
     counterExampleStr: string
@@ -53,10 +46,26 @@ export class FalsifiedError<T> extends Error {
     }
 }
 
+export interface FalsifyOptions<T> {
+    values: () => Traversable<Try<Tree<T>>>
+    predicate: (x: T) => [boolean, Maybe<Error>]
+    maxDepth: number
+    counterExample: T | undefined
+    timeout: number
+    tests: number
+}
+
 /**
  * @internal
  */
-export function falsify<T>({ values, predicate, maxDepth, counterExample }: FalsifyOptions<T>): Maybe<Falsified<T>> {
+export function falsify<T>({
+    values,
+    predicate,
+    maxDepth,
+    counterExample,
+    timeout,
+    tests,
+}: FalsifyOptions<T>): Maybe<Falsified<T>> {
     if (isDefined(counterExample)) {
         const [holds, error] = predicate(counterExample)
         if (!holds) {
@@ -72,15 +81,18 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample }: Fals
     }
     let smallest = undefined
     let failure: Error | undefined = undefined
+    const startTime = performance.now()
     for (const [i, tree] of enumerate(values())) {
         if (isFailure(tree)) {
             failure = tree
             continue
         }
+        const timeLeft = timeout - (performance.now() - startTime)
+        const timeBudget = timeLeft / (tests - i)
         let foundCounterExample: Maybe<Tree<T>> = Nothing
         const [holds] = predicate(tree.value)
         if (!holds) {
-            const found = findSmallest({ tree, predicate, depth: maxDepth })
+            const found = findSmallest({ tree, predicate, depth: maxDepth, timeBudget })
             foundCounterExample = found.tree
             const str = toString(foundCounterExample.value)
             const strLength = str.length ?? -1
@@ -114,17 +126,25 @@ export function findSmallest<T>({
     tree,
     predicate,
     depth,
+    timeBudget,
+    startTime = performance.now(),
 }: {
     tree: Tree<T>
     predicate: (x: T) => [boolean, Maybe<Error>]
     depth: number
+    timeBudget: number
+    startTime?: number
 }): { tree: Tree<T>; depth: number } {
     if (depth > 0) {
         for (const child of tree.children) {
+            const timeSinceStart = performance.now() - startTime
+            if (timeSinceStart > timeBudget) {
+                return { tree, depth }
+            }
             try {
                 const [holds] = predicate(child.value)
                 if (!holds) {
-                    return findSmallest({ tree: child, predicate, depth: depth - 1 })
+                    return findSmallest({ tree: child, predicate, depth: depth - 1, timeBudget, startTime })
                 }
             } catch (e) {
                 if (!(e instanceof InfeasibleTree)) {

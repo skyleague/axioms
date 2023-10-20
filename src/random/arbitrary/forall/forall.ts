@@ -31,6 +31,7 @@ export interface ForallOptions<T> {
     maxSkips: number
     seed?: bigint
     counterExample?: T
+    timeout?: number
 }
 
 export function forAll<T extends ArbitraryOrLiteral<any>>(
@@ -42,6 +43,7 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
         maxSkips = 100,
         seed = BigInt(Math.floor(new Date().getTime() * Math.random())),
         period = 13,
+        timeout = 4_500,
         counterExample,
     }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
 ): void {
@@ -92,6 +94,8 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
             }, tests),
         maxDepth: shrinks,
         counterExample,
+        tests,
+        timeout,
     })
 
     if (isJust(maybeCounterExample)) {
@@ -99,10 +103,6 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
         Error.captureStackTrace(error, forAll)
         throw error
     }
-}
-
-export interface AsyncForallOptions<T> extends ForallOptions<T> {
-    timeout?: number
 }
 
 export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
@@ -116,7 +116,7 @@ export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
         period = 13,
         timeout = 4_500,
         counterExample,
-    }: Partial<AsyncForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
+    }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
 ): Promise<void> {
     const evaluatedArbitrary = asArbitrary(arbitrary)
     const context: ArbitraryContext = {
