@@ -15,11 +15,11 @@ export type AsTry<T extends AsyncConstExpr> = T extends () => infer V
     ? V extends Promise<Try<infer _P>>
         ? Promise<Try<_P>>
         : V extends Try<infer _V>
-        ? Try<_V>
-        : Try<V>
+          ? Try<_V>
+          : Try<V>
     : T extends Promise<Try<infer V>>
-    ? Promise<Try<V>>
-    : Try<T>
+      ? Promise<Try<V>>
+      : Try<T>
 
 /**
  * Converts the value to a `Failure`. The function as as an identity function on a failure.

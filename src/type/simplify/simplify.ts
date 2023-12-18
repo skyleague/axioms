@@ -5,7 +5,7 @@ export type SimplifyOnce<T> = T extends BuiltinType ? T : T extends any[] ? T : 
 export type Simplify<T> = T extends BuiltinType
     ? T
     : T extends (infer I)[]
-    ? T extends [any, ...infer Rest]
-        ? [Simplify<T[0]>, ...SimplifyTuple<Rest>]
-        : Simplify<I>[]
-    : { [K in keyof T]: Simplify<T[K]> }
+      ? T extends [any, ...infer Rest]
+          ? [Simplify<T[0]>, ...SimplifyTuple<Rest>]
+          : Simplify<I>[]
+      : { [K in keyof T]: Simplify<T[K]> }

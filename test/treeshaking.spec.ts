@@ -26,11 +26,11 @@ describe('esbuild', () => {
           [
             "// src/guard/is-right/is-right.ts
           function isRight(x) {
-            return x !== null && x !== void 0 && typeof x === \\"object\\" && \\"right\\" in x;
+            return x !== null && x !== void 0 && typeof x === "object" && "right" in x;
           }
 
           // test/stdin.ts
-          if (isRight({ left: \\"\\" })) {
+          if (isRight({ left: "" })) {
           }
           ",
           ]

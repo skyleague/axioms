@@ -22,11 +22,11 @@ describe('shrinking challenge', () => {
                 { seed: 42n }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 80 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 80 tests (seed: 42n)
           Shrunk 4 time(s)
           Counter example:
 
-          [ [ -32766 ], [ -2 ], [ -1 ], [], [] ]"
+          [ [ -32766 ], [ -2 ], [ -1 ], [], [] ]]
         `)
     })
 
@@ -47,11 +47,11 @@ describe('shrinking challenge', () => {
                 { seed: 42n }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 25 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 25 tests (seed: 42n)
           Shrunk 6 time(s)
           Counter example:
 
-          [ 1, 0 ]"
+          [ 1, 0 ]]
         `)
     })
 
@@ -67,11 +67,11 @@ describe('shrinking challenge', () => {
                 { seed: 42n }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 10 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 10 tests (seed: 42n)
           Shrunk 4 time(s)
           Counter example:
 
-          [ [ 0, 0 ], 0 ]"
+          [ [ 0, 0 ], 0 ]]
         `)
     })
 
@@ -85,11 +85,11 @@ describe('shrinking challenge', () => {
                 { seed: 42n }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 13 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 13 tests (seed: 42n)
           Shrunk 64 time(s)
           Counter example:
 
-          [ 0, 1, 2 ]"
+          [ 0, 1, 2 ]]
         `)
     })
 
@@ -103,11 +103,11 @@ describe('shrinking challenge', () => {
                 { seed: 42n }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 33 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 33 tests (seed: 42n)
           Shrunk 11 time(s)
           Counter example:
 
-          [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0 ] ]"
+          [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0 ] ]]
         `)
     })
 
@@ -125,11 +125,11 @@ describe('shrinking challenge', () => {
                 { seed: 42n, tests: 20 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 12 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 12 tests (seed: 42n)
           Shrunk 6 time(s)
           Counter example:
 
-          [ 900 ]"
+          [ 900 ]]
         `)
     })
 
@@ -137,11 +137,11 @@ describe('shrinking challenge', () => {
         expect(() => {
             forAll(array(array(integer())), (xs) => new Set(xs.flat()).size < 5, { seed: 42n })
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 37 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 37 tests (seed: 42n)
           Shrunk 120 time(s)
           Counter example:
 
-          [ [ 0, 1, 2, 3, 4 ] ]"
+          [ [ 0, 1, 2, 3, 4 ] ]]
         `)
     })
 
@@ -149,11 +149,11 @@ describe('shrinking challenge', () => {
         expect(() => {
             forAll(array(integer()), (xs) => equal(xs, [...xs].reverse()), { seed: 42n })
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 2 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 2 tests (seed: 42n)
           Shrunk 32 time(s)
           Counter example:
 
-          [ 0, 1 ]"
+          [ 0, 1 ]]
         `)
     })
 })

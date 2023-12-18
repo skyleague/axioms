@@ -26,7 +26,7 @@ describe('json', () => {
             {},
             {
               "": null,
-              "&O)\\"": -922310815.3130794,
+              "&O)"": -922310815.3130794,
               "4R": [
                 true,
                 false,
@@ -43,11 +43,11 @@ describe('json', () => {
               "6(cO^/cK'": true,
               "8'C)+:aO": 133038609.65790606,
               "=T+Y.NUga": {
-                " \\\\T": -1854482508.063562,
+                " \\T": -1854482508.063562,
                 "(l%!Y$-:": null,
                 ";aH-I+": "T1",
               },
-              "Hwh^\\\\^C|*": null,
+              "Hwh^\\^C|*": null,
               "qg|;lM:": null,
             },
             {
@@ -57,7 +57,7 @@ describe('json', () => {
                 "5]/Q": null,
                 "QhL": "",
                 "^}M&": -792887155,
-                "pt/]\\\\<": null,
+                "pt/]\\<": null,
                 "}X]SQ??v": -1671390927.3334527,
               },
               "(": 478895048.76524544,
@@ -89,11 +89,11 @@ describe('json', () => {
               "": null,
               ".E": "by7",
               ">;-8;j_": false,
-              "v>3": "[}JQ\\\\",
+              "v>3": "[}JQ\\",
             },
             {
               "+HW*-=&": null,
-              "9'\\"Fm": 865367527,
+              "9'"Fm": 865367527,
               ";": -1349975950.3410072,
               "J:.G^*": -1915662675,
               "_": "Ow",
@@ -102,7 +102,7 @@ describe('json', () => {
               ],
               "p_yG": null,
               "zojD%:cf": null,
-              "}6,e\\\\b\\"1": "@\\\\z}L",
+              "}6,e\\b"1": "@\\z}L",
             },
             {
               "": -707660419,
@@ -125,7 +125,7 @@ describe('json', () => {
                 null,
                 "QL",
               ],
-              "V $<jm0\\\\": 155600093.48151302,
+              "V $<jm0\\": 155600093.48151302,
             },
             {
               ")=ip9h": -348979637.6679416,
@@ -133,10 +133,10 @@ describe('json', () => {
                 "": "rIX)?m>",
                 "%4N8t": -896571183.7950864,
                 "(L(": "jttt",
-                ",RO\\"s": -485183678.6566415,
+                ",RO"s": -485183678.6566415,
                 "<(": null,
                 "Gn^D_q6xY": null,
-                "Qd}F\\\\$": 471181554,
+                "Qd}F\\$": 471181554,
                 "][QrI\`4I*": "+IZ<7",
                 "}!g}86": null,
               },
@@ -144,7 +144,7 @@ describe('json', () => {
                 "": 897696461,
                 "QThaKgxG": null,
                 "V$}gB": true,
-                "]\\"^bS?m@g": "[7CK(",
+                "]"^bS?m@g": "[7CK(",
               },
               "Bi'a": null,
               "U>aLV<:$,": {
@@ -161,7 +161,7 @@ describe('json', () => {
               "$eK?4{_": "nW:!5s:S",
               "+9[|": false,
               ";#A": -1657319970.2236514,
-              ">u%s'\\"+sr": [
+              ">u%s'"+sr": [
                 -2039383630,
                 "{lT/[",
               ],
@@ -169,9 +169,9 @@ describe('json', () => {
                 "": null,
                 "'": "Vb JT}4S'",
                 "0&(9/": 1879672097,
-                "Q<b}%\\"": "x7OtR3Q",
+                "Q<b}%"": "x7OtR3Q",
                 "[cI\`XL": "pq#x9#\`^",
-                "c": "Ij;Nymv\\"?",
+                "c": "Ij;Nymv"?",
                 "ft": false,
               },
               "OVDAGUe^-": [],
@@ -197,7 +197,7 @@ describe('json', () => {
             {},
             {
               "": null,
-              "&O)\\"": -922310815.3130794,
+              "&O)"": -922310815.3130794,
               "4R": [
                 true,
                 false,
@@ -214,11 +214,11 @@ describe('json', () => {
               "6(cO^/cK'": true,
               "8'C)+:aO": 133038609.65790606,
               "=T+Y.NUga": {
-                " \\\\T": -1854482508.063562,
+                " \\T": -1854482508.063562,
                 "(l%!Y$-:": null,
                 ";aH-I+": "T1",
               },
-              "Hwh^\\\\^C|*": null,
+              "Hwh^\\^C|*": null,
               "qg|;lM:": null,
             },
             {
@@ -228,7 +228,7 @@ describe('json', () => {
                 "5]/Q": null,
                 "QhL": "",
                 "^}M&": -792887155,
-                "pt/]\\\\<": null,
+                "pt/]\\<": null,
                 "}X]SQ??v": -1671390927.3334527,
               },
               "(": 478895048.76524544,
@@ -260,11 +260,11 @@ describe('json', () => {
               "": null,
               ".E": "by7",
               ">;-8;j_": false,
-              "v>3": "[}JQ\\\\",
+              "v>3": "[}JQ\\",
             },
             {
               "+HW*-=&": null,
-              "9'\\"Fm": 865367527,
+              "9'"Fm": 865367527,
               ";": -1349975950.3410072,
               "J:.G^*": -1915662675,
               "_": "Ow",
@@ -273,7 +273,7 @@ describe('json', () => {
               ],
               "p_yG": null,
               "zojD%:cf": null,
-              "}6,e\\\\b\\"1": "@\\\\z}L",
+              "}6,e\\b"1": "@\\z}L",
             },
             {
               "": -707660419,
@@ -296,7 +296,7 @@ describe('json', () => {
                 null,
                 "QL",
               ],
-              "V $<jm0\\\\": 155600093.48151302,
+              "V $<jm0\\": 155600093.48151302,
             },
             {
               ")=ip9h": -348979637.6679416,
@@ -304,10 +304,10 @@ describe('json', () => {
                 "": "rIX)?m>",
                 "%4N8t": -896571183.7950864,
                 "(L(": "jttt",
-                ",RO\\"s": -485183678.6566415,
+                ",RO"s": -485183678.6566415,
                 "<(": null,
                 "Gn^D_q6xY": null,
-                "Qd}F\\\\$": 471181554,
+                "Qd}F\\$": 471181554,
                 "][QrI\`4I*": "+IZ<7",
                 "}!g}86": null,
               },
@@ -315,7 +315,7 @@ describe('json', () => {
                 "": 897696461,
                 "QThaKgxG": null,
                 "V$}gB": true,
-                "]\\"^bS?m@g": "[7CK(",
+                "]"^bS?m@g": "[7CK(",
               },
               "Bi'a": null,
               "U>aLV<:$,": {
@@ -332,7 +332,7 @@ describe('json', () => {
               "$eK?4{_": "nW:!5s:S",
               "+9[|": false,
               ";#A": -1657319970.2236514,
-              ">u%s'\\"+sr": [
+              ">u%s'"+sr": [
                 -2039383630,
                 "{lT/[",
               ],
@@ -340,9 +340,9 @@ describe('json', () => {
                 "": null,
                 "'": "Vb JT}4S'",
                 "0&(9/": 1879672097,
-                "Q<b}%\\"": "x7OtR3Q",
+                "Q<b}%"": "x7OtR3Q",
                 "[cI\`XL": "pq#x9#\`^",
-                "c": "Ij;Nymv\\"?",
+                "c": "Ij;Nymv"?",
                 "ft": false,
               },
               "OVDAGUe^-": [],
@@ -367,7 +367,7 @@ describe('json', () => {
           [
             [],
             [
-              "J&O)\\";",
+              "J&O)";",
               1497140825,
               null,
               1749221268.0367875,
@@ -400,7 +400,7 @@ describe('json', () => {
                 "AZ;aH-I": "",
                 "T1": -2135896712,
                 "TO&o(l": "",
-                "^\\\\^C|*W": null,
+                "^\\^C|*W": null,
               },
               null,
               true,
@@ -450,7 +450,7 @@ describe('json', () => {
           [
             {},
             511147728,
-            "J&O)\\";",
+            "J&O)";",
             1497140825,
             null,
             1749221268.0367875,
@@ -482,13 +482,13 @@ describe('json', () => {
                 seed: 42n,
             })
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 2 tests (seed: 42n)
+          [AssertionError: Counter example found after 2 tests (seed: 42n)
           Shrunk 0 time(s)
           Counter example:
 
           undefined
 
-          Unexpected token u in JSON at position 0"
+          "undefined" is not valid JSON]
         `)
     })
 
@@ -496,11 +496,11 @@ describe('json', () => {
         expect(() => {
             forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n })
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 11 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 11 tests (seed: 42n)
           Shrunk 1 time(s)
           Counter example:
 
-          0"
+          0]
         `)
     })
 
@@ -508,11 +508,11 @@ describe('json', () => {
         expect(() => {
             forAll(json({ type: 'value' }), (j) => !isObject(j), { seed: 42n })
         }).toThrowErrorMatchingInlineSnapshot(`
-          "Counter example found after 5 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 5 tests (seed: 42n)
           Shrunk 1 time(s)
           Counter example:
 
-          {}"
+          {}]
         `)
     })
 })

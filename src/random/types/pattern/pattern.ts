@@ -8,8 +8,8 @@ type PatternChar = '*' | '#' | 'A' | 'a' | 'i'
 type PatternString<T extends string, A> = T extends PatternChar
     ? A
     : T extends `${PatternChar}${infer Rest}`
-    ? PatternString<Rest, A>
-    : { _error: 'String must exist of pattern chars only' }
+      ? PatternString<Rest, A>
+      : { _error: 'String must exist of pattern chars only' }
 
 /**
  * Generates a string based on a pattern string.

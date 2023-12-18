@@ -100,7 +100,6 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
 
     if (isJust(maybeCounterExample)) {
         const error = new FalsifiedError(maybeCounterExample, { seed })
-        Error.captureStackTrace(error, forAll)
         throw error
     }
 }
@@ -171,7 +170,6 @@ export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
 
     if (isJust(maybeCounterExample)) {
         const error = new FalsifiedError(maybeCounterExample, { seed })
-        Error.captureStackTrace(error, asyncForAll)
         throw error
     }
 }

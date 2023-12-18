@@ -53,11 +53,11 @@ it('counter example - positive', () => {
     expect(() => {
         forAll(integer(), (v) => v > 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 2 tests (seed: 42n)
-        Shrunk 1 time(s)
-        Counter example:
+      [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+      Shrunk 1 time(s)
+      Counter example:
 
-        0"
+      0]
     `)
 })
 
@@ -65,11 +65,11 @@ it('counter example - negative', () => {
     expect(() => {
         forAll(integer(), (v) => v <= 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      "Counter example found after 1 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 1 tests (seed: 42n)
       Shrunk 3 time(s)
       Counter example:
 
-      1"
+      1]
     `)
 })
 
@@ -77,11 +77,11 @@ it('counter example - equal', () => {
     expect(() => {
         forAll(integer(), (v) => v !== 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 87 tests (seed: 42n)
-        Shrunk 1 time(s)
-        Counter example:
+      [FalsifiedError: Counter example found after 87 tests (seed: 42n)
+      Shrunk 1 time(s)
+      Counter example:
 
-        0"
+      0]
     `)
 })
 
@@ -100,11 +100,11 @@ it('counter example - asymmetric', () => {
             { seed: 42n, tests: 2000 }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 1025 tests (seed: 42n)
-        Shrunk 9 time(s)
-        Counter example:
+      [FalsifiedError: Counter example found after 1025 tests (seed: 42n)
+      Shrunk 9 time(s)
+      Counter example:
 
-        [ 748374, 748384 ]"
+      [ 748374, 748384 ]]
     `)
 })
 
@@ -121,11 +121,11 @@ it('counter example - symmetric', () => {
             { seed: 42n, tests: 2000 }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-        "Counter example found after 1001 tests (seed: 42n)
-        Shrunk 12 time(s)
-        Counter example:
+      [FalsifiedError: Counter example found after 1001 tests (seed: 42n)
+      Shrunk 12 time(s)
+      Counter example:
 
-        [ 1000, 1010 ]"
+      [ 1000, 1010 ]]
     `)
 })
 

@@ -17,8 +17,8 @@ export type Curried<A extends unknown[], R> = <L extends UnconsArgs<A, number>['
 ) => 0 extends L['length']
     ? never
     : 0 extends UnconsArgs<A, L['length']>['tail']['length']
-    ? R
-    : Curried<UnconsArgs<A, L['length']>['tail'], R>
+      ? R
+      : Curried<UnconsArgs<A, L['length']>['tail'], R>
 
 export function curry<T extends unknown[], R>(f: (...args: T) => R): Curried<T, R> {
     return function curried(this: unknown, ...args: unknown[]) {
@@ -38,8 +38,8 @@ export type CurriedVariadic<A extends unknown[], R, I extends number> = <S exten
 ) => 0 extends S['length']
     ? never
     : 0 extends Subtract<I, S['length']>
-    ? R
-    : CurriedVariadic<UnconsArgs<A, S['length']>['tail'], R, Simplify<Subtract<I, S['length']>>>
+      ? R
+      : CurriedVariadic<UnconsArgs<A, S['length']>['tail'], R, Simplify<Subtract<I, S['length']>>>
 
 export function curryVariadic<T extends unknown[], R, L extends number>(f: (...args: T) => R, n: L): CurriedVariadic<T, R, L> {
     return function curried(this: unknown, ...args: unknown[]) {
