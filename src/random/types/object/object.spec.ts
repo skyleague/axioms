@@ -94,8 +94,8 @@ describe('object', () => {
         const aobject = json()
         expect(aobject.value({ rng: xoroshiro128plus(48n) }).value).toMatchInlineSnapshot(`
           {
-            "&\\"<9#w<6": null,
-            "@\\\\Q*cM]": "=m",
+            "&"<9#w<6": null,
+            "@\\Q*cM]": "=m",
             "BR": [
               " eDZl3zqf",
               null,

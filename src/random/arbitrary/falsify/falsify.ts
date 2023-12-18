@@ -29,7 +29,6 @@ export class FalsifiedError<T> extends Error {
         super([counterExampleStr, ...(isJust(falsified.error) ? ['', falsified.error.message] : [])].join('\n'))
         this.name = 'FalsifiedError'
         if (isJust(falsified.error) && isDefined(falsified.error.stack)) {
-            this.cause = falsified.error
             if (process.env.JEST_WORKER_ID !== undefined) {
                 // jest adds information to the stack, so input the falsify information there if needed
                 this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
@@ -37,8 +36,13 @@ export class FalsifiedError<T> extends Error {
                 Object.defineProperty(this, 'matcherResult', (falsified.error as { matcherResult?: any }).matcherResult)
             } else if (process.env.VITEST_WORKER_ID !== undefined) {
                 const origMessage = this.message
+                this.name = 'AssertionError'
+                this.stack = falsified.error.stack
                 Object.assign(this, falsified.error)
                 this.message = origMessage
+                if (!('cause' in this)) {
+                    this.cause = falsified.error.cause
+                }
             } else {
                 this.stack = falsified.error.stack
             }

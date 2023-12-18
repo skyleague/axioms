@@ -15,8 +15,8 @@ type PathValue<T, P extends Path<T> | string> = P extends `${infer Key}.${infer 
             : Nothing
         : Nothing
     : P extends keyof T
-    ? T[P]
-    : Nothing
+      ? T[P]
+      : Nothing
 
 export function getProp<T, P extends Path<T> | string>(obj: T, path: P): P extends Path<T> ? PathValue<T, P> : Nothing {
     let current: any = obj

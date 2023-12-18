@@ -160,10 +160,10 @@ export function whenJust<T, M = T>(x: Maybe<T>, f: (x: Just<T>) => M): Maybe<M> 
 export type ArgJusts<Xs> = Xs extends [infer X, ...infer Rest]
     ? [X extends infer J ? Just<J> : never, ...ArgJusts<Rest>]
     : Xs extends []
-    ? []
-    : Xs extends (infer I)[]
-    ? (I extends infer J ? Just<J> : never)[]
-    : []
+      ? []
+      : Xs extends (infer I)[]
+        ? (I extends infer J ? Just<J> : never)[]
+        : []
 
 /**
  * `whenJusts` takes a tuple of `Maybe`s and a function that takes the values of the `Just`s and

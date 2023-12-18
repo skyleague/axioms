@@ -21,10 +21,10 @@ export type AsArbitrary<T extends ArbitraryOrLiteral<unknown>> = T extends reado
           }>
       >
     : T extends Arbitrary<infer U>
-    ? Arbitrary<U>
-    : T extends Record<PropertyKey, Arbitrary<unknown>>
-    ? Arbitrary<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }>
-    : Arbitrary<T>
+      ? Arbitrary<U>
+      : T extends Record<PropertyKey, Arbitrary<unknown>>
+        ? Arbitrary<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }>
+        : Arbitrary<T>
 
 export type ArbitraryOrLiteral<T> = Arbitrary<T> | T
 
