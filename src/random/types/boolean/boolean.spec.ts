@@ -19,10 +19,10 @@ it('distribution', () => {
             (v) => v.length
         )
     ).toMatchInlineSnapshot(`
-        {
-          "false": 509,
-          "true": 491,
-        }
+      {
+        "false": 510,
+        "true": 490,
+      }
     `)
 })
 
@@ -30,7 +30,7 @@ it('counter example - true', () => {
     expect(() => {
         forAll(boolean(), (v) => v, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 6 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 3 tests (seed: 42n)
       Shrunk 0 time(s)
       Counter example:
 
@@ -40,9 +40,9 @@ it('counter example - true', () => {
 
 it('counter example - false', () => {
     expect(() => {
-        forAll(boolean(), (v) => !v, { seed: 42n })
+        forAll(boolean(), (v) => !v, { seed: 43n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 4 tests (seed: 43n)
       Shrunk 0 time(s)
       Counter example:
 

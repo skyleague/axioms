@@ -1,5 +1,5 @@
 import type { Tree } from '../../../algorithm/tree/index.js'
-import { filterTree } from '../../../algorithm/tree/index.js'
+import { filterApplicativeTree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/index.js'
 import { equal } from '../../../iterator/equal/index.js'
 import { concat } from '../../../iterator/index.js'
@@ -15,7 +15,7 @@ import { arrayWith } from '../array/index.js'
 import { tuple } from '../tuple/index.js'
 
 function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): Tree<T[]> {
-    return filterTree(vals, (x) => collect(unique(x, eq)).length === x.length)
+    return filterApplicativeTree(vals, (x) => collect(unique(x, eq)).length === x.length)
 }
 
 /**

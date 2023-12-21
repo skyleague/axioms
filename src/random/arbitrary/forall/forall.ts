@@ -31,7 +31,7 @@ export interface ForallOptions<T> {
     maxSkips: number
     seed?: bigint
     counterExample?: T
-    timeout?: number
+    timeout?: number | false
 }
 
 export function forAll<T extends ArbitraryOrLiteral<any>>(
@@ -72,7 +72,7 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
                     try {
                         const value = evaluatedArbitrary.value({
                             ...context,
-                            bias: context.rng.sample() < 1 / (1 + Math.log(i + 1)) ? context.rng.sample() : undefined,
+                            bias: context.rng.sample() < 0.5 ? context.rng.sample() : undefined,
                             // bias: undefined,
                         })
 
@@ -142,8 +142,7 @@ export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
                     try {
                         const value = evaluatedArbitrary.value({
                             ...context,
-                            bias: context.rng.sample() < 1 / (1 + Math.log(i + 1)) ? context.rng.sample() : undefined,
-                            // bias: undefined,
+                            bias: context.rng.sample() < 0.5 ? context.rng.sample() : undefined,
                         })
 
                         if (i > 0 && i % period === 0) {

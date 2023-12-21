@@ -25,18 +25,18 @@ it('distribution', () => {
             (v) => v.length
         )
     ).toMatchInlineSnapshot(`
-        {
-          "0": 103,
-          "1": 107,
-          "2": 93,
-          "3": 110,
-          "4": 110,
-          "5": 88,
-          "6": 110,
-          "7": 96,
-          "8": 81,
-          "9": 102,
-        }
+      {
+        "0": 110,
+        "1": 99,
+        "2": 99,
+        "3": 112,
+        "4": 100,
+        "5": 90,
+        "6": 98,
+        "7": 105,
+        "8": 96,
+        "9": 91,
+      }
     `)
 })
 
@@ -44,7 +44,7 @@ it('counter example - positive', () => {
     expect(() => {
         forAll(natural({ max: 20 }), (v) => v > 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 44 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
@@ -57,7 +57,7 @@ it('counter example - negative', () => {
         forAll(natural(), (v) => v <= 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 1 tests (seed: 42n)
-      Shrunk 31 time(s)
+      Shrunk 3 time(s)
       Counter example:
 
       1]
@@ -68,7 +68,7 @@ it('counter example - equal', () => {
     expect(() => {
         forAll(natural({ max: 20 }), (v) => v !== 0, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 44 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
@@ -91,11 +91,11 @@ it('counter example - asymmetric', () => {
             { seed: 42n, tests: 2000 }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1025 tests (seed: 42n)
-      Shrunk 9 time(s)
+      [FalsifiedError: Counter example found after 811 tests (seed: 42n)
+      Shrunk 10 time(s)
       Counter example:
 
-      [ 748374, 748384 ]]
+      [ 998991, 999001 ]]
     `)
 })
 
@@ -112,11 +112,11 @@ it('counter example - symmetric', () => {
             { seed: 42n, tests: 2000 }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1001 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 1271 tests (seed: 42n)
       Shrunk 12 time(s)
       Counter example:
 
-      [ 1000, 1010 ]]
+      [ 998976, 997977 ]]
     `)
 })
 
@@ -131,17 +131,17 @@ it('random sample', () => {
             )
         )
     ).toMatchInlineSnapshot(`
-        [
-          714,
-          76,
-          214,
-          619,
-          98,
-          628,
-          451,
-          67,
-          503,
-          104,
-        ]
+      [
+        550,
+        270,
+        471,
+        36,
+        805,
+        37,
+        79,
+        390,
+        180,
+        148,
+      ]
     `)
 })

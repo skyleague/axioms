@@ -17,16 +17,16 @@ it('random sample', () => {
         )
     ).toMatchInlineSnapshot(`
       [
-        "r0150GL",
-        "b4002oV",
-        "q3845LF",
-        "i6214TP",
-        "t3675ZW",
-        "q5018sE",
-        "m4884bD",
-        "j3616OB",
-        "e1448qN",
-        "d5145NR",
+        "n2407bB",
+        "j1126gY",
+        "d6457WY",
+        "k5431LS",
+        "g8824RE",
+        "w3312BF",
+        "q7463XQ",
+        "h0500JN",
+        "l1866KW",
+        "p3584nU",
       ]
     `)
 })

@@ -13,7 +13,7 @@ import { dependentArbitrary } from '../dependent/index.js'
 export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
     return {
         value: x.value.value,
-        children: applicative(
+        children: applicative(() =>
             concat(
                 map(x.children, (c) => collapseArbitraryTree(c)),
                 x.value.children

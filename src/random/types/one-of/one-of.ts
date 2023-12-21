@@ -24,10 +24,8 @@ import { integer } from '../integer/integer.js'
  * @group Arbitrary
  */
 export function oneOf<T extends Arbitrary<unknown>[]>(...arbitraries: [...T]): Dependent<TypeOfArbitraries<T>> {
-    const aint = integer({ min: 0, max: arbitraries.length })
-    return dependentArbitrary((context) => {
-        const i = aint.sample(context)
-        return arbitraries[i].value(context)
+    return integer({ min: 0, max: arbitraries.length }).chain((i) => {
+        return arbitraries[i]
     })
 }
 

@@ -19,9 +19,9 @@ it('pi', () => {
         4
 
     expect(collect(map(range(3, 5), (x) => approxPi(Math.pow(10, x))))).toMatchInlineSnapshot(`
-        [
-          3.2,
-          3.1568,
-        ]
+      [
+        3.104,
+        3.1392,
+      ]
     `)
 })

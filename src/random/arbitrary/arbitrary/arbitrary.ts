@@ -1,14 +1,15 @@
-import { mapApplicativeTree, tree } from '../../../algorithm/tree/index.js'
-import type { Tree } from '../../../algorithm/tree/index.js'
-import { collect } from '../../../array/collect/index.js'
-import { curryTuple } from '../../../function/tuple/index.js'
-import { next } from '../../../generator/index.js'
-import { isRight } from '../../../guard/index.js'
-import { concat, map } from '../../../iterator/index.js'
-import type { SimplifyOnce, Traversable } from '../../../type/index.js'
-import { toTraverser } from '../../../type/index.js'
-import type { ArbitraryContext } from '../context/index.js'
-import { shrinkX, shrinkOne } from '../shrink/index.js'
+import { type Tree, tree, mapApplicativeTree } from '../../../algorithm/tree/tree.js'
+import { collect } from '../../../array/collect/collect.js'
+import { curryTuple } from '../../../function/tuple/tuple.js'
+import { next } from '../../../generator/next/next.js'
+import { isRight } from '../../../guard/is-right/is-right.js'
+import { applicative } from '../../../iterator/applicative/applicative.js'
+import { concat } from '../../../iterator/concat/concat.js'
+import { map } from '../../../iterator/map/map.js'
+import type { SimplifyOnce } from '../../../type/simplify/simplify.js'
+import { toTraverser, type Traversable } from '../../../type/traversable/traversable.js'
+import type { ArbitraryContext } from '../context/context.js'
+import { shrinkX, splits } from '../shrink/shrink.js'
 
 export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>
@@ -46,9 +47,11 @@ export function interleaveTree<T, U>(r: Tree<T>, l: Tree<(x: T) => U>): Tree<U> 
     const { value: x, children: rs } = r
     return {
         value: f(x),
-        children: concat(
-            map(ls, (lp) => interleaveTree(r, lp)),
-            map(rs, (rp) => interleaveTree(rp, l))
+        children: applicative(() =>
+            concat(
+                map(ls, (lp) => interleaveTree(r, lp)),
+                map(rs, (rp) => interleaveTree(rp, l))
+            )
         ),
     }
 }
@@ -94,8 +97,8 @@ export function interleaveList<T>(xs: Traversable<Tree<T>>, options: { minLength
             ...[axs.length > minLength ? [interleaveList(axs.slice(0, minLength), options)] : []],
             // half first to dissect
             ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(shrinkX(axs, 0.5), options)] : []],
-            ...map(shrinkOne(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList(concat(as, [c], cs), options))),
-            ...[axs.length > minLength ? map(shrinkOne(axs), ([as, , cs]) => interleaveList(concat(as, cs), options)) : []]
+            ...map(splits(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList(concat(as, [c], cs), options))),
+            ...[axs.length > minLength ? map(splits(axs), ([as, , cs]) => interleaveList(concat(as, cs), options)) : []]
             // lazy(() => shrinkAll(axs))
         )
     )

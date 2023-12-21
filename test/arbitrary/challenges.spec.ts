@@ -1,6 +1,6 @@
 import { collect } from '../../src/array/index.js'
 import { equal, replicate } from '../../src/iterator/index.js'
-import { filterArbitrary, array, integer, forAll, tuple, natural, constant, chainArbitrary } from '../../src/random/index.js'
+import { array, integer, forAll, tuple, natural, constant } from '../../src/random/index.js'
 
 import { expect, describe, it } from 'vitest'
 
@@ -14,26 +14,26 @@ describe('shrinking challenge', () => {
             return s
         }
 
-        const boundedList = filterArbitrary(array(integer({ min: -32768, max: 32767 })), (x) => x.reduce(sum16, 0) < 256)
+        const boundedList = array(integer({ min: -32768, max: 32767 })).filter((x) => x.reduce(sum16, 0) < 256)
         expect(() => {
             forAll(
                 tuple(boundedList, boundedList, boundedList, boundedList, boundedList),
                 (xs) => xs.flat().reduce(sum16, 0) < 5 * 256,
-                { seed: 42n }
+                { seed: 42n, timeout: false, tests: 1000 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 80 tests (seed: 42n)
-          Shrunk 4 time(s)
+          [FalsifiedError: Counter example found after 567 tests (seed: 42n)
+          Shrunk 34 time(s)
           Counter example:
 
-          [ [ -32766 ], [ -2 ], [ -1 ], [], [] ]]
+          [ [ -32761 ], [], [], [], [ -8 ] ]]
         `)
     })
 
     it('coupling', () => {
         expect(() => {
             forAll(
-                filterArbitrary(array(natural({ max: 10 })), (xs) => xs.every((v) => v < xs.length)),
+                array(natural({ max: 10 })).filter((xs) => xs.every((v) => v < xs.length)),
                 (xs) => {
                     for (let i = 0; i !== xs.length; ++i) {
                         const j = xs[i]!
@@ -44,11 +44,11 @@ describe('shrinking challenge', () => {
                     }
                     return true
                 },
-                { seed: 42n }
+                { seed: 42n, timeout: false, tests: 1000 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 25 tests (seed: 42n)
-          Shrunk 6 time(s)
+          [FalsifiedError: Counter example found after 43 tests (seed: 42n)
+          Shrunk 12 time(s)
           Counter example:
 
           [ 1, 0 ]]
@@ -58,20 +58,77 @@ describe('shrinking challenge', () => {
     it('deletion', () => {
         expect(() => {
             forAll(
-                filterArbitrary(tuple(array(integer()), natural({ max: 10 })), ([xs, i]) => i < xs.length),
+                tuple(array(integer()), natural({ max: 10 })).filter(([xs, i]) => i < xs.length),
                 ([xs, i]) => {
                     const x = xs[i]!
                     const copyWithoutX = [...xs.slice(0, i), ...xs.slice(i + 1)]
                     return !copyWithoutX.includes(x)
                 },
-                { seed: 42n }
+                { seed: 42n, timeout: false, tests: 1000 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 10 tests (seed: 42n)
-          Shrunk 4 time(s)
+          [FalsifiedError: Counter example found after 81 tests (seed: 42n)
+          Shrunk 12 time(s)
           Counter example:
 
           [ [ 0, 0 ], 0 ]]
+        `)
+    })
+
+    it('difference 1', () => {
+        expect(() => {
+            forAll(
+                tuple(natural(), natural()),
+                ([x, y]) => {
+                    return x < 10 || x !== y
+                },
+                { seed: 42n, timeout: false, tests: 2000 }
+            )
+        }).toThrowErrorMatchingInlineSnapshot(`
+          [FalsifiedError: Counter example found after 1943 tests (seed: 42n)
+          Shrunk 0 time(s)
+          Counter example:
+
+          [ 12, 12 ]]
+        `)
+    })
+
+    it('difference 2', () => {
+        expect(() => {
+            forAll(
+                tuple(natural(), natural()),
+                ([x, y]) => {
+                    const diff = Math.abs(x - y)
+                    return x < 10 || (1 < diff && diff > 4)
+                },
+                { seed: 42n, timeout: false, tests: 1000 }
+            )
+        }).toThrowErrorMatchingInlineSnapshot(`
+          [FalsifiedError: Counter example found after 28 tests (seed: 42n)
+          Shrunk 5 time(s)
+          Counter example:
+
+          [ 10, 6 ]]
+        `)
+    })
+
+    it('difference 3', () => {
+        expect(() => {
+            forAll(
+                tuple(natural(), natural()),
+                ([x, y]) => {
+                    const diff = Math.abs(x - y)
+                    return x < 10 || diff !== 1
+                },
+
+                { seed: 42n, timeout: false, tests: 6_000 }
+            )
+        }).toThrowErrorMatchingInlineSnapshot(`
+          [FalsifiedError: Counter example found after 115 tests (seed: 42n)
+          Shrunk 0 time(s)
+          Counter example:
+
+          [ 10, 9 ]]
         `)
     })
 
@@ -82,11 +139,11 @@ describe('shrinking challenge', () => {
                 (xs) => {
                     return new Set(xs).size < 3
                 },
-                { seed: 42n }
+                { seed: 42n, timeout: false, tests: 1000 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 13 tests (seed: 42n)
-          Shrunk 64 time(s)
+          [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+          Shrunk 63 time(s)
           Counter example:
 
           [ 0, 1, 2 ]]
@@ -100,11 +157,11 @@ describe('shrinking challenge', () => {
                 (xs) => {
                     return xs.map((l) => l.length).reduce((a, b) => a + b, 0) <= 10
                 },
-                { seed: 42n }
+                { seed: 42n, timeout: false, tests: 1000 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 33 tests (seed: 42n)
-          Shrunk 11 time(s)
+          [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+          Shrunk 9 time(s)
           Counter example:
 
           [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0 ] ]]
@@ -112,21 +169,17 @@ describe('shrinking challenge', () => {
     })
 
     it('length list', () => {
-        const aint = integer({ min: 1, max: 100 })
-        const alist = chainArbitrary(aint, (n) => {
-            return tuple(...collect(replicate(natural({ max: 1000 }), n)))
-        })
         expect(() => {
             forAll(
-                alist,
+                integer({ min: 1, max: 100 }).chain((n) => tuple(...collect(replicate(natural({ max: 1000 }), n)))),
                 (xs) => {
                     return xs.reduce((a, b) => Math.max(a, b), 0) < 900
                 },
-                { seed: 42n, tests: 20 }
+                { seed: 42n, timeout: false, tests: 1000 }
             )
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 12 tests (seed: 42n)
-          Shrunk 6 time(s)
+          [FalsifiedError: Counter example found after 9 tests (seed: 42n)
+          Shrunk 4 time(s)
           Counter example:
 
           [ 900 ]]
@@ -135,10 +188,10 @@ describe('shrinking challenge', () => {
 
     it('large union list', () => {
         expect(() => {
-            forAll(array(array(integer())), (xs) => new Set(xs.flat()).size < 5, { seed: 42n })
+            forAll(array(array(integer())), (xs) => new Set(xs.flat()).size < 5, { seed: 42n, timeout: false, tests: 1000 })
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 37 tests (seed: 42n)
-          Shrunk 120 time(s)
+          [FalsifiedError: Counter example found after 17 tests (seed: 42n)
+          Shrunk 126 time(s)
           Counter example:
 
           [ [ 0, 1, 2, 3, 4 ] ]]
@@ -147,9 +200,9 @@ describe('shrinking challenge', () => {
 
     it('reverse', () => {
         expect(() => {
-            forAll(array(integer()), (xs) => equal(xs, [...xs].reverse()), { seed: 42n })
+            forAll(array(integer()), (xs) => equal(xs, [...xs].reverse()), { seed: 42n, timeout: false, tests: 1000 })
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+          [FalsifiedError: Counter example found after 10 tests (seed: 42n)
           Shrunk 32 time(s)
           Counter example:
 

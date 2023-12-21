@@ -5,7 +5,6 @@ import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import { interleaveList } from '../../arbitrary/arbitrary/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
-import { filterArbitrary, mapArbitrary } from '../../arbitrary/index.js'
 import { integer } from '../integer/integer.js'
 
 /**
@@ -73,10 +72,7 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
         )
     )
     if (uniqueItems) {
-        return filterArbitrary(
-            mapArbitrary(aList, (x) => [...unique(x)]),
-            (x) => x.length >= minLength
-        )
+        return aList.map((x) => [...unique(x)]).filter((x) => x.length >= minLength)
     }
     return aList
 }
