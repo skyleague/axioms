@@ -19,18 +19,18 @@ describe('domain', () => {
                 )
             )
         ).toMatchInlineSnapshot(`
-            [
-              "cwdxqcsdakk5yn6.r0hnzkit6x3n12y-7xwch-nhru9-ubeonyh22cf.et7luewfsv2z1nxkzpfqebkuhlaxusc5d.cawbfk47p7",
-              "xyn-ev5jcodekzspt8id0syg0rcsj162-k4rkyj29.qvmoq2l83mb4xy2k4xlmns5806dh-y5d8hz44gcq5ddowub25e3i9j7zn6ca7.p5xibwobtcc5me1wnt2rabry-rcll5-wx.tmm7tdr",
-              "xt8x57fyxl3r.pq11p",
-              "ionkpco527.5yls.0haomsf8ej",
-              "e1k5xsm8mhdvx-qtxbzkfoal09j0lkfjk3yrva85-ie1x0bgevmx9-rp5y8.p0epveflcygklgw1zfwy8f16yqkfpyeib6953ock01x.ybj",
-              "7jcao4jzxr3r8j8a379xm8pw593eitr5vabl2.3xnt9ewzb7ni.h97j",
-              "em3nhl9cyh3uy3q2vwxp8aimw176snv27c8dt94v6aru8zbr5ydl.2k2np8ulzrvlkbf3u1yk8j15zbmh2izk1w75w2he9d4no1kf5esa1f.mfz7dg1saj0tvb-1.0e4tu",
-              "z28p-8yay0um4m2atxjord-e5bssg4.z28y-a1-ji7hld67yxt6qzhqefvep.wjndrddr3777vcisj7tk.s09oxbmv",
-              "oyoz6i9w9bb26qwdm4ltetsa6uorn2czzd7llbnpejpp41i17y8d.4tl0-cbd19js7thtsgcdjgn8d0g7q3ks948bmfce.60aqu-iucbs4wx0qzwra455b8kbzyo2fc1ln3.e753v4oyp",
-              "j-q-3b1rmi9ze34vkai7ku9m7c6dbe769hlafu-3.fw9sunm",
-            ]
+          [
+            "jb3bcogfj1e-fzry689qurmg01j-8l.qh7nofjtiy3r2n9ylduccztre-0z07wov9uj4ala87bfupst-r75.d3w7io27",
+            "xbyq6pvlousatbygm48e7700cu6pcwfox0i15dzbyd7u-70c3.n-gpx1fmsbcnxgrhoo7kexko69r0xphojutefewrdya5.rebtcwbzzbc5z9-sf.brgxdee7vg",
+            "gujg.8i",
+            "a29st3ph9jeftfrf-6-ulw5s8mvs9g56kpenusm7b5wg986t57bzjpxghva.ek0pdfke",
+            "bo0nu7.wih18lwoh0e8bvo0psj8k-v8rl5b3cogfygz6lj77ex.ff-3qizb1c1jrw389janv.khtcms6r",
+            "2d9gt.7fnrxzsiikrm.sxsg74of8",
+            "d9m0i-d1da44v9ocgsu9cvtrwu7ffcoce.a6ksi6zdss7xb8n.jveyh3rbpgb",
+            "5cex8pfu80slut34434sf3i3nlbzo4clslih00.29dqgb7mqbdxyahp2mmrptjms5dsphv.st6po24igv7whfno5ph0zc6ow8gftztf00rwk38sn.z45hjstpn",
+            "uyo1m4vkl87wxydjr9y7axcj78cc0qg84yl.bqyf4pd3m4lu2thowimo.0jwwf1p",
+            "5gvym6kwrqjbv24mybt4zfueonz9p1ueyddi4nar0n5kh0ljsu5q0akb55z72.b2kpx2qjl.ek",
+          ]
         `)
     })
 })
@@ -47,18 +47,18 @@ describe('subdomain', () => {
                 )
             )
         ).toMatchInlineSnapshot(`
-            [
-              "zhwdxq",
-              "cdakk5yn7sx0hnzkit6x3n12y-7xwch9",
-              "nru9-ubeonyh21",
-              "cett7luewfr",
-              "uz1nxkzpfqebkuhlaxusc5d4cawbfk58p82yxyn-ev5jcode",
-              "jspt8id0syg0rcsj162-k4rkyj2-r-vmoq2l83mb4xy1",
-              "kxlmns5806dh-y5d8hz44gcq5ddowub25e3i9j7zn6ca8qt5xibv",
-              "ntcc",
-              "4e1wnt2rabry-rcll5-wyt",
-              "tm8ueriygt8x57fyxl3slp",
-            ]
+          [
+            "trb3bcogfj1e-fzry5",
+            "7qurmg01j-8mr4h7nofjtiy3r2n9ylduccztre-0z07wov9uj4ala87bfupr",
+            "tr76zd4x8jp370x2byq6pvlousatbygm48e7700cu6pcwfox0i15dzbyd7u-6",
+            "04n0-f",
+            "p1fmsbcnxgrhoo7kexko69r0xphojutefewrdya",
+            "5jebtcwbzzbc5z9-sf7brgyeee7wggg",
+            "bjga9iaa929st3ph9jeftfrf-6-ulw5s8mv",
+            "sg56kpenusm7b5wg986t57bzjpxghvazek0qdfke5bco0nu8xyih18lwoh0e",
+            "7vo0",
+            "pj8k-v8rl5b3cogfygz6lj77eyflf-3q",
+          ]
         `)
     })
 })

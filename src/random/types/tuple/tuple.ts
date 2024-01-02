@@ -1,6 +1,6 @@
+import type { TypeOfArbitrary } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import { interleave } from '../../arbitrary/arbitrary/index.js'
-import type { ArbitraryContext } from '../../arbitrary/context/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 
@@ -22,10 +22,8 @@ import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
  *
  * @group Arbitrary
  */
-export function tuple<T extends Arbitrary<unknown>[]>(
-    ...xs: [...T]
-): Dependent<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }> {
+export function tuple<T extends Arbitrary<unknown>[]>(...xs: [...T]): Dependent<{ [K in keyof T]: TypeOfArbitrary<T[K]> }> {
     return dependentArbitrary((context) => interleave(...xs.map((x) => x.value(context)))) as Dependent<{
-        [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
+        [K in keyof T]: TypeOfArbitrary<T[K]>
     }>
 }

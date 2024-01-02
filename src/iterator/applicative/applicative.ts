@@ -1,4 +1,5 @@
 import { isArray, isRight } from '../../guard/index.js'
+import { isFunction } from '../../guard/is-function/is-function.js'
 import type { Either, Traversable } from '../../type/index.js'
 import { toTraverser } from '../../type/index.js'
 
@@ -28,7 +29,15 @@ import { toTraverser } from '../../type/index.js'
  *
  * @group Iterators
  */
-export function applicative<T>(xs: Traversable<T>): Traversable<T> {
+export function applicative<T>(xs: Traversable<T> | (() => Traversable<T>)): Traversable<T> {
+    if (isFunction(xs)) {
+        return {
+            [Symbol.iterator]() {
+                return xs()[Symbol.iterator]()
+            },
+        }
+    }
+
     // optimization for Array.isArray
     if (isArray(xs)) {
         return xs

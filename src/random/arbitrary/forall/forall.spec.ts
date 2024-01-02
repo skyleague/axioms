@@ -9,8 +9,8 @@ it('abs smaller than six', () => {
     expect(() => {
         forAll(integer(), (i) => Math.abs(i) <= 600000, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 3 tests (seed: 42n)
-      Shrunk 20 time(s)
+      [FalsifiedError: Counter example found after 4 tests (seed: 42n)
+      Shrunk 15 time(s)
       Counter example:
 
       600001]
@@ -18,8 +18,8 @@ it('abs smaller than six', () => {
     expect(() => {
         forAll(array(integer()), (i) => i.length === 0 || Math.abs(i[0]!) <= 600000, { seed: 42n })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 4 tests (seed: 42n)
-      Shrunk 18 time(s)
+      [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+      Shrunk 27 time(s)
       Counter example:
 
       [ 600001 ]]
@@ -60,7 +60,7 @@ it('counter example with jest expect', () => {
             },
             { seed: 42n }
         )
-    }).toThrow(/^Counter example found after 3 tests \(seed: 42n\)/)
+    }).toThrow(/^Counter example found after \d tests \(seed: 42n\)/)
 })
 
 it('timeout async', async () => {

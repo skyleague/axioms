@@ -32,6 +32,27 @@ it('singular', () => {
     `)
 })
 
+it('for loop', () => {
+    const xs: number[] = []
+    for (const x of range(10)) {
+        xs.push(x)
+    }
+    expect(xs).toMatchInlineSnapshot(`
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+      ]
+    `)
+})
+
 it('negative', () => {
     expect(collect(range(-5))).toMatchInlineSnapshot(`[]`)
 })

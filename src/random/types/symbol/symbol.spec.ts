@@ -19,18 +19,18 @@ describe('dict', () => {
                 )
             )
         ).toMatchInlineSnapshot(`
-            [
-              Symbol(enMgMCe),
-              Symbol(gbsr0),
-              Symbol(x4EMSm),
-              Symbol(Qsn),
-              Symbol(2MWxU),
-              Symbol(O93NMem),
-              Symbol(wmDI78Hci),
-              Symbol(wPn),
-              Symbol(VekiGG4),
-              Symbol(IhL),
-            ]
+          [
+            Symbol(qDcXc),
+            Symbol(),
+            Symbol(ljq),
+            Symbol(h8iQDO2),
+            Symbol(7BICulSUp),
+            Symbol(5uCZm4xxj),
+            Symbol(Gn),
+            Symbol(XEVw6O),
+            Symbol(fJe),
+            Symbol(),
+          ]
         `)
     })
 })

@@ -4,7 +4,7 @@ import { isDefined, isFailure, isJust } from '../../../guard/index.js'
 import type { Traversable, Maybe, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { toString } from '../../../util/index.js'
-import { InfeasibleTree } from '../index.js'
+import { InfeasibleTree } from '../shrink/shrink.js'
 
 import { performance } from 'node:perf_hooks'
 
@@ -55,7 +55,7 @@ export interface FalsifyOptions<T> {
     predicate: (x: T) => [boolean, Maybe<Error>]
     maxDepth: number
     counterExample: T | undefined
-    timeout: number
+    timeout: number | false
     tests: number
 }
 
@@ -91,8 +91,7 @@ export function falsify<T>({
             failure = tree
             continue
         }
-        const timeLeft = timeout - (performance.now() - startTime)
-        const timeBudget = timeLeft / (tests - i)
+        const timeBudget = timeout !== false ? (timeout - (performance.now() - startTime)) / (tests - i) : false
         let foundCounterExample: Maybe<Tree<T>> = Nothing
         const [holds] = predicate(tree.value)
         if (!holds) {
@@ -136,15 +135,16 @@ export function findSmallest<T>({
     tree: Tree<T>
     predicate: (x: T) => [boolean, Maybe<Error>]
     depth: number
-    timeBudget: number
+    timeBudget: number | false
     startTime?: number
 }): { tree: Tree<T>; depth: number } {
     if (depth > 0) {
         for (const child of tree.children) {
             const timeSinceStart = performance.now() - startTime
-            if (timeSinceStart > timeBudget) {
+            if (timeBudget !== false && timeSinceStart > timeBudget) {
                 return { tree, depth }
             }
+
             try {
                 const [holds] = predicate(child.value)
                 if (!holds) {
@@ -166,7 +166,7 @@ export interface AsyncFalsifyOptions<T> {
     predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
     maxDepth: number
     counterExample: T | undefined
-    timeout: number
+    timeout: number | false
     tests: number
 }
 
@@ -202,8 +202,7 @@ export async function asyncFalsify<T>({
             failure = tree
             continue
         }
-        const timeLeft = timeout - (performance.now() - startTime)
-        const timeBudget = timeLeft / (tests - i)
+        const timeBudget = timeout !== false ? (timeout - (performance.now() - startTime)) / (tests - i) : false
         let foundCounterExample: Maybe<Tree<T>> = Nothing
         const [holds] = await predicate(tree.value)
         if (!holds) {
@@ -247,13 +246,13 @@ export async function asyncFindSmallest<T>({
     tree: Tree<T>
     predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
     depth: number
-    timeBudget: number
+    timeBudget: number | false
     startTime?: number
 }): Promise<{ tree: Tree<T>; depth: number }> {
     if (depth > 0) {
         for (const child of tree.children) {
             const timeSinceStart = performance.now() - startTime
-            if (timeSinceStart > timeBudget) {
+            if (timeBudget !== false && timeSinceStart > timeBudget) {
                 return { tree, depth }
             }
             try {

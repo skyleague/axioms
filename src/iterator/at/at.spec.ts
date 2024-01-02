@@ -1,6 +1,6 @@
 import { at, first, second } from './at.js'
 
-import { array, chainArbitrary, forAll, integer, tuple, unknown } from '../../random/index.js'
+import { array, forAll, integer, tuple, unknown } from '../../random/index.js'
 import { Nothing } from '../../type/index.js'
 import { drop } from '../drop/index.js'
 
@@ -33,9 +33,7 @@ describe('at', () => {
 
     it('ith index on array - index in bounds', () => {
         forAll(
-            chainArbitrary(integer({ min: 1, max: 50 }), (n) =>
-                tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n }))
-            ),
+            integer({ min: 1, max: 50 }).chain((n) => tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n }))),
             ([xs, i]) => {
                 return at(xs, i) === xs[i]
             }
@@ -44,7 +42,7 @@ describe('at', () => {
 
     it('ith index on array - index out of bounds', () => {
         forAll(
-            chainArbitrary(integer({ min: 0, max: 50 }), (n) =>
+            integer({ min: 0, max: 50 }).chain((n) =>
                 tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 }))
             ),
             ([xs, i]) => {
@@ -79,7 +77,7 @@ describe('at', () => {
 
     it('ith index on iterator', () => {
         forAll(
-            chainArbitrary(integer({ min: 1, max: 50 }), (n) =>
+            integer({ min: 1, max: 50 }).chain((n) =>
                 tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: 0, max: n - 1 }))
             ),
             ([xs, i]) => {

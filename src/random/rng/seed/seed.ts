@@ -1,5 +1,7 @@
 // http://prng.di.unimi.it/splitmix64.c
 
+const b64Mask = (1n << 64n) - 1n
+
 /**
  * @internal
  */
@@ -7,12 +9,13 @@ export function* splitmix64(seed = 0n) {
     let x = seed
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
-        x += 0x9e3779b97f4a7c15n
+        x = (x + 0x9e3779b97f4a7c15n) & b64Mask
 
         let z = x
-        z = z ^ ((z >> 30n) * 0xbf58476d1ce4e5b9n)
-        z = z ^ ((z >> 27n) * 0x94d049bb133111ebn)
-        yield z ^ (z >> 31n)
+        z = ((z ^ (z >> 30n)) * 0xbf58476d1ce4e5b9n) & b64Mask
+        z = ((z ^ (z >> 27n)) * 0x94d049bb133111ebn) & b64Mask
+
+        yield (z ^ (z >> 31n)) & b64Mask
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-expect-error

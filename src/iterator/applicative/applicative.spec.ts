@@ -4,6 +4,9 @@ import { collect } from '../../array/index.js'
 import { range } from '../../generator/index.js'
 import { allEqual, take } from '../../iterator/index.js'
 import { array, forAll, unknown } from '../../random/index.js'
+import { constant } from '../../random/types/helper/helper.js'
+import { integer } from '../../random/types/integer/integer.js'
+import { tuple } from '../../random/types/tuple/tuple.js'
 
 import { expect, it, vi } from 'vitest'
 
@@ -79,4 +82,39 @@ it('make reentrant - lazy', () => {
 
 it('identity', () => {
     forAll(array(unknown()), (xs) => allEqual(applicative(xs), xs))
+})
+
+it('should be applicative', () => {
+    forAll(
+        array(integer()).chain((xs) =>
+            tuple(constant(xs), integer({ min: 0, max: xs.length }), integer({ min: 0, max: xs.length }))
+        ),
+        ([xs, n, m]) => {
+            let i = 0
+            const ys = applicative(function* () {
+                yield* xs
+            })
+
+            const ns = []
+            for (const x of ys) {
+                if (i++ >= n) {
+                    break
+                }
+                ns.push(x)
+            }
+            expect(ns).toEqual(xs.slice(0, n))
+
+            let j = 0
+            const ms = []
+            for (const x of ys) {
+                if (j++ >= m) {
+                    break
+                }
+                ms.push(x)
+            }
+            expect(ms).toEqual(xs.slice(0, m))
+
+            expect(collect(ys)).toEqual(xs)
+        }
+    )
 })

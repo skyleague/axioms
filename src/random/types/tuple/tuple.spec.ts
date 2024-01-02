@@ -1,23 +1,26 @@
 import { tuple } from './tuple.js'
 
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
+import { showTree } from '../../../algorithm/tree/tree.js'
+import { collect } from '../../../array/collect/collect.js'
+import { repeat } from '../../../generator/repeat/repeat.js'
 import { take } from '../../../iterator/index.js'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
+import { boolean } from '../boolean/boolean.js'
 import { integer } from '../integer/index.js'
 
 import { expect, it } from 'vitest'
 
 it('counter example - equal', () => {
     expect(() => {
-        forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n })
+        forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n, tests: 1000 })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 64 tests (seed: 42n)
+      [FalsifiedError: Counter example found after 493 tests (seed: 42n)
       Shrunk 0 time(s)
       Counter example:
 
-      [ 2147483641, 2147483641 ]]
+      [ -2, -2 ]]
     `)
 })
 
@@ -32,47 +35,84 @@ it('random sample', () => {
             )
         )
     ).toMatchInlineSnapshot(`
+      [
         [
-          [
-            921604357,
-            -1817301679,
-          ],
-          [
-            -1226565061,
-            511147728,
-          ],
-          [
-            -1723568135,
-            552579827,
-          ],
-          [
-            -207009089,
-            -1857613535,
-          ],
-          [
-            15946192,
-            -1697006873,
-          ],
-          [
-            -2043076968,
-            -877591174,
-          ],
-          [
-            -922310816,
-            1497140825,
-          ],
-          [
-            694728922,
-            -522685001,
-          ],
-          [
-            1749221268,
-            -20192102,
-          ],
-          [
-            524553386,
-            935778478,
-          ],
-        ]
+          218084955,
+          -987316205,
+        ],
+        [
+          -123414345,
+          -1991294022,
+        ],
+        [
+          1312757734,
+          -1984378058,
+        ],
+        [
+          -1806577501,
+          -468159077,
+        ],
+        [
+          -1373641556,
+          -1507935664,
+        ],
+        [
+          -998293443,
+          1013760582,
+        ],
+        [
+          -1620441934,
+          2070318677,
+        ],
+        [
+          -1565533012,
+          813063012,
+        ],
+        [
+          -87348707,
+          668940130,
+        ],
+        [
+          1623133978,
+          1890748741,
+        ],
+      ]
     `)
+})
+
+it('show small tree', () => {
+    const ctx = arbitraryContext({
+        rng: xoroshiro128plus(42n),
+    })
+    const arb = tuple(boolean(), integer({ min: 0, max: 10 }))
+    const tree1 = arb.value(ctx)
+    expect(showTree(tree1, { maxDepth: 6 })).toMatchInlineSnapshot(
+        `
+      "└─ true,0
+          ├─ false,0
+          |   └─ false,0
+          └─ true,0
+              └─ false,0"
+    `
+    )
+    const tree2 = arb.value(ctx)
+    expect(showTree(tree2, { maxDepth: 6 })).toMatchInlineSnapshot(`
+      "└─ true,2
+          ├─ false,2
+          |   ├─ false,0
+          |   └─ false,1
+          ├─ true,0
+          |   └─ false,0
+          └─ true,1
+              └─ false,1"
+    `)
+})
+
+it('show small tree - integers', () => {
+    const ctx = arbitraryContext({
+        rng: xoroshiro128plus(56n),
+    })
+    const arb = tuple(integer({ min: 0, max: 17 }), integer({ min: 0, max: 17 }))
+    const tree1 = arb.value(ctx)
+    expect(showTree(tree1, { maxDepth: 2 })).toMatchSnapshot()
 })
