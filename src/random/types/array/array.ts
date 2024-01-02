@@ -1,8 +1,9 @@
+import { collect } from '../../../array/collect/collect.js'
 import { unique } from '../../../iterator/index.js'
 import { replicate, replicateWithMemory } from '../../../iterator/replicate/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
+import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
-import { interleaveList } from '../../arbitrary/arbitrary/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/integer.js'
@@ -64,7 +65,7 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
                 } else {
                     size = aint.sample(ctx)
                 }
-                return replicate(biasedValue, size)
+                return collect(replicate(biasedValue, size))
             })(),
             {
                 minLength,
@@ -106,15 +107,17 @@ export function arrayWith<T>(
                 } else {
                     size = aint.sample(ctx)
                 }
-                return replicateWithMemory(
-                    biasedValue,
-                    (x, xs, _i, skippedInRow) =>
-                        predicate(
-                            x.value,
-                            xs.map((v) => v.value),
-                            skippedInRow
-                        ),
-                    size
+                return collect(
+                    replicateWithMemory(
+                        biasedValue,
+                        (x, xs, _i, skippedInRow) =>
+                            predicate(
+                                x.value,
+                                xs.map((v) => v.value),
+                                skippedInRow
+                            ),
+                        size
+                    )
                 )
             })(),
             {

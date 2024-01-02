@@ -1,15 +1,13 @@
-import { type Tree, tree, mapApplicativeTree } from '../../../algorithm/tree/tree.js'
+import { type Tree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
-import { curryTuple } from '../../../function/tuple/tuple.js'
-import { next } from '../../../generator/next/next.js'
-import { isRight } from '../../../guard/is-right/is-right.js'
+import { zip } from '../../../array/zip/zip.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
 import { map } from '../../../iterator/map/map.js'
 import type { SimplifyOnce } from '../../../type/simplify/simplify.js'
 import { toTraverser, type Traversable } from '../../../type/traversable/traversable.js'
 import type { ArbitraryContext } from '../context/context.js'
-import { shrinkX, splits } from '../shrink/shrink.js'
+import { splitX, splits } from '../shrink/shrink.js'
 
 export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>
@@ -42,64 +40,51 @@ export type TypeOfArbitraries<T extends Arbitrary<unknown>[]> = ReturnType<[...T
 /**
  * @internal
  */
-export function interleaveTree<T, U>(r: Tree<T>, l: Tree<(x: T) => U>): Tree<U> {
-    const { value: f, children: ls } = l
-    const { value: x, children: rs } = r
-    return {
-        value: f(x),
-        children: applicative(() =>
-            concat(
-                map(ls, (lp) => interleaveTree(r, lp)),
-                map(rs, (rp) => interleaveTree(rp, l))
-            )
-        ),
-    }
-}
-
-// @todo: optimize this
-
-/**
- * @internal
- */
 export function interleave<U extends Tree<unknown>[]>(
     ...xs: [...U]
 ): Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let init: any = mapApplicativeTree(xs[0], curryTuple(xs.length))
-    for (let i = 1; i < xs.length; ++i) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        init = interleaveTree(xs[i], init)
-    }
-    return init as Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }>
+    return {
+        value: xs.map((x) => x.value),
+        children: applicative(() => {
+            const allShrunk = toTraverser(map(shrinkAll(xs), (x) => interleave(...collect(x))))
+            const first = allShrunk.next()
+            const second = allShrunk.next()
+            return concat(
+                first.done !== true ? [first.value] : [],
+                ...map(splits(xs), ([as, b, cs]) => map(b.children, (c) => interleave(...as, c, ...cs))),
+                second.done !== true ? [second.value] : []
+                // take(
+                //     map(shrinkAll(xs), (x) => interleave(...collect(x))),
+                //     2
+                // )
+            )
+        }),
+    } as Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }>
 }
 
 /**
  * @internal
  */
-export function shrinkAll<T>(xs: Tree<T>[]): Tree<T[]>[] {
-    const children = xs.map((x) => {
-        const it = toTraverser(x.children)
-        const n = next(it)
-        return isRight(n) ? ([true, n.right] as const) : ([false, x] as const)
-    })
-    return children.every(([shrunk]) => shrunk) ? [interleaveList(map(children, ([, c]) => c))] : []
+export function shrinkAll<U extends Tree<unknown>[]>(xs: U): Traversable<[...U]> {
+    return zip(...xs.map((x) => x.children)) as unknown as Traversable<[...U]>
 }
 
 /**
  * @internal
  */
-export function interleaveList<T>(xs: Traversable<Tree<T>>, options: { minLength?: number } = {}): Tree<T[]> {
+export function interleaveList<T>(axs: Tree<T>[], options: { minLength?: number } = {}): Tree<T[]> {
     const { minLength = 0 } = options
-    const axs = collect(xs)
-    return tree(
-        axs.map((x) => x.value),
-        concat(
-            ...[axs.length > minLength ? [interleaveList(axs.slice(0, minLength), options)] : []],
-            // half first to dissect
-            ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(shrinkX(axs, 0.5), options)] : []],
-            ...map(splits(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList(concat(as, [c], cs), options))),
-            ...[axs.length > minLength ? map(splits(axs), ([as, , cs]) => interleaveList(concat(as, cs), options)) : []]
-            // lazy(() => shrinkAll(axs))
-        )
-    )
+    return {
+        value: axs.map((x) => x.value),
+        children: applicative(() =>
+            concat(
+                ...[axs.length > minLength ? [interleaveList(axs.slice(0, minLength), options)] : []],
+                // half first to dissect
+                ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(splitX(axs, 0.5), options)] : []],
+                ...map(splits(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList([...as, c, ...cs], options))),
+                ...[axs.length > minLength ? map(splits(axs), ([as, , cs]) => interleaveList([...as, ...cs], options)) : []]
+                // lazy(() => shrinkAll(axs))
+            )
+        ),
+    }
 }

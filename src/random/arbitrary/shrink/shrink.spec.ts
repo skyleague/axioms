@@ -1,9 +1,7 @@
-import { halves, halvesf, towards, towardsf } from './index.js'
+import { halves, halvesf, splits, towards, towardsf } from './shrink.js'
 
-import { splits } from './shrink.js'
-
-import { collect } from '../../../array/index.js'
-import { take } from '../../../iterator/index.js'
+import { collect } from '../../../array/collect/collect.js'
+import { take } from '../../../iterator/take/take.js'
 
 import { expect, describe, it } from 'vitest'
 
@@ -46,38 +44,38 @@ describe('towards', () => {
 describe('halves', () => {
     it('simple', () => {
         expect(collect(halves(15))).toMatchInlineSnapshot(`
-            [
-              15,
-              7,
-              3,
-              1,
-            ]
+          [
+            15,
+            7,
+            3,
+            1,
+          ]
         `)
     })
 
     it('large', () => {
         expect(collect(halves(100))).toMatchInlineSnapshot(`
-            [
-              100,
-              50,
-              25,
-              12,
-              6,
-              3,
-              1,
-            ]
+          [
+            100,
+            50,
+            25,
+            12,
+            6,
+            3,
+            1,
+          ]
         `)
     })
 
     it('negative', () => {
         expect(collect(halves(-31))).toMatchInlineSnapshot(`
-            [
-              -31,
-              -15,
-              -7,
-              -3,
-              -1,
-            ]
+          [
+            -31,
+            -15,
+            -7,
+            -3,
+            -1,
+          ]
         `)
     })
 })

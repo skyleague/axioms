@@ -102,7 +102,7 @@ export function* splits<T>(xs: T[]): Traversable<[T[], T, T[]], void> {
 /**
  * @internal
  */
-export function shrinkX<T>(xs: T[], p: number): T[] {
+export function splitX<T>(xs: T[], p: number): T[] {
     const i = Math.floor(xs.length * p)
     return xs.slice(0, i)
 }

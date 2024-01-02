@@ -16,11 +16,11 @@ it('counter example - equal', () => {
     expect(() => {
         forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n, tests: 1000 })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 493 tests (seed: 42n)
-      Shrunk 0 time(s)
+      [FalsifiedError: Counter example found after 472 tests (seed: 42n)
+      Shrunk 1 time(s)
       Counter example:
 
-      [ -2, -2 ]]
+      [ 0, 0 ]]
     `)
 })
 
@@ -90,6 +90,7 @@ it('show small tree', () => {
         `
       "└─ true,0
           ├─ false,0
+          ├─ false,0
           |   └─ false,0
           └─ true,0
               └─ false,0"
@@ -98,6 +99,7 @@ it('show small tree', () => {
     const tree2 = arb.value(ctx)
     expect(showTree(tree2, { maxDepth: 6 })).toMatchInlineSnapshot(`
       "└─ true,2
+          ├─ false,0
           ├─ false,2
           |   ├─ false,0
           |   └─ false,1

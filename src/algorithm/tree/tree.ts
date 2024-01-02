@@ -55,7 +55,6 @@ export function applicativeTree<T>(x: Tree<T>): Tree<T> {
  *
  * This function is fully lazy, meaning that we do not evaluate children
  * until they are iterated on. Iteration of the children modify the iterators.
- * @see {@link mapApplicativeTree} for a map operation that is applicative.
  *
  * ### Example
  * ```ts
@@ -79,41 +78,10 @@ export function mapTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
 }
 
 /**
- * Map a function over the tree starting with the root node, and mapping
- * the children recursively, whilst making the children iterator applicative.
- *
- * Unlike {@link mapTree} this map operation is fully immutable, and allows
- * reentry of the tree through iteration.
- *
- * ### Example
- * ```ts
- * const t = mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)
- * showTree(t)
- * // => └─ 2
- * //       ├─ 3
- * //       └─ 4
- *
- * showTree(t)
- * // => └─ 2
- * //       ├─ 3
- * //       └─ 4
- * ```
- *
- * @param x - The node root.
- * @returns An applicative mapped tree.
- *
- * @group Algorithm
- */
-export function mapApplicativeTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
-    return { value: f(x.value), children: applicative(map(x.children, (c) => mapApplicativeTree(c, f))) }
-}
-
-/**
  * Filter children out of a tree by a given predicate.
  *
  * This function is fully lazy, meaning that we do not evaluate children
  * until they are iterated on. Iteration of the children modify the iterators.
- * @see {@link filterApplicativeTree} for a filter operation that is applicative.
  *
  * ### Example
  * ```ts
@@ -138,43 +106,6 @@ export function filterTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
         children: map(
             filter(x.children, (c) => f(c.value)),
             (c) => filterTree(c, f)
-        ),
-    }
-}
-
-/**
- * Filter children out of a tree by a given predicate.
- *
- * Unlike {@link filterTree} this map operation is fully immutable, and allows
- * reentry of the tree through iteration.
- *
- * ### Example
- * ```ts
- * const t = filterApplicativeTree(tree(1, [tree(2, tree(5)), tree(3)]), (x) => x < 4)
- * showTree(t)
- * // => └─ 1
- * //       ├─ 2
- * //       └─ 3
- *
- * showTree(t)
- * // => └─ 1
- * //       ├─ 2
- * //       └─ 3
- * ```
- *
- * @param x - The node root.
- * @returns A filter tree.
- *
- * @group Algorithm
- */
-export function filterApplicativeTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
-    return {
-        value: x.value,
-        children: applicative(() =>
-            map(
-                filter(x.children, (y) => f(y.value)),
-                (c) => filterTree(c, f)
-            )
         ),
     }
 }
