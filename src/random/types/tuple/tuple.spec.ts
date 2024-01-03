@@ -14,7 +14,7 @@ import { expect, it } from 'vitest'
 
 it('counter example - equal', () => {
     expect(() => {
-        forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n, tests: 1000 })
+        forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n, tests: 1000, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 472 tests (seed: 42n)
       Shrunk 1 time(s)

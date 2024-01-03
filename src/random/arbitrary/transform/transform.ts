@@ -13,7 +13,9 @@ export function mapArbitrary<T, U>(a: Arbitrary<T>, f: (x: T) => U): Dependent<U
 /**
  * @internal
  */
-export function filterArbitrary<T>(a: Arbitrary<T>, f: (x: T) => boolean): Dependent<T> {
+export function filterArbitrary<T>(a: Arbitrary<T>, f: (x: T) => boolean): Dependent<T>
+export function filterArbitrary<T, S extends T>(a: Arbitrary<T>, f: (x: T) => x is S): Dependent<S>
+export function filterArbitrary<T, S extends T>(a: Arbitrary<T>, f: ((x: T) => x is S) | ((x: T) => boolean)): Dependent<S> {
     return dependentArbitrary((context) => {
         let generated
         // the initial value must be valid
@@ -21,5 +23,5 @@ export function filterArbitrary<T>(a: Arbitrary<T>, f: (x: T) => boolean): Depen
             generated = a.value(context)
         } while (!f(generated.value))
         return filterTree(generated, f)
-    })
+    }) as Dependent<S>
 }

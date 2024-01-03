@@ -13,7 +13,8 @@ export interface Integrated<C, T> extends Arbitrary<T> {
     value: (context: ArbitraryContext, x?: T) => Tree<T>
     random: (context?: ArbitraryContext) => T
     shrink: (x: T) => Tree<T>
-    filter: (f: (x: T) => boolean) => Dependent<T>
+    filter<S extends T>(f: (x: T) => x is S): Dependent<S>
+    filter(f: (x: T) => boolean): Dependent<T>
     map: <U>(f: (x: T) => U) => Dependent<U>
     chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
 }
@@ -50,7 +51,7 @@ export function integratedArbitrary<C, T>({
             applicativeTree(shrink(constraints, x ?? biasedSample(constraints, context))),
         random: (context?: ArbitraryContext) => biasedSample(constraints, context ?? (localContext ??= arbitraryContext())),
         shrink: (x: T) => shrink(constraints, x),
-        filter: (fn: (x: T) => boolean) => filterArbitrary(integrated, fn),
+        filter: <S extends T>(fn: (x: T) => x is S) => filterArbitrary(integrated, fn),
         map: <U>(fn: (x: T) => U) => mapArbitrary(integrated, fn),
         chain: <U>(fn: (x: T) => Arbitrary<U>) => chainArbitrary(integrated, fn),
     }

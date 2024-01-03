@@ -392,6 +392,7 @@ describe('json', () => {
         expect(() => {
             forAll(oneOf(json({ type: 'value' }), constant(undefined)), (j) => equal(JSON.parse(JSON.stringify(j)), j), {
                 seed: 42n,
+                timeout: false,
             })
         }).toThrowErrorMatchingInlineSnapshot(`
           [AssertionError: Counter example found after 2 tests (seed: 42n)
@@ -406,7 +407,7 @@ describe('json', () => {
 
     it('parse stringify x != x fails', () => {
         expect(() => {
-            forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n })
+            forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n, timeout: false })
         }).toThrowErrorMatchingInlineSnapshot(`
           [FalsifiedError: Counter example found after 1 tests (seed: 42n)
           Shrunk 2 time(s)
@@ -418,7 +419,7 @@ describe('json', () => {
 
     it('parse stringify x != object x fails', () => {
         expect(() => {
-            forAll(json({ type: 'value' }), (j) => !isObject(j), { seed: 42n })
+            forAll(json({ type: 'value' }), (j) => !isObject(j), { seed: 42n, timeout: false })
         }).toThrowErrorMatchingInlineSnapshot(`
           [FalsifiedError: Counter example found after 2 tests (seed: 42n)
           Shrunk 1 time(s)
