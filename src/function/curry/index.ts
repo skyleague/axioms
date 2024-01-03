@@ -1,1 +1,1 @@
-export { curry, curryVariadic, type CurriedVariadic, type Curried } from './curry.js'
+export { curry, type Curried } from './curry.js'

@@ -1,4 +1,4 @@
-import type { Subtract, Simplify } from '../../type/index.js'
+import type { Subtract } from '../../type/index.js'
 
 type UnconsArgsHelper<T extends unknown[], L extends number, I extends unknown[] = [], F = (...a: T) => void> = number extends L
     ? UnconsArgsHelper<T, 10, I>
@@ -31,25 +31,4 @@ export function curry<T extends unknown[], R>(f: (...args: T) => R): Curried<T, 
             }
         }
     } as Curried<T, R>
-}
-
-export type CurriedVariadic<A extends unknown[], R, I extends number> = <S extends UnconsArgs<A, number>['init']>(
-    ...args: S
-) => 0 extends S['length']
-    ? never
-    : 0 extends Subtract<I, S['length']>
-      ? R
-      : CurriedVariadic<UnconsArgs<A, S['length']>['tail'], R, Simplify<Subtract<I, S['length']>>>
-
-export function curryVariadic<T extends unknown[], R, L extends number>(f: (...args: T) => R, n: L): CurriedVariadic<T, R, L> {
-    return function curried(this: unknown, ...args: unknown[]) {
-        if (args.length >= n) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-            return f.apply(this, args as any)
-        } else {
-            return function (this: unknown, ...args2: unknown[]) {
-                return curried.apply(this, args.concat(args2))
-            }
-        }
-    } as CurriedVariadic<T, R, L>
 }

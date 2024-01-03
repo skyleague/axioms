@@ -1,1 +1,1 @@
-export { towards, halves, towardsf, halvesf, splits, shrinkX, InfeasibleTree } from './shrink.js'
+export { InfeasibleTree } from './shrink.js'

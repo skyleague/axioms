@@ -60,7 +60,7 @@ it('counter example with jest expect', () => {
             },
             { seed: 42n }
         )
-    }).toThrow(/^Counter example found after \d tests \(seed: 42n\)/)
+    }).toThrow(/^Counter example found after \d+ tests \(seed: 42n\)/)
 })
 
 it('timeout async', async () => {
