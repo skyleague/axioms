@@ -6,6 +6,7 @@ import { concat } from '../../../iterator/index.js'
 import { unique } from '../../../iterator/unique/index.js'
 import { difference } from '../../../set/difference/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { BuildTuple } from '../../../type/tuple/tuple.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
@@ -18,14 +19,16 @@ function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): T
     return filterTree(vals, (x) => collect(unique(x, eq)).length === x.length)
 }
 
+export type SetOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...BuildTuple<Min, T>, ...T[]] : T[]
+
 /**
  * Describes how the sets allowed to be generated.
  *
  * @group Arbitrary
  */
 
-export interface SetGenerator<T> {
-    minLength: number
+export interface SetGenerator<T, Min extends number> {
+    minLength: Min
     maxLength: number
     useBias: boolean
     eq: (a: T, b: T) => boolean
@@ -46,7 +49,10 @@ export interface SetGenerator<T> {
  *
  * @group Arbitrary
  */
-export function set<T>(arbitrary: Arbitrary<T>, constraints: RelaxedPartial<SetGenerator<T>> = {}): Dependent<T[]> {
+export function set<T, Min extends number = number>(
+    arbitrary: Arbitrary<T>,
+    constraints: RelaxedPartial<SetGenerator<T, Min>> = {}
+): Dependent<SetOf<T, Min>> {
     const { minLength = 0, maxLength = 10, useBias = false, eq = equal } = constraints
     const aarray = arrayWith(
         (y, xs, i) => {
@@ -61,7 +67,7 @@ export function set<T>(arbitrary: Arbitrary<T>, constraints: RelaxedPartial<SetG
     return dependentArbitrary((ctx) => {
         // make sure we don't shrink to an array with duplicates
         return uniqueArbitraryTree<T>(aarray.value({ ...ctx, bias: useBias ? ctx.bias : undefined }), eq)
-    })
+    }) as Dependent<SetOf<T, Min>>
 }
 
 /**

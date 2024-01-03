@@ -1,17 +1,18 @@
 import { set, subsuper } from './set.js'
 
-import { collect } from '../../../array/collect/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
-import { unique } from '../../../iterator/unique/index.js'
-import { difference } from '../../../set/difference/index.js'
+import { collect } from '../../../array/collect/collect.js'
+import { repeat } from '../../../generator/repeat/repeat.js'
+import { take } from '../../../iterator/take/take.js'
+import { unique } from '../../../iterator/unique/unique.js'
+import { difference } from '../../../set/difference/difference.js'
 import { isSuperset } from '../../../set/is-superset/is-super.js'
-import { forAll } from '../../arbitrary/forall/index.js'
-import { xoroshiro128plus } from '../../rng/index.js'
-import { unknown } from '../complex/index.js'
-import { integer } from '../integer/index.js'
+import { forAll } from '../../arbitrary/forall/forall.js'
+import { random } from '../../arbitrary/random/random.js'
+import { xoroshiro128plus } from '../../rng/xoroshiro128plus/xoroshiro128plus.js'
+import { unknown } from '../complex/complex.js'
+import { integer } from '../integer/integer.js'
 
-import { expect, describe, it } from 'vitest'
+import { expect, describe, expectTypeOf, it } from 'vitest'
 
 describe('set', () => {
     it('all unique - number', () => {
@@ -24,6 +25,15 @@ describe('set', () => {
         forAll(set(integer(), { minLength: size, maxLength: 100 }), (xs) => {
             return xs.length >= size
         })
+    })
+
+    it('types are correct', () => {
+        expectTypeOf(random(set(integer()))).toEqualTypeOf<number[]>()
+        expectTypeOf(random(set(integer(), { minLength: 1 }))).toEqualTypeOf<[number, ...number[]]>()
+        expectTypeOf(random(set(integer(), { minLength: 2 }))).toEqualTypeOf<[number, number, ...number[]]>()
+        expectTypeOf(random(set(integer(), { minLength: 3 }))).toEqualTypeOf<[number, number, number, ...number[]]>()
+        expectTypeOf(random(set(integer(), { minLength: 4 }))).toEqualTypeOf<[number, number, number, number, ...number[]]>()
+        expectTypeOf(random(set(integer(), { minLength: 5 }))).toEqualTypeOf<number[]>()
     })
 })
 
