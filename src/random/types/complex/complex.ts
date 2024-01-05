@@ -59,11 +59,15 @@ export interface JsonGenerator {
 export function json(constraints: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
     const { maxDepth = 2, utf = false, type = 'object' } = constraints
     const arbs = [
-        ...(type === 'value' ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
+        ...(type === 'value' || maxDepth === 0 ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
         ...(maxDepth > 0
             ? [
-                  ...(type !== 'array' ? [dict([string(), json({ maxDepth: maxDepth - 1, utf, type: 'value' })])] : []),
-                  ...(type !== 'object' ? [array(json({ maxDepth: maxDepth - 1, utf, type: 'value' }))] : []),
+                  ...(type !== 'array'
+                      ? [dict([string(), json({ maxDepth: maxDepth - 1, utf, type: 'value' })], { minLength: 0, maxLength: 5 })]
+                      : []),
+                  ...(type !== 'object'
+                      ? [array(json({ maxDepth: maxDepth - 1, utf, type: 'value' }), { minLength: 0, maxLength: 5 })]
+                      : []),
               ]
             : []),
     ]
@@ -197,8 +201,10 @@ export function unknown(context: RelaxedPartial<UnknownGenerator> = {}): Depende
         ...(generateNull ? [constant(null)] : []),
         ...(generateUndefined ? [constant(undefined)] : []),
         ...(generateNothing ? [constant(Nothing)] : []),
-        ...(generateArray && maxDepth > 0 ? [array(unknown({ maxDepth: maxDepth - 1 }))] : []),
-        ...(generateObject && maxDepth > 0 ? [dict([string(), unknown({ maxDepth: maxDepth - 1 })])] : [])
+        ...(generateArray && maxDepth > 0 ? [array(unknown({ maxDepth: maxDepth - 1 }), { minLength: 0, maxLength: 5 })] : []),
+        ...(generateObject && maxDepth > 0
+            ? [dict([string(), unknown({ maxDepth: maxDepth - 1 })], { minLength: 0, maxLength: 5 })]
+            : [])
     )
 }
 

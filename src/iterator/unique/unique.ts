@@ -34,5 +34,5 @@ import { filterWithMemory } from '../filter/index.js'
  * @group Iterators
  */
 export function unique<T>(xs: Traversable<T>, eq: (a: T, b: T) => boolean = equal): Traversable<T> {
-    return filterWithMemory(xs, (y, ys) => ys.find((x) => eq(x, y)) === undefined)
+    return filterWithMemory(xs, (y, ys) => !ys.some((x) => eq(y, x)))
 }

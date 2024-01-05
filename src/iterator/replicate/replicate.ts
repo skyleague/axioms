@@ -1,5 +1,4 @@
 import { repeat } from '../../generator/repeat/index.js'
-import { filterWithMemory } from '../filter/index.js'
 import { take } from '../take/index.js'
 
 /**
@@ -28,19 +27,4 @@ import { take } from '../take/index.js'
  */
 export function* replicate<T>(x: T | ((i: number) => T), n: number): Generator<T> {
     yield* take(repeat(x), n)
-}
-
-/**
- *
- * @param x
- * @param predicate
- * @param n
- * @experimental
- */
-export function* replicateWithMemory<T>(
-    x: (i: number) => T,
-    predicate: (x: T, xs: T[], i: number, skippedInRow: number) => boolean,
-    n: number
-): Generator<T> {
-    yield* take(filterWithMemory(repeat(x), predicate), n)
 }

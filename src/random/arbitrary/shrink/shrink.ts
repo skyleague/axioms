@@ -1,43 +1,31 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
 import { zipWith } from '../../../array/zip/zip.js'
-import { isNothing } from '../../../guard/is-nothing/is-nothing.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
 import { map } from '../../../iterator/map/map.js'
-import { uncons } from '../../../iterator/uncons/uncons.js'
-import { toTraversable, type Traversable } from '../../../type/traversable/traversable.js'
-
-export function* consNub<T>(x: T, xs: Traversable<T>) {
-    const [h, rest] = uncons(xs)
-    if (isNothing(h) || h === x) {
-        yield x
-    } else {
-        yield x
-        yield h
-    }
-    yield* toTraversable(rest)
-}
+import { type Traversable } from '../../../type/traversable/traversable.js'
 
 /**
  * @internal
  */
-export function* towards(x: number, destination: number): Traversable<number, void> {
+export function towards(x: number, destination: number): number[] {
     if (destination === x) {
-        return
+        return []
     } else if (destination === 0 && x === 1) {
-        yield 0
+        return []
     } else {
         const diff = Math.trunc(x / 2 - destination / 2)
-        yield* consNub(
-            destination,
-            map(halves(diff), (h) => Math.trunc(x - h))
-        )
+        const xs = halves(diff).map((h) => Math.trunc(x - h))
+        if (xs[0] !== destination) {
+            xs.unshift(destination)
+        }
+        return xs
     }
 }
 
 function _binarySearchTree(bottom: number, top: number): Tree<number> {
-    const shrinks = collect(towards(top, bottom))
+    const shrinks = towards(top, bottom)
     return {
         value: top,
         children: zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1)),
@@ -59,12 +47,14 @@ export function binarySearchTree(bottom: number, top: number): Tree<number> {
 /**
  * @internal
  */
-export function* halves(x: number): Traversable<number, void> {
+export function halves(x: number): number[] {
+    const xs: number[] = []
     while (x !== 0) {
-        yield x
+        xs.push(x)
         // es6 <3
         x = Math.trunc(x / 2)
     }
+    return xs
 }
 
 /**

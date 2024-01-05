@@ -94,38 +94,10 @@ describe('object', () => {
         const aobject = json()
         expect(aobject.value({ rng: xoroshiro128plus(48n) }).value).toMatchInlineSnapshot(`
           {
-            "": "<P\\E",
-            "&Tk": true,
-            "+.*": -891432155.5806098,
-            "Mq": {
-              "": null,
-              "+%": ".:$?+*v$",
-              "/EKy.:jhr": "7RY",
-              "^?/?j": true,
-              "_C2WXs": -1580245231.121954,
-            },
-            "TF@(*!": null,
-            "X": [
-              null,
-              "OiL@DXR",
-              630536136.5827513,
-              null,
-              true,
-              -1261235195.6625767,
-              false,
-            ],
-            "_*&hda\\m": {
-              "": "uQFa";",
-              "A#'/64": null,
-              "B%GYI)": null,
-              "S[jBw": true,
-              "WW": false,
-              "mF]vEV": 1620438824.1357212,
-              "uOf": -361728656.05956936,
-              "z8IJDm@_t": -2049062118.5948439,
-            },
-            "g)d|G0J": -1316087918.5038595,
-            "j0": -626812828.9789438,
+            "0=7RY%{5": null,
+            "Mq": "",
+            "Px/EKy.": ".:$?+*v$",
+            "jh": null,
           }
         `)
     })
