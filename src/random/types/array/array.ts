@@ -1,6 +1,5 @@
-import { collect } from '../../../array/collect/collect.js'
+import type { Tree } from '../../../algorithm/tree/tree.js'
 import { unique } from '../../../iterator/index.js'
-import { replicate, replicateWithMemory } from '../../../iterator/replicate/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
 import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
@@ -65,7 +64,11 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
                 } else {
                     size = aint.sample(ctx)
                 }
-                return collect(replicate(biasedValue, size))
+                const xs: Tree<T>[] = []
+                while (xs.length !== size) {
+                    xs.push(biasedValue())
+                }
+                return xs
             })(),
             {
                 minLength,
@@ -107,18 +110,23 @@ export function arrayWith<T>(
                 } else {
                     size = aint.sample(ctx)
                 }
-                return collect(
-                    replicateWithMemory(
-                        biasedValue,
-                        (x, xs, _i, skippedInRow) =>
-                            predicate(
-                                x.value,
-                                xs.map((v) => v.value),
-                                skippedInRow
-                            ),
-                        size
-                    )
-                )
+
+                const xs: Tree<T>[] = []
+                const vals: T[] = []
+
+                let skippedInRow = 0
+                while (xs.length !== size) {
+                    const x = biasedValue()
+                    if (predicate(x.value, vals, skippedInRow)) {
+                        xs.push(x)
+                        vals.push(x.value)
+                        skippedInRow = 0
+                    } else {
+                        skippedInRow += 1
+                    }
+                }
+
+                return xs
             })(),
             {
                 minLength,

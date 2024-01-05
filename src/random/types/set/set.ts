@@ -59,7 +59,7 @@ export function set<T, Min extends number = number>(
             if (i > maxLength * 4) {
                 throw new InfeasibleTree()
             }
-            return xs.find((x) => eq(y, x)) === undefined
+            return !xs.some((x) => eq(y, x))
         },
         arbitrary,
         { minLength, maxLength }

@@ -1,4 +1,3 @@
-import { mapTree } from '../../../algorithm/tree/index.js'
 import { zip } from '../../../array/zip/index.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { ArbitraryContext } from '../../arbitrary/context/index.js'
@@ -41,8 +40,7 @@ export function object<T extends Record<PropertyKey, Arbitrary<unknown>>>(
     }
 
     const arbitraries = Object.values(properties)
-    const avalue = tuple(...arbitraries)
-    return dependentArbitrary((context) => mapTree(avalue.value(context), (v) => Object.fromEntries(zip(keys, v)))) as Dependent<{
+    return tuple(...arbitraries).map((v) => Object.fromEntries(zip(keys, v))) as Dependent<{
         [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
     }>
 }
