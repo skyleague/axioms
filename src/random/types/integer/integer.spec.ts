@@ -94,7 +94,7 @@ it('distribution - small numbers', () => {
 
 it('counter example - positive', () => {
     expect(() => {
-        forAll(integer(), (v) => v > 0, { seed: 42n })
+        forAll(integer(), (v) => v > 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 1 tests (seed: 42n)
       Shrunk 1 time(s)
@@ -106,7 +106,7 @@ it('counter example - positive', () => {
 
 it('counter example - negative', () => {
     expect(() => {
-        forAll(integer(), (v) => v <= 0, { seed: 42n })
+        forAll(integer(), (v) => v <= 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 4 tests (seed: 42n)
       Shrunk 31 time(s)
@@ -118,7 +118,7 @@ it('counter example - negative', () => {
 
 it('counter example - equal', () => {
     expect(() => {
-        forAll(integer(), (v) => v !== 0, { seed: 42n, tests: 2000 })
+        forAll(integer(), (v) => v !== 0, { seed: 42n, tests: 2000, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 2 tests (seed: 42n)
       Shrunk 1 time(s)
@@ -261,7 +261,7 @@ it('counter example - asymmetric', () => {
                 if (Math.abs(a - b) < 10) return true
                 return b - a >= 1000
             },
-            { seed: 42n, tests: 2000 }
+            { seed: 42n, tests: 2000, timeout: false }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 811 tests (seed: 42n)
@@ -282,7 +282,7 @@ it('counter example - symmetric', () => {
                 if (Math.abs(a - b) < 10) return true
                 return Math.abs(a - b) >= 1000
             },
-            { seed: 42n, tests: 2000 }
+            { seed: 42n, tests: 2000, timeout: false }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 1271 tests (seed: 42n)

@@ -7,7 +7,7 @@ import { expect, describe, it } from 'vitest'
 
 it('abs smaller than six', () => {
     expect(() => {
-        forAll(integer(), (i) => Math.abs(i) <= 600000, { seed: 42n })
+        forAll(integer(), (i) => Math.abs(i) <= 600000, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 4 tests (seed: 42n)
       Shrunk 15 time(s)
@@ -16,7 +16,7 @@ it('abs smaller than six', () => {
       600001]
     `)
     expect(() => {
-        forAll(array(integer()), (i) => i.length === 0 || Math.abs(i[0]!) <= 600000, { seed: 42n })
+        forAll(array(integer()), (i) => i.length === 0 || Math.abs(i[0]!) <= 600000, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
       [FalsifiedError: Counter example found after 2 tests (seed: 42n)
       Shrunk 27 time(s)
@@ -58,7 +58,7 @@ it('counter example with jest expect', () => {
             (i) => {
                 expect(Math.abs(i)).toBeLessThanOrEqual(600000)
             },
-            { seed: 42n }
+            { seed: 42n, timeout: false }
         )
     }).toThrow(/^Counter example found after \d+ tests \(seed: 42n\)/)
 })
