@@ -1,22 +1,25 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
 import { unique } from '../../../iterator/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { BuildTuple } from '../../../type/tuple/tuple.js'
 import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/integer.js'
 
+export type ArrayOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...BuildTuple<Min, T>, ...T[]] : T[]
+
 /**
  * Describes how arrays are allowed to be generated.
  *
  * @group Arbitrary
  */
-export interface ArrayGenerator<T> {
+export interface ArrayGenerator<T, Min extends number> {
     /**
      * The minimum length of array to generate.
      */
-    minLength: number
+    minLength: Min
     /**
      * The maximum length of array to generate.
      */
@@ -47,7 +50,10 @@ export interface ArrayGenerator<T> {
  *
  * @group Arbitrary
  */
-export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayGenerator<T>> = {}): Dependent<T[]> {
+export function array<T, Min extends number = number>(
+    arbitrary: Arbitrary<T>,
+    context: RelaxedPartial<ArrayGenerator<T, Min>> = {}
+): Dependent<ArrayOf<T, Min>> {
     const { minLength = 0, maxLength, uniqueItems = false } = context
     const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
     const aList = dependentArbitrary((ctx) =>
@@ -76,19 +82,19 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
         )
     )
     if (uniqueItems) {
-        return aList.map((x) => [...unique(x)]).filter((x) => x.length >= minLength)
+        return aList.map((x) => [...unique(x)]).filter((x) => x.length >= minLength) as Dependent<ArrayOf<T, Min>>
     }
-    return aList
+    return aList as Dependent<ArrayOf<T, Min>>
 }
 
 /**
  * @experimental
  */
-export function arrayWith<T>(
+export function arrayWith<T, Min extends number = number>(
     predicate: (x: T, xs: T[], skippedInRow: number) => boolean,
     arbitrary: Arbitrary<T>,
-    context: RelaxedPartial<ArrayGenerator<T>> = {}
-): Dependent<T[]> {
+    context: RelaxedPartial<ArrayGenerator<T, Min>> = {}
+): Dependent<ArrayOf<T, Min>> {
     const { minLength = 0, maxLength } = context
     const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
     return dependentArbitrary((ctx) =>
@@ -132,5 +138,5 @@ export function arrayWith<T>(
                 minLength,
             }
         )
-    )
+    ) as Dependent<ArrayOf<T, Min>>
 }
