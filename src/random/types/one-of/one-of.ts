@@ -1,8 +1,7 @@
-import { sum } from '../../../array/sum/index.js'
 import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
-import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { weightedChoice } from '../choice/choice.js'
+import { float } from '../float/float.js'
 import { integer } from '../integer/integer.js'
 
 /**
@@ -53,10 +52,6 @@ export function oneOf<T extends Arbitrary<unknown>[]>(...arbitraries: [...T]): D
 export function oneOfWeighted<T extends [number, Arbitrary<unknown>][]>(
     ...arbitraries: [...T]
 ): Dependent<ReturnType<[...T][number][1]['value']>['value']> {
-    const total = sum(arbitraries.map((a) => a[0]))
-    const aint = integer({ min: 0, max: total })
     const choices = weightedChoice(arbitraries)
-    return dependentArbitrary((context) => {
-        return choices(aint.sample(context)).value(context)
-    })
+    return float({ min: 0, max: 1 }).chain((x) => choices(x))
 }
