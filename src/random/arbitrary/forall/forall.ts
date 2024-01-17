@@ -34,7 +34,7 @@ export interface ForallOptions<T> {
     timeout?: number | false
 }
 
-export function forAll<T extends ArbitraryOrLiteral<any>>(
+export function forAll<const T extends ArbitraryOrLiteral<any>>(
     arbitrary: T,
     predicate: (x: TypeOfArbitrary<AsArbitrary<T>>, context: ArbitraryContext) => boolean | void,
     {
@@ -104,7 +104,7 @@ export function forAll<T extends ArbitraryOrLiteral<any>>(
     }
 }
 
-export async function asyncForAll<T extends ArbitraryOrLiteral<any>>(
+export async function asyncForAll<const T extends ArbitraryOrLiteral<any>>(
     arbitrary: T,
     predicate: (x: TypeOfArbitrary<AsArbitrary<T>>, context: ArbitraryContext) => Promise<boolean | void>,
     {
