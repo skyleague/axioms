@@ -49,6 +49,40 @@ it('distribution', () => {
         "9": 49,
       }
     `)
+
+    expect(
+        mapValues(
+            groupBy(
+                replicate(() => integer({ min: -100, max: 100 }).sample(context), 1000),
+                (x) => Math.floor(x / 10)
+            ),
+
+            (v) => v.length
+        )
+    ).toMatchInlineSnapshot(`
+      {
+        "-1": 47,
+        "-10": 48,
+        "-2": 52,
+        "-3": 54,
+        "-4": 42,
+        "-5": 59,
+        "-6": 55,
+        "-7": 45,
+        "-8": 48,
+        "-9": 42,
+        "0": 47,
+        "1": 55,
+        "2": 45,
+        "3": 59,
+        "4": 56,
+        "5": 53,
+        "6": 44,
+        "7": 56,
+        "8": 46,
+        "9": 47,
+      }
+    `)
 })
 it('distribution - small numbers', () => {
     const xs: number[] = []

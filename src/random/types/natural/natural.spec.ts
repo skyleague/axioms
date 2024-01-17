@@ -38,6 +38,30 @@ it('distribution', () => {
         "9": 91,
       }
     `)
+
+    expect(
+        mapValues(
+            groupBy(
+                replicate(() => natural({ min: 0, max: 100 }).sample(context), 1000),
+                (x) => Math.floor(x / 10)
+            ),
+
+            (v) => v.length
+        )
+    ).toMatchInlineSnapshot(`
+      {
+        "0": 90,
+        "1": 93,
+        "2": 114,
+        "3": 96,
+        "4": 99,
+        "5": 102,
+        "6": 104,
+        "7": 109,
+        "8": 100,
+        "9": 93,
+      }
+    `)
 })
 
 it('counter example - positive', () => {
