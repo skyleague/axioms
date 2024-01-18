@@ -104,6 +104,7 @@ describe('ttl cache resolver', () => {
     })
 
     it('async mem x called twice after timeout', async () => {
+        vi.setSystemTime(new Date().getTime())
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 500 })), async ([x, n]) => {
             const fn = vi.fn(async () => x)
             const mem = memoize(fn, ttlCacheResolver(5))

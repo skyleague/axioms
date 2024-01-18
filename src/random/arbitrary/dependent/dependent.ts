@@ -4,6 +4,7 @@ import { chainArbitrary } from '../chain/index.js'
 import { arbitraryContext } from '../context/index.js'
 import type { ArbitraryContext } from '../context/index.js'
 import { filterArbitrary, mapArbitrary } from '../transform/index.js'
+import { constantArbitrary } from '../transform/transform.js'
 
 export interface Dependent<T> extends Arbitrary<T> {
     sample(context: ArbitraryContext): T
@@ -13,6 +14,7 @@ export interface Dependent<T> extends Arbitrary<T> {
 
     map: <U>(f: (x: T) => U) => Dependent<U>
     chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
+    constant: () => Dependent<T>
 }
 
 /**
@@ -27,6 +29,7 @@ export function dependentArbitrary<T>(f: (context: ArbitraryContext) => Tree<T>)
         filter: <S extends T>(fn: (x: T) => x is S) => filterArbitrary(dependent, fn),
         map: <U>(fn: (x: T) => U) => mapArbitrary(dependent, fn),
         chain: <U>(fn: (x: T) => Arbitrary<U>) => chainArbitrary(dependent, fn),
+        constant: () => constantArbitrary(dependent),
     }
     return dependent
 }
