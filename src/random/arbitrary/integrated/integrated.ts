@@ -6,6 +6,7 @@ import type { ArbitraryContext, BiasedArbitraryContext } from '../context/index.
 import { arbitraryContext } from '../context/index.js'
 import type { Dependent } from '../dependent/index.js'
 import { filterArbitrary, mapArbitrary } from '../transform/index.js'
+import { constantArbitrary } from '../transform/transform.js'
 
 export interface Integrated<C, T> extends Arbitrary<T> {
     constraints: C
@@ -17,6 +18,7 @@ export interface Integrated<C, T> extends Arbitrary<T> {
     filter(f: (x: T) => boolean): Dependent<T>
     map: <U>(f: (x: T) => U) => Dependent<U>
     chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
+    constant: () => Dependent<T>
 }
 
 /**
@@ -54,6 +56,7 @@ export function integratedArbitrary<C, T>({
         filter: <S extends T>(fn: (x: T) => x is S) => filterArbitrary(integrated, fn),
         map: <U>(fn: (x: T) => U) => mapArbitrary(integrated, fn),
         chain: <U>(fn: (x: T) => Arbitrary<U>) => chainArbitrary(integrated, fn),
+        constant: () => constantArbitrary(integrated),
     }
 
     return integrated

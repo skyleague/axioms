@@ -110,6 +110,13 @@ export function filterTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
     }
 }
 
+export function pruneTree<T>(x: Tree<T>): Tree<T> {
+    return {
+        value: x.value,
+        children: [],
+    }
+}
+
 export function unfoldTree<T>(f: (x: T) => Traversable<T>, x: T): Tree<T> {
     return { value: x, children: map(f(x), (c) => unfoldTree(f, c)) }
 }

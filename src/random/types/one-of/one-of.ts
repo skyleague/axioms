@@ -23,9 +23,11 @@ import { integer } from '../integer/integer.js'
  * @group Arbitrary
  */
 export function oneOf<T extends Arbitrary<unknown>[]>(...arbitraries: [...T]): Dependent<TypeOfArbitraries<T>> {
-    return integer({ min: 0, max: arbitraries.length }).chain((i) => {
-        return arbitraries[i]
-    })
+    return integer({ min: 0, max: arbitraries.length })
+        .constant()
+        .chain((i) => {
+            return arbitraries[i]
+        })
 }
 
 /**
@@ -53,5 +55,7 @@ export function oneOfWeighted<T extends [number, Arbitrary<unknown>][]>(
     ...arbitraries: [...T]
 ): Dependent<ReturnType<[...T][number][1]['value']>['value']> {
     const choices = weightedChoice(arbitraries)
-    return float({ min: 0, max: 1 }).chain((x) => choices(x))
+    return float({ min: 0, max: 1 })
+        .constant()
+        .chain((x) => choices(x))
 }

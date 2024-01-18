@@ -1,9 +1,12 @@
 import { oneOf, oneOfWeighted } from './one-of.js'
 
+import { showTree } from '../../../algorithm/tree/tree.js'
 import { groupBy, replicate } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
+import { boolean } from '../boolean/boolean.js'
 import { integer } from '../integer/integer.js'
+import { tuple } from '../tuple/tuple.js'
 
 import { expect, it, describe } from 'vitest'
 
@@ -50,6 +53,73 @@ describe('oneOf', () => {
           }
         `)
     })
+
+    it('show small tree', () => {
+        const ctx = arbitraryContext({
+            rng: xoroshiro128plus(42n),
+        })
+        const arb = tuple(oneOf(boolean(), boolean()), oneOf(integer({ min: -10, max: 0 }), integer({ min: 0, max: 10 })))
+        const tree1 = arb.value(ctx)
+        expect(showTree(tree1, { maxDepth: 2 })).toMatchInlineSnapshot(
+            `
+          "└─ true,-8
+              ├─ false,0
+              ├─ false,-8
+              |   ├─ false,0
+              |   ├─ false,-4
+              |   |   └─...
+              |   |   └─...
+              |   ├─ false,-6
+              |   |   └─...
+              |   └─ false,-7
+              ├─ true,0
+              |   └─ false,0
+              ├─ true,-4
+              |   ├─ false,-2
+              |   |   └─...
+              |   ├─ false,-4
+              |   |   └─...
+              |   |   └─...
+              |   ├─ true,-2
+              |   |   └─...
+              |   |   └─...
+              |   |   └─...
+              |   └─ true,-3
+              |       └─...
+              ├─ true,-6
+              |   ├─ false,-5
+              |   ├─ false,-6
+              |   |   └─...
+              |   └─ true,-5
+              |       └─...
+              └─ true,-7
+                  └─ false,-7"
+        `
+        )
+        const tree2 = arb.value(ctx)
+        expect(showTree(tree2, { maxDepth: 2 })).toMatchInlineSnapshot(`
+          "└─ true,-5
+              ├─ false,0
+              ├─ false,-5
+              |   ├─ false,0
+              |   ├─ false,-3
+              |   |   └─...
+              |   └─ false,-4
+              ├─ true,0
+              |   └─ false,0
+              ├─ true,-3
+              |   ├─ false,-2
+              |   |   └─...
+              |   ├─ false,-3
+              |   |   └─...
+              |   └─ true,-2
+              |       └─...
+              |       └─...
+              |       └─...
+              └─ true,-4
+                  └─ false,-4"
+        `)
+    })
 })
 
 describe('oneOfWeighted', () => {
@@ -93,6 +163,76 @@ describe('oneOfWeighted', () => {
             "8": 971,
             "9": 974,
           }
+        `)
+    })
+
+    it('show small tree', () => {
+        const ctx = arbitraryContext({
+            rng: xoroshiro128plus(42n),
+        })
+        const arb = tuple(
+            oneOfWeighted([1, boolean()], [1, boolean()]),
+            oneOfWeighted([1, integer({ min: -10, max: 0 })], [1, integer({ min: 0, max: 10 })])
+        )
+        const tree1 = arb.value(ctx)
+        expect(showTree(tree1, { maxDepth: 2 })).toMatchInlineSnapshot(
+            `
+          "└─ true,-8
+              ├─ false,0
+              ├─ false,-8
+              |   ├─ false,0
+              |   ├─ false,-4
+              |   |   └─...
+              |   |   └─...
+              |   ├─ false,-6
+              |   |   └─...
+              |   └─ false,-7
+              ├─ true,0
+              |   └─ false,0
+              ├─ true,-4
+              |   ├─ false,-2
+              |   |   └─...
+              |   ├─ false,-4
+              |   |   └─...
+              |   |   └─...
+              |   ├─ true,-2
+              |   |   └─...
+              |   |   └─...
+              |   |   └─...
+              |   └─ true,-3
+              |       └─...
+              ├─ true,-6
+              |   ├─ false,-5
+              |   ├─ false,-6
+              |   |   └─...
+              |   └─ true,-5
+              |       └─...
+              └─ true,-7
+                  └─ false,-7"
+        `
+        )
+        const tree2 = arb.value(ctx)
+        expect(showTree(tree2, { maxDepth: 2 })).toMatchInlineSnapshot(`
+          "└─ true,-5
+              ├─ false,0
+              ├─ false,-5
+              |   ├─ false,0
+              |   ├─ false,-3
+              |   |   └─...
+              |   └─ false,-4
+              ├─ true,0
+              |   └─ false,0
+              ├─ true,-3
+              |   ├─ false,-2
+              |   |   └─...
+              |   ├─ false,-3
+              |   |   └─...
+              |   └─ true,-2
+              |       └─...
+              |       └─...
+              |       └─...
+              └─ true,-4
+                  └─ false,-4"
         `)
     })
 })

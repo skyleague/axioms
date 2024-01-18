@@ -297,11 +297,11 @@ describe('json', () => {
         expect(() => {
             forAll(json({ type: 'value' }), (j) => !equal(JSON.parse(JSON.stringify(j)), j), { seed: 42n, timeout: false })
         }).toThrowErrorMatchingInlineSnapshot(`
-          [FalsifiedError: Counter example found after 1 tests (seed: 42n)
-          Shrunk 2 time(s)
+          [FalsifiedError: Counter example found after 6 tests (seed: 42n)
+          Shrunk 1 time(s)
           Counter example:
 
-          '']
+          0]
         `)
     })
 

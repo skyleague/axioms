@@ -1,4 +1,5 @@
 import { mapTree, filterTree } from '../../../algorithm/tree/index.js'
+import { pruneTree } from '../../../algorithm/tree/tree.js'
 import type { Arbitrary } from '../arbitrary/index.js'
 import { dependentArbitrary } from '../dependent/index.js'
 import type { Dependent } from '../dependent/index.js'
@@ -24,4 +25,8 @@ export function filterArbitrary<T, S extends T>(a: Arbitrary<T>, f: ((x: T) => x
         } while (!f(generated.value))
         return filterTree(generated, f)
     }) as Dependent<S>
+}
+
+export function constantArbitrary<T>(a: Arbitrary<T>): Dependent<T> {
+    return dependentArbitrary((context) => pruneTree(a.value(context)))
 }
