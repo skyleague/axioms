@@ -31,7 +31,6 @@ type PatternString<T extends string, A> = T extends PatternChar
  * @returns A `Dependent<string>` that generates a string based on the pattern string.
  *
  * @group Arbitrary
- * ```
  */
 export function pattern<S extends string>(patternStr: PatternString<S, S>): Dependent<string> {
     const arbitraries = []

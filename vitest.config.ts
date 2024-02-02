@@ -1,9 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
     test: {
         setupFiles: ['./test/__test__/setup.ts'],
-        globalSetup: ['./test/__test__/global.ts'],
+        include: ['./src/**/*.{test,spec}.{ts,js}', './test/**/*.{test,spec}.{ts,js}'],
+        coverage: {
+            reportsDirectory: './.coverage',
+        },
         fakeTimers: {
             now: new Date(2022, 1, 10),
             toFake: [
