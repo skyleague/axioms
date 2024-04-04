@@ -1,6 +1,7 @@
 import { getProp } from './get-prop.js'
 
-import { Nothing, dict, enumerate, forAll, isObject, string, tuple, unknown } from '../../index.js'
+import { Nothing, enumerate, forAll, isObject, string, tuple, unknown } from '../../index.js'
+import { record } from '../../random/types/record/record.js'
 
 import { it, expect, assertType } from 'vitest'
 
@@ -32,7 +33,7 @@ it('returns undefined for non-existent properties', () => {
 })
 
 it('returns the correct value for existing properties', () => {
-    forAll(tuple(dict(unknown()), string(), unknown()), ([obj, path, value]) => {
+    forAll(tuple(record(unknown()), string(), unknown()), ([obj, path, value]) => {
         const pathArr = path.split('.')
         let current = obj as any
         for (const [i, key] of enumerate(pathArr)) {

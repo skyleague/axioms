@@ -1,13 +1,14 @@
 import { fromEntries } from './from-entries.js'
 
 import { equal } from '../../iterator/index.js'
-import { dict, forAll, unknown } from '../../random/index.js'
+import { forAll, unknown } from '../../random/index.js'
+import { record } from '../../random/types/record/record.js'
 import { entriesOf } from '../entries-of/index.js'
 
 import { expect, it } from 'vitest'
 
 it('fromEntries o entriesOf === identity', () => {
-    forAll(dict(unknown()), (x) => equal(fromEntries(entriesOf(x)), x))
+    forAll(record(unknown()), (x) => equal(fromEntries(entriesOf(x)), x))
 })
 
 it('infers correct type', () => {

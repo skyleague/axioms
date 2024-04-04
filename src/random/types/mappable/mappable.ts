@@ -18,6 +18,6 @@ const mappableFuncs: MappableFunc[] = [
         } as ToMappable<Xs>,
 ]
 export function mappableFunc(): Dependent<MappableFunc> {
-    const aint = integer({ min: 0, max: mappableFuncs.length })
+    const aint = integer({ min: 0, max: mappableFuncs.length - 1 })
     return dependentArbitrary((context) => mapTree(aint.value(context), (i) => mappableFuncs[i]!))
 }

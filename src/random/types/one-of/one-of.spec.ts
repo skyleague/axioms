@@ -1,11 +1,19 @@
 import { oneOf, oneOfWeighted } from './one-of.js'
 
 import { showTree } from '../../../algorithm/tree/tree.js'
+import { collect } from '../../../array/collect/collect.js'
+import { repeat } from '../../../generator/repeat/repeat.js'
 import { groupBy, replicate } from '../../../iterator/index.js'
+import { take } from '../../../iterator/take/take.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
+import type { Dependent } from '../../arbitrary/dependent/dependent.js'
+import { array } from '../array/array.js'
 import { boolean } from '../boolean/boolean.js'
+import { constant, memoizeArbitrary } from '../helper/helper.js'
 import { integer } from '../integer/integer.js'
+import { object } from '../object/object.js'
+import { string } from '../string/string.js'
 import { tuple } from '../tuple/tuple.js'
 
 import { expect, it, describe } from 'vitest'
@@ -40,16 +48,141 @@ describe('oneOf', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 991,
-            "1": 1008,
-            "2": 1043,
-            "3": 1001,
-            "4": 1023,
-            "5": 988,
+            "0": 886,
+            "1": 1042,
+            "10": 75,
+            "2": 1009,
+            "3": 1019,
+            "4": 1021,
+            "5": 990,
             "6": 1003,
-            "7": 998,
-            "8": 971,
-            "9": 974,
+            "7": 991,
+            "8": 965,
+            "9": 999,
+          }
+        `)
+    })
+
+    it('distribution - small', () => {
+        const context = arbitraryContext({
+            rng: xoroshiro128plus(42n),
+        })
+
+        const arb = oneOf(constant(1), constant(2), constant(3))
+
+        expect(
+            mapValues(
+                groupBy(
+                    replicate(() => arb.sample(context), 10000),
+                    (x) => x
+                ),
+
+                (v) => v.length
+            )
+        ).toMatchInlineSnapshot(`
+          {
+            "1": 3283,
+            "2": 3398,
+            "3": 3319,
+          }
+        `)
+    })
+
+    it('distribution - depth', () => {
+        const context = arbitraryContext({
+            rng: xoroshiro128plus(43n),
+        })
+
+        const arb: Dependent<unknown> = oneOf(boolean(), object({ nested: memoizeArbitrary(() => arb) }))
+
+        expect(
+            mapValues(
+                groupBy(
+                    replicate(() => arb.sample(context), 100),
+                    (x) => JSON.stringify(x)
+                ),
+                (g) => g.length
+            )
+        ).toMatchInlineSnapshot(`
+          {
+            "false": 32,
+            "true": 26,
+            "{"nested":false}": 19,
+            "{"nested":true}": 11,
+            "{"nested":{"nested":false}}": 5,
+            "{"nested":{"nested":true}}": 2,
+            "{"nested":{"nested":{"nested":false}}}": 3,
+            "{"nested":{"nested":{"nested":true}}}": 2,
+          }
+        `)
+    })
+
+    it('distribution - depth l', () => {
+        const context = arbitraryContext({
+            rng: xoroshiro128plus(43n),
+            depth: 'l',
+        })
+
+        const arb: Dependent<unknown> = oneOf(boolean(), object({ nested: memoizeArbitrary(() => arb) }))
+
+        expect(
+            mapValues(
+                groupBy(
+                    replicate(() => arb.sample(context), 100),
+                    (x) => JSON.stringify(x)
+                ),
+                (g) => g.length
+            )
+        ).toMatchInlineSnapshot(`
+          {
+            "false": 27,
+            "true": 28,
+            "{"nested":false}": 11,
+            "{"nested":true}": 6,
+            "{"nested":{"nested":false}}": 5,
+            "{"nested":{"nested":true}}": 5,
+            "{"nested":{"nested":{"nested":false}}}": 5,
+            "{"nested":{"nested":{"nested":true}}}": 4,
+            "{"nested":{"nested":{"nested":{"nested":false}}}}": 2,
+            "{"nested":{"nested":{"nested":{"nested":true}}}}": 1,
+            "{"nested":{"nested":{"nested":{"nested":{"nested":false}}}}}": 3,
+            "{"nested":{"nested":{"nested":{"nested":{"nested":true}}}}}": 2,
+            "{"nested":{"nested":{"nested":{"nested":{"nested":{"nested":false}}}}}}": 1,
+          }
+        `)
+    })
+
+    it('distribution - depth xl', () => {
+        const context = arbitraryContext({
+            rng: xoroshiro128plus(43n),
+            depth: 'xl',
+        })
+
+        const arb: Dependent<unknown> = oneOf(boolean(), object({ nested: memoizeArbitrary(() => arb) }))
+
+        expect(
+            mapValues(
+                groupBy(
+                    replicate(() => arb.sample(context), 100),
+                    (x) => JSON.stringify(x)
+                ),
+                (g) => g.length
+            )
+        ).toMatchInlineSnapshot(`
+          {
+            "false": 27,
+            "true": 28,
+            "{"nested":false}": 11,
+            "{"nested":true}": 6,
+            "{"nested":{"nested":false}}": 5,
+            "{"nested":{"nested":true}}": 5,
+            "{"nested":{"nested":{"nested":false}}}": 5,
+            "{"nested":{"nested":{"nested":true}}}": 4,
+            "{"nested":{"nested":{"nested":{"nested":false}}}}": 2,
+            "{"nested":{"nested":{"nested":{"nested":true}}}}": 1,
+            "{"nested":{"nested":{"nested":{"nested":{"nested":false}}}}}": 3,
+            "{"nested":{"nested":{"nested":{"nested":{"nested":true}}}}}": 2,
+            "{"nested":{"nested":{"nested":{"nested":{"nested":{"nested":false}}}}}}": 1,
           }
         `)
     })
@@ -120,6 +253,156 @@ describe('oneOf', () => {
                   └─ false,-4"
         `)
     })
+
+    it.only('handles complicated recursive structures', () => {
+        const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), depth: 'xs' })
+        const size = 'xs'
+
+        const booleanInstance = boolean()
+        const schema: Dependent<unknown> = oneOf(
+            memoizeArbitrary(() => booleanInstance),
+            array(string({ size }), { size }).chain((dictKeys) =>
+                object(Object.fromEntries([...dictKeys.map((k) => [k, memoizeArbitrary(() => schema)])]))
+            )
+        )
+        expect(
+            collect(
+                take(
+                    repeat(() => schema.sample(ctx)),
+                    100
+                )
+            )
+        ).toMatchInlineSnapshot(`
+          [
+            true,
+            true,
+            {},
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            {
+              "I": true,
+            },
+            true,
+            false,
+            false,
+            {},
+            false,
+            false,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            false,
+            true,
+            false,
+            true,
+            {
+              "c": {
+                "": false,
+              },
+            },
+            true,
+            {},
+            true,
+            {
+              "": false,
+            },
+            true,
+            false,
+            false,
+            {
+              "": false,
+            },
+            {},
+            false,
+            {
+              "i": false,
+            },
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true,
+            {
+              "": {
+                "d": false,
+              },
+            },
+            {},
+            false,
+            true,
+            false,
+            false,
+            {},
+            true,
+            true,
+            {
+              "v": true,
+            },
+            {},
+            false,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            {},
+            false,
+            true,
+            {
+              "": false,
+            },
+            true,
+            true,
+            false,
+            true,
+            false,
+            true,
+            true,
+            {},
+            true,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            {
+              "": {},
+            },
+            true,
+            true,
+            true,
+            {
+              "": true,
+            },
+            false,
+            true,
+            false,
+            true,
+            false,
+            {
+              "Q": true,
+            },
+            false,
+            true,
+            false,
+            true,
+          ]
+        `)
+    })
 })
 
 describe('oneOfWeighted', () => {
@@ -152,16 +435,17 @@ describe('oneOfWeighted', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 991,
-            "1": 1008,
-            "2": 1043,
-            "3": 1001,
-            "4": 1023,
-            "5": 988,
+            "0": 886,
+            "1": 1042,
+            "10": 75,
+            "2": 1009,
+            "3": 1019,
+            "4": 1021,
+            "5": 990,
             "6": 1003,
-            "7": 998,
-            "8": 971,
-            "9": 974,
+            "7": 991,
+            "8": 965,
+            "9": 999,
           }
         `)
     })

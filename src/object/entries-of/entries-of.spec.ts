@@ -1,11 +1,11 @@
 import { entriesOf } from './index.js'
 
-import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
+import { forAll, record, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
 it('entriesOf === Object.entries', () => {
-    forAll(dict(unknown()), (o) => {
+    forAll(record(unknown()), (o) => {
         expect(entriesOf(o)).toStrictEqual(Object.entries(o))
     })
 })
@@ -36,7 +36,7 @@ it('entriesOf [1, 2, 3]', () => {
 })
 
 it('entriesOf union object and array', () => {
-    forAll(oneOf(array(string()), dict([integer(), integer()])), (o) => {
+    forAll(oneOf(array(string()), record([integer(), integer()])), (o) => {
         expect(entriesOf(o)).toStrictEqual(Object.entries(o))
     })
     const _foo: [string, number][] = entriesOf([1, 2, 3])

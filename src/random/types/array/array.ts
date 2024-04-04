@@ -1,9 +1,10 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
-import { unique } from '../../../iterator/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
 import type { BuildTuple } from '../../../type/tuple/tuple.js'
 import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import { maxLengthArbitrary, type ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/integer.js'
@@ -24,10 +25,8 @@ export interface ArrayGenerator<T, Min extends number> {
      * The maximum length of array to generate.
      */
     maxLength: number
-    /**
-     * Controls whether all items should be considered unique.
-     */
-    uniqueItems: boolean
+
+    size?: ArbitrarySize
     /**
      * Equality operator that is used to detect duplicate items.
      */
@@ -45,19 +44,25 @@ export interface ArrayGenerator<T, Min extends number> {
  * ```
  *
  * @param arbitrary - The arbitraries to create an array of.
- * @param context - RelaxedPartial<ArrayGenerator<T>>
+ * @param constraints - RelaxedPartial<ArrayGenerator<T>>
  * @returns An arbitrary that generates a record of all the properties of the given arbitraries.
  *
  * @group Arbitrary
  */
 export function array<T, Min extends number = number>(
     arbitrary: Arbitrary<T>,
-    context: RelaxedPartial<ArrayGenerator<T, Min>> = {}
+    constraints: RelaxedPartial<ArrayGenerator<T, Min>> = {}
 ): Dependent<ArrayOf<T, Min>> {
-    const { minLength = 0, maxLength, uniqueItems = false } = context
-    const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
-    const aList = dependentArbitrary((ctx) =>
-        interleaveList(
+    const { minLength = 0, maxLength } = constraints
+    const aList = dependentArbitrary((ctx) => {
+        const max = maxLengthArbitrary({
+            context: ctx,
+            size: constraints.size,
+            minLength,
+            maxLength,
+        })
+        const aint = integer({ min: minLength, max: Math.ceil(max) })
+        return interleaveList(
             (() => {
                 const { bias } = ctx
                 let biasedValue = () => arbitrary.value(ctx)
@@ -65,13 +70,20 @@ export function array<T, Min extends number = number>(
                 if (bias !== undefined) {
                     const p0 = ctx.rng.sample() > bias
                     const p1 = ctx.rng.sample() > bias
-                    size = aint.sample({ ...ctx, bias: p0 ? bias : undefined })
-                    biasedValue = () => arbitrary.value({ ...ctx, bias: p1 ? bias : undefined })
+                    size = aint.sample(arbitraryContext({ ...ctx, bias: p0 ? bias : undefined }))
+                    biasedValue = () => {
+                        const oldBias = ctx.bias
+                        ctx.bias = p1 ? bias : undefined
+                        const val = arbitrary.value(ctx)
+                        ctx.bias = oldBias
+                        return val
+                    }
                 } else {
                     size = aint.sample(ctx)
                 }
+
                 const xs: Tree<T>[] = []
-                while (xs.length !== size) {
+                while (xs.length < size) {
                     xs.push(biasedValue())
                 }
                 return xs
@@ -80,10 +92,7 @@ export function array<T, Min extends number = number>(
                 minLength,
             }
         )
-    )
-    if (uniqueItems) {
-        return aList.map((x) => [...unique(x)]).filter((x) => x.length >= minLength) as Dependent<ArrayOf<T, Min>>
-    }
+    })
     return aList as Dependent<ArrayOf<T, Min>>
 }
 
@@ -91,14 +100,30 @@ export function array<T, Min extends number = number>(
  * @experimental
  */
 export function arrayWith<T, Min extends number = number>(
-    predicate: (x: T, xs: T[], skippedInRow: number) => boolean,
+    predicate: (
+        x: T,
+        xs: T[],
+        skippedInRow: number,
+        constraints: Pick<ArrayGenerator<T, number>, 'minLength' | 'maxLength'>
+    ) => boolean,
     arbitrary: Arbitrary<T>,
-    context: RelaxedPartial<ArrayGenerator<T, Min>> = {}
+    constraints: RelaxedPartial<ArrayGenerator<T, Min>> = {}
 ): Dependent<ArrayOf<T, Min>> {
-    const { minLength = 0, maxLength } = context
-    const aint = integer({ min: minLength, max: maxLength ?? minLength * 1.6 + 10 })
-    return dependentArbitrary((ctx) =>
-        interleaveList(
+    const { minLength = 0, maxLength } = constraints
+    return dependentArbitrary((ctx) => {
+        const max = maxLengthArbitrary({
+            context: ctx,
+            size: constraints.size,
+            minLength,
+            maxLength,
+        })
+        const newConstraints: Pick<ArrayGenerator<T, number>, 'minLength' | 'maxLength'> = {
+            ...constraints,
+            minLength: minLength,
+            maxLength: maxLength ?? max,
+        }
+        const aint = integer({ min: minLength, max: Math.ceil(max) })
+        return interleaveList(
             (() => {
                 const { bias } = ctx
                 let biasedValue = () => arbitrary.value(ctx)
@@ -106,12 +131,12 @@ export function arrayWith<T, Min extends number = number>(
                 if (bias !== undefined) {
                     const p0 = ctx.rng.sample() > bias
                     const p1 = ctx.rng.sample() > bias
-                    size = aint.sample({ ...ctx, bias: p0 ? bias : undefined })
+                    size = aint.sample(arbitraryContext({ ...ctx, bias: p0 ? bias : undefined }))
                     if (p0 && p1) {
                         // small array with small values
-                        biasedValue = () => arbitrary.value({ ...ctx, bias })
+                        biasedValue = () => arbitrary.value(arbitraryContext({ ...ctx, bias }))
                     } else {
-                        biasedValue = () => arbitrary.value({ ...ctx, bias: p1 ? bias : undefined })
+                        biasedValue = () => arbitrary.value(arbitraryContext({ ...ctx, bias: p1 ? bias : undefined }))
                     }
                 } else {
                     size = aint.sample(ctx)
@@ -123,7 +148,7 @@ export function arrayWith<T, Min extends number = number>(
                 let skippedInRow = 0
                 while (xs.length !== size) {
                     const x = biasedValue()
-                    if (predicate(x.value, vals, skippedInRow)) {
+                    if (predicate(x.value, vals, skippedInRow, newConstraints)) {
                         xs.push(x)
                         vals.push(x.value)
                         skippedInRow = 0
@@ -138,5 +163,5 @@ export function arrayWith<T, Min extends number = number>(
                 minLength,
             }
         )
-    ) as Dependent<ArrayOf<T, Min>>
+    }) as Dependent<ArrayOf<T, Min>>
 }

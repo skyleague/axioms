@@ -3,13 +3,14 @@ import { date, datetime } from './date.js'
 import { collect } from '../../../array/index.js'
 import { repeat } from '../../../generator/index.js'
 import { take } from '../../../iterator/index.js'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
 import { expect, describe, it } from 'vitest'
 
 describe('datetime', () => {
     it('random sample', () => {
-        const ctx = { rng: xoroshiro128plus(1638968569864n) }
+        const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = datetime()
         expect(
             collect(
@@ -35,7 +36,7 @@ describe('datetime', () => {
     })
 
     it('random sample - days', () => {
-        const ctx = { rng: xoroshiro128plus(1638968569864n) }
+        const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = datetime({ precision: 'days' })
         expect(
             collect(
@@ -46,16 +47,16 @@ describe('datetime', () => {
             )
         ).toMatchInlineSnapshot(`
           [
-            2120-10-18T00:00:00.000Z,
-            2043-12-16T00:00:00.000Z,
-            2099-01-10T00:00:00.000Z,
-            1979-12-16T00:00:00.000Z,
-            2190-07-31T00:00:00.000Z,
-            1980-05-25T00:00:00.000Z,
-            1991-09-25T00:00:00.000Z,
-            2077-01-18T00:00:00.000Z,
-            2019-05-01T00:00:00.000Z,
-            2010-10-08T00:00:00.000Z,
+            2120-10-17T22:00:00.000Z,
+            2043-12-15T23:00:00.000Z,
+            2099-01-09T23:00:00.000Z,
+            1979-12-15T23:00:00.000Z,
+            2190-07-30T22:00:00.000Z,
+            1980-05-24T22:00:00.000Z,
+            1991-09-24T22:00:00.000Z,
+            2077-01-17T23:00:00.000Z,
+            2019-04-30T22:00:00.000Z,
+            2010-10-07T22:00:00.000Z,
           ]
         `)
     })
@@ -63,7 +64,7 @@ describe('datetime', () => {
 
 describe('date', () => {
     it('random sample', () => {
-        const ctx = { rng: xoroshiro128plus(1638968569864n) }
+        const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = date()
         expect(
             collect(

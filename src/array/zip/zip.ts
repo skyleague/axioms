@@ -20,6 +20,9 @@ export function* zip<T extends readonly [...Traversable<unknown>[]]>(...xs: [...
     return
 }
 
+/**
+ * @deprecated
+ */
 export function* zipWith<T extends readonly [...unknown[]], R>(f: (...args: [...T]) => R, ...xs: Unzip<[...T]>) {
     if (xs.length === 0) {
         return

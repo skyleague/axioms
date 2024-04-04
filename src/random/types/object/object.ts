@@ -1,4 +1,3 @@
-import { zip } from '../../../array/zip/index.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { ArbitraryContext } from '../../arbitrary/context/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
@@ -40,7 +39,8 @@ export function object<T extends Record<PropertyKey, Arbitrary<unknown>>>(
     }
 
     const arbitraries = Object.values(properties)
-    return tuple(...arbitraries).map((v) => Object.fromEntries(zip(keys, v))) as Dependent<{
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return tuple(...arbitraries).map((vs) => Object.fromEntries(vs.map((v, i) => [keys[i], v] as const))) as Dependent<{
         [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
     }>
 }

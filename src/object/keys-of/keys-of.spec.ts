@@ -1,11 +1,11 @@
 import { keysOf } from './index.js'
 
-import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
+import { forAll, record, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
 it('keysOf === Object.keys', () => {
-    forAll(dict(unknown()), (o) => {
+    forAll(record(unknown()), (o) => {
         expect(keysOf(o)).toStrictEqual(Object.keys(o))
     })
 })
@@ -27,7 +27,7 @@ it('keysOf [1, 2, 3]', () => {
 })
 
 it('keysOf union object and array', () => {
-    forAll(oneOf(array(string()), dict([integer(), integer()])), (o) => {
+    forAll(oneOf(array(string()), record([integer(), integer()])), (o) => {
         expect(keysOf(o)).toStrictEqual(Object.keys(o))
     })
     const _foo: string[] = keysOf([1, 2, 3])

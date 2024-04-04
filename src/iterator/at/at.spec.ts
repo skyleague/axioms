@@ -33,7 +33,7 @@ describe('at', () => {
 
     it('ith index on array - index in bounds', () => {
         forAll(
-            integer({ min: 1, max: 50 }).chain((n) => tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n }))),
+            integer({ min: 1, max: 50 }).chain((n) => tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n - 1 }))),
             ([xs, i]) => {
                 return at(xs, i) === xs[i]
             }

@@ -8,6 +8,8 @@ import { difference } from '../../../set/difference/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
 import type { BuildTuple } from '../../../type/tuple/tuple.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import type { ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { InfeasibleTree } from '../../arbitrary/shrink/index.js'
@@ -31,6 +33,7 @@ export interface SetGenerator<T, Min extends number> {
     minLength: Min
     maxLength: number
     useBias: boolean
+    size: ArbitrarySize
     eq: (a: T, b: T) => boolean
 }
 
@@ -53,21 +56,22 @@ export function set<T, Min extends number = number>(
     arbitrary: Arbitrary<T>,
     constraints: RelaxedPartial<SetGenerator<T, Min>> = {}
 ): Dependent<SetOf<T, Min>> {
-    const { minLength = 0, maxLength = 10, useBias = false, eq = equal } = constraints
+    const { minLength = 0, useBias = false, eq = equal, size, maxLength } = constraints
     const aarray = arrayWith(
-        (y, xs, i) => {
-            if (i > maxLength * 4) {
+        (y, xs, i, { maxLength: max }) => {
+            if (i > max * 4) {
                 throw new InfeasibleTree()
             }
             return !xs.some((x) => eq(y, x))
         },
         arbitrary,
-        { minLength, maxLength }
+        { minLength, maxLength, size }
     )
     return dependentArbitrary((ctx) => {
         // make sure we don't shrink to an array with duplicates
-        return uniqueArbitraryTree<T>(aarray.value({ ...ctx, bias: useBias ? ctx.bias : undefined }), eq)
-    }) as Dependent<SetOf<T, Min>>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        return uniqueArbitraryTree<T>(aarray.value(arbitraryContext({ ...ctx, bias: useBias ? ctx.bias : undefined })) as any, eq)
+    }) as unknown as Dependent<SetOf<T, Min>>
 }
 
 /**
@@ -78,6 +82,7 @@ export function set<T, Min extends number = number>(
 export interface SubsuperGenerator<T> {
     minLength: number
     maxLength: number
+    size: ArbitrarySize
     eq: (a: T, b: T) => boolean
 }
 
@@ -101,9 +106,9 @@ export function subsuper<T>(
     arbitrary: Arbitrary<T>,
     constraints: RelaxedPartial<SubsuperGenerator<T>> = {}
 ): Dependent<[subset: T[], superset: T[], complement: T[]]> {
-    const { minLength = 0, maxLength = 10, eq = equal } = constraints
-    const sub = set(arbitrary, { minLength, maxLength, eq })
-    const complement = set(arbitrary, { minLength, maxLength, eq })
+    const { minLength = 0, maxLength, eq, size } = constraints
+    const sub = set(arbitrary, { minLength, maxLength, eq, size })
+    const complement = set(arbitrary, { minLength, maxLength, eq, size })
     const pair = tuple(sub, complement)
     return mapArbitrary(pair, ([xs, cs]) => {
         const superset = collect(unique(concat(xs, cs), eq))

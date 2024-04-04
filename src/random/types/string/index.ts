@@ -1,5 +1,5 @@
 export {
-    type StringGenerator,
+    type StringConstraints,
     type AlphaNumericGenerator,
     type AlphaGenerator,
     stringGenerator,

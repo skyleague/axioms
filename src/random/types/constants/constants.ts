@@ -16,6 +16,6 @@ import { oneOf } from '../one-of/one-of.js'
  *
  * @group Arbitrary
  */
-export function constants<T extends unknown[]>(...consts: [...T]): Dependent<T[number]> {
+export function constants<const T extends unknown[]>(...consts: [...T]): Dependent<T[number]> {
     return oneOf(...consts.map((a) => constant(a)))
 }

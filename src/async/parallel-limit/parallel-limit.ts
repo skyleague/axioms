@@ -46,6 +46,7 @@ export function parallelLimit(concurrency: number) {
                 try {
                     resolve(await task())
                 } catch (err) {
+                    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
                     reject(err)
                 } finally {
                     next()

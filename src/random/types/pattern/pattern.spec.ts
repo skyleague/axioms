@@ -1,12 +1,13 @@
 import { pattern } from './pattern.js'
 
 import { collect, repeat, take } from '../../../index.js'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
 import { it, expect } from 'vitest'
 
 it('random sample', () => {
-    const ctx = { rng: xoroshiro128plus(1638968569864n) }
+    const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const apattern = pattern('a####iA')
     expect(
         collect(
@@ -17,16 +18,16 @@ it('random sample', () => {
         )
     ).toMatchInlineSnapshot(`
       [
-        "n2407bB",
-        "j1126gY",
-        "d6457WY",
+        "n2408bB",
+        "j1127gY",
+        "d6468WY",
         "k5431LS",
-        "g8824RE",
+        "g9934RE",
         "w3312BF",
-        "q7463XQ",
+        "q7473XQ",
         "h0500JN",
-        "l1866KW",
-        "p3584nU",
+        "l1976KW",
+        "p3595nU",
       ]
     `)
 })

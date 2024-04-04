@@ -16,16 +16,18 @@ it('counter example - equal', () => {
     expect(() => {
         forAll(tuple(integer(), integer()), ([a, b]) => a !== b, { seed: 42n, tests: 1000, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 472 tests (seed: 42n)
+      [AssertionError: Counter example found after 493 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
-      [ 0, 0 ]]
+      [ 0, 0 ]
+
+      ]
     `)
 })
 
 it('random sample', () => {
-    const ctx = { rng: xoroshiro128plus(1638968569864n) }
+    const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = tuple(integer(), integer())
     expect(
         collect(
@@ -37,7 +39,7 @@ it('random sample', () => {
     ).toMatchInlineSnapshot(`
       [
         [
-          218084955,
+          218084956,
           -987316205,
         ],
         [
@@ -45,12 +47,12 @@ it('random sample', () => {
           -1991294022,
         ],
         [
-          1312757734,
+          1312757735,
           -1984378058,
         ],
         [
           -1806577501,
-          -468159077,
+          -468159076,
         ],
         [
           -1373641556,
@@ -58,23 +60,23 @@ it('random sample', () => {
         ],
         [
           -998293443,
-          1013760582,
+          1013760583,
         ],
         [
           -1620441934,
-          2070318677,
+          2070318678,
         ],
         [
           -1565533012,
-          813063012,
+          813063013,
         ],
         [
-          -87348707,
+          -87348706,
           668940130,
         ],
         [
           1623133978,
-          1890748741,
+          1890748742,
         ],
       ]
     `)

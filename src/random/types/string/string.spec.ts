@@ -15,6 +15,7 @@ import { groupBy, replicate } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, forAll } from '../../arbitrary/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
+import { constant } from '../helper/helper.js'
 import { integer } from '../integer/index.js'
 import { tuple } from '../tuple/index.js'
 
@@ -22,15 +23,38 @@ import { expect, describe, it } from 'vitest'
 
 import util from 'node:util'
 
+const isPrintable = (str: string) => /^[ -~]+$/.test(str)
+
 describe('string', () => {
     it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return string({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), string({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), string({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -50,22 +74,27 @@ describe('string', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
 
     it('allowed characters', () => {
         forAll(string(), (str) => str.split('').every((c) => 32 <= c.charCodeAt(0) && c.charCodeAt(0) <= 126))
+    })
+
+    it('all printable', () => {
+        forAll(string({ minLength: 1 }), isPrintable)
     })
 })
 
@@ -74,10 +103,31 @@ describe('hex', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return hex({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), hex({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), hex({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -97,16 +147,17 @@ describe('hex', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -121,7 +172,7 @@ describe('base64', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return base64({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             ([str, minLength, maxLength]) => {
@@ -148,9 +199,10 @@ describe('base64', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 198,
-            "4": 417,
-            "8": 385,
+            "0": 190,
+            "12": 110,
+            "4": 339,
+            "8": 361,
           }
         `)
     })
@@ -167,10 +219,31 @@ describe('alpha', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return alpha({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), alpha({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), alpha({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -190,16 +263,17 @@ describe('alpha', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -222,10 +296,31 @@ describe('lowerAlpha', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return lowerAlpha({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), lowerAlpha({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), lowerAlpha({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -245,16 +340,17 @@ describe('lowerAlpha', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -276,10 +372,31 @@ describe('alphaNumeric', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return alphaNumeric({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), alphaNumeric({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), alphaNumeric({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -299,16 +416,17 @@ describe('alphaNumeric', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -333,10 +451,31 @@ describe('lowerAlphaNumeric', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return lowerAlphaNumeric({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), lowerAlphaNumeric({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), lowerAlphaNumeric({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -356,16 +495,17 @@ describe('lowerAlphaNumeric', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -387,10 +527,31 @@ describe('ascii', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return ascii({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+        )
+    })
+
+    it('check min constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((min) => {
+                return tuple(constant(min), ascii({ minLength: min }))
+            }),
+            ([min, x]) => x.length >= min,
+            { seed: 42n }
+        )
+    })
+
+    it('check max constraint - inclusive', () => {
+        forAll(
+            integer({ min: 0, max: 100 }).chain((max) => {
+                return tuple(constant(max), ascii({ maxLength: max }))
+            }),
+            ([max, x]) => x.length <= max,
+            { seed: 42n }
         )
     })
 
@@ -410,16 +571,17 @@ describe('ascii', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -434,9 +596,10 @@ describe('utf16', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
                 const minLength = a
-                const maxLength = a + b
+                const maxLength = a + b + 1
                 return utf16({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
+            // inclusive
             ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
         )
     })
@@ -457,16 +620,17 @@ describe('utf16', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 99,
-            "2": 97,
-            "3": 106,
-            "4": 103,
-            "5": 111,
-            "6": 95,
-            "7": 95,
-            "8": 93,
-            "9": 102,
+            "0": 85,
+            "1": 105,
+            "10": 110,
+            "2": 82,
+            "3": 84,
+            "4": 93,
+            "5": 80,
+            "6": 104,
+            "7": 76,
+            "8": 108,
+            "9": 73,
           }
         `)
     })
@@ -493,25 +657,27 @@ describe('utf16Surrogate', () => {
             )
         ).toMatchInlineSnapshot(`
           {
-            "0": 99,
-            "1": 8,
-            "10": 86,
-            "11": 31,
-            "12": 71,
-            "13": 30,
-            "14": 70,
-            "15": 28,
-            "16": 57,
-            "17": 27,
-            "18": 70,
-            "2": 91,
-            "3": 9,
-            "4": 92,
-            "5": 16,
-            "6": 88,
-            "7": 16,
-            "8": 88,
-            "9": 23,
+            "0": 85,
+            "1": 11,
+            "10": 61,
+            "11": 24,
+            "12": 76,
+            "13": 22,
+            "14": 62,
+            "15": 31,
+            "16": 75,
+            "17": 22,
+            "18": 55,
+            "19": 37,
+            "2": 94,
+            "20": 62,
+            "3": 11,
+            "4": 72,
+            "5": 20,
+            "6": 65,
+            "7": 19,
+            "8": 74,
+            "9": 22,
           }
         `)
     })

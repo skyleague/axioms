@@ -1,17 +1,18 @@
-import { sum } from '../../../array/index.js'
-
 export function weightedChoice<T>(choices: readonly [number, T][]): (pick?: number) => T {
-    const totalSum = sum(choices.map((c) => c[0]))
+    let totalSum = 0
+    const cummulatedWeights: number[] = []
+    for (let i = 0; i !== choices.length; ++i) {
+        totalSum += choices[i]![0]
+        cummulatedWeights.push(totalSum)
+    }
 
     return (pick: number = Math.random()) => {
-        const threshold = pick * totalSum
-        let total = 0
-        for (let i = 0; i < choices.length - 1; ++i) {
-            total += choices[i]![0]
-            if (total >= threshold) {
+        const selected = pick * totalSum
+        for (let i = 0; i !== cummulatedWeights.length; ++i) {
+            if (selected < cummulatedWeights[i]!) {
                 return choices[i]![1]
             }
         }
-        return choices[choices.length - 1]![1]
+        return choices[0]![1]
     }
 }
