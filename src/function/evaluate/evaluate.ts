@@ -1,7 +1,4 @@
 import { isFunction } from '../../guard/is-function/index.js'
-import type { ConstExpr } from '../../type/function/index.js'
-
-export type Evaluated<T extends ConstExpr> = T extends () => infer V ? V : T
 
 /**
  * Takes a value or a function that returns a value, and returns the value.
@@ -23,6 +20,6 @@ export type Evaluated<T extends ConstExpr> = T extends () => infer V ? V : T
  *
  * @group Functions
  */
-export function evaluate<T extends ConstExpr>(maybeEvaluate: T): Evaluated<T> {
-    return (isFunction(maybeEvaluate) ? maybeEvaluate() : maybeEvaluate) as Evaluated<T>
+export function evaluate<const T>(maybeEvaluate: T | (() => T)): T {
+    return isFunction(maybeEvaluate) ? maybeEvaluate() : maybeEvaluate
 }
