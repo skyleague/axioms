@@ -1,4 +1,4 @@
-import type { InfiniteGenerator, Right, Traverser, Either } from '../../type/index.js'
+import type { Either, InfiniteGenerator, Right, Traverser } from '../../type/index.js'
 
 /**
  * Takes the next value of an iterator, and returns an {@link Either} with the received value.

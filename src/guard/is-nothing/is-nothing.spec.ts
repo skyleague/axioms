@@ -5,7 +5,7 @@ import { Nothing } from '../../type/index.js'
 
 import { expect, it } from 'vitest'
 
-export const OtherNothing = Symbol.for('(Nothing)')
+const OtherNothing = Symbol.for('(Nothing)')
 
 it('just values are not Nothing', () => {
     forAll(unknown({ nothing: false }), (x) => !isNothing(x))

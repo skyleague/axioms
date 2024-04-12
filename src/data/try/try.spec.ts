@@ -19,7 +19,7 @@ import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type/
 import { Nothing } from '../../type/index.js'
 import { left, right } from '../either/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('asTry', () => {
     it('const', () => {
@@ -68,7 +68,7 @@ describe('asTry', () => {
 
     it('async const throws', async () => {
         await asyncForAll(string(), async (x) => {
-            // eslint-disable-next-line @typescript-eslint/require-await
+            // biome-ignore lint/suspicious/useAwait: This is a test
             const value: Try<typeof x> = await asTry(async (): Promise<string> => {
                 throw new Error(x)
             })
@@ -78,50 +78,50 @@ describe('asTry', () => {
 
     it('distributed type', async () => {
         const fn: AsyncConstExpr<string> = (() => 'foobar') as AsyncConstExpr<string>
-        const _x: Try<string> = await asTry(fn)
+        expectTypeOf(await asTry(fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
-        const _x: Try<string> = await asTry(fn)
+        expectTypeOf(await asTry(fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('async tryexpr type', async () => {
-        // eslint-disable-next-line @typescript-eslint/require-await
         const fn = async () => asTry(() => 'foo') as Try<string>
-        const _x: Try<string> = await asTry(fn)
+        expectTypeOf(await asTry(fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('tryexpr type', () => {
         const fn = () => asTry(() => 'foo') as Try<string>
-        const _x: Try<string> = asTry(fn)
+        expectTypeOf(asTry(fn)).toEqualTypeOf<Try<string>>()
     })
 })
 
 describe('transformTry', () => {
     it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
-        const _x: Try<string> = await transformTry('foobar', fn, fn)
+        expectTypeOf(await transformTry('foobar', fn, fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
-        const _x: Try<string> = await transformTry('foobar', fn, fn)
+        expectTypeOf(await transformTry('foobar', fn, fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('mixed promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
         const fn2 = () => 'foobar'
-        const _x: Try<string> = await transformTry('foobar', fn, fn2)
+        expectTypeOf(await transformTry('foobar', fn, fn2)).toEqualTypeOf<Try<string>>()
     })
 
     it('inferred type', async () => {
-        const _x: Try<string> = await transformTry(
-            'foobar',
-            async () => Promise.resolve('foobar'),
-            // eslint-disable-next-line @typescript-eslint/require-await
-            async () => new Error('foobar')
-        )
+        expectTypeOf(
+            await transformTry(
+                'foobar',
+                async () => Promise.resolve('foobar'),
+                async () => new Error('foobar'),
+            ),
+        ).toEqualTypeOf<Try<string>>()
     })
 })
 
@@ -142,16 +142,16 @@ describe('mapTry', () => {
 
     it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
-        const _x: Try<string> = await mapTry('foobar', fn)
+        expectTypeOf(await mapTry('foobar', fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
-        const _x: Try<string> = await mapTry('foobar', fn)
+        expectTypeOf(await mapTry('foobar', fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('inferred type', async () => {
-        const _x: Try<string> = await mapTry('foobar', async () => Promise.resolve('foobar'))
+        expectTypeOf(await mapTry('foobar', async () => Promise.resolve('foobar'))).toEqualTypeOf<Try<string>>()
     })
 })
 
@@ -172,16 +172,16 @@ describe('recoverTry', () => {
 
     it('promisable type', async () => {
         const fn: () => Promisable<string> = (() => 'foobar') as () => Promisable<string>
-        const _x: Try<string> = await recoverTry('foobar', fn)
+        expectTypeOf(await recoverTry('foobar', fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('promisable try type', async () => {
         const fn: () => Promisable<Try<string>> = (() => 'foobar') as () => Promisable<Try<string>>
-        const _x: Try<string> = await recoverTry('foobar', fn)
+        expectTypeOf(await recoverTry('foobar', fn)).toEqualTypeOf<Try<string>>()
     })
 
     it('inferred type', async () => {
-        const _x: Try<string> = await recoverTry('foobar', async () => Promise.resolve('foobar'))
+        expectTypeOf(await recoverTry('foobar', async () => Promise.resolve('foobar'))).toEqualTypeOf<Try<string>>()
     })
 })
 
@@ -281,7 +281,7 @@ describe('tryToError', () => {
     it('simple failure', () => {
         const val = failure('foobar')
         expect(() => {
-            const _x: never = tryToError(val)
+            expectTypeOf(tryToError(val)).toEqualTypeOf<never>()
         }).toThrowError()
     })
 

@@ -1,8 +1,8 @@
 import { entriesOf } from './index.js'
 
-import { forAll, record, unknown, string, array, oneOf, integer } from '../../random/index.js'
+import { array, forAll, integer, oneOf, record, string, unknown } from '../../random/index.js'
 
-import { expect, it } from 'vitest'
+import { expect, expectTypeOf, it } from 'vitest'
 
 it('entriesOf === Object.entries', () => {
     forAll(record(unknown()), (o) => {
@@ -39,8 +39,12 @@ it('entriesOf union object and array', () => {
     forAll(oneOf(array(string()), record([integer(), integer()])), (o) => {
         expect(entriesOf(o)).toStrictEqual(Object.entries(o))
     })
-    const _foo: [string, number][] = entriesOf([1, 2, 3])
-    const _foo2: [string, number | string][] = entriesOf([1, '2', 3])
-    const _foo3: ['foo', string][] = entriesOf({ foo: 'bar' })
-    const _foo4: (['foo', string] | [string, number])[] = entriesOf<number[] | { foo: string }>({ foo: 'bar' })
+})
+
+it('has correct typing', () => {
+    expectTypeOf(entriesOf([1, 2, 3])).toEqualTypeOf<[string, 1 | 2 | 3][]>()
+    expectTypeOf(entriesOf([1, '2', 3])).toEqualTypeOf<[string, 1 | '2' | 3][]>()
+
+    expectTypeOf(entriesOf({ foo: 'bar' })).toEqualTypeOf<['foo', 'bar'][]>()
+    expectTypeOf(entriesOf<number[] | { foo: string }>({ foo: 'bar' })).toEqualTypeOf<[string, number][] | ['foo', string][]>()
 })

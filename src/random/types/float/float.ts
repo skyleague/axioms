@@ -1,6 +1,6 @@
 import type { Tree } from '../../../algorithm/index.js'
 import { expandTree, tree } from '../../../algorithm/index.js'
-import type { RelaxedPartial } from '../../../type/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { ArbitraryContext, Integrated } from '../../arbitrary/index.js'
 import { integratedArbitrary } from '../../arbitrary/index.js'
 import { towardsf } from '../../arbitrary/shrink/shrink.js'
@@ -64,11 +64,11 @@ export interface FloatGenerator {
  * @group Arbitrary
  */
 export function float({
-    min = -Math.pow(2, 31),
+    min = -(2 ** 31),
     minInclusive = true,
-    max = Math.pow(2, 31),
+    max = 2 ** 31,
     maxInclusive = true,
-}: RelaxedPartial<FloatGenerator> = {}): Integrated<FloatConstraints, number> {
+}: MaybePartial<FloatGenerator> = {}): Integrated<FloatConstraints, number> {
     // shift the min and max to the correct value
     if (!minInclusive) {
         min += Number.EPSILON
@@ -77,7 +77,7 @@ export function float({
         max -= Number.EPSILON
     }
 
-    if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) {
+    if (!(Number.isFinite(min) && Number.isFinite(max)) || min > max) {
         throw new Error('The minimum value must be less than the maximum value, and be finite')
     }
 

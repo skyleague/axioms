@@ -17,7 +17,7 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  * ```
  *
  * @param xs - The values to split in chunks.
- * @param size - The maximum size of a chunk, constrained to minimum value of 1.
+ * @param _size - The maximum size of a chunk, constrained to minimum value of 1.
  *
  * @returns An async map generator.
  *
@@ -28,11 +28,11 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  * @group Async
  */
 export async function* asyncChunk<T>(xs: AsyncTraversable<T>, size: number): AsyncTraversable<T[]> {
-    size = Math.max(size, 1)
+    const _size = Math.max(size, 1)
     let chunk: T[] = []
     for await (const item of xs) {
         chunk.push(item)
-        if (chunk.length >= size) {
+        if (chunk.length >= _size) {
             yield chunk
             chunk = []
         }

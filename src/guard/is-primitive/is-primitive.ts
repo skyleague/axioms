@@ -1,5 +1,3 @@
-import type { Dict } from '../../type/index.js'
-
 /**
  * Checks if `x` is a primitive.
  *
@@ -23,9 +21,8 @@ import type { Dict } from '../../type/index.js'
  * @returns `true` if `x` is a primitive, `false` otherwise.
  *
  * @group Guards
+ * @deprecated Hard to find a use case for this function.
  */
-export function isPrimitive(x: unknown): x is Dict
-export function isPrimitive(x: PropertyKey | boolean | unknown): x is PropertyKey | boolean
 export function isPrimitive(x: PropertyKey | boolean | unknown): x is PropertyKey | boolean {
     const type = typeof x
     return x === undefined || x === null || type === 'string' || type === 'boolean' || type === 'number' || type === 'symbol'

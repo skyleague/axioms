@@ -19,7 +19,7 @@ import { constant } from '../helper/helper.js'
 import { integer } from '../integer/index.js'
 import { tuple } from '../tuple/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import util from 'node:util'
 
@@ -34,7 +34,7 @@ describe('string', () => {
                 return string({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -44,7 +44,7 @@ describe('string', () => {
                 return tuple(constant(min), string({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -54,7 +54,7 @@ describe('string', () => {
                 return tuple(constant(max), string({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -67,11 +67,11 @@ describe('string', () => {
             mapValues(
                 groupBy(
                     replicate(() => string().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -107,7 +107,7 @@ describe('hex', () => {
                 return hex({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -117,7 +117,7 @@ describe('hex', () => {
                 return tuple(constant(min), hex({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -127,7 +127,7 @@ describe('hex', () => {
                 return tuple(constant(max), hex({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -140,11 +140,11 @@ describe('hex', () => {
             mapValues(
                 groupBy(
                     replicate(() => hex().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -179,7 +179,7 @@ describe('base64', () => {
                 const nearestMin = Math.floor(minLength / 4) * 4
                 const nearestMax = Math.ceil(maxLength / 4) * 4
                 return nearestMin <= str.length && str.length <= nearestMax
-            }
+            },
         )
     })
 
@@ -192,11 +192,11 @@ describe('base64', () => {
             mapValues(
                 groupBy(
                     replicate(() => base64().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 190,
@@ -209,7 +209,7 @@ describe('base64', () => {
 
     it('allowed characters', () => {
         forAll(base64(), (str) =>
-            str.split('').every((c) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.includes(c))
+            str.split('').every((c) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.includes(c)),
         )
     })
 })
@@ -223,7 +223,7 @@ describe('alpha', () => {
                 return alpha({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -233,7 +233,7 @@ describe('alpha', () => {
                 return tuple(constant(min), alpha({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -243,7 +243,7 @@ describe('alpha', () => {
                 return tuple(constant(max), alpha({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -256,11 +256,11 @@ describe('alpha', () => {
             mapValues(
                 groupBy(
                     replicate(() => alpha().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -286,7 +286,7 @@ describe('alpha', () => {
         forAll(
             utf16().chain((extra) => alpha({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) =>
-                str.split('').every((c) => `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz${extra}`.includes(c))
+                str.split('').every((c) => `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz${extra}`.includes(c)),
         )
     })
 })
@@ -300,7 +300,7 @@ describe('lowerAlpha', () => {
                 return lowerAlpha({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -310,7 +310,7 @@ describe('lowerAlpha', () => {
                 return tuple(constant(min), lowerAlpha({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -320,7 +320,7 @@ describe('lowerAlpha', () => {
                 return tuple(constant(max), lowerAlpha({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -333,11 +333,11 @@ describe('lowerAlpha', () => {
             mapValues(
                 groupBy(
                     replicate(() => lowerAlpha().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -362,7 +362,7 @@ describe('lowerAlpha', () => {
     it('extra characters', () => {
         forAll(
             utf16().chain((extra) => lowerAlpha({ extra }).map((c) => [c, extra] as const)),
-            ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c))
+            ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c)),
         )
     })
 })
@@ -376,7 +376,7 @@ describe('alphaNumeric', () => {
                 return alphaNumeric({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -386,7 +386,7 @@ describe('alphaNumeric', () => {
                 return tuple(constant(min), alphaNumeric({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -396,7 +396,7 @@ describe('alphaNumeric', () => {
                 return tuple(constant(max), alphaNumeric({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -409,11 +409,11 @@ describe('alphaNumeric', () => {
             mapValues(
                 groupBy(
                     replicate(() => alphaNumeric().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -433,7 +433,7 @@ describe('alphaNumeric', () => {
 
     it('allowed characters', () => {
         forAll(alphaNumeric(), (str) =>
-            str.split('').every((c) => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.includes(c))
+            str.split('').every((c) => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.includes(c)),
         )
     })
 
@@ -441,7 +441,7 @@ describe('alphaNumeric', () => {
         forAll(
             utf16().chain((extra) => alphaNumeric({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) =>
-                str.split('').every((c) => `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`.includes(c))
+                str.split('').every((c) => `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`.includes(c)),
         )
     })
 })
@@ -455,7 +455,7 @@ describe('lowerAlphaNumeric', () => {
                 return lowerAlphaNumeric({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -465,7 +465,7 @@ describe('lowerAlphaNumeric', () => {
                 return tuple(constant(min), lowerAlphaNumeric({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -475,7 +475,7 @@ describe('lowerAlphaNumeric', () => {
                 return tuple(constant(max), lowerAlphaNumeric({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -488,11 +488,11 @@ describe('lowerAlphaNumeric', () => {
             mapValues(
                 groupBy(
                     replicate(() => lowerAlphaNumeric().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -517,7 +517,7 @@ describe('lowerAlphaNumeric', () => {
     it('extra characters', () => {
         forAll(
             utf16().chain((extra) => lowerAlphaNumeric({ extra }).map((c) => [c, extra] as const)),
-            ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c))
+            ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c)),
         )
     })
 })
@@ -531,7 +531,7 @@ describe('ascii', () => {
                 return ascii({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -541,7 +541,7 @@ describe('ascii', () => {
                 return tuple(constant(min), ascii({ minLength: min }))
             }),
             ([min, x]) => x.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -551,7 +551,7 @@ describe('ascii', () => {
                 return tuple(constant(max), ascii({ maxLength: max }))
             }),
             ([max, x]) => x.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -564,11 +564,11 @@ describe('ascii', () => {
             mapValues(
                 groupBy(
                     replicate(() => ascii().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -587,6 +587,7 @@ describe('ascii', () => {
     })
 
     it('allowed characters', () => {
+        // biome-ignore lint/suspicious/noControlCharactersInRegex: This is a valid use case for control characters
         forAll(ascii(), (str) => str.split('').every((c) => /[\x00-\x7F]/.test(c)))
     })
 })
@@ -600,7 +601,7 @@ describe('utf16', () => {
                 return utf16({ minLength, maxLength }).map((str) => [str, minLength, maxLength] as const)
             }),
             // inclusive
-            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength
+            ([str, minLength, maxLength]) => minLength <= str.length && str.length <= maxLength,
         )
     })
 
@@ -613,11 +614,11 @@ describe('utf16', () => {
             mapValues(
                 groupBy(
                     replicate(() => utf16().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,
@@ -650,11 +651,11 @@ describe('utf16Surrogate', () => {
             mapValues(
                 groupBy(
                     replicate(() => utf16Surrogate().sample(context), 1000),
-                    (x) => x.length
+                    (x) => x.length,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 85,

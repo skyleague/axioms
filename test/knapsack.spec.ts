@@ -42,7 +42,7 @@ it('knapsack', () => {
             }
         }
 
-        const result = []
+        const result: [name: string, weight: number, value: number][] = []
         let w = maxWeight
         for (let j = its.length; j > 0; --j) {
             const added = cache[j]![w]! !== cache[j - 1]![w]!
@@ -120,7 +120,7 @@ it('knapsack', () => {
           ],
         ]
     `)
-    expect(value(result, 400)).toMatchInlineSnapshot(`1030`)
+    expect(value(result, 400)).toMatchInlineSnapshot('1030')
 
     const greedy: [string, number, number][] = [
         ['sunscreen', 15, 2],

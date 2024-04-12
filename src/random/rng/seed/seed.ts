@@ -7,7 +7,6 @@ const b64Mask = (1n << 64n) - 1n
  */
 export function* splitmix64(seed = 0n) {
     let x = seed
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
         x = (x + 0x9e3779b97f4a7c15n) & b64Mask
 
@@ -17,7 +16,6 @@ export function* splitmix64(seed = 0n) {
 
         yield (z ^ (z >> 31n)) & b64Mask
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-expect-error
     return x
 }
@@ -30,10 +28,11 @@ export function* xmur3(str: string): Generator<number, number> {
         h = Math.imul(h ^ str.charCodeAt(i), 3432918353)
         h = (h << 13) | (h >>> 19)
     }
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
     while (true) {
         h = Math.imul(h ^ (h >>> 16), 2246822507)
         h = Math.imul(h ^ (h >>> 13), 3266489909)
+        // biome-ignore lint/suspicious/noAssignInExpressions: This is a valid use case for assignment in an expression
         yield (h ^= h >>> 16) >>> 0
     }
 }

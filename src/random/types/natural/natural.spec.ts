@@ -19,11 +19,11 @@ it('distribution', () => {
         mapValues(
             groupBy(
                 replicate(() => natural().sample(context), 1000),
-                (x) => x % 10
+                (x) => x % 10,
             ),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "0": 88,
@@ -43,11 +43,11 @@ it('distribution', () => {
         mapValues(
             groupBy(
                 replicate(() => natural({ min: 0, max: 100 }).sample(context), 1000),
-                (x) => Math.floor(x / 10)
+                (x) => Math.floor(x / 10),
             ),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "0": 89,
@@ -113,13 +113,21 @@ it('counter example - asymmetric', () => {
         forAll(
             tuple(natural({ max: 1000000 }), natural({ max: 1000000 })),
             ([a, b]) => {
-                if (a < 1000) return true
-                if (b < 1000) return true
-                if (b < a) return true
-                if (Math.abs(a - b) < 10) return true
+                if (a < 1000) {
+                    return true
+                }
+                if (b < 1000) {
+                    return true
+                }
+                if (b < a) {
+                    return true
+                }
+                if (Math.abs(a - b) < 10) {
+                    return true
+                }
                 return b - a >= 1000
             },
-            { seed: 42n, tests: 2000, timeout: false }
+            { seed: 42n, tests: 2000, timeout: false },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 130 tests (seed: 42n)
@@ -137,12 +145,18 @@ it('counter example - symmetric', () => {
         forAll(
             tuple(natural({ max: 1000000 }), natural({ max: 1000000 })),
             ([a, b]) => {
-                if (a < 1000) return true
-                if (b < 1000) return true
-                if (Math.abs(a - b) < 10) return true
+                if (a < 1000) {
+                    return true
+                }
+                if (b < 1000) {
+                    return true
+                }
+                if (Math.abs(a - b) < 10) {
+                    return true
+                }
                 return Math.abs(a - b) >= 1000
             },
-            { seed: 42n, tests: 2000, timeout: false }
+            { seed: 42n, tests: 2000, timeout: false },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 130 tests (seed: 42n)
@@ -162,9 +176,9 @@ it('random sample', () => {
         collect(
             take(
                 repeat(() => aint.sample(ctx)),
-                10
-            )
-        )
+                10,
+            ),
+        ),
     ).toMatchInlineSnapshot(`
       [
         551,

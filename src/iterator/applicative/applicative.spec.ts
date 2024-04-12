@@ -20,7 +20,7 @@ it('make reentrant', () => {
           4,
         ]
     `)
-    expect(collect(xs)).toMatchInlineSnapshot(`[]`)
+    expect(collect(xs)).toMatchInlineSnapshot('[]')
 
     const axs = applicative(range(1, 5))
     expect(collect(axs)).toMatchInlineSnapshot(`
@@ -87,7 +87,7 @@ it('identity', () => {
 it('should be applicative', () => {
     forAll(
         array(integer()).chain((xs) =>
-            tuple(constant(xs), integer({ min: 0, max: xs.length }), integer({ min: 0, max: xs.length }))
+            tuple(constant(xs), integer({ min: 0, max: xs.length }), integer({ min: 0, max: xs.length })),
         ),
         ([xs, n, m]) => {
             let i = 0
@@ -95,7 +95,7 @@ it('should be applicative', () => {
                 yield* xs
             })
 
-            const ns = []
+            const ns: number[] = []
             for (const x of ys) {
                 if (i++ >= n) {
                     break
@@ -105,7 +105,7 @@ it('should be applicative', () => {
             expect(ns).toEqual(xs.slice(0, n))
 
             let j = 0
-            const ms = []
+            const ms: number[] = []
             for (const x of ys) {
                 if (j++ >= m) {
                     break
@@ -115,6 +115,6 @@ it('should be applicative', () => {
             expect(ms).toEqual(xs.slice(0, m))
 
             expect(collect(ys)).toEqual(xs)
-        }
+        },
     )
 })

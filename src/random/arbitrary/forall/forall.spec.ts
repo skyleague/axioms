@@ -1,9 +1,9 @@
 import { asyncForAll, forAll } from './index.js'
 
 import { sleep } from '../../../async/index.js'
-import { utf16, tuple, integer, array } from '../../../random/index.js'
+import { array, integer, tuple, utf16 } from '../../../random/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 it('abs smaller than six', () => {
     expect(() => {
@@ -68,7 +68,7 @@ it('counter example with jest expect', () => {
             (i) => {
                 expect(Math.abs(i)).toBeLessThanOrEqual(600000)
             },
-            { seed: 42n, timeout: false }
+            { seed: 42n, timeout: false },
         )
     }).toThrow(/^Counter example found after \d+ tests \(seed: 42n\)/)
 })
@@ -81,7 +81,7 @@ it('timeout async', async () => {
                 await sleep(2)
                 expect(Math.abs(i)).toBeLessThanOrEqual(600000)
             },
-            { seed: 42n }
-        )
+            { seed: 42n },
+        ),
     ).rejects.toThrow(/^Counter example found after/)
 })

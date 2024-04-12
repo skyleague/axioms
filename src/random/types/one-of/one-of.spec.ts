@@ -16,7 +16,7 @@ import { object } from '../object/object.js'
 import { string } from '../string/string.js'
 import { tuple } from '../tuple/tuple.js'
 
-import { expect, it, describe } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('oneOf', () => {
     it('distribution', () => {
@@ -34,18 +34,18 @@ describe('oneOf', () => {
             integer({ min: 60, max: 70 }),
             integer({ min: 70, max: 80 }),
             integer({ min: 80, max: 90 }),
-            integer({ min: 90, max: 100 })
+            integer({ min: 90, max: 100 }),
         )
 
         expect(
             mapValues(
                 groupBy(
                     replicate(() => arb.sample(context), 10000),
-                    (x) => Math.floor(x / 10)
+                    (x) => Math.floor(x / 10),
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 886,
@@ -74,11 +74,11 @@ describe('oneOf', () => {
             mapValues(
                 groupBy(
                     replicate(() => arb.sample(context), 10000),
-                    (x) => x
+                    (x) => x,
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "1": 3283,
@@ -99,10 +99,10 @@ describe('oneOf', () => {
             mapValues(
                 groupBy(
                     replicate(() => arb.sample(context), 100),
-                    (x) => JSON.stringify(x)
+                    (x) => JSON.stringify(x),
                 ),
-                (g) => g.length
-            )
+                (g) => g.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "false": 32,
@@ -129,10 +129,10 @@ describe('oneOf', () => {
             mapValues(
                 groupBy(
                     replicate(() => arb.sample(context), 100),
-                    (x) => JSON.stringify(x)
+                    (x) => JSON.stringify(x),
                 ),
-                (g) => g.length
-            )
+                (g) => g.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "false": 27,
@@ -164,10 +164,10 @@ describe('oneOf', () => {
             mapValues(
                 groupBy(
                     replicate(() => arb.sample(context), 100),
-                    (x) => JSON.stringify(x)
+                    (x) => JSON.stringify(x),
                 ),
-                (g) => g.length
-            )
+                (g) => g.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "false": 27,
@@ -227,7 +227,7 @@ describe('oneOf', () => {
               |       └─...
               └─ true,-7
                   └─ false,-7"
-        `
+        `,
         )
         const tree2 = arb.value(ctx)
         expect(showTree(tree2, { maxDepth: 2 })).toMatchInlineSnapshot(`
@@ -254,7 +254,7 @@ describe('oneOf', () => {
         `)
     })
 
-    it.only('handles complicated recursive structures', () => {
+    it('handles complicated recursive structures', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), depth: 'xs' })
         const size = 'xs'
 
@@ -262,16 +262,16 @@ describe('oneOf', () => {
         const schema: Dependent<unknown> = oneOf(
             memoizeArbitrary(() => booleanInstance),
             array(string({ size }), { size }).chain((dictKeys) =>
-                object(Object.fromEntries([...dictKeys.map((k) => [k, memoizeArbitrary(() => schema)])]))
-            )
+                object(Object.fromEntries([...dictKeys.map((k) => [k, memoizeArbitrary(() => schema)])])),
+            ),
         )
         expect(
             collect(
                 take(
                     repeat(() => schema.sample(ctx)),
-                    100
-                )
-            )
+                    100,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             true,
@@ -403,6 +403,11 @@ describe('oneOf', () => {
           ]
         `)
     })
+
+    it('types correctly', () => {
+        expectTypeOf(oneOf(integer(), string())).toEqualTypeOf<Dependent<number | string>>()
+        expectTypeOf(oneOf(constant('foo'), constant('bar'))).toEqualTypeOf<Dependent<'foo' | 'bar'>>()
+    })
 })
 
 describe('oneOfWeighted', () => {
@@ -421,18 +426,18 @@ describe('oneOfWeighted', () => {
             [1, integer({ min: 60, max: 70 })],
             [1, integer({ min: 70, max: 80 })],
             [1, integer({ min: 80, max: 90 })],
-            [1, integer({ min: 90, max: 100 })]
+            [1, integer({ min: 90, max: 100 })],
         )
 
         expect(
             mapValues(
                 groupBy(
                     replicate(() => arb.sample(context), 10000),
-                    (x) => Math.floor(x / 10)
+                    (x) => Math.floor(x / 10),
                 ),
 
-                (v) => v.length
-            )
+                (v) => v.length,
+            ),
         ).toMatchInlineSnapshot(`
           {
             "0": 886,
@@ -456,7 +461,7 @@ describe('oneOfWeighted', () => {
         })
         const arb = tuple(
             oneOfWeighted([1, boolean()], [1, boolean()]),
-            oneOfWeighted([1, integer({ min: -10, max: 0 })], [1, integer({ min: 0, max: 10 })])
+            oneOfWeighted([1, integer({ min: -10, max: 0 })], [1, integer({ min: 0, max: 10 })]),
         )
         const tree1 = arb.value(ctx)
         expect(showTree(tree1, { maxDepth: 2 })).toMatchInlineSnapshot(
@@ -493,7 +498,7 @@ describe('oneOfWeighted', () => {
               |       └─...
               └─ true,-7
                   └─ false,-7"
-        `
+        `,
         )
         const tree2 = arb.value(ctx)
         expect(showTree(tree2, { maxDepth: 2 })).toMatchInlineSnapshot(`

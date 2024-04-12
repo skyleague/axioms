@@ -26,8 +26,8 @@
  *
  * @group Async
  */
-export function parallelLimit(concurrency: number) {
-    concurrency = Math.max(concurrency, 1)
+export function parallelLimit(maxConcurrency: number) {
+    const concurrency = Math.max(maxConcurrency, 1)
     let activeCount = 0
     const queue: (() => Promise<unknown>)[] = []
 
@@ -46,7 +46,6 @@ export function parallelLimit(concurrency: number) {
                 try {
                     resolve(await task())
                 } catch (err) {
-                    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
                     reject(err)
                 } finally {
                     next()

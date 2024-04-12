@@ -28,7 +28,6 @@ import type { Traversable } from '../../type/index.js'
 export function* iterate<T>(x: T, f: (x: T, i: number) => T): Traversable<T> {
     let i = 0
     let v = x
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
         yield v
         v = f(v, i++)

@@ -5,7 +5,7 @@ import { isNothing } from '../index.js'
 
 import { expect, it } from 'vitest'
 
-export const OtherNothing = Symbol.for('(Nothing)')
+const OtherNothing = Symbol.for('(Nothing)')
 
 it('unknown is just', () => {
     forAll(unknown({ nothing: false }), (x) => isJust(x))

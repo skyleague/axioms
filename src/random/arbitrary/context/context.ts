@@ -1,4 +1,4 @@
-import type { RelaxedPartial } from '../../../type/partial/partial.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { RandomGenerator } from '../../rng/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import type { AbsoluteSize } from '../arbitrary/size.js'
@@ -24,14 +24,14 @@ export function arbitraryContext({
     depth = 's',
     depthCounter = 0,
     ...rest
-}: RelaxedPartial<ArbitraryContext> = {}): ArbitraryContext {
+}: MaybePartial<ArbitraryContext> = {}): ArbitraryContext {
     const context = {
         rng,
         size,
         depth,
         depthCounter,
         ...rest,
-        withDepth: function <T>(fn: () => T): T {
+        withDepth: <T>(fn: () => T): T => {
             context.depthCounter += 1
             const val = fn()
             context.depthCounter -= 1

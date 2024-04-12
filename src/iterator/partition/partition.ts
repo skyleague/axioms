@@ -26,13 +26,18 @@ export type Partition<U, T> = [T[], Exclude<U, T>[]]
  *
  * @group Iterators
  */
-export function partition<U, T extends U>(xs: Traversable<U>, by: (item: U, index: number) => item is T): Partition<U, T> {
+export function partition<T>(xs: Traversable<T>, by: (item: T, index: number) => boolean): Partition<T, T>
+export function partition<U, T extends U>(xs: Traversable<U>, by: (item: U, index: number) => item is T): Partition<U, T>
+export function partition<U, T extends U>(
+    xs: Traversable<U>,
+    by: ((item: U, index: number) => item is T) | ((item: T, index: number) => boolean),
+): Partition<U, T> {
     const ts: T[] = []
     const us: Exclude<U, T>[] = []
 
     for (const [i, x] of enumerate(xs)) {
-        if (by(x, i)) {
-            ts.push(x)
+        if (by(x as T, i)) {
+            ts.push(x as T)
         } else {
             us.push(x as Exclude<U, T>)
         }

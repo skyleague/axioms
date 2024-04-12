@@ -1,6 +1,6 @@
 import { collect } from '../../src/array/index.js'
 import { equal, replicate } from '../../src/iterator/index.js'
-import { array, integer, forAll, tuple, natural, constant } from '../../src/random/index.js'
+import { array, constant, forAll, integer, natural, tuple } from '../../src/random/index.js'
 
 import { expect, it } from 'vitest'
 
@@ -8,8 +8,12 @@ import { expect, it } from 'vitest'
 it('bound 5', () => {
     const sum16 = (a: number, b: number) => {
         let s = a + b
-        while (s > 32767) s -= 65536
-        while (s < -32768) s += 65536
+        while (s > 32767) {
+            s -= 65536
+        }
+        while (s < -32768) {
+            s += 65536
+        }
         return s
     }
 
@@ -18,7 +22,7 @@ it('bound 5', () => {
         forAll(
             tuple(boundedList, boundedList, boundedList, boundedList, boundedList),
             (xs) => xs.flat().reduce(sum16, 0) < 5 * 256,
-            { seed: 42n, timeout: false, tests: 5000 }
+            { seed: 42n, timeout: false, tests: 5000 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 4673 tests (seed: 42n)
@@ -38,14 +42,13 @@ it('coupling', () => {
             (xs) => {
                 for (let i = 0; i !== xs.length; ++i) {
                     const j = xs[i]!
-                    // eslint-disable-next-line @typescript-eslint/no-confusing-non-null-assertion
                     if (i !== j && xs[j]! === i) {
                         return false
                     }
                 }
                 return true
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 5 tests (seed: 42n)
@@ -67,7 +70,7 @@ it('deletion', () => {
                 const copyWithoutX = [...xs.slice(0, i), ...xs.slice(i + 1)]
                 return !copyWithoutX.includes(x)
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 54 tests (seed: 42n)
@@ -87,7 +90,7 @@ it('difference 1', () => {
             ([x, y]) => {
                 return x < 10 || x !== y
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 67 tests (seed: 42n)
@@ -108,7 +111,7 @@ it('difference 2', () => {
                 const diff = Math.abs(x - y)
                 return x < 10 || (1 < diff && diff > 4)
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 28 tests (seed: 42n)
@@ -130,7 +133,7 @@ it('difference 3', () => {
                 return x < 10 || diff !== 1
             },
 
-            { seed: 42n, timeout: false, tests: 300 }
+            { seed: 42n, timeout: false, tests: 300 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 207 tests (seed: 42n)
@@ -150,7 +153,7 @@ it('distinct', () => {
             (xs) => {
                 return new Set(xs).size < 3
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 2 tests (seed: 42n)
@@ -170,7 +173,7 @@ it('nested list', () => {
             (xs) => {
                 return xs.map((l) => l.length).reduce((a, b) => a + b, 0) <= 10
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 3 tests (seed: 42n)
@@ -190,7 +193,7 @@ it('length list', () => {
             (xs) => {
                 return xs.reduce((a, b) => Math.max(a, b), 0) < 900
             },
-            { seed: 42n, timeout: false, tests: 100 }
+            { seed: 42n, timeout: false, tests: 100 },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 18 tests (seed: 42n)

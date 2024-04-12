@@ -2,12 +2,13 @@ import { peekable } from './index.js'
 
 import { collect, zip } from '../../array/index.js'
 import { isRight } from '../../guard/is-right/index.js'
-import { take, map, concat } from '../../iterator/index.js'
-import { forAll, array, unknown, tuple } from '../../random/index.js'
+import { concat, map, take } from '../../iterator/index.js'
+import { array, forAll, tuple, unknown } from '../../random/index.js'
 import { toGenerator } from '../../type/index.js'
-import { repeat, next, range } from '../index.js'
+import { next, range, repeat } from '../index.js'
 
 import { expect, it } from 'vitest'
+import type { Either, Right } from '../../type/either/either.js'
 
 it('peekable xs === xs', () => {
     forAll(array(unknown()), (xs) => {
@@ -26,9 +27,9 @@ it('has +1 lookahead', () => {
                     repeat(() => {
                         return [iterator.peek(), next(iterator)]
                     }),
-                    n
-                )
-            )
+                    n,
+                ),
+            ),
         ).toEqual(
             collect(
                 map(zip(xs, concat(xs, [undefined])), ([y, xp]) => [
@@ -36,8 +37,8 @@ it('has +1 lookahead', () => {
                         right: y,
                     },
                     { right: xp },
-                ])
-            )
+                ]),
+            ),
         )
         expect(iterator.peek()).toEqual({ left: x })
         expect(next(iterator)).toEqual({ left: x })
@@ -46,7 +47,7 @@ it('has +1 lookahead', () => {
 })
 
 it('simple', () => {
-    const values = []
+    const values: [Right<number>, Either<void, number>][] = []
     const iterator = peekable(range(3))
     let its = next(iterator)
     while (isRight(its)) {

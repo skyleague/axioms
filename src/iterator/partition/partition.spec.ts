@@ -1,22 +1,18 @@
+import { isBoolean } from '../../guard/is-boolean/is-boolean.js'
+import { isNumber } from '../../guard/is-number/is-number.js'
+import { isString } from '../../guard/is-string/is-string.js'
+import { forAll } from '../../random/arbitrary/forall/forall.js'
+import { xoroshiro128plus } from '../../random/rng/xoroshiro128plus/xoroshiro128plus.js'
+import { array } from '../../random/types/array/array.js'
+import { boolean } from '../../random/types/boolean/boolean.js'
+import { float } from '../../random/types/float/float.js'
+import { integer } from '../../random/types/integer/integer.js'
+import { mappableFunc } from '../../random/types/mappable/mappable.js'
+import { oneOf } from '../../random/types/one-of/one-of.js'
+import { string } from '../../random/types/string/string.js'
+import { tuple } from '../../random/types/tuple/tuple.js'
+import { type Mappable, toTraversable } from '../../type/traversable/traversable.js'
 import { partition } from './partition.js'
-
-import type { Mappable } from '../../index.js'
-import {
-    array,
-    boolean,
-    float,
-    forAll,
-    integer,
-    isBoolean,
-    isNumber,
-    isString,
-    mappableFunc,
-    oneOf,
-    string,
-    toTraversable,
-    tuple,
-    xoroshiro128plus,
-} from '../../index.js'
 
 import { expect, it } from 'vitest'
 
@@ -48,7 +44,7 @@ it('for [xs, ys] = partition zs, |zs| == |xs| + |ys|', () => {
                 const [xs, ys] = partition(toTraversable(f(zs)), fn as <T>(x: unknown) => x is T)
                 expect(zs.length).toEqual(xs.length + ys.length)
             }
-        }
+        },
     )
 })
 
@@ -62,6 +58,6 @@ it('partition (interleave xs, ys), isX == [xs, ys]', () => {
             const [Xs, Ys] = partition(toTraversable(f(zs)), isString)
             expect(Xs).toEqual(xs)
             expect(Ys).toEqual(ys)
-        }
+        },
     )
 })

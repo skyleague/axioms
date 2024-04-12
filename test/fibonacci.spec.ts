@@ -9,7 +9,7 @@ it('simple', () => {
         let curr = 1
         while (true) {
             yield curr
-            curr = curr + prev
+            curr += prev
             prev = curr - prev
         }
     }

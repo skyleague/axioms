@@ -1,1 +1,1 @@
-export { type DeepPartial, type RelaxedPartial } from './partial.js'
+export type { MaybePartial } from './partial.js'

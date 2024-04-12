@@ -3,7 +3,7 @@ import { isJust } from '../../guard/is-just/index.js'
 import { isLeft } from '../../guard/is-left/index.js'
 import { isRight } from '../../guard/is-right/index.js'
 import type { Either, Left, Right } from '../../type/either/index.js'
-import type { Maybe, Just } from '../../type/maybe/index.js'
+import type { Just, Maybe } from '../../type/maybe/index.js'
 import { Nothing } from '../../type/maybe/index.js'
 
 /**
@@ -187,7 +187,7 @@ export type ArgJusts<Xs> = Xs extends [infer X, ...infer Rest]
  *
  * @group Combinators
  */
-export function whenJusts<Xs extends any[], M>(xs: readonly [...Xs], f: (x: ArgJusts<Xs>) => M): Maybe<M> {
+export function whenJusts<Xs extends unknown[], M>(xs: readonly [...Xs], f: (x: ArgJusts<Xs>) => M): Maybe<M> {
     const n = xs.find((x) => !isJust(x))
     if (n !== undefined) {
         return Nothing

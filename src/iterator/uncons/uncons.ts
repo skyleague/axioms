@@ -1,4 +1,4 @@
-import type { Traverser, Maybe, Traversable } from '../../type/index.js'
+import type { Maybe, Traversable, Traverser } from '../../type/index.js'
 import { Nothing, toTraverser } from '../../type/index.js'
 
 /**

@@ -1,6 +1,5 @@
 import { mapTree } from '../../../algorithm/tree/index.js'
-import type { RelaxedPartial } from '../../../type/partial/index.js'
-import { toISO8601Date } from '../../../util/date/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/index.js'
@@ -36,7 +35,7 @@ export interface TimestampGenerator {
  *
  * @group Arbitrary
  */
-export function timestamp(constraints: RelaxedPartial<TimestampGenerator> = {}): Dependent<number> {
+export function timestamp(constraints: MaybePartial<TimestampGenerator> = {}): Dependent<number> {
     const { range = 'relevant' } = constraints
     const { min = range === 'relevant' ? 0 : -8640000000000000, max = range === 'relevant' ? 8640000000000 : 8640000000000000 } =
         constraints
@@ -81,7 +80,7 @@ export interface DatetimeGenerator {
  *
  * @group Arbitrary
  */
-export function datetime(context: RelaxedPartial<DatetimeGenerator> = {}): Dependent<Date> {
+export function datetime(context: MaybePartial<DatetimeGenerator> = {}): Dependent<Date> {
     const { minDate: minDatetime, maxDate: maxDatetime, precision = 'seconds', range = 'relevant' } = context
     const atimestamp = timestamp({ min: minDatetime?.getTime(), max: maxDatetime?.getTime(), range })
     return dependentArbitrary((ctx) =>
@@ -100,7 +99,7 @@ export function datetime(context: RelaxedPartial<DatetimeGenerator> = {}): Depen
                 d.setHours(0)
             }
             return d
-        })
+        }),
     )
 }
 
@@ -124,7 +123,7 @@ export interface DateGenerator {
  *
  * @group Arbitrary
  */
-export function date(constraints: RelaxedPartial<DateGenerator> = {}): Dependent<string> {
+export function date(constraints: MaybePartial<DateGenerator> = {}): Dependent<string> {
     const { minDate, maxDate, range = 'relevant' } = constraints
     const atimestamp = datetime({
         minDate: minDate !== undefined ? new Date(minDate) : undefined,
@@ -132,5 +131,5 @@ export function date(constraints: RelaxedPartial<DateGenerator> = {}): Dependent
         range,
         precision: 'days',
     })
-    return dependentArbitrary((ctx) => mapTree(atimestamp.value(ctx), (d) => toISO8601Date(d, { format: 'date' })))
+    return dependentArbitrary((ctx) => mapTree(atimestamp.value(ctx), (d) => d.toISOString().slice(0, 10)))
 }

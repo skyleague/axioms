@@ -19,7 +19,6 @@ export interface Mulberry32Generator extends Generator<number, number>, RandomGe
 export function mulberry32(seed: number): Mulberry32Generator {
     let x = seed
     const generator: Mulberry32Generator = (function* () {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while (true) {
             x += 0x6d2b79f5
             let t = x
@@ -29,7 +28,6 @@ export function mulberry32(seed: number): Mulberry32Generator {
         }
     })() as Mulberry32Generator
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     generator.jump = () => {}
     generator.sample = () => {
         return generator.next().value

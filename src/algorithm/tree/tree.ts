@@ -3,7 +3,7 @@ import { stack } from '../../generator/stack/index.js'
 import { applicative } from '../../iterator/applicative/index.js'
 import { filter } from '../../iterator/filter/index.js'
 import { map } from '../../iterator/map/index.js'
-import type { Printable, Traversable } from '../../type/index.js'
+import type { Traversable } from '../../type/index.js'
 
 /**
  * A type that represents a tree with an enumerable amount of children.
@@ -105,7 +105,7 @@ export function filterTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
         value: x.value,
         children: map(
             filter(x.children, (c) => f(c.value)),
-            (c) => filterTree(c, f)
+            (c) => filterTree(c, f),
         ),
     }
 }
@@ -145,7 +145,7 @@ export function* dfsPreOrder<T>(node: Tree<T>): Traversable<T, void> {
 
 export function* dfsPostOrder<T>(node: Tree<T>): Traversable<T, void> {
     const nodes = stack([node])
-    const ordered = []
+    const ordered: T[] = []
     for (const x of nodes) {
         ordered.push(x.value)
         nodes.push(x.children)
@@ -164,7 +164,11 @@ export function* bfs<T>(node: Tree<T>): Traversable<T, void> {
     }
 }
 
-export function showTree<T extends Printable>(
+export function showTree<
+    T extends {
+        toString: () => string
+    },
+>(
     t: Tree<T>,
     {
         indent = '',
@@ -176,7 +180,7 @@ export function showTree<T extends Printable>(
         isLast?: boolean
         maxDepth?: number
         _depth?: number
-    } = {}
+    } = {},
 ): string {
     if (_depth > maxDepth) {
         return `${indent}└─...`

@@ -1,4 +1,4 @@
-import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
@@ -40,7 +40,7 @@ export interface StringGenerator {
  */
 export function stringGenerator(
     a: Arbitrary<string>,
-    context: RelaxedPartial<
+    context: MaybePartial<
         StringGenerator & {
             /**
              * A simple transformer function.
@@ -49,7 +49,7 @@ export function stringGenerator(
              */
             transform: (x: string[]) => string
         }
-    > = {}
+    > = {},
 ): Dependent<string> {
     const { minLength = 0, maxLength, size, transform = (s) => s.join('') } = context
     return array(a, { minLength, maxLength, size }).map(transform)
@@ -84,7 +84,7 @@ export interface StringConstraints extends StringGenerator {
  * @group Arbitrary
  */
 
-export function string(context: RelaxedPartial<StringConstraints> = {}): Dependent<string> {
+export function string(context: MaybePartial<StringConstraints> = {}): Dependent<string> {
     const { format = 'default' } = context
     return {
         default: () => stringGenerator(char(), context),
@@ -113,7 +113,7 @@ export function string(context: RelaxedPartial<StringConstraints> = {}): Depende
  *
  * @group Arbitrary
  */
-export function hex(context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
+export function hex(context: MaybePartial<StringGenerator> = {}): Dependent<string> {
     return stringGenerator(hexChar(), context)
 }
 
@@ -131,7 +131,7 @@ export function hex(context: RelaxedPartial<StringGenerator> = {}): Dependent<st
  *
  * @group Arbitrary
  */
-export function base64(context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
+export function base64(context: MaybePartial<StringGenerator> = {}): Dependent<string> {
     return stringGenerator(base64Char(), {
         ...context,
         transform: (xs) => {
@@ -167,7 +167,7 @@ export interface AlphaGenerator extends StringGenerator {
  *
  * @group Arbitrary
  */
-export function alpha(context: RelaxedPartial<AlphaGenerator> = {}): Dependent<string> {
+export function alpha(context: MaybePartial<AlphaGenerator> = {}): Dependent<string> {
     const { extra = '' } = context
     return stringGenerator(alphaChar(extra), context)
 }
@@ -186,7 +186,7 @@ export function alpha(context: RelaxedPartial<AlphaGenerator> = {}): Dependent<s
  *
  * @group Arbitrary
  */
-export function lowerAlpha(context: RelaxedPartial<AlphaGenerator> = {}): Dependent<string> {
+export function lowerAlpha(context: MaybePartial<AlphaGenerator> = {}): Dependent<string> {
     const { extra = '' } = context
     return stringGenerator(lowerAlphaChar(extra), context)
 }
@@ -209,7 +209,7 @@ export interface AlphaNumericGenerator extends StringGenerator {
  *
  * @group Arbitrary
  */
-export function alphaNumeric(context: RelaxedPartial<AlphaNumericGenerator> = {}): Dependent<string> {
+export function alphaNumeric(context: MaybePartial<AlphaNumericGenerator> = {}): Dependent<string> {
     const { extra = '' } = context
     return stringGenerator(alphaNumericChar(extra), context)
 }
@@ -228,7 +228,7 @@ export function alphaNumeric(context: RelaxedPartial<AlphaNumericGenerator> = {}
  *
  * @group Arbitrary
  */
-export function lowerAlphaNumeric(context: RelaxedPartial<AlphaNumericGenerator> = {}): Dependent<string> {
+export function lowerAlphaNumeric(context: MaybePartial<AlphaNumericGenerator> = {}): Dependent<string> {
     const { extra = '' } = context
     return stringGenerator(lowerAlphaNumericChar(extra), context)
 }
@@ -246,7 +246,7 @@ export function lowerAlphaNumeric(context: RelaxedPartial<AlphaNumericGenerator>
  *
  * @group Arbitrary
  */
-export function ascii(context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
+export function ascii(context: MaybePartial<StringGenerator> = {}): Dependent<string> {
     return stringGenerator(asciiChar(), context)
 }
 
@@ -263,7 +263,7 @@ export function ascii(context: RelaxedPartial<StringGenerator> = {}): Dependent<
  *
  * @group Arbitrary
  */
-export function utf16(context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
+export function utf16(context: MaybePartial<StringGenerator> = {}): Dependent<string> {
     return stringGenerator(utf16Char(), context)
 }
 
@@ -280,6 +280,6 @@ export function utf16(context: RelaxedPartial<StringGenerator> = {}): Dependent<
  *
  * @group Arbitrary
  */
-export function utf16Surrogate(context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
+export function utf16Surrogate(context: MaybePartial<StringGenerator> = {}): Dependent<string> {
     return stringGenerator(utf16SurrogateChar(), context)
 }

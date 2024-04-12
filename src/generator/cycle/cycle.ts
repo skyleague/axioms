@@ -1,5 +1,5 @@
 import { applicative } from '../../iterator/index.js'
-import type { Mappable, InfiniteGenerator } from '../../type/index.js'
+import type { InfiniteGenerator, Mappable } from '../../type/index.js'
 import { toTraversable } from '../../type/index.js'
 
 /**
@@ -31,7 +31,6 @@ import { toTraversable } from '../../type/index.js'
  */
 export function* cycle<T>(xs: Mappable<T>): InfiniteGenerator<T> {
     const xss = applicative(toTraversable(xs))
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
         for (const x of xss) {
             yield x

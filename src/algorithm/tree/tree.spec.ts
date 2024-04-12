@@ -1,7 +1,7 @@
 import type { Tree } from './index.js'
 import { mapTree } from './index.js'
 
-import { dfsPreOrder, dfsPostOrder, bfs, tree, showTree, filterTree } from './tree.js'
+import { bfs, dfsPostOrder, dfsPreOrder, filterTree, showTree, tree } from './tree.js'
 
 import { sum } from '../../array/index.js'
 
@@ -151,5 +151,5 @@ it('tree', () => {
           7,
         ]
     `)
-    expect(sum(bfs(root))).toMatchInlineSnapshot(`28`)
+    expect(sum(bfs(root))).toMatchInlineSnapshot('28')
 })

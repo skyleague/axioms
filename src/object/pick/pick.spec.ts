@@ -2,10 +2,10 @@ import { pick, pickBy } from './index.js'
 
 import { isNumber } from '../../guard/index.js'
 import { all, equal } from '../../iterator/index.js'
-import { forAll, record, unknown, deterministicBoolean } from '../../random/index.js'
+import { deterministicBoolean, forAll, record, unknown } from '../../random/index.js'
 import { keysOf } from '../index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('pickBy', () => {
     it('simple', () => {
@@ -20,8 +20,8 @@ describe('pickBy', () => {
         forAll(record(unknown()), (x) =>
             equal(
                 pickBy(x, () => true),
-                x
-            )
+                x,
+            ),
         )
     })
 
@@ -33,8 +33,8 @@ describe('pickBy', () => {
         forAll(record(unknown()), (x) =>
             equal(
                 pickBy(x, () => false),
-                {}
-            )
+                {},
+            ),
         )
     })
 
@@ -77,14 +77,20 @@ describe('pick', () => {
 
     it('key filtered in both filtered and original', () => {
         forAll(record(unknown()), (x) => {
-            const filtered = pick(x, keysOf(x).filter(deterministicBoolean))
+            const filtered = pick(
+                x,
+                keysOf(x).filter((x) => deterministicBoolean(x)),
+            )
             return all(keysOf(filtered), (k) => k in x && k in filtered)
         })
     })
 
     it('key filtered if not picked', () => {
         forAll(record(unknown()), (x) => {
-            const filtered = pick(x, keysOf(x).filter(deterministicBoolean))
+            const filtered = pick(
+                x,
+                keysOf(x).filter((x) => deterministicBoolean(x)),
+            )
             return all(keysOf(x), (k) => (deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })

@@ -1,10 +1,12 @@
-import { at, first, second } from './at.js'
+import { at, first, second, third } from './at.js'
 
 import { array, forAll, integer, tuple, unknown } from '../../random/index.js'
 import { Nothing } from '../../type/index.js'
 import { drop } from '../drop/index.js'
 
-import { describe, it } from 'vitest'
+import { describe, expectTypeOf, it } from 'vitest'
+import { entriesOf } from '../../object/entries-of/entries-of.js'
+import type { Maybe } from '../../type/maybe/maybe.js'
 
 describe('at', () => {
     it('first on array', () => {
@@ -36,18 +38,18 @@ describe('at', () => {
             integer({ min: 1, max: 50 }).chain((n) => tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n - 1 }))),
             ([xs, i]) => {
                 return at(xs, i) === xs[i]
-            }
+            },
         )
     })
 
     it('ith index on array - index out of bounds', () => {
         forAll(
             integer({ min: 0, max: 50 }).chain((n) =>
-                tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 }))
+                tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 })),
             ),
             ([xs, i]) => {
                 return at(xs, i) === Nothing
-            }
+            },
         )
     })
 
@@ -78,39 +80,71 @@ describe('at', () => {
     it('ith index on iterator', () => {
         forAll(
             integer({ min: 1, max: 50 }).chain((n) =>
-                tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: 0, max: n - 1 }))
+                tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: 0, max: n - 1 })),
             ),
             ([xs, i]) => {
                 return at(drop(xs, 0), i) === xs[i]
-            }
+            },
         )
     })
 
-    // it('overloaded types are correct', () => {
-    //     const _foo1: 1 = at(0, [1, 2, 3] as const)
-    //     const _bar1: Nothing = at(0, [] as const)
-    //     const _foo2: 2 = at(1, [1, 2, 3] as const)
-    //     const _bar2: Nothing = at(1, [1] as const)
-    //     const _foo3: 3 = at(2, [1, 2, 3] as const)
-    //     const _bar3: Nothing = at(2, [1, 2] as const)
+    it('overloaded types are correct', () => {
+        expectTypeOf(at([1, 2, 3], 0)).toEqualTypeOf<1>()
+        expectTypeOf(at([], 0)).toEqualTypeOf<Nothing>()
 
-    //     const __foo1: 1 = first([1, 2, 3] as const)
-    //     // @ts-expect-error first element must exist on tuple
-    //     const __bar1: Nothing = first([] as const)
-    //     const __foo2: 2 = second([1, 2, 3] as const)
-    //     // @ts-expect-error second element must exist on tuple
-    //     const __bar2: Nothing = second([1] as const)
-    //     const __foo3: 3 = third([1, 2, 3] as const)
-    //     // @ts-expect-error third element must exist on tuple
-    //     const __bar3: Nothing = third([1, 2] as const)
+        expectTypeOf(at([1, 2, 3], 1)).toEqualTypeOf<2>()
+        expectTypeOf(at([1], 1)).toEqualTypeOf<Nothing>()
 
-    //     const distributive: 'foo' | 'bar' = first([['foo', 1] as const, ['bar', 2] as const])
+        expectTypeOf(at([1, 2, 3], 2)).toEqualTypeOf<3>()
+        expectTypeOf(at([1, 2], 2)).toEqualTypeOf<Nothing>()
 
-    //     const _keys0: string[] = entriesOf({ a: 1, b: 2, c: 3 }).map(xs => at(0, xs))
-    //     const entires = entriesOf({ a: 1, b: 2, c: 3 })
-    //     type Foo = typeof entires
-    //     type f = ReturnType<typeof () => first<Foo>([] as any)>
-    //     const _keys: string[] = entriesOf({ a: 1, b: 2, c: 3 }).map(first)
-    //     const _values: number[] = entriesOf({ a: 1, b: 2, c: 3 }).map(second)
-    // })
+        expectTypeOf(at([1, 2, 3] as number[], 2)).toEqualTypeOf<Maybe<number>>()
+        expectTypeOf(at([1, 2] as number[], 2)).toEqualTypeOf<Maybe<number>>()
+    })
+})
+
+describe('first', () => {
+    it('overloaded types are correct', () => {
+        expectTypeOf(first([1, 2, 3])).toEqualTypeOf<1>()
+        expectTypeOf(first([])).toEqualTypeOf<Nothing>()
+
+        expectTypeOf(first([1, 2, 3] as number[])).toEqualTypeOf<Maybe<number>>()
+        expectTypeOf(first([] as number[])).toEqualTypeOf<Maybe<number>>()
+    })
+})
+
+describe('second', () => {
+    it('overloaded types are correct', () => {
+        expectTypeOf(second([1, 2, 3])).toEqualTypeOf<2>()
+        expectTypeOf(second([])).toEqualTypeOf<Nothing>()
+
+        expectTypeOf(second([1, 2, 3] as number[])).toEqualTypeOf<Maybe<number>>()
+        expectTypeOf(second([] as number[])).toEqualTypeOf<Maybe<number>>()
+    })
+})
+
+describe('third', () => {
+    it('overloaded types are correct', () => {
+        expectTypeOf(third([1, 2, 3])).toEqualTypeOf<3>()
+        expectTypeOf(third([])).toEqualTypeOf<Nothing>()
+
+        expectTypeOf(third([1, 2, 3] as number[])).toEqualTypeOf<Maybe<number>>()
+        expectTypeOf(third([] as number[])).toEqualTypeOf<Maybe<number>>()
+    })
+})
+
+describe('complex', () => {
+    it('overloaded types are correct', () => {
+        const xs = [
+            ['foo', 1],
+            ['bar', 2],
+        ] as const
+        expectTypeOf(first(xs)).toEqualTypeOf<readonly ['foo', 1]>()
+        expectTypeOf(xs.map(first)).toEqualTypeOf<('foo' | 'bar')[]>()
+
+        expectTypeOf(entriesOf({ a: 1, b: 2, c: 3 }).map((xs) => at(xs, 0))).toEqualTypeOf<('a' | 'b' | 'c')[]>()
+        expectTypeOf(entriesOf({ a: 1, b: 2, c: 3 }).map(first)).toEqualTypeOf<('a' | 'b' | 'c')[]>()
+
+        expectTypeOf(entriesOf({ a: 1, b: 2, c: 3 }).map(second)).toEqualTypeOf<(1 | 2 | 3)[]>()
+    })
 })

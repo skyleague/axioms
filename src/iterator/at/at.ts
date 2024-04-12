@@ -1,10 +1,11 @@
 import { head } from '../../array/index.js'
 import { isArray } from '../../guard/index.js'
-import type { BuildTuple, Maybe, Traversable } from '../../type/index.js'
+import type { Maybe, Traversable } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
+import type { IterableElement, ReadonlyTuple, UnknownArray } from '../../types.js'
 import { drop } from '../drop/index.js'
 
-export type Nth<N extends number, T> = T extends readonly any[] ? T[N] : never
+export type Nth<N extends number, T> = T extends readonly unknown[] ? T[N] : never
 
 /**
  * `at` returns the nth element of a traversable, or {@link Nothing} if the traversable is too short
@@ -27,17 +28,24 @@ export type Nth<N extends number, T> = T extends readonly any[] ? T[N] : never
  *
  * @group Iterators
  */
-export function at<Xs extends any[], N extends number>(
-    xs: readonly [...Xs],
-    n: N
-): Xs extends readonly [...BuildTuple<N>, infer X, ...any[]] ? X : number extends Xs['length'] ? Maybe<Xs[N]> : Nothing
-export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T>
-export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T> {
-    if (isArray<T>(xs)) {
-        return (n >= xs.length ? Nothing : xs[n]) as Maybe<T>
+export function at<const XS extends Traversable<unknown> | readonly unknown[], N extends number>(
+    xs: XS,
+    n: N,
+): XS extends readonly [...ReadonlyTuple<unknown, N>, infer X, ...unknown[]]
+    ? X
+    : XS extends UnknownArray
+      ? number extends XS['length']
+          ? Maybe<XS[N]>
+          : Nothing
+      : Nothing {
+    if (isArray(xs)) {
+        // biome-ignore lint/suspicious/noExplicitAny: any
+        return n >= xs.length ? Nothing : (xs[n] as any)
     }
     // slow iterator compatible version
-    return head(drop(xs, n))
+
+    // biome-ignore lint/suspicious/noExplicitAny: any
+    return head(drop(xs, n)) as any
 }
 
 /**
@@ -65,10 +73,10 @@ export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Mayb
  *
  * @group Iterators
  */
-export function first<T>(xs: T): T extends readonly [infer N0, ...unknown[]] ? N0 : Nothing
-export function first<T>(xs: Traversable<T>): Maybe<T>
-export function first<T>(xs: Traversable<T>): Maybe<T> {
-    return at(xs, 0)
+export function first<const T extends Traversable<unknown> | readonly unknown[]>(
+    xs: T,
+): T extends readonly [infer N0, ...unknown[]] ? N0 : Maybe<IterableElement<T>> {
+    return at(xs, 0) as T extends readonly [infer N0, ...unknown[]] ? N0 : Maybe<IterableElement<T>>
 }
 
 /**
@@ -96,10 +104,10 @@ export function first<T>(xs: Traversable<T>): Maybe<T> {
  *
  * @group Iterators
  */
-export function second<T>(xs: readonly [unknown, T, ...unknown[]]): T
-export function second<T>(xs: Traversable<T>): Maybe<T>
-export function second<T>(xs: Traversable<T>): Maybe<T> {
-    return at(xs, 1)
+export function second<const T extends Traversable<unknown> | readonly unknown[]>(
+    xs: T,
+): T extends readonly [unknown, infer N1, ...unknown[]] ? N1 : Maybe<IterableElement<T>> {
+    return at(xs, 1) as T extends readonly [unknown, infer N1, ...unknown[]] ? N1 : Maybe<IterableElement<T>>
 }
 
 /**
@@ -127,8 +135,8 @@ export function second<T>(xs: Traversable<T>): Maybe<T> {
  *
  * @group Iterators
  */
-export function third<T>(xs: readonly [unknown, unknown, T, ...unknown[]]): T
-export function third<T>(xs: Traversable<T>): Maybe<T>
-export function third<T>(xs: Traversable<T>): Maybe<T> {
-    return at(xs, 2)
+export function third<const T extends Traversable<unknown> | readonly unknown[]>(
+    xs: T,
+): T extends readonly [unknown, unknown, infer N2, ...unknown[]] ? N2 : Maybe<IterableElement<T>> {
+    return at(xs, 2) as T extends readonly [unknown, unknown, infer N2, ...unknown[]] ? N2 : Maybe<IterableElement<T>>
 }

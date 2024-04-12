@@ -56,7 +56,7 @@ export function* dfsNLR<T>(node: BinaryTree<T>): Traversable<T, void> {
  */
 export function* dfsLRN<T>(node: BinaryTree<T>): Traversable<T, void> {
     const nodes = stack([node])
-    const ordered = []
+    const ordered: T[] = []
     for (const x of nodes) {
         ordered.push(x.value)
         if (x.left !== undefined) {

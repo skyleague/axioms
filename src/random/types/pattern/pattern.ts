@@ -1,3 +1,4 @@
+import type { Arbitrary } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Dependent } from '../../arbitrary/index.js'
 import { alphaChar, alphaNumericChar, lowerAlphaChar } from '../char/char.js'
 import { integer } from '../integer/integer.js'
@@ -33,7 +34,7 @@ type PatternString<T extends string, A> = T extends PatternChar
  * @group Arbitrary
  */
 export function pattern<S extends string>(patternStr: PatternString<S, S>): Dependent<string> {
-    const arbitraries = []
+    const arbitraries: Arbitrary<string | number>[] = []
     for (const p of patternStr as unknown as PatternChar[]) {
         if (p === 'a') {
             arbitraries.push(lowerAlphaChar())

@@ -50,19 +50,18 @@ export function applicative<T>(xs: Traversable<T> | (() => Traversable<T>)): Tra
         [Symbol.iterator]() {
             if (isRight(current)) {
                 return current.right[Symbol.iterator]()
-            } else {
-                const xss = current.left
-                return toTraverser(function* () {
-                    // since this is an applicative, we expect each iterator to start at the beginning
-                    yield* buffer
-                    // lazily continue through the traversable until it's empty
-                    for (const x of xss) {
-                        buffer.push(x)
-                        yield x
-                    }
-                    current = { right: buffer }
-                })
             }
+            const xss = current.left
+            return toTraverser(function* () {
+                // since this is an applicative, we expect each iterator to start at the beginning
+                yield* buffer
+                // lazily continue through the traversable until it's empty
+                for (const x of xss) {
+                    buffer.push(x)
+                    yield x
+                }
+                current = { right: buffer }
+            })
         },
     }
 }

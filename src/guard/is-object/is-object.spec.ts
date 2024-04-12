@@ -37,6 +37,6 @@ it('object isObject', () => {
             nothing: false,
             array: false,
         }),
-        (x) => isObject(x)
+        (x) => isObject(x),
     )
 })

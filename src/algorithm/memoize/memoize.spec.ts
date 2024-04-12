@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/require-await */
 import { memoize, ttlCacheResolver } from './index.js'
 
 import { sleep } from '../../async/index.js'
 import { range } from '../../generator/index.js'
 import { asyncForAll, forAll, integer, tuple, unknown } from '../../random/index.js'
 
-import { expect, describe, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 describe('cache resolver', () => {
     it('simple', () => {

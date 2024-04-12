@@ -1,1 +1,1 @@
-export { type FromEntries, type FromEntriesWithReadOnly, fromEntries } from './from-entries.js'
+export { fromEntries } from './from-entries.js'

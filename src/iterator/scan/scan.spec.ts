@@ -1,6 +1,6 @@
 import { scanl, scanl1 } from './index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('scanl', () => {
     const div = (a: number, b: number) => a / b
@@ -101,7 +101,7 @@ describe('scanl1', () => {
     })
 
     it('and', () => {
-        expect([...scanl1([3 > 1, 3 > 2, 4 > 6, 5 === 5], (a, b) => a && b)]).toMatchInlineSnapshot(`
+        expect([...scanl1([3 > 1, 3 > 2, 4 > 6, true], (a, b) => a && b)]).toMatchInlineSnapshot(`
             [
               true,
               true,

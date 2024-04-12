@@ -1,7 +1,7 @@
 import { memoize } from '../../../algorithm/memoize/memoize.js'
 import type { Maybe } from '../../../type/maybe/index.js'
 import { Nothing } from '../../../type/maybe/index.js'
-import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/dependent.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
@@ -36,9 +36,9 @@ export interface OptionalGenerator<N = Nothing> {
  */
 export function optional<T, O = Nothing>(
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<OptionalGenerator<O>> = {}
+    constraints: MaybePartial<OptionalGenerator<O>> = {},
 ): Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T> {
-    return integer({ min: 0, max: 2 }).chain((i): any => {
+    return integer({ min: 0, max: 2 }).chain((i): Arbitrary<O | Nothing | undefined | T> => {
         if (i !== 1) {
             return constant('symbol' in constraints ? constraints.symbol : Nothing)
         }
@@ -72,10 +72,7 @@ export interface PartialGenerator {
  * @group Arbitrary
  * @deprecated
  */
-export function partial<T>(
-    arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<PartialGenerator> = {}
-): Dependent<T | undefined> {
+export function partial<T>(arbitrary: Arbitrary<T>, constraints: MaybePartial<PartialGenerator> = {}): Dependent<T | undefined> {
     return optional(arbitrary, { symbol: undefined, ...constraints })
 }
 
@@ -104,7 +101,7 @@ export interface NullableGenerator {
  *
  * @group Arbitrary
  */
-export function nullable<T>(a: Arbitrary<T>, constraints: RelaxedPartial<NullableGenerator> = {}): Dependent<T | null> {
+export function nullable<T>(a: Arbitrary<T>, constraints: MaybePartial<NullableGenerator> = {}): Dependent<T | null> {
     return optional(a, { symbol: null, ...constraints })
 }
 
@@ -125,7 +122,7 @@ export function nullable<T>(a: Arbitrary<T>, constraints: RelaxedPartial<Nullabl
  *
  * @group Arbitrary
  */
-export function constant<T>(x: T): Dependent<T> {
+export function constant<const T>(x: T): Dependent<T> {
     return dependentArbitrary(() => ({ value: x, children: [] }))
 }
 

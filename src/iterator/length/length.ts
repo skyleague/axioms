@@ -1,5 +1,6 @@
 import { isArray } from '../../guard/index.js'
 import { Nothing } from '../../type/index.js'
+import type { UnknownArray } from '../../types.js'
 
 /**
  * If the type of the argument is an array, return its length, otherwise return Nothing.
@@ -24,9 +25,9 @@ import { Nothing } from '../../type/index.js'
  *
  * @group Iterators
  */
-export function length<T>(xs: T): T extends readonly any[] ? number : Nothing {
+export function length<T>(xs: T): T extends UnknownArray ? number : Nothing {
     if (isArray(xs)) {
-        return xs.length as T extends readonly any[] ? number : Nothing
+        return xs.length as T extends UnknownArray ? number : Nothing
     }
-    return Nothing as T extends readonly any[] ? number : Nothing
+    return Nothing as T extends UnknownArray ? number : Nothing
 }

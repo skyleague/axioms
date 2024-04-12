@@ -1,6 +1,6 @@
-import type { KeyOf } from '../../type/index.js'
+import type { KeysOfUnion, UnknownArray } from '../../types.js'
 
-export type KeysOf<T> = T extends (infer _I)[] ? string[] : KeyOf<T>[]
+export type KeysOf<T> = T extends UnknownArray ? string[] : KeysOfUnion<T>[]
 
 /**
  * Returns the names of the enumerable string properties and methods of an object.
@@ -23,6 +23,6 @@ export type KeysOf<T> = T extends (infer _I)[] ? string[] : KeyOf<T>[]
  *
  * @group Object
  */
-export function keysOf<T extends ArrayLike<unknown> | {}>(obj: T): KeysOf<T> {
+export function keysOf<const T extends ArrayLike<unknown> | object>(obj: T): KeysOf<T> {
     return Object.keys(obj) as KeysOf<T>
 }
