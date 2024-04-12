@@ -6,7 +6,7 @@ export interface ISO8601Options {
 }
 export function toISO8601Date(
     x: Date,
-    { format = 'date-time', dateDelimiter = '-', timeDelimiter = ':', expanded = true }: Partial<ISO8601Options> = {}
+    { format = 'date-time', dateDelimiter = '-', timeDelimiter = ':', expanded = true }: Partial<ISO8601Options> = {},
 ): string {
     const day = `${x.getDate()}`.padStart(2, '0')
     const month = `${x.getMonth() + 1}`.padStart(2, '0')

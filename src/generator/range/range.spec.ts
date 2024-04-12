@@ -1,7 +1,7 @@
 import { range } from './index.js'
 
 import { collect } from '../../array/index.js'
-import { forAll, tuple, integer } from '../../random/index.js'
+import { forAll, integer, tuple } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
@@ -54,7 +54,7 @@ it('for loop', () => {
 })
 
 it('negative', () => {
-    expect(collect(range(-5))).toMatchInlineSnapshot(`[]`)
+    expect(collect(range(-5))).toMatchInlineSnapshot('[]')
 })
 
 it('steps', () => {

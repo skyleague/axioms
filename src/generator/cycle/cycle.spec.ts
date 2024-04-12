@@ -1,11 +1,15 @@
-import { cycle } from './index.js'
-
-import { collect } from '../../array/index.js'
-import { allEqual, take } from '../../iterator/index.js'
-import { array, forAll, mappableFunc, natural, tuple, unknown } from '../../random/index.js'
-import { repeat } from '../index.js'
-
 import { expect, it } from 'vitest'
+import { collect } from '../../array/collect/collect.js'
+import { allEqual } from '../../iterator/equal/equal.js'
+import { take } from '../../iterator/take/take.js'
+import { forAll } from '../../random/arbitrary/forall/forall.js'
+import { array } from '../../random/types/array/array.js'
+import { unknown } from '../../random/types/complex/complex.js'
+import { mappableFunc } from '../../random/types/mappable/mappable.js'
+import { natural } from '../../random/types/natural/natural.js'
+import { tuple } from '../../random/types/tuple/tuple.js'
+import { repeat } from '../repeat/repeat.js'
+import { cycle } from './cycle.js'
 
 it('simple', () => {
     expect(collect(take(cycle([1, 2, 3]), 10))).toMatchInlineSnapshot(`
@@ -52,9 +56,9 @@ it('take n * |X| X === n * X', () => {
             collect(
                 take(
                     repeat(() => xs),
-                    n
-                )
-            ).flat()
+                    n,
+                ),
+            ).flat(),
         )
     })
 })
@@ -67,8 +71,8 @@ it('take n cycle(mappable(xs)) === take n repeat(*xs)', () => {
                 repeat(function* () {
                     yield* xs
                 }),
-                n
-            )
+                n,
+            ),
         )
     })
 })

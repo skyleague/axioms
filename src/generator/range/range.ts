@@ -21,21 +21,21 @@ import { isDefined } from '../../guard/index.js'
  * ### Alternatives
  * - [Lodash - range](https://lodash.com/docs/4.17.15#range)
  *
- * @param start - The start of the range.
+ * @param _start - The start of the range.
  * @param stop - The end of the range (exclusive).
- * @param step - The increment value.
+ * @param _step - The increment value.
  *
  * @returns The range generator.
  *
  * @group Generators
  */
 export function* range(start: number, stop?: number, step = 1) {
-    start = Math.floor(start)
-    step = Math.floor(Math.max(step, 1))
-    const [vstart, vstop] = isDefined(stop) ? [start, Math.floor(stop)] : [0, start]
-    const steps = (vstop - vstart) / step
+    const _start = Math.floor(start)
+    const _step = Math.floor(Math.max(step, 1))
+    const [vstart, vstop] = isDefined(stop) ? [_start, Math.floor(stop)] : [0, _start]
+    const steps = (vstop - vstart) / _step
     let val = vstart
-    for (let i = 0; i < steps; ++i, val += step) {
+    for (let i = 0; i < steps; ++i, val += _step) {
         yield val
     }
 }

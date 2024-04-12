@@ -1,9 +1,9 @@
 import { take, takeWhile } from './index.js'
 
 import { collect } from '../../array/index.js'
-import { repeat, range } from '../../generator/index.js'
+import { range, repeat } from '../../generator/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('take', () => {
     it('string', () => {
@@ -28,15 +28,15 @@ describe('take', () => {
     })
 
     it('empty', () => {
-        expect(collect(take([], 6))).toMatchInlineSnapshot(`[]`)
+        expect(collect(take([], 6))).toMatchInlineSnapshot('[]')
     })
 
     it('negative', () => {
-        expect(collect(take([1, 2], -1))).toMatchInlineSnapshot(`[]`)
+        expect(collect(take([1, 2], -1))).toMatchInlineSnapshot('[]')
     })
 
     it('zero', () => {
-        expect(collect(take([1, 2], 0))).toMatchInlineSnapshot(`[]`)
+        expect(collect(take([1, 2], 0))).toMatchInlineSnapshot('[]')
     })
 
     it('simple', () => {
@@ -85,7 +85,7 @@ describe('takeWhile', () => {
     })
 
     it('none', () => {
-        expect(collect(takeWhile([1, 2, 3], (x) => x < 0))).toMatchInlineSnapshot(`[]`)
+        expect(collect(takeWhile([1, 2, 3], (x) => x < 0))).toMatchInlineSnapshot('[]')
     })
 
     it('large size', () => {

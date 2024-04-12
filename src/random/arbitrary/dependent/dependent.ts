@@ -25,6 +25,7 @@ export function dependentArbitrary<T>(f: (context: ArbitraryContext) => Tree<T>)
     const dependent = {
         sample: (context: ArbitraryContext) => f(context).value,
         value: (context: ArbitraryContext) => f(context),
+        // biome-ignore lint/suspicious/noAssignInExpressions: This is a valid use case for assignment in expressions
         random: (context?: ArbitraryContext) => f(context ?? (localContext ??= arbitraryContext())).value,
         filter: <S extends T>(fn: (x: T, context: ArbitraryContext) => x is S) => filterArbitrary(dependent, fn),
         map: <U>(fn: (x: T, context: ArbitraryContext) => U) => mapArbitrary(dependent, fn),

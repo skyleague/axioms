@@ -1,4 +1,4 @@
-export type EntriesOf<T> = T extends (infer I)[] ? [string, I][] : { [K in keyof T]: [K, T[K]] }[keyof T][]
+import type { ArrayValues, UnknownArray } from '../../types.js'
 
 /**
  * Returns an array of key/values of the enumerable properties of an object.
@@ -21,6 +21,8 @@ export type EntriesOf<T> = T extends (infer I)[] ? [string, I][] : { [K in keyof
  *
  * @group Object
  */
-export function entriesOf<T extends ArrayLike<unknown> | {}>(obj: T): EntriesOf<T> {
-    return Object.entries(obj) as EntriesOf<T>
+export function entriesOf<const T extends ArrayLike<unknown> | object>(
+    obj: T,
+): T extends UnknownArray ? [string, ArrayValues<T>][] : { [K in keyof T]: [K, T[K]] }[keyof T][] {
+    return Object.entries(obj) as T extends UnknownArray ? [string, ArrayValues<T>][] : { [K in keyof T]: [K, T[K]] }[keyof T][]
 }

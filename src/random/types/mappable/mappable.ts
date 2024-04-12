@@ -1,7 +1,5 @@
-import { mapTree } from '../../../algorithm/index.js'
 import { toGenerator, toTraversable, toTraverser } from '../../../type/index.js'
 import type { Mappable } from '../../../type/traversable/index.js'
-import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/index.js'
 
@@ -17,7 +15,10 @@ const mappableFuncs: MappableFunc[] = [
             yield* toTraversable(xs)
         } as ToMappable<Xs>,
 ]
+/**
+ * @internal
+ */
 export function mappableFunc(): Dependent<MappableFunc> {
-    const aint = integer({ min: 0, max: mappableFuncs.length - 1 })
-    return dependentArbitrary((context) => mapTree(aint.value(context), (i) => mappableFuncs[i]!))
+    // biome-ignore lint/style/noNonNullAssertion: The array is guaranteed to have a value at this index
+    return integer({ min: 0, max: mappableFuncs.length - 1 }).map((i) => mappableFuncs[i]!)
 }

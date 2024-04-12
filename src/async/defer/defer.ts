@@ -20,7 +20,9 @@ export function defer<T, Err = Error>(): Deferred<T, Err> {
         reject = rej
     }) as Deferred<T, Err>
 
+    // biome-ignore lint/style/noNonNullAssertion: we know that `resolve` and `reject` are defined
     deferred.resolve = resolve!
+    // biome-ignore lint/style/noNonNullAssertion: we know that `resolve` and `reject` are defined
     deferred.reject = reject!
 
     return deferred

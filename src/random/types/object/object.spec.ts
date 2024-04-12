@@ -13,7 +13,7 @@ import { integer } from '../integer/index.js'
 import { oneOf } from '../one-of/index.js'
 import { utf16 } from '../string/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('object', () => {
     it('random sample', () => {
@@ -23,9 +23,9 @@ describe('object', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             {
@@ -114,7 +114,7 @@ describe('object', () => {
 
     it('foo4', () => {
         const aobject = object({})
-        expect(aobject.random(arbitraryContext({ rng: xoroshiro128plus(42n) }))).toMatchInlineSnapshot(`{}`)
+        expect(aobject.random(arbitraryContext({ rng: xoroshiro128plus(42n) }))).toMatchInlineSnapshot('{}')
     })
 
     it('shrinks down on all properties', () => {
@@ -130,7 +130,7 @@ describe('object', () => {
                     foo7: optional(integer(), { symbol: undefined }),
                 }).map(omitUndefined),
                 (i) => Object.values(i).every((x) => x === undefined),
-                { seed: 42n, timeout: false }
+                { seed: 42n, timeout: false },
             )
         }).toThrowErrorMatchingInlineSnapshot(`
           [AssertionError: Counter example found after 2 tests (seed: 42n)

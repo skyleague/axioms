@@ -57,6 +57,7 @@ export function integratedArbitrary<C, T>({
         sample: (context: ArbitraryContext) => biasedSample(constraints, context),
         value: (context: ArbitraryContext, x?: T) =>
             applicativeTree(shrink(constraints, x ?? biasedSample(constraints, context))),
+        // biome-ignore lint/suspicious/noAssignInExpressions: This is a valid assignment
         random: (context?: ArbitraryContext) => biasedSample(constraints, context ?? (localContext ??= arbitraryContext())),
         shrink: (x: T) => shrink(constraints, x),
         filter: <S extends T>(fn: (x: T, context: ArbitraryContext) => x is S) => filterArbitrary(integrated, fn),

@@ -29,7 +29,7 @@ export interface RecordGenerator {
  */
 export function record<T, K extends PropertyKey>(
     keyValue: Arbitrary<T> | [Arbitrary<K>, Arbitrary<T>],
-    context: RelaxedPartial<RecordGenerator> = {}
+    context: RelaxedPartial<RecordGenerator> = {},
 ): Dependent<Record<string, T>> {
     const { minLength = 0, maxLength, size } = context
     const [key, value] = isArray(keyValue) ? keyValue : [string({ size }), keyValue]

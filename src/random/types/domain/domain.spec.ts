@@ -6,7 +6,7 @@ import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('domain', () => {
     it('random sample', () => {
@@ -16,9 +16,9 @@ describe('domain', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             "jb3bcog.f1e9.ery689quq.g00j9",
@@ -42,9 +42,9 @@ describe('domain', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             "jb3bcogfj1e-fzry689qurmg01j-8mq.47nofjtiy3r2n8.xduccztre-0z07wov9uj.ala76bftprt",
@@ -70,9 +70,9 @@ describe('subdomain', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             "trb3",

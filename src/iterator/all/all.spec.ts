@@ -1,7 +1,7 @@
 import { all } from './index.js'
 
 import { concat } from '../../iterator/index.js'
-import { forAll, unknown, array, tuple, constant } from '../../random/index.js'
+import { array, constant, forAll, tuple, unknown } from '../../random/index.js'
 
 import { it } from 'vitest'
 
@@ -20,6 +20,6 @@ it('constant true === true', () => {
 it('random false + constant true === false', () => {
     forAll(
         tuple(array(constant(true), { minLength: 1 }), array(constant(false), { minLength: 1 }), array(constant(true))),
-        ([xs, ys, zs]) => !all(concat(xs, ys, zs), (x) => x)
+        ([xs, ys, zs]) => !all(concat(xs, ys, zs), (x) => x),
     )
 })

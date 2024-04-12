@@ -28,7 +28,7 @@ import { promises } from 'node:fs'
 export async function fstat(file: string): Promise<Either<unknown, Maybe<Stats>>> {
     try {
         return { right: await promises.stat(file) }
-    } catch (error) {
+    } catch (error: unknown) {
         if (!isObject(error) || !('code' in error) || error.code !== 'ENOENT') {
             return { left: error }
         }

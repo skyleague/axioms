@@ -6,7 +6,7 @@ import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('dict', () => {
     it('random sample', () => {
@@ -16,9 +16,9 @@ describe('dict', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             Symbol(qDcXce),

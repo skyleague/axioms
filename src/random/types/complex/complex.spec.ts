@@ -7,9 +7,9 @@ import { equal, take } from '../../../iterator/index.js'
 import { forAll } from '../../../random/arbitrary/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
-import { oneOf, constant } from '../index.js'
+import { constant, oneOf } from '../index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 const isPrintable = (str: string) => /^[ -~]+$/.test(str)
 
@@ -21,9 +21,9 @@ describe('json', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             {
@@ -143,9 +143,9 @@ describe('json', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             {
@@ -265,9 +265,9 @@ describe('json', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             [
@@ -356,9 +356,9 @@ describe('json', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             -987316204.8333645,
@@ -405,9 +405,9 @@ describe('json', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             {
@@ -548,7 +548,10 @@ describe('json', () => {
     })
 
     it('all printable', () => {
-        forAll(json().map(JSON.stringify), isPrintable)
+        forAll(
+            json().map((x) => JSON.stringify(x)),
+            isPrintable,
+        )
     })
 })
 
@@ -560,9 +563,9 @@ describe('primitive', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             "򀋲鹃",
@@ -588,9 +591,9 @@ describe('unknown', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             null,

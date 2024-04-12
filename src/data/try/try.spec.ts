@@ -19,7 +19,7 @@ import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type/
 import { Nothing } from '../../type/index.js'
 import { left, right } from '../either/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('asTry', () => {
     it('const', () => {
@@ -68,7 +68,7 @@ describe('asTry', () => {
 
     it('async const throws', async () => {
         await asyncForAll(string(), async (x) => {
-            // eslint-disable-next-line @typescript-eslint/require-await
+            // biome-ignore lint/suspicious/useAwait: This is a test
             const value: Try<typeof x> = await asTry(async (): Promise<string> => {
                 throw new Error(x)
             })
@@ -120,7 +120,7 @@ describe('transformTry', () => {
             'foobar',
             async () => Promise.resolve('foobar'),
             // eslint-disable-next-line @typescript-eslint/require-await
-            async () => new Error('foobar')
+            async () => new Error('foobar'),
         )
     })
 })

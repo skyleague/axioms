@@ -4,7 +4,7 @@ import { zipWith } from '../../../array/zip/zip.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
 import { map } from '../../../iterator/map/map.js'
-import { type Traversable } from '../../../type/traversable/traversable.js'
+import type { Traversable } from '../../../type/traversable/traversable.js'
 
 /**
  * @internal
@@ -12,16 +12,16 @@ import { type Traversable } from '../../../type/traversable/traversable.js'
 export function towards(x: number, destination: number): number[] {
     if (destination === x) {
         return []
-    } else if (destination === 0 && x === 1) {
-        return []
-    } else {
-        const diff = Math.trunc(x / 2 - destination / 2)
-        const xs = halves(diff).map((h) => Math.trunc(x - h))
-        if (xs[0] !== destination) {
-            xs.unshift(destination)
-        }
-        return xs
     }
+    if (destination === 0 && x === 1) {
+        return []
+    }
+    const diff = Math.trunc(x / 2 - destination / 2)
+    const xs = halves(diff).map((h) => Math.trunc(x - h))
+    if (xs[0] !== destination) {
+        xs.unshift(destination)
+    }
+    return xs
 }
 
 function _binarySearchTree(bottom: number, top: number): Tree<number> {
@@ -38,8 +38,8 @@ export function binarySearchTree(bottom: number, top: number): Tree<number> {
         children: applicative(() =>
             concat(
                 [{ value: bottom, children: [] }],
-                zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1))
-            )
+                zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1)),
+            ),
         ),
     }
 }
@@ -47,8 +47,9 @@ export function binarySearchTree(bottom: number, top: number): Tree<number> {
 /**
  * @internal
  */
-export function halves(x: number): number[] {
+export function halves(from: number): number[] {
     const xs: number[] = []
+    let x = from
     while (x !== 0) {
         xs.push(x)
         // es6 <3
@@ -63,17 +64,17 @@ export function halves(x: number): number[] {
 export function* towardsf(destination: number, x: number): Traversable<number, void> {
     if (Math.abs(destination - x) < Number.EPSILON) {
         return
-    } else {
-        const diff = x / 2 - destination / 2
-        yield destination
-        yield* map(halvesf(diff), (h) => x - h)
     }
+    const diff = x / 2 - destination / 2
+    yield destination
+    yield* map(halvesf(diff), (h) => x - h)
 }
 
 /**
  * @internal
  */
-export function* halvesf(x: number): Traversable<number, void> {
+export function* halvesf(from: number): Traversable<number, void> {
+    let x = from
     while (Math.abs(x) > Number.EPSILON) {
         yield x
         x = x / 2
@@ -85,6 +86,7 @@ export function* halvesf(x: number): Traversable<number, void> {
  */
 export function* splits<T>(xs: T[]): Traversable<[T[], T, T[]], void> {
     for (let i = 0; i < xs.length; ++i) {
+        // biome-ignore lint/style/noNonNullAssertion: The loop is bounded by the length of xs
         yield [xs.slice(0, i), xs[i]!, xs.slice(i + 1)]
     }
 }

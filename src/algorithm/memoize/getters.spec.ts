@@ -36,5 +36,5 @@ it('memoizeGetters', () => {
           "z": [Function],
         }
     `)
-    expect(y.b(1)).toMatchInlineSnapshot(`2`)
+    expect(y.b(1)).toMatchInlineSnapshot('2')
 })

@@ -9,7 +9,7 @@ import { xoroshiro128plus } from '../../rng/xoroshiro128plus/xoroshiro128plus.js
 import { boolean } from '../boolean/boolean.js'
 import { integer } from '../integer/integer.js'
 
-import { it, expect } from 'vitest'
+import { expect, it } from 'vitest'
 
 it('distribution', () => {
     const context = arbitraryContext({
@@ -19,11 +19,11 @@ it('distribution', () => {
         mapValues(
             groupBy(
                 replicate(() => optional(boolean()).sample(context), 1000),
-                (x) => x.toString()
+                (x) => x.toString(),
             ),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "Symbol((Nothing))": 639,
@@ -52,7 +52,7 @@ it('allows shrinking to undefined', () => {
               |   └─ 7
               |       └─ 6
               └─ 9"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
@@ -63,13 +63,13 @@ it('allows shrinking to undefined', () => {
           |   └─ 2
           |       └─ 1
           └─ 4"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
       "└─ Symbol((Nothing))
           └─ Symbol((Nothing))"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
@@ -86,13 +86,13 @@ it('allows shrinking to undefined', () => {
               |   └─ 7
               |       └─ 6
               └─ 9"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
       "└─ Symbol((Nothing))
           └─ Symbol((Nothing))"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
@@ -107,7 +107,7 @@ it('allows shrinking to undefined', () => {
               ├─ 6
               |   └─ 5
               └─ 7"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
@@ -115,7 +115,7 @@ it('allows shrinking to undefined', () => {
           ├─ Symbol((Nothing))
           ├─ 0
           └─ 1"
-    `
+    `,
     )
     expect(showTree(optional(integer({ min: 0, max: 10 })).value(context), { maxDepth: 6 })).toMatchInlineSnapshot(
         `
@@ -130,6 +130,6 @@ it('allows shrinking to undefined', () => {
           ├─ 7
           |   └─ 6
           └─ 8"
-    `
+    `,
     )
 })

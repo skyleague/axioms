@@ -1,5 +1,5 @@
 import { build } from 'esbuild'
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -21,7 +21,7 @@ describe('esbuild', () => {
                 write: false,
                 platform: 'node',
                 external: ['node-object-hash', 'fast-deep-equal'],
-            }).then((x) => x.outputFiles.map((y) => y.text))
+            }).then((x) => x.outputFiles.map((y) => y.text)),
         ).resolves.toMatchInlineSnapshot(`
           [
             "// src/guard/is-right/is-right.ts

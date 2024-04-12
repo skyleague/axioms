@@ -13,7 +13,7 @@ import { xoroshiro128plus } from '../../rng/xoroshiro128plus/xoroshiro128plus.js
 import { unknown } from '../complex/complex.js'
 import { integer } from '../integer/integer.js'
 
-import { expect, describe, expectTypeOf, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('set', () => {
     it('all unique - number', () => {
@@ -48,8 +48,8 @@ describe('set', () => {
         expect(() =>
             forAll(set(integer({ min: 1332584308, max: 1332584308 }), { minLength: 2 }), (xs) => {
                 return xs.length !== 2 && collect(unique(xs)).length === 2
-            })
-        ).toThrowErrorMatchingInlineSnapshot(`[Tree is found infeasible]`)
+            }),
+        ).toThrowErrorMatchingInlineSnapshot('[Tree is found infeasible]')
     })
 })
 
@@ -61,9 +61,9 @@ describe('subsuper', () => {
             collect(
                 take(
                     repeat(() => aint.sample(ctx)),
-                    10
-                )
-            )
+                    10,
+                ),
+            ),
         ).toMatchInlineSnapshot(`
           [
             [

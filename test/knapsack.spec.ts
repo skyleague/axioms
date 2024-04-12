@@ -120,7 +120,7 @@ it('knapsack', () => {
           ],
         ]
     `)
-    expect(value(result, 400)).toMatchInlineSnapshot(`1030`)
+    expect(value(result, 400)).toMatchInlineSnapshot('1030')
 
     const greedy: [string, number, number][] = [
         ['sunscreen', 15, 2],

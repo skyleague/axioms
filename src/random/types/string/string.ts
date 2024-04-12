@@ -49,7 +49,7 @@ export function stringGenerator(
              */
             transform: (x: string[]) => string
         }
-    > = {}
+    > = {},
 ): Dependent<string> {
     const { minLength = 0, maxLength, size, transform = (s) => s.join('') } = context
     return array(a, { minLength, maxLength, size }).map(transform)

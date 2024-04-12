@@ -1,12 +1,12 @@
 import { head } from './index.js'
 
 import { isNothing } from '../../guard/index.js'
-import { forAll, array, unknown } from '../../random/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
 it('simple', () => {
-    expect(head([1, 2, 3])).toMatchInlineSnapshot(`1`)
+    expect(head([1, 2, 3])).toMatchInlineSnapshot('1')
 })
 
 it('generator', () => {
@@ -18,7 +18,7 @@ it('generator', () => {
 })
 
 it('empty', () => {
-    expect(head([])).toMatchInlineSnapshot(`Symbol((Nothing))`)
+    expect(head([])).toMatchInlineSnapshot('Symbol((Nothing))')
 })
 
 it('first in array, n > 0', () => {

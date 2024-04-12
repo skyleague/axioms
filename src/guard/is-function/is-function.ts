@@ -19,7 +19,7 @@
  *
  * @group Guards
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// biome-ignore lint/complexity/noBannedTypes: This is a type guard
 export function isFunction<T extends Function>(f: T | unknown): f is T {
     return typeof f === 'function'
 }
