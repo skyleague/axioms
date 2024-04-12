@@ -11,11 +11,11 @@ export type ArbitrarySize = RelativeSize | AbsoluteSize | 'max' | undefined
 
 export function fromMinLength({ minLength, size }: { minLength: number; size: AbsoluteSize }): number {
     return {
-        ['xs']: Math.floor(1.2 * minLength) + 1,
-        ['s']: Math.ceil(1.6 * minLength + 10),
-        ['m']: 10 * minLength + 100,
-        ['l']: 100 * minLength + 1000,
-        ['xl']: 1000 * minLength + 10000,
+        xs: Math.floor(1.2 * minLength) + 1,
+        s: Math.ceil(1.6 * minLength + 10),
+        m: 10 * minLength + 100,
+        l: 100 * minLength + 1000,
+        xl: 1000 * minLength + 10000,
     }[size]
 }
 
@@ -25,6 +25,7 @@ export function fromRelativeSize(size: AbsoluteSize | RelativeSize, defSize: Abs
     if (relativeSize.includes(size as RelativeSize)) {
         const relativeIndex = relativeSize.indexOf(size as RelativeSize) - 4
         const newIndex = defaultIndex + relativeIndex
+        // biome-ignore lint/style/noNonNullAssertion: The index is bounded by the length of absoluteSize
         return absoluteSize[Math.max(0, Math.min(absoluteSize.length - 1, newIndex))]!
     }
     return size as AbsoluteSize

@@ -1,11 +1,11 @@
-import { type Tree } from '../../../algorithm/tree/tree.js'
+import type { Tree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
 import { zip } from '../../../array/zip/zip.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
 import { map } from '../../../iterator/map/map.js'
-import type { SimplifyOnce } from '../../../type/simplify/simplify.js'
-import { toTraverser, type Traversable } from '../../../type/traversable/traversable.js'
+import { type Traversable, toTraverser } from '../../../type/traversable/traversable.js'
+import type { Simplify } from '../../../types.js'
 import type { ArbitraryContext } from '../context/context.js'
 import { splitX, splits } from '../shrink/shrink.js'
 
@@ -15,15 +15,17 @@ export interface Arbitrary<T> {
 
 export type AsArbitrary<T extends ArbitraryOrLiteral<unknown>> = T extends readonly unknown[]
     ? Arbitrary<
-          SimplifyOnce<{
+          Simplify<{
               [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
           }>
       >
     : T extends Arbitrary<infer U>
       ? Arbitrary<U>
       : T extends Record<PropertyKey, Arbitrary<unknown>>
-        ? Arbitrary<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }>
-        : Arbitrary<T>
+          ? Arbitrary<{
+                  [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
+              }>
+          : Arbitrary<T>
 
 export type ArbitraryOrLiteral<T> = Arbitrary<T> | T
 
@@ -52,7 +54,7 @@ export function interleave<U extends Tree<unknown>[]>(
             return concat(
                 first.done !== true ? [first.value] : [],
                 ...map(splits(xs), ([as, b, cs]) => map(b.children, (c) => interleave(...as, c, ...cs))),
-                second.done !== true ? [second.value] : []
+                second.done !== true ? [second.value] : [],
                 // take(
                 //     map(shrinkAll(xs), (x) => interleave(...collect(x))),
                 //     2
@@ -82,9 +84,9 @@ export function interleaveList<T>(axs: Tree<T>[], options: { minLength?: number 
                 // half first to dissect
                 ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(splitX(axs, 0.5), options)] : []],
                 ...map(splits(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList([...as, c, ...cs], options))),
-                ...[axs.length > minLength ? map(splits(axs), ([as, , cs]) => interleaveList([...as, ...cs], options)) : []]
+                ...[axs.length > minLength ? map(splits(axs), ([as, , cs]) => interleaveList([...as, ...cs], options)) : []],
                 // lazy(() => shrinkAll(axs))
-            )
+            ),
         ),
     }
 }

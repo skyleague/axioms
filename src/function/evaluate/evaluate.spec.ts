@@ -3,7 +3,7 @@ import { evaluate } from './evaluate.js'
 import { sleep } from '../../async/index.js'
 import { asyncForAll, forAll, unknown } from '../../random/index.js'
 
-import { it, expectTypeOf } from 'vitest'
+import { expectTypeOf, it } from 'vitest'
 
 it('constant', () => {
     forAll(unknown(), (x) => evaluate(x) === x)

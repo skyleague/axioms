@@ -1,7 +1,7 @@
 import { filter } from './index.js'
 
 import { all, equal } from '../../iterator/index.js'
-import { forAll, array, unknown, integer } from '../../random/index.js'
+import { array, forAll, integer, unknown } from '../../random/index.js'
 
 import { it } from 'vitest'
 

@@ -25,8 +25,8 @@ it('is ordered', async () => {
                     xs.push(3)
                     return 3
                 },
-            ].map((x) => x())
-        )
+            ].map((x) => x()),
+        ),
     ).toMatchInlineSnapshot(`
         [
           1,

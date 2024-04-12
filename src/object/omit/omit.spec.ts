@@ -1,12 +1,12 @@
-import { omitUndefined, omit, omitBy } from './index.js'
+import { omit, omitBy, omitUndefined } from './index.js'
 
 import type { OmitUndefined } from './omit.js'
 
 import { all, equal } from '../../iterator/index.js'
-import { forAll, record, unknown, deterministicBoolean } from '../../random/index.js'
+import { deterministicBoolean, forAll, record, unknown } from '../../random/index.js'
 import { keysOf, pickBy } from '../index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('omitUndefined', () => {
     it('omitUndefined x === identity, if all values defined', () => {
@@ -44,8 +44,8 @@ describe('omitBy', () => {
         forAll(record(unknown()), (x) =>
             equal(
                 omitBy(x, () => false),
-                x
-            )
+                x,
+            ),
         )
     })
 
@@ -57,8 +57,8 @@ describe('omitBy', () => {
         forAll(record(unknown()), (x) =>
             equal(
                 omitBy(x, () => true),
-                {}
-            )
+                {},
+            ),
         )
     })
 
@@ -108,15 +108,25 @@ describe('omit', () => {
 
     it('key filtered in both filtered and original', () => {
         forAll(record(unknown()), (x) => {
-            const filtered = omit(x, keysOf(x).filter(deterministicBoolean))
+            const filtered = omit(
+                x,
+                keysOf(x).filter((x) => deterministicBoolean(x)),
+            )
             return all(keysOf(filtered), (k) => k in x && k in filtered)
         })
     })
 
     it('key filtered if not omited', () => {
-        forAll(record(unknown()), (x) => {
-            const filtered = omit(x, keysOf(x).filter(deterministicBoolean))
-            return all(keysOf(x), (k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
-        })
+        forAll(
+            record(unknown()),
+            (x) => {
+                const filtered = omit(
+                    x,
+                    keysOf(x).filter((x) => deterministicBoolean(x)),
+                )
+                return all(keysOf(x), (k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+            },
+            { counterExample: { ' ': 0 } },
+        )
     })
 })

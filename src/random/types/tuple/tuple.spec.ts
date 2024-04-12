@@ -33,9 +33,9 @@ it('random sample', () => {
         collect(
             take(
                 repeat(() => aint.sample(ctx)),
-                10
-            )
-        )
+                10,
+            ),
+        ),
     ).toMatchInlineSnapshot(`
       [
         [
@@ -96,7 +96,7 @@ it('show small tree', () => {
           |   └─ false,0
           └─ true,0
               └─ false,0"
-    `
+    `,
     )
     const tree2 = arb.value(ctx)
     expect(showTree(tree2, { maxDepth: 6 })).toMatchInlineSnapshot(`

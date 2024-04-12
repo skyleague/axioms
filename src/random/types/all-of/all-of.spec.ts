@@ -27,6 +27,6 @@ it('merge order', () => {
         }),
         ([foo, bar, x]) => {
             expect(x).toEqual({ ...foo, ...bar })
-        }
+        },
     )
 })

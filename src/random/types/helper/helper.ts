@@ -36,9 +36,9 @@ export interface OptionalGenerator<N = Nothing> {
  */
 export function optional<T, O = Nothing>(
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<OptionalGenerator<O>> = {}
+    constraints: RelaxedPartial<OptionalGenerator<O>> = {},
 ): Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T> {
-    return integer({ min: 0, max: 2 }).chain((i): any => {
+    return integer({ min: 0, max: 2 }).chain((i): Arbitrary<O | Nothing | undefined | T> => {
         if (i !== 1) {
             return constant('symbol' in constraints ? constraints.symbol : Nothing)
         }
@@ -74,7 +74,7 @@ export interface PartialGenerator {
  */
 export function partial<T>(
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<PartialGenerator> = {}
+    constraints: RelaxedPartial<PartialGenerator> = {},
 ): Dependent<T | undefined> {
     return optional(arbitrary, { symbol: undefined, ...constraints })
 }

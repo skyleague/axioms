@@ -1,6 +1,6 @@
 import { isIterable } from './index.js'
 
-import { forAll, array, unknown } from '../../random/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 import { isArray } from '../index.js'
 
 import { expect, it } from 'vitest'

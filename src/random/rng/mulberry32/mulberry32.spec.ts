@@ -1,6 +1,6 @@
 import { mulberry32 } from './index.js'
 
-import { sum, collect } from '../../../array/index.js'
+import { collect, sum } from '../../../array/index.js'
 import { take } from '../../../iterator/index.js'
 
 import { expect, it } from 'vitest'
@@ -63,11 +63,11 @@ it('jump', () => {
 
 it('sample', () => {
     const gen = mulberry32(42)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.6011037519201636`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.44829055899754167`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.8524657934904099`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.6697340414393693`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.17481389874592423`)
+    expect(gen.sample()).toMatchInlineSnapshot('0.6011037519201636')
+    expect(gen.sample()).toMatchInlineSnapshot('0.44829055899754167')
+    expect(gen.sample()).toMatchInlineSnapshot('0.8524657934904099')
+    expect(gen.sample()).toMatchInlineSnapshot('0.6697340414393693')
+    expect(gen.sample()).toMatchInlineSnapshot('0.17481389874592423')
 })
 
 it('[0,1) interval', () => {
@@ -81,7 +81,7 @@ it('[0,1) interval', () => {
         mean += val / total
     }
     expect(vals.every((v) => v >= 0 && v < 1)).toBe(true)
-    const variance = sum(vals.map((v) => Math.pow(v - mean, 2) / total))
+    const variance = sum(vals.map((v) => (v - mean) ** 2 / total))
     expect(Math.abs(variance - 1 / 12)).toBeLessThan(0.001)
     expect(Math.abs(mean - 0.5)).toBeLessThan(0.01)
 })

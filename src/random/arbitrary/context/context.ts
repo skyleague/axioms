@@ -31,7 +31,7 @@ export function arbitraryContext({
         depth,
         depthCounter,
         ...rest,
-        withDepth: function <T>(fn: () => T): T {
+        withDepth: <T>(fn: () => T): T => {
             context.depthCounter += 1
             const val = fn()
             context.depthCounter -= 1

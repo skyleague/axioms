@@ -1,15 +1,15 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
-import type { BuildTuple } from '../../../type/tuple/tuple.js'
+import type { ReadonlyTuple } from '../../../types.js'
 import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
-import { maxLengthArbitrary, type ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
+import { type ArbitrarySize, maxLengthArbitrary } from '../../arbitrary/arbitrary/size.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/integer.js'
 
-export type ArrayOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...BuildTuple<Min, T>, ...T[]] : T[]
+export type ArrayOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...ReadonlyTuple<T, Min>, ...T[]] : T[]
 
 /**
  * Describes how arrays are allowed to be generated.
@@ -51,7 +51,7 @@ export interface ArrayGenerator<T, Min extends number> {
  */
 export function array<T, Min extends number = number>(
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<ArrayGenerator<T, Min>> = {}
+    constraints: RelaxedPartial<ArrayGenerator<T, Min>> = {},
 ): Dependent<ArrayOf<T, Min>> {
     const { minLength = 0, maxLength } = constraints
     const aList = dependentArbitrary((ctx) => {
@@ -90,7 +90,7 @@ export function array<T, Min extends number = number>(
             })(),
             {
                 minLength,
-            }
+            },
         )
     })
     return aList as Dependent<ArrayOf<T, Min>>
@@ -104,10 +104,10 @@ export function arrayWith<T, Min extends number = number>(
         x: T,
         xs: T[],
         skippedInRow: number,
-        constraints: Pick<ArrayGenerator<T, number>, 'minLength' | 'maxLength'>
+        constraints: Pick<ArrayGenerator<T, number>, 'minLength' | 'maxLength'>,
     ) => boolean,
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<ArrayGenerator<T, Min>> = {}
+    constraints: RelaxedPartial<ArrayGenerator<T, Min>> = {},
 ): Dependent<ArrayOf<T, Min>> {
     const { minLength = 0, maxLength } = constraints
     return dependentArbitrary((ctx) => {
@@ -161,7 +161,7 @@ export function arrayWith<T, Min extends number = number>(
             })(),
             {
                 minLength,
-            }
+            },
         )
     }) as Dependent<ArrayOf<T, Min>>
 }

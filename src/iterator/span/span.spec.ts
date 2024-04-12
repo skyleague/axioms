@@ -33,12 +33,12 @@ it('all', () => {
           3,
         ]
     `)
-    expect(collect(rest)).toMatchInlineSnapshot(`[]`)
+    expect(collect(rest)).toMatchInlineSnapshot('[]')
 })
 
 it('none', () => {
     const [init, rest] = span([1, 2, 3], (x) => x < 0)
-    expect(init).toMatchInlineSnapshot(`[]`)
+    expect(init).toMatchInlineSnapshot('[]')
     expect(collect(rest)).toMatchInlineSnapshot(`
         [
           1,

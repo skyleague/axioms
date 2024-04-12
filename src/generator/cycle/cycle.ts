@@ -1,5 +1,5 @@
 import { applicative } from '../../iterator/index.js'
-import type { Mappable, InfiniteGenerator } from '../../type/index.js'
+import type { InfiniteGenerator, Mappable } from '../../type/index.js'
 import { toTraversable } from '../../type/index.js'
 
 /**

@@ -23,7 +23,9 @@ export function shuffle<T>(xs: Traversable<T>, random: () => number = Math.rando
     const axs = collect(xs)
     for (let i = axs.length - 1; i > 0; i--) {
         const j = Math.floor(random() * (i + 1))
+        // biome-ignore lint/style/noNonNullAssertion: The array is guaranteed to have a value at this index
         const temp = axs[i]!
+        // biome-ignore lint/style/noNonNullAssertion: The array is guaranteed to have a value at this index
         axs[i] = axs[j]!
         axs[j] = temp
     }

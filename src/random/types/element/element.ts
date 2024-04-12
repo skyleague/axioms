@@ -23,7 +23,7 @@ import { integer } from '../integer/index.js'
  * @group Arbitrary
  */
 export function element<T extends unknown[] | string>(
-    elements: T extends string ? string : T
+    elements: T extends string ? string : T,
 ): Dependent<T extends string ? string : T[number]> {
     const aint = integer({ min: 0, max: elements.length - 1 })
     return dependentArbitrary((context) => mapTree(aint.value(context), (n) => elements[n] as T extends string ? string : T))

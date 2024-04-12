@@ -2,9 +2,9 @@ import type { Tree } from '../../../algorithm/index.js'
 import { recoverTry } from '../../../data/try/try.js'
 import { enumerate } from '../../../generator/index.js'
 import { isDefined, isFailure, isJust } from '../../../guard/index.js'
-import type { Traversable, Maybe, Try } from '../../../type/index.js'
+import type { Maybe, Traversable, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
-import { toString } from '../../../util/index.js'
+import { inspect } from '../../../util/inspect/inspect.js'
 import { InfeasibleTree } from '../shrink/shrink.js'
 
 import { performance } from 'node:perf_hooks'
@@ -14,7 +14,7 @@ export class FalsifiedError extends Error {
         const counterExampleStr = [
             `Counter example found after ${falsified.tests} tests (seed: ${seed}n)`,
             `Shrunk ${falsified.depth} time(s)`,
-            `Counter example:`,
+            'Counter example:',
             '',
             falsified.counterExample,
         ].join('\n')
@@ -25,7 +25,7 @@ export class FalsifiedError extends Error {
             if (process.env.JEST_WORKER_ID !== undefined) {
                 // jest adds information to the stack, so input the falsify information there if needed
                 this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+                // biome-ignore lint/suspicious/noExplicitAny:
                 Object.defineProperty(this, 'matcherResult', (falsified.error as { matcherResult?: any }).matcherResult)
             } else if (process.env.VITEST_WORKER_ID !== undefined) {
                 const origMessage = this.message
@@ -67,7 +67,7 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample, timeou
         const holdOrError = predicate(counterExample)
         if (holdOrError !== true) {
             return {
-                counterExample: toString(counterExample),
+                counterExample: inspect(counterExample),
                 error: holdOrError,
                 depth: 0,
                 tests: 0,
@@ -90,7 +90,7 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample, timeou
             return found
         })
         if (holdsOrCounterExample !== true && 'tree' in holdsOrCounterExample) {
-            const counterExampleStr = toString(holdsOrCounterExample.tree.value)
+            const counterExampleStr = inspect(holdsOrCounterExample.tree.value)
             smallest =
                 smallest === undefined || smallest.counterExample.length > counterExampleStr.length
                     ? ({
@@ -183,7 +183,7 @@ export async function asyncFalsify<T>({
         const holdOrError = await predicate(counterExample)
         if (holdOrError !== true) {
             return {
-                counterExample: toString(counterExample),
+                counterExample: inspect(counterExample),
                 error: holdOrError,
                 depth: 0,
                 tests: 0,
@@ -213,7 +213,7 @@ export async function asyncFalsify<T>({
             return found
         })
         if (holdsOrCounterExample !== true && 'tree' in holdsOrCounterExample) {
-            const counterExampleStr = toString(holdsOrCounterExample.tree.value)
+            const counterExampleStr = inspect(holdsOrCounterExample.tree.value)
             smallest =
                 smallest === undefined || smallest.counterExample.length > counterExampleStr.length
                     ? ({

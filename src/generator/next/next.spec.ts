@@ -2,8 +2,8 @@ import { next } from './index.js'
 
 import { collect } from '../../array/index.js'
 import { take } from '../../iterator/index.js'
-import { forAll, tuple, array, unknown } from '../../random/index.js'
-import { toTraverser, toGenerator } from '../../type/index.js'
+import { array, forAll, tuple, unknown } from '../../random/index.js'
+import { toGenerator, toTraverser } from '../../type/index.js'
 import { counter, repeat } from '../index.js'
 
 import { expect, it } from 'vitest'
@@ -16,13 +16,13 @@ it('take n X === right [X_1 + ... X_{n-1}] + left X_n', () => {
             collect(
                 take(
                     repeat(() => next(iterator)),
-                    n
-                )
-            )
+                    n,
+                ),
+            ),
         ).toEqual(
             xs.map((y) => ({
                 right: y,
-            }))
+            })),
         )
         expect(next(iterator)).toEqual({
             left: x,

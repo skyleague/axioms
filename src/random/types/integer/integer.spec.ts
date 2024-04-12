@@ -8,7 +8,7 @@ import { groupBy, replicate, take } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, forAll } from '../../../random/arbitrary/index.js'
 import { xoroshiro128plus } from '../../../random/rng/index.js'
-import { tuple, natural, constant } from '../index.js'
+import { constant, natural, tuple } from '../index.js'
 
 import { expect, it } from 'vitest'
 
@@ -21,11 +21,11 @@ it('distribution', () => {
         mapValues(
             groupBy(
                 replicate(() => integer().sample(context), 1000),
-                (x) => x % 10
+                (x) => x % 10,
             ),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "-1": 52,
@@ -54,11 +54,11 @@ it('distribution', () => {
         mapValues(
             groupBy(
                 replicate(() => integer({ min: -100, max: 100 }).sample(context), 1000),
-                (x) => Math.floor(x / 10)
+                (x) => Math.floor(x / 10),
             ),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "-1": 47,
@@ -94,14 +94,14 @@ it('distribution - small numbers', () => {
         (x) => {
             xs.push(x)
         },
-        { tests: 20000, seed: 42n }
+        { tests: 20000, seed: 42n },
     )
     expect(
         mapValues(
             groupBy(xs, (x) => x),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "-1": 1307,
@@ -249,7 +249,7 @@ it('check min constraint - inclusive', () => {
             return tuple(constant(min), integer({ min }))
         }),
         ([min, x]) => x >= min,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -259,7 +259,7 @@ it('check max constraint - inclusive', () => {
             return tuple(constant(max), integer({ max }))
         }),
         ([max, x]) => x <= max,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -269,7 +269,7 @@ it('check min constraint - exclusive', () => {
             return tuple(constant(min), integer({ min, minInclusive: false }))
         }),
         ([min, x]) => x >= min,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -279,7 +279,7 @@ it('check max constraint - exclusive', () => {
             return tuple(constant(max), integer({ max, maxInclusive: false }))
         }),
         ([max, x]) => x < max,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -290,7 +290,7 @@ it.skip('check min constraint - shrinking', () => {
             return tuple(constant(min), aint, constant(aint))
         }),
         ([min, x, aint]) => all(dfsPreOrder(aint.shrink(x)), (v) => v > min),
-        { seed: 42n, tests: 10000 }
+        { seed: 42n, tests: 10000 },
     )
 })
 
@@ -303,7 +303,7 @@ it.skip('check max constraint - shrinking', () => {
                 return tuple(constant(max), aint, constant(aint))
             }),
         ([max, x, aint]) => all(dfsPreOrder(aint.shrink(x)), (v) => v < max),
-        { seed: 42n, tests: 10000 }
+        { seed: 42n, tests: 10000 },
     )
 })
 
@@ -324,7 +324,7 @@ it('counter example - asymmetric', () => {
                 if (Math.abs(a - b) < 10) return true
                 return b - a >= 1000
             },
-            { seed: 42n, tests: 2000, timeout: false }
+            { seed: 42n, tests: 2000, timeout: false },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 130 tests (seed: 42n)
@@ -347,7 +347,7 @@ it('counter example - symmetric', () => {
                 if (Math.abs(a - b) < 10) return true
                 return Math.abs(a - b) >= 1000
             },
-            { seed: 42n, tests: 2000, timeout: false }
+            { seed: 42n, tests: 2000, timeout: false },
         )
     }).toThrowErrorMatchingInlineSnapshot(`
       [AssertionError: Counter example found after 130 tests (seed: 42n)
@@ -367,9 +367,9 @@ it('random sample', () => {
         collect(
             take(
                 repeat(() => aint.sample(ctx)),
-                10
-            )
-        )
+                10,
+            ),
+        ),
     ).toMatchInlineSnapshot(`
       [
         551,

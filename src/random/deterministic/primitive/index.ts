@@ -1,4 +1,4 @@
-import { deterministicInteger, deterministicFloat, deterministicBoolean } from './primitive.js'
+import { deterministicBoolean, deterministicFloat, deterministicInteger } from './primitive.js'
 export { deterministicInteger, deterministicFloat, deterministicBoolean } from './primitive.js'
 
 export const deterministic = {

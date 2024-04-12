@@ -26,8 +26,8 @@
  *
  * @group Async
  */
-export function parallelLimit(concurrency: number) {
-    concurrency = Math.max(concurrency, 1)
+export function parallelLimit(maxConcurrency: number) {
+    const concurrency = Math.max(maxConcurrency, 1)
     let activeCount = 0
     const queue: (() => Promise<unknown>)[] = []
 

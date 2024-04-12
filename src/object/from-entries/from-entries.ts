@@ -1,14 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Cast } from '../../type/cast/index.js'
-import type { Item } from '../../type/item/index.js'
-import type { DeepMutable } from '../../type/mutable/index.js'
-
-export type FromEntries<T> = T extends [infer Key, any][]
-    ? { [K in Cast<Key, string>]: Extract<Item<T>, [K, any]>[1] }
-    : { [key in string]: any }
-
-export type FromEntriesWithReadOnly<T> = FromEntries<DeepMutable<T>>
-
 /**
  * Returns an object created by key-value entries for properties and methods.
  *
@@ -30,6 +19,8 @@ export type FromEntriesWithReadOnly<T> = FromEntries<DeepMutable<T>>
  *
  * @group Object
  */
-export function fromEntries<T extends [PropertyKey, unknown][]>(obj: T): FromEntriesWithReadOnly<T> {
-    return Object.fromEntries(obj) as FromEntriesWithReadOnly<T>
+export function fromEntries<const T extends ReadonlyArray<readonly [PropertyKey, unknown]>>(
+    entries: T,
+): { [K in T[number] as K[0]]: K[1] } {
+    return Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] }
 }

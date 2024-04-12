@@ -5,8 +5,6 @@ import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { constant } from '../helper/index.js'
 import { tuple } from '../tuple/index.js'
 
-export interface ObjectGenerator {}
-
 /**
  * It takes an object of arbitraries and returns an arbitrary of an object of values.
  *
@@ -29,7 +27,6 @@ export interface ObjectGenerator {}
  */
 export function object<T extends Record<PropertyKey, Arbitrary<unknown>>>(
     properties: T,
-    _constraints: Partial<ObjectGenerator> = {}
 ): Dependent<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }> {
     const keys = Object.keys(properties)
     if (keys.length === 0) {
