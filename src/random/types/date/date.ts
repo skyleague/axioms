@@ -100,7 +100,7 @@ export function datetime(context: RelaxedPartial<DatetimeGenerator> = {}): Depen
                 d.setHours(0)
             }
             return d
-        })
+        }),
     )
 }
 

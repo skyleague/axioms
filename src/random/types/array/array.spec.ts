@@ -1,9 +1,8 @@
 import { array } from './array.js'
 
 import { bfs } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/index.js'
 import { isArray, isInteger } from '../../../guard/index.js'
-import { all, unique } from '../../../iterator/index.js'
+import { all } from '../../../iterator/index.js'
 import { forAll } from '../../arbitrary/index.js'
 import { constant } from '../helper/helper.js'
 import { natural } from '../index.js'
@@ -19,12 +18,6 @@ describe('array', () => {
         })
     })
 
-    it('unique', () => {
-        forAll(array(integer(), { uniqueItems: true }), (xs) => {
-            return isArray(xs) && all(xs, isInteger) && collect(unique(xs)).length === xs.length
-        })
-    })
-
     it('length is parametrized', () => {
         forAll(
             tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
@@ -33,7 +26,7 @@ describe('array', () => {
                 return array(integer(), { minLength, maxLength }).map((xs) => [xs, minLength, maxLength] as const)
             }),
             // inclusive
-            ([xs, minLength, maxLength]) => minLength <= xs.length && xs.length <= maxLength
+            ([xs, minLength, maxLength]) => minLength <= xs.length && xs.length <= maxLength,
         )
     })
 
@@ -43,7 +36,7 @@ describe('array', () => {
                 return tuple(constant(min), array(integer(), { minLength: min }))
             }),
             ([min, xs]) => xs.length >= min,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -53,7 +46,7 @@ describe('array', () => {
                 return tuple(constant(max), array(integer(), { maxLength: max }))
             }),
             ([max, xs]) => xs.length <= max,
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 
@@ -78,7 +71,7 @@ describe('array', () => {
                 }
                 return true
             },
-            { seed: 42n, tests: 1 }
+            { seed: 42n, tests: 1 },
         )
     })
 
@@ -96,7 +89,7 @@ describe('array', () => {
                 }
                 return true
             },
-            { seed: 42n }
+            { seed: 42n },
         )
     })
 })

@@ -1,8 +1,9 @@
-import { mergeDeep, omitUndefined } from '../../../object/index.js'
-import type { UnionToIntersection } from '../../../type/set/index.js'
-import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/index.js'
-import type { Dependent } from '../../arbitrary/dependent/index.js'
-import { tuple } from '../tuple/index.js'
+import { mergeDeep } from '../../../object/internal/merge-deep/merge-deep.js'
+import { omitUndefined } from '../../../object/omit/omit.js'
+import type { UnionToIntersection } from '../../../types.js'
+import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/arbitrary.js'
+import type { Dependent } from '../../arbitrary/dependent/dependent.js'
+import { tuple } from '../tuple/tuple.js'
 
 /**
  * It takes an arbitrary number of arbitraries, and returns an arbitrary that generates objects that
@@ -24,9 +25,6 @@ export function allOf<T extends Arbitrary<Record<PropertyKey, unknown>>[]>(
 ): Dependent<UnionToIntersection<TypeOfArbitraries<T>>> {
     return tuple(...arbitraries).map((xs) => {
         let target = {}
-        if (xs.every((x) => x === null)) {
-            return null as UnionToIntersection<TypeOfArbitraries<T>>
-        }
         for (const x of xs) {
             if (x !== undefined && x !== null) {
                 target = mergeDeep(omitUndefined(x), target)

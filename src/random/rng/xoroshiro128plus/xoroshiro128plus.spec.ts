@@ -1,6 +1,6 @@
 import { xoroshiro128plus } from './index.js'
 
-import { sum, collect } from '../../../array/index.js'
+import { collect, sum } from '../../../array/index.js'
 import { take } from '../../../iterator/index.js'
 
 import { expect, it } from 'vitest'
@@ -63,11 +63,11 @@ it('jump', () => {
 
 it('sample', () => {
     const gen = xoroshiro128plus(42n)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.03847619280701853`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.03023980011382721`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.12762880956028455`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.2582824908745027`)
-    expect(gen.sample()).toMatchInlineSnapshot(`0.0618946669203837`)
+    expect(gen.sample()).toMatchInlineSnapshot('0.03847619280701853')
+    expect(gen.sample()).toMatchInlineSnapshot('0.03023980011382721')
+    expect(gen.sample()).toMatchInlineSnapshot('0.12762880956028455')
+    expect(gen.sample()).toMatchInlineSnapshot('0.2582824908745027')
+    expect(gen.sample()).toMatchInlineSnapshot('0.0618946669203837')
 })
 
 it('[0,1) interval', () => {
@@ -81,7 +81,7 @@ it('[0,1) interval', () => {
         mean += val / total
     }
     expect(vals.every((v) => v >= 0 && v < 1)).toBe(true)
-    const variance = sum(vals.map((v) => Math.pow(v - mean, 2) / total))
+    const variance = sum(vals.map((v) => (v - mean) ** 2 / total))
     expect(Math.abs(variance - 1 / 12)).toBeLessThan(0.001)
     expect(Math.abs(mean - 0.5)).toBeLessThan(0.01)
 })

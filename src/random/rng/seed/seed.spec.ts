@@ -3,7 +3,7 @@ import { seeder2, splitmix64 } from './seed.js'
 import { collect } from '../../../array/collect/collect.js'
 import { take } from '../../../iterator/take/take.js'
 
-import { it, expect } from 'vitest'
+import { expect, it } from 'vitest'
 
 it('produces valid seeds', () => {
     expect(seeder2(42n)).toMatchInlineSnapshot(`

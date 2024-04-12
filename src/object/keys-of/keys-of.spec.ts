@@ -1,6 +1,6 @@
 import { keysOf } from './index.js'
 
-import { forAll, record, unknown, string, array, oneOf, integer } from '../../random/index.js'
+import { array, forAll, integer, oneOf, record, string, unknown } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 

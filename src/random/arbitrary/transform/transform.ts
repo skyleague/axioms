@@ -1,5 +1,5 @@
-import { mapTree, filterTree } from '../../../algorithm/tree/index.js'
-import { pruneTree } from '../../../algorithm/tree/tree.js'
+import { filterTree, mapTree } from '../../../algorithm/tree/index.js'
+import { type Tree, pruneTree } from '../../../algorithm/tree/tree.js'
 import type { Arbitrary } from '../arbitrary/index.js'
 import type { ArbitraryContext } from '../context/context.js'
 import { dependentArbitrary } from '../dependent/index.js'
@@ -19,10 +19,10 @@ export function filterArbitrary<T>(a: Arbitrary<T>, f: (x: T, context: Arbitrary
 export function filterArbitrary<T, S extends T>(a: Arbitrary<T>, f: (x: T, context: ArbitraryContext) => x is S): Dependent<S>
 export function filterArbitrary<T, S extends T>(
     a: Arbitrary<T>,
-    f: ((x: T, context: ArbitraryContext) => x is S) | ((x: T, context: ArbitraryContext) => boolean)
+    f: ((x: T, context: ArbitraryContext) => x is S) | ((x: T, context: ArbitraryContext) => boolean),
 ): Dependent<S> {
     return dependentArbitrary((context) => {
-        let generated
+        let generated: Tree<T>
         // the initial value must be valid
         do {
             generated = a.value(context)

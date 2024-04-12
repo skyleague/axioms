@@ -1,8 +1,8 @@
 import { stack } from './index.js'
 
 import { collect, sum } from '../../array/index.js'
-import { take, allEqual, map } from '../../iterator/index.js'
-import { forAll, array, unknown } from '../../random/index.js'
+import { allEqual, map, take } from '../../iterator/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
@@ -40,7 +40,7 @@ it('continued', () => {
         ]
     `)
     q.push([5, 6, 7])
-    expect(collect(q)).toMatchInlineSnapshot(`[]`)
+    expect(collect(q)).toMatchInlineSnapshot('[]')
 })
 
 it('continued 2', () => {
@@ -69,7 +69,7 @@ it('continued 2', () => {
         ]
     `)
     q.push([5, 6, 7])
-    expect(collect(q)).toMatchInlineSnapshot(`[]`)
+    expect(collect(q)).toMatchInlineSnapshot('[]')
 })
 
 it('take n stack xs === xs', () => {

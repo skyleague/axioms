@@ -64,9 +64,9 @@ export interface FloatGenerator {
  * @group Arbitrary
  */
 export function float({
-    min = -Math.pow(2, 31),
+    min = -(2 ** 31),
     minInclusive = true,
-    max = Math.pow(2, 31),
+    max = 2 ** 31,
     maxInclusive = true,
 }: RelaxedPartial<FloatGenerator> = {}): Integrated<FloatConstraints, number> {
     // shift the min and max to the correct value

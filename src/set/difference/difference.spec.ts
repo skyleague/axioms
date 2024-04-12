@@ -1,6 +1,6 @@
 import { difference, symmetricDifference } from './difference.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('difference', () => {
     it('simple', () => {

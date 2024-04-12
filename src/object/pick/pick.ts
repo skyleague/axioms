@@ -1,4 +1,4 @@
-import type { SimplifyOnce } from '../../type/simplify/index.js'
+import type { Simplify } from '../../types.js'
 
 /**
  * Create a new object with all the properties for which the predicate hold true.
@@ -19,11 +19,11 @@ import type { SimplifyOnce } from '../../type/simplify/index.js'
  * @group Object
  */
 export function pickBy<
-    T extends ArrayLike<unknown> | {},
+    T extends ArrayLike<unknown> | object,
     Predicate extends ([key, value]: [key: keyof T, value: T[keyof T]]) => boolean,
 >(obj: T, predicate: Predicate): Partial<T> {
     return Object.fromEntries(
-        Object.entries(obj).filter(([k, v]) => predicate([k as keyof T, v as T[keyof T]]))
+        Object.entries(obj).filter(([k, v]) => predicate([k as keyof T, v as T[keyof T]])),
     ) as unknown as Partial<T>
 }
 
@@ -48,6 +48,6 @@ export function pickBy<
  *
  * @group Object
  */
-export function pick<T extends ArrayLike<unknown> | {}, K extends keyof T>(obj: T, keys: readonly K[]): SimplifyOnce<Pick<T, K>> {
-    return Object.fromEntries(Object.entries(obj).filter(([k]) => keys.includes(k as K))) as unknown as SimplifyOnce<Pick<T, K>>
+export function pick<T extends ArrayLike<unknown> | object, K extends keyof T>(obj: T, keys: readonly K[]): Simplify<Pick<T, K>> {
+    return Object.fromEntries(Object.entries(obj).filter(([k]) => keys.includes(k as K))) as unknown as Simplify<Pick<T, K>>
 }

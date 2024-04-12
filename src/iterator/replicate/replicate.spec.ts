@@ -1,9 +1,9 @@
 import { replicate } from './index.js'
 
-import { zip, collect } from '../../array/index.js'
+import { collect, zip } from '../../array/index.js'
 import { range } from '../../generator/index.js'
-import { forAll, tuple, natural, unknown } from '../../random/index.js'
-import { foldl, all } from '../index.js'
+import { forAll, natural, tuple, unknown } from '../../random/index.js'
+import { all, foldl } from '../index.js'
 
 import { expect, it } from 'vitest'
 
@@ -29,7 +29,7 @@ it('correct length', () => {
             const xs = replicate(p, n)
             expect(foldl(xs, (s) => s + 1, 0)).toBe(n)
         },
-        { tests: 10 }
+        { tests: 10 },
     )
 })
 
@@ -40,7 +40,7 @@ it('all same primitive', () => {
             const xs = replicate(p, n)
             return all(xs, (x) => x === p)
         },
-        { tests: 10 }
+        { tests: 10 },
     )
 })
 
@@ -51,7 +51,7 @@ it('all same primitive from function', () => {
             const xs = replicate(() => p, n)
             return all(xs, (x) => x === p)
         },
-        { tests: 10 }
+        { tests: 10 },
     )
 })
 
@@ -62,12 +62,12 @@ it('range from function with index', () => {
             all(
                 zip(
                     replicate((i) => i, n),
-                    range(0, n)
+                    range(0, n),
                 ),
-                ([i, r]) => i === r
+                ([i, r]) => i === r,
             )
         },
-        { tests: 10 }
+        { tests: 10 },
     )
 })
 

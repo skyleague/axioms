@@ -1,6 +1,6 @@
 import { groupBy, replicate } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
-import { boolean, forAll, arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
+import { arbitraryContext, boolean, forAll, xoroshiro128plus } from '../../../random/index.js'
 
 import { expect, it } from 'vitest'
 
@@ -13,11 +13,11 @@ it('distribution', () => {
         mapValues(
             groupBy(
                 replicate(() => boolean().sample(context), 1000),
-                (x) => x.toString()
+                (x) => x.toString(),
             ),
 
-            (v) => v.length
-        )
+            (v) => v.length,
+        ),
     ).toMatchInlineSnapshot(`
       {
         "false": 510,

@@ -1,11 +1,11 @@
 import { sum } from './index.js'
 
-import { forAll, array, integer, float } from '../../random/index.js'
+import { array, float, forAll, integer } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
 it('tail simple', () => {
-    expect(sum([1, 2, 3])).toMatchInlineSnapshot(`6`)
+    expect(sum([1, 2, 3])).toMatchInlineSnapshot('6')
 })
 
 it('generator', () => {
@@ -13,7 +13,7 @@ it('generator', () => {
         yield 1
         yield 2
     }
-    expect(sum(foobar())).toMatchInlineSnapshot(`3`)
+    expect(sum(foobar())).toMatchInlineSnapshot('3')
 })
 
 it('sum xs === xs_0 + ... + xs_n', () => {

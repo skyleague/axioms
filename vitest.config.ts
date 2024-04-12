@@ -2,6 +2,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
     test: {
+        globalSetup: ['./test/__test__/global.ts'],
         setupFiles: ['./test/__test__/setup.ts'],
         include: ['./src/**/*.{test,spec}.{ts,js}', './test/**/*.{test,spec}.{ts,js}'],
         coverage: {

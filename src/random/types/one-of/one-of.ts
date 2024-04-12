@@ -1,5 +1,5 @@
 import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/index.js'
-import { depthArbitrary, type ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
+import { type ArbitrarySize, depthArbitrary } from '../../arbitrary/arbitrary/size.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/dependent.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { weightedChoice } from '../choice/choice.js'
@@ -62,7 +62,7 @@ export function oneOfWeighted<T extends readonly [number, Arbitrary<unknown>][]>
         return ctx.withDepth(() => {
             const x = selector.sample(ctx)
             const depth = depthArbitrary({ context: ctx })
-            const addedZeroWeight = Math.floor(Math.pow(1 + depth, ctx.depthCounter)) - 1
+            const addedZeroWeight = Math.floor((1 + depth) ** ctx.depthCounter) - 1
             return choices(x * (1 + addedZeroWeight) - addedZeroWeight).value(ctx)
         })
     })

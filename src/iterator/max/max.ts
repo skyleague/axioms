@@ -25,7 +25,7 @@ import { map } from '../map/index.js'
  * @group Iterators
  */
 export function max<T extends Traversable<ComparablePrimitive>>(
-    xs: T
+    xs: T,
 ): T extends Traversable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
     return foldl1(xs, (a, b) => (b > a ? b : a)) as T extends Traversable<infer I>
         ? T extends readonly [unknown, ...unknown[]]
@@ -56,11 +56,11 @@ export function max<T extends Traversable<ComparablePrimitive>>(
  */
 export function maxBy<T extends Traversable<unknown>>(
     xs: T,
-    f: (item: TraversableItem<T>) => ComparablePrimitive
+    f: (item: TraversableItem<T>) => ComparablePrimitive,
 ): T extends Traversable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
     const xMax = foldl1(
         map(xs, (x) => [x, f(x as TraversableItem<T>)] as const),
-        (acc, x) => (x[1] > acc[1] ? x : acc)
+        (acc, x) => (x[1] > acc[1] ? x : acc),
     )
     return (isJust(xMax) ? xMax[0] : Nothing) as T extends Traversable<infer I>
         ? T extends readonly [unknown, ...unknown[]]

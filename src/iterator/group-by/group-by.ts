@@ -39,6 +39,6 @@ export function groupBy<T, K extends PropertyKey>(xs: Traversable<T>, group: (va
             r[k].push(v)
             return r
         },
-        {} as Record<K, T[]>
+        {} as Record<K, T[]>,
     )
 }

@@ -23,6 +23,6 @@ export type KeysOf<T> = T extends (infer _I)[] ? string[] : KeyOf<T>[]
  *
  * @group Object
  */
-export function keysOf<T extends ArrayLike<unknown> | {}>(obj: T): KeysOf<T> {
+export function keysOf<T extends ArrayLike<unknown> | object>(obj: T): KeysOf<T> {
     return Object.keys(obj) as KeysOf<T>
 }

@@ -2,10 +2,10 @@ import { zip, zipWith } from './index.js'
 
 import { counter } from '../../generator/index.js'
 import { allEqual } from '../../iterator/index.js'
-import { forAll, array, unknown } from '../../random/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 import { collect } from '../index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('zip', () => {
     it('simple', () => {

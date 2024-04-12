@@ -1,0 +1,47 @@
+{
+  "vcs": { "clientKind": "git", "enabled": true, "useIgnoreFile": true },
+  "files": { "ignore": ["**/*.schema.js"], "ignoreUnknown": true },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 4,
+    "lineWidth": 130
+  },
+  "organizeImports": { "enabled": true },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noNamespace": "error",
+        "useConsistentArrayType": "error",
+        "useForOf": "error"
+      },
+      "suspicious": {
+        "useAwait": "error"
+      },
+      "correctness": {
+        "noUnusedImports": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "quoteStyle": "single"
+    }
+  },
+  "json": { "formatter": { "indentWidth": 2 } },
+  "overrides": [
+    {
+      "include": ["*.spec.ts"],
+      "linter": {
+        "rules": {
+          "style": { "noNonNullAssertion": "off" },
+          "suspicious": { "noExplicitAny": "off" }
+        }
+      }
+    }
+  ]
+}

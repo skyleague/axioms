@@ -21,9 +21,9 @@ it('function', () => {
         collect(
             take(
                 repeat(() => 'foobar'),
-                4
-            )
-        )
+                4,
+            ),
+        ),
     ).toMatchInlineSnapshot(`
         [
           "foobar",

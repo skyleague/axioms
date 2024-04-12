@@ -18,7 +18,7 @@ import type { Either, Maybe } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
 import { whenLeft, whenRight } from '../either/index.js'
 
-import { expect, describe, it, assertType } from 'vitest'
+import { assertType, describe, expect, it } from 'vitest'
 
 class FooError extends Error {
     public foo() {
@@ -34,7 +34,7 @@ class BarError extends Error {
 describe('leftToMaybe', () => {
     it('simple', () => {
         expect(leftToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`"foo"`)
-        expect(leftToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`Symbol((Nothing))`)
+        expect(leftToMaybe({ right: 'foo' })).toMatchInlineSnapshot('Symbol((Nothing))')
     })
 
     it('left', () => {
@@ -60,7 +60,7 @@ describe('leftToMaybe', () => {
 describe('rightToMaybe', () => {
     it('simple', () => {
         expect(rightToMaybe({ right: 'foo' })).toMatchInlineSnapshot(`"foo"`)
-        expect(rightToMaybe({ left: 'foo' })).toMatchInlineSnapshot(`Symbol((Nothing))`)
+        expect(rightToMaybe({ left: 'foo' })).toMatchInlineSnapshot('Symbol((Nothing))')
     })
 
     it('right', () => {
@@ -99,7 +99,7 @@ describe('maybeToRight', () => {
 
     it('right', () => {
         forAll(object({ right: unknown({ nothing: false }), left: unknown() }), ({ right, left }) =>
-            equal(maybeToRight(right, left), { right })
+            equal(maybeToRight(right, left), { right }),
         )
     })
 
@@ -134,7 +134,7 @@ describe('maybeToLeft', () => {
 
     it('left', () => {
         forAll(object({ left: unknown({ nothing: false }), right: unknown() }), ({ right, left }) =>
-            equal(maybeToLeft(left, right), { left })
+            equal(maybeToLeft(left, right), { left }),
         )
     })
 
@@ -156,7 +156,7 @@ describe('maybeToLeft', () => {
 describe('maybeAsValue', () => {
     it('simple', () => {
         expect(maybeAsValue('foobar')).toMatchInlineSnapshot(`"foobar"`)
-        expect(maybeAsValue(Nothing)).toMatchInlineSnapshot(`undefined`)
+        expect(maybeAsValue(Nothing)).toMatchInlineSnapshot('undefined')
     })
 
     it('just', () => {
@@ -167,7 +167,7 @@ describe('maybeAsValue', () => {
 describe('whenJust', () => {
     it('simple', () => {
         expect(whenJust(0, (x) => `${x}${x}`)).toMatchInlineSnapshot(`"00"`)
-        expect(whenJust<string>(Nothing, (x) => `${x}${x}`)).toMatchInlineSnapshot(`Symbol((Nothing))`)
+        expect(whenJust<string>(Nothing, (x) => `${x}${x}`)).toMatchInlineSnapshot('Symbol((Nothing))')
     })
 
     it('just', () => {
@@ -177,7 +177,7 @@ describe('whenJust', () => {
 
 describe('whenJusts', () => {
     it('simple', () => {
-        expect(whenJusts([Nothing, 'a'], ([_x0, x1]) => x1)).toMatchInlineSnapshot(`Symbol((Nothing))`)
+        expect(whenJusts([Nothing, 'a'], ([_x0, x1]) => x1)).toMatchInlineSnapshot('Symbol((Nothing))')
         expect(whenJusts([0, 'a'], ([x0, x1]) => [x0, x1])).toMatchInlineSnapshot(`
                   [
                     0,
@@ -207,8 +207,8 @@ describe('whenJusts', () => {
 
 describe('whenNothing', () => {
     it('simple', () => {
-        expect(whenNothing(Nothing, () => `foobar`)).toMatchInlineSnapshot(`"foobar"`)
-        expect(whenNothing(0, () => `foobar`)).toMatchInlineSnapshot(`0`)
+        expect(whenNothing(Nothing, () => 'foobar')).toMatchInlineSnapshot(`"foobar"`)
+        expect(whenNothing(0, () => 'foobar')).toMatchInlineSnapshot('0')
     })
 
     it('just', () => {
@@ -219,7 +219,7 @@ describe('whenNothing', () => {
 describe('asMaybe', () => {
     it('simple', () => {
         expect(asMaybe('foobar')).toMatchInlineSnapshot(`"foobar"`)
-        expect(asMaybe(undefined)).toMatchInlineSnapshot(`Symbol((Nothing))`)
+        expect(asMaybe(undefined)).toMatchInlineSnapshot('Symbol((Nothing))')
     })
 
     it('type exclusion', () => {

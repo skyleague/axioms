@@ -1,5 +1,5 @@
 import { isLeft, isRight } from '../../guard/index.js'
-import type { Left, Right, Either } from '../../type/index.js'
+import type { Either, Left, Right } from '../../type/index.js'
 
 /**
  * If the Either is a Left, return the Left value, otherwise return the Right value.
@@ -34,15 +34,15 @@ export type ArgRights<Xs> = Xs extends [infer X, ...infer Rest]
     : Xs extends []
       ? []
       : Xs extends (infer I)[]
-        ? (I extends Right<infer R> ? R : never)[]
-        : []
+          ? (I extends Right<infer R> ? R : never)[]
+          : []
 export type ArgLefts<Xs> = Xs extends [infer X, ...infer Rest]
     ? [X extends Left<infer L> ? L : never, ...ArgLefts<Rest>]
     : Xs extends []
       ? []
       : Xs extends (infer I)[]
-        ? (I extends Left<infer L> ? L : never)[]
-        : []
+          ? (I extends Left<infer L> ? L : never)[]
+          : []
 
 /**
  * If the input is a left, return it, otherwise apply the function to the right value and return the
@@ -98,9 +98,9 @@ export function mapRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Either<L, T>
  *
  * @group Combinators
  */
-export function mapRights<Xs extends Either<any, any>[], T>(
+export function mapRights<Xs extends Either<unknown, unknown>[], T>(
     xs: readonly [...Xs],
-    f: (rs: ArgRights<Xs>) => T
+    f: (rs: ArgRights<Xs>) => T,
 ): Either<ArgLefts<Xs>[number], T> {
     return whenRights(xs, (...args) => ({ right: f(...args) }))
 }
@@ -159,9 +159,9 @@ export function whenRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Left<L> | T
  *
  * @group Combinators
  */
-export function whenRights<Xs extends Either<any, any>[], T>(
+export function whenRights<Xs extends Either<unknown, unknown>[], T>(
     xs: readonly [...Xs],
-    f: (rs: ArgRights<Xs>) => T
+    f: (rs: ArgRights<Xs>) => T,
 ): Left<ArgLefts<Xs>[number]> | T {
     const l = xs.find((x) => !isRight(x))
     if (l !== undefined) {
@@ -224,9 +224,9 @@ export function mapLeft<L, R, T>(x: Either<L, R>, f: (r: L) => T): Either<T, R> 
  *
  * @group Combinators
  */
-export function mapLefts<Xs extends Either<any, any>[], T>(
+export function mapLefts<Xs extends Either<unknown, unknown>[], T>(
     xs: readonly [...Xs],
-    f: (ls: ArgLefts<Xs>) => T
+    f: (ls: ArgLefts<Xs>) => T,
 ): Either<T, ArgRights<Xs>[number]> {
     return whenLefts(xs, (args) => ({ left: f(args) }))
 }
@@ -285,9 +285,9 @@ export function whenLeft<L, R, T>(x: Either<L, R>, f: (r: L) => T): Right<R> | T
  *
  * @group Combinators
  */
-export function whenLefts<Xs extends Either<any, any>[], T>(
+export function whenLefts<Xs extends Either<unknown, unknown>[], T>(
     xs: readonly [...Xs],
-    f: (rs: ArgLefts<Xs>) => T
+    f: (rs: ArgLefts<Xs>) => T,
 ): Right<ArgRights<Xs>[number]> | T {
     const l = xs.find((x) => !isLeft(x))
     if (l !== undefined) {

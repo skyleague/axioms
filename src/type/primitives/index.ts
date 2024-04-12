@@ -1,1 +1,1 @@
-export { type ComparablePrimitive, type Primitive, type BuiltinType } from './primitives.js'
+export type { ComparablePrimitive } from './primitives.js'

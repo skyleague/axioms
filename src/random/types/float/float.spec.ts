@@ -19,9 +19,9 @@ it('random sample', () => {
         collect(
             take(
                 repeat(() => aint.sample(ctx)),
-                10
-            )
-        )
+                10,
+            ),
+        ),
     ).toMatchInlineSnapshot(`
           [
             218084955.5757966,
@@ -44,7 +44,7 @@ it('check min constraint - inclusive', () => {
             return tuple(constant(min), float({ min }))
         }),
         ([min, x]) => x >= min,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -54,7 +54,7 @@ it('check max constraint - inclusive', () => {
             return tuple(constant(max), float({ max }))
         }),
         ([max, x]) => x <= max,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -64,7 +64,7 @@ it('check min constraint - exclusive', () => {
             return tuple(constant(min), float({ min, minInclusive: false }))
         }),
         ([min, x]) => x >= min,
-        { seed: 42n }
+        { seed: 42n },
     )
 })
 
@@ -74,6 +74,6 @@ it('check max constraint - exclusive', () => {
             return tuple(constant(max), float({ max, maxInclusive: false }))
         }),
         ([max, x]) => x < max,
-        { seed: 42n }
+        { seed: 42n },
     )
 })

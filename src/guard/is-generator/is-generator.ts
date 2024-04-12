@@ -1,5 +1,5 @@
 export function isGeneratorFunction<T, R, A extends unknown[] | unknown = unknown>(
-    fn: unknown | (A extends unknown[] ? (...args: [...A]) => Generator<T, R> : () => Generator<T, R>)
+    fn: unknown | (A extends unknown[] ? (...args: [...A]) => Generator<T, R> : () => Generator<T, R>),
 ): fn is () => Generator<T, R, A> {
     return (
         fn !== undefined &&

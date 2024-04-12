@@ -45,6 +45,6 @@ export function propertyKey(constraints: RelaxedPartial<PropertyKeyGenerator> = 
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),
         ...(generateString ? [alphaNumeric()] : []),
-        ...(generateSymbol ? [symbol()] : [])
+        ...(generateSymbol ? [symbol()] : []),
     )
 }

@@ -3,13 +3,11 @@ import { tree } from '../../../algorithm/index.js'
 import type { ArbitraryContext, Integrated } from '../../arbitrary/index.js'
 import { integratedArbitrary } from '../../arbitrary/index.js'
 
-export interface BooleanConstraints {}
-
-function sampleBoolean(_: BooleanConstraints, { rng }: ArbitraryContext): boolean {
+function sampleBoolean(_: undefined, { rng }: ArbitraryContext): boolean {
     return rng.sample() < 0.5
 }
 
-function shrinkBoolean(_: BooleanConstraints, x: boolean): Tree<boolean> {
+function shrinkBoolean(_: undefined, x: boolean): Tree<boolean> {
     return { value: x, children: x ? [tree(false)] : [] }
 }
 
@@ -27,6 +25,6 @@ function shrinkBoolean(_: BooleanConstraints, x: boolean): Tree<boolean> {
  *
  * @group Arbitrary
  */
-export function boolean(constraints: Partial<BooleanConstraints> = {}): Integrated<BooleanConstraints, boolean> {
-    return integratedArbitrary({ sample: sampleBoolean, shrink: shrinkBoolean, constraints })
+export function boolean(): Integrated<undefined, boolean> {
+    return integratedArbitrary({ sample: sampleBoolean, shrink: shrinkBoolean, constraints: undefined })
 }

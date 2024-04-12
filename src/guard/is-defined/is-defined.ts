@@ -24,6 +24,6 @@
  *
  * @group Guards
  */
-export function isDefined<T>(x: T | null | undefined | void): x is T {
+export function isDefined<T>(x: T | null | undefined): x is T {
     return x !== null && x !== undefined
 }

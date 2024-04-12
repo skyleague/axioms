@@ -1,14 +1,14 @@
+import type { Simplify } from '../../types.js'
 import type { NoUndefinedFields } from '../fields/index.js'
-import type { SimplifyOnce } from '../simplify/index.js'
 
 export type KeyOf<T> = T extends unknown ? keyof T : never
 export type KeysOfType<T, U> = { [K in keyof T]: T[K] extends U ? K : never }[keyof T]
 export type RequiredKeys<T> = Exclude<KeysOfType<T, Exclude<T[keyof T], undefined>>, undefined>
 export type OptionalKeys<T> = Exclude<keyof T, RequiredKeys<T>>
 export type RequireKeys<T, K extends PropertyKey> = T extends infer S
-    ? SimplifyOnce<Omit<S, K> & Required<Pick<S, K & keyof S>>> extends infer U
+    ? Simplify<Omit<S, K> & Required<Pick<S, K & keyof S>>> extends infer U
         ? U extends Record<K, unknown>
-            ? SimplifyOnce<DefinedKeys<U, K>>
+            ? Simplify<DefinedKeys<U, K>>
             : never
         : never
     : never

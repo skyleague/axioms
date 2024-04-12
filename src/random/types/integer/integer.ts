@@ -45,7 +45,7 @@ function biasInteger({ min, max }: IntegerConstraints, { rng }: BiasedArbitraryC
             : [
                   [2, closeToMin],
                   [1, closeToMax],
-              ]
+              ],
     )
     return choices(rng.sample())
 }
@@ -96,9 +96,9 @@ export interface IntegerGenerator {
  * @group Arbitrary
  */
 export function integer({
-    min = -Math.pow(2, 31),
+    min = -(2 ** 31),
     minInclusive = true,
-    max = Math.pow(2, 31),
+    max = 2 ** 31,
     maxInclusive = true,
 }: RelaxedPartial<IntegerGenerator> = {}): Integrated<IntegerConstraints, number> {
     // shift the min and max to the correct value

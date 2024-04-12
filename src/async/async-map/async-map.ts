@@ -31,7 +31,7 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  */
 export async function* asyncMap<I, O>(
     xs: AsyncTraversable<I>,
-    mapper: (x: I, index: number) => O | Promise<O>
+    mapper: (x: I, index: number) => O | Promise<O>,
 ): AsyncTraversable<O> {
     let i = 0
     for await (const x of xs) {

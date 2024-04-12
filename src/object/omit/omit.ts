@@ -1,7 +1,7 @@
-import type { SimplifyOnce } from '../../type/index.js'
+import type { Except, Simplify } from '../../types.js'
 import { pickBy } from '../pick/index.js'
 
-export type OmitUndefined<T> = SimplifyOnce<
+export type OmitUndefined<T> = Simplify<
     {
         [k in {
             [l in keyof T]: undefined extends T[l] ? l : never
@@ -13,7 +13,7 @@ export type OmitUndefined<T> = SimplifyOnce<
     }
 >
 
-export function omitUndefined<T extends ArrayLike<unknown> | {}>(obj: T): OmitUndefined<T> {
+export function omitUndefined<T extends ArrayLike<unknown> | object>(obj: T): OmitUndefined<T> {
     return pickBy(obj, ([, v]) => v !== undefined) as unknown as OmitUndefined<T>
 }
 
@@ -36,11 +36,11 @@ export function omitUndefined<T extends ArrayLike<unknown> | {}>(obj: T): OmitUn
  * @group Object
  */
 export function omitBy<
-    T extends ArrayLike<unknown> | {},
+    T extends ArrayLike<unknown> | object,
     Predicate extends ([key, value]: [key: keyof T, value: T[keyof T]]) => boolean,
 >(obj: T, predicate: Predicate): Partial<T> {
     return Object.fromEntries(
-        Object.entries(obj).filter(([k, v]) => !predicate([k as keyof T, v as T[keyof T]]))
+        Object.entries(obj).filter(([k, v]) => !predicate([k as keyof T, v as T[keyof T]])),
     ) as unknown as Partial<T>
 }
 
@@ -65,6 +65,11 @@ export function omitBy<
  *
  * @group Object
  */
-export function omit<T extends ArrayLike<unknown> | {}, K extends keyof T>(obj: T, keys: readonly K[]): SimplifyOnce<Omit<T, K>> {
-    return Object.fromEntries(Object.entries(obj).filter(([k]) => !keys.includes(k as K))) as SimplifyOnce<Omit<T, K>>
+export function omit<T extends ArrayLike<unknown> | object, K extends keyof T>(
+    obj: T,
+    keys: readonly K[],
+): Simplify<Except<T, K, { requireExactProps: true }>> {
+    return Object.fromEntries(Object.entries(obj).filter(([k]) => !keys.includes(k as K))) as Simplify<
+        Except<T, K, { requireExactProps: true }>
+    >
 }
