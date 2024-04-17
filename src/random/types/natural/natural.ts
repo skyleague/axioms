@@ -1,4 +1,4 @@
-import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { Integrated } from '../../arbitrary/integrated/index.js'
 import { integer } from '../integer/index.js'
 
@@ -32,6 +32,6 @@ export interface NaturalConstraints {
  *
  * @group Arbitrary
  */
-export function natural(constraints: RelaxedPartial<NaturalConstraints> = {}): Integrated<NaturalConstraints, number> {
+export function natural(constraints: MaybePartial<NaturalConstraints> = {}): Integrated<NaturalConstraints, number> {
     return integer({ min: 0, ...constraints })
 }

@@ -1,6 +1,6 @@
 import { map } from './index.js'
 
-import { forAll, array, string, integer, oneOf } from '../../random/index.js'
+import { array, forAll, integer, oneOf, string } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 

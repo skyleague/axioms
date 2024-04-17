@@ -2,7 +2,7 @@ import { enumerate } from './index.js'
 
 import { collect, zip } from '../../array/index.js'
 import { allEqual, map } from '../../iterator/index.js'
-import { forAll, array, unknown } from '../../random/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 import { counter, range } from '../index.js'
 
 import { expect, it } from 'vitest'
@@ -15,8 +15,8 @@ it('map first enumerate == range', () => {
     forAll(array(unknown()), (xs) =>
         allEqual(
             map(enumerate(xs), (x) => x[0]),
-            range(xs.length)
-        )
+            range(xs.length),
+        ),
     )
 })
 
@@ -24,8 +24,8 @@ it('map second enumerate == identity', () => {
     forAll(array(unknown()), (xs) =>
         allEqual(
             map(enumerate(xs), (x) => x[1]),
-            xs
-        )
+            xs,
+        ),
     )
 })
 

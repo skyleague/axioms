@@ -1,4 +1,4 @@
-import { isDefined, isFunction } from '../../guard/index.js'
+import { isDefined } from '../../guard/index.js'
 
 export type RecurrentGenerator<R> = readonly [R, (() => RecurrentGenerator<R>) | undefined]
 export function itrampoline<T extends readonly unknown[], R>(f: (...args: [...T]) => RecurrentGenerator<R>) {
@@ -15,8 +15,9 @@ export function itrampoline<T extends readonly unknown[], R>(f: (...args: [...T]
 export function trampoline<T extends readonly unknown[], R>(f: (...args: [...T]) => R | (() => R)) {
     return (...args: [...T]) => {
         let result = f(...args)
-        while (isFunction(result)) {
-            result = result()
+        while (typeof result === 'function') {
+            // biome-ignore lint/complexity/noBannedTypes: ignore
+            result = (result as Function)()
         }
         return result
     }

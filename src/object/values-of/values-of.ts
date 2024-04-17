@@ -1,4 +1,6 @@
-export type ValuesOf<T extends ArrayLike<unknown> | {}> = T extends readonly (infer I)[] ? I[] : T[keyof T][]
+import type { UnknownArray } from 'type-fest'
+
+export type ValuesOf<T extends ArrayLike<unknown> | object> = T extends UnknownArray ? T[number][] : T[keyof T][]
 
 /**
  * Returns an array of values of the enumerable properties of an object.
@@ -21,6 +23,6 @@ export type ValuesOf<T extends ArrayLike<unknown> | {}> = T extends readonly (in
  *
  * @group Object
  */
-export function valuesOf<const T extends ArrayLike<unknown> | {}>(obj: T): ValuesOf<T> {
+export function valuesOf<const T extends ArrayLike<unknown> | object>(obj: T): ValuesOf<T> {
     return Object.values(obj) as ValuesOf<T>
 }

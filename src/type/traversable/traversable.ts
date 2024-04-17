@@ -11,7 +11,8 @@ export function toTraverser<Xs extends Mappable<unknown>>(xs: Xs): ToTraverser<X
     // inlined
     if (typeof xs === 'string' || Symbol.iterator in xs) {
         return (xs as Traversable<unknown>)[Symbol.iterator]() as ToTraverser<Xs>
-    } else if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
+    }
+    if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
         return xs() as unknown as ToTraverser<Xs>
     }
     return xs as unknown as ToTraverser<Xs>
@@ -23,7 +24,8 @@ export function toTraversable<Xs extends Mappable<unknown>>(xs: Xs): ToTraversab
     // inlined
     if (typeof xs === 'string' || Symbol.iterator in xs) {
         return xs as unknown as ToTraversable<Xs>
-    } else if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
+    }
+    if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
         return xs() as unknown as ToTraversable<Xs>
     }
     return { [Symbol.iterator]: () => xs } as ToTraversable<Xs>

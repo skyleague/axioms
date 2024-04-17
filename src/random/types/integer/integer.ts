@@ -1,5 +1,5 @@
 import type { Tree } from '../../../algorithm/index.js'
-import type { RelaxedPartial } from '../../../type/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import { integratedArbitrary } from '../../arbitrary/index.js'
 import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../../arbitrary/index.js'
 import { binarySearchTree } from '../../arbitrary/shrink/shrink.js'
@@ -45,7 +45,7 @@ function biasInteger({ min, max }: IntegerConstraints, { rng }: BiasedArbitraryC
             : [
                   [2, closeToMin],
                   [1, closeToMax],
-              ]
+              ],
     )
     return choices(rng.sample())
 }
@@ -96,11 +96,11 @@ export interface IntegerGenerator {
  * @group Arbitrary
  */
 export function integer({
-    min = -Math.pow(2, 31),
+    min = -(2 ** 31),
     minInclusive = true,
-    max = Math.pow(2, 31),
+    max = 2 ** 31,
     maxInclusive = true,
-}: RelaxedPartial<IntegerGenerator> = {}): Integrated<IntegerConstraints, number> {
+}: MaybePartial<IntegerGenerator> = {}): Integrated<IntegerConstraints, number> {
     // shift the min and max to the correct value
     if (!minInclusive) {
         min += 1
@@ -109,7 +109,7 @@ export function integer({
         max -= 1
     }
 
-    if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) {
+    if (!(Number.isFinite(min) && Number.isFinite(max)) || min > max) {
         throw new Error('The minimum value must be less than the maximum value, and be finite')
     }
 

@@ -1,7 +1,7 @@
 import { tail } from './index.js'
 
 import { allEqual } from '../../iterator/index.js'
-import { forAll, array, unknown } from '../../random/index.js'
+import { array, forAll, unknown } from '../../random/index.js'
 import { toTraversable } from '../../type/index.js'
 import { collect } from '../index.js'
 

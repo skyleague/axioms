@@ -9,7 +9,7 @@ import type { AbsoluteSize } from '../arbitrary/size.js'
 import { arbitraryContext } from '../context/context.js'
 import type { ArbitraryContext } from '../context/index.js'
 import { asyncFalsify } from '../falsify/falsify.js'
-import { falsify, FalsifiedError } from '../falsify/index.js'
+import { FalsifiedError, falsify } from '../falsify/index.js'
 import { InfeasibleTree } from '../shrink/index.js'
 
 /**
@@ -54,7 +54,7 @@ function valuesFromArbitrary<T>({
         while (ctx.skips < maxSkips) {
             try {
                 const value = evaluatedArbitrary.value(
-                    arbitraryContext({ ...context, bias: context.rng.sample() < 0.5 ? context.rng.sample() : undefined })
+                    arbitraryContext({ ...context, bias: context.rng.sample() < 0.5 ? context.rng.sample() : undefined }),
                 )
 
                 if (i > 0 && i % period === 0) {
@@ -75,8 +75,9 @@ function valuesFromArbitrary<T>({
     }, tests)
 }
 
-export function forAll<const T extends ArbitraryOrLiteral<any>>(
+export function forAll<const T extends ArbitraryOrLiteral<unknown>>(
     arbitrary: T,
+    // biome-ignore lint/suspicious/noConfusingVoidType: This is a valid use case for void
     predicate: (x: TypeOfArbitrary<AsArbitrary<T>>, context: ArbitraryContext) => boolean | void,
     {
         tests = 100,
@@ -88,7 +89,7 @@ export function forAll<const T extends ArbitraryOrLiteral<any>>(
         size,
         depth,
         counterExample,
-    }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
+    }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {},
 ): void {
     const evaluatedArbitrary = asArbitrary(arbitrary)
     const context: ArbitraryContext = arbitraryContext({
@@ -101,7 +102,7 @@ export function forAll<const T extends ArbitraryOrLiteral<any>>(
         predicate: (x) =>
             mapTry(
                 asTry(() => predicate(x, context) ?? true),
-                (holds) => (holds ? holds : new Error())
+                (holds) => (holds ? holds : new Error()),
             ),
         values: () => valuesFromArbitrary({ maxSkips, evaluatedArbitrary, context, period, tests }),
         maxDepth: shrinks,
@@ -115,8 +116,9 @@ export function forAll<const T extends ArbitraryOrLiteral<any>>(
         throw error
     }
 }
-export async function asyncForAll<const T extends ArbitraryOrLiteral<any>>(
+export async function asyncForAll<const T extends ArbitraryOrLiteral<unknown>>(
     arbitrary: T,
+    // biome-ignore lint/suspicious/noConfusingVoidType: This is a valid use case for void
     predicate: (x: TypeOfArbitrary<AsArbitrary<T>>, context: ArbitraryContext) => Promise<boolean | void>,
     {
         tests = 100,
@@ -128,7 +130,7 @@ export async function asyncForAll<const T extends ArbitraryOrLiteral<any>>(
         counterExample,
         size,
         depth,
-    }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {}
+    }: Partial<ForallOptions<TypeOfArbitrary<AsArbitrary<T>>>> = {},
 ): Promise<void> {
     const evaluatedArbitrary = asArbitrary(arbitrary)
     const context: ArbitraryContext = arbitraryContext({

@@ -1,6 +1,6 @@
 import { peekable } from '../../generator/peekable/index.js'
 import { isRight } from '../../guard/is-right/index.js'
-import { toTraverser, toTraversable } from '../../type/traversable/index.js'
+import { toTraversable, toTraverser } from '../../type/traversable/index.js'
 import type { Traversable } from '../../type/traversable/index.js'
 
 /**

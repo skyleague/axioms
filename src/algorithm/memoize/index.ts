@@ -1,4 +1,4 @@
-export { type Memoized, memoize } from './memoize.js'
-export { memoizeGetters } from './getters.js'
-export { type MemoizeAttributes, memoizeAttributes } from './attributes.js'
+export { type MemoizeAttributes, memoizeAttributes } from '../_deprecated/memoize/attributes.js'
+export { memoizeGetters } from '../_deprecated/memoize/getters.js'
 export { ttlCacheResolver, cacheResolver } from './resolver.js'
+export { type Memoized, memoize } from './memoize.js'

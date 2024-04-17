@@ -19,7 +19,6 @@ import { isError } from '../is-error/index.js'
  *
  * @group Guards
  */
-// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
 export function isFailure(x: Try<unknown> | unknown): x is Failure {
     return isError(x)
 }

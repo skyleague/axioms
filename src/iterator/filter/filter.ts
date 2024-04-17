@@ -37,11 +37,11 @@ export function* filter<T>(xs: Traversable<T>, by: (x: T) => boolean) {
  */
 export function filterWithMemory<S extends T, T>(
     xs: Traversable<T>,
-    by: (x: T, xs: S[], i: number, skippedInRow: number) => x is S
+    by: (x: T, xs: S[], i: number, skippedInRow: number) => x is S,
 ): Traversable<S>
 export function filterWithMemory<T>(
     xs: Traversable<T>,
-    by: (x: T, xs: T[], i: number, skippedInRow: number) => boolean
+    by: (x: T, xs: T[], i: number, skippedInRow: number) => boolean,
 ): Traversable<T>
 export function* filterWithMemory<T>(xs: Traversable<T>, by: (x: T, xs: T[], i: number, skippedInRow: number) => boolean) {
     const memory: T[] = []

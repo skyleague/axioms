@@ -5,8 +5,8 @@ import { equal } from '../../../iterator/equal/index.js'
 import { concat } from '../../../iterator/index.js'
 import { unique } from '../../../iterator/unique/index.js'
 import { difference } from '../../../set/difference/index.js'
-import type { RelaxedPartial } from '../../../type/partial/index.js'
-import type { BuildTuple } from '../../../type/tuple/tuple.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
+import type { ReadonlyTuple } from '../../../types.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
@@ -21,7 +21,7 @@ function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): T
     return filterTree(vals, (x) => collect(unique(x, eq)).length === x.length)
 }
 
-export type SetOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...BuildTuple<Min, T>, ...T[]] : T[]
+export type SetOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...ReadonlyTuple<T, Min>, ...T[]] : T[]
 
 /**
  * Describes how the sets allowed to be generated.
@@ -54,7 +54,7 @@ export interface SetGenerator<T, Min extends number> {
  */
 export function set<T, Min extends number = number>(
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<SetGenerator<T, Min>> = {}
+    constraints: MaybePartial<SetGenerator<T, Min>> = {},
 ): Dependent<SetOf<T, Min>> {
     const { minLength = 0, useBias = false, eq = equal, size, maxLength } = constraints
     const aarray = arrayWith(
@@ -65,11 +65,11 @@ export function set<T, Min extends number = number>(
             return !xs.some((x) => eq(y, x))
         },
         arbitrary,
-        { minLength, maxLength, size }
+        { minLength, maxLength, size },
     )
     return dependentArbitrary((ctx) => {
         // make sure we don't shrink to an array with duplicates
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        // biome-ignore lint/suspicious/noExplicitAny: end recursive type evaluation
         return uniqueArbitraryTree<T>(aarray.value(arbitraryContext({ ...ctx, bias: useBias ? ctx.bias : undefined })) as any, eq)
     }) as unknown as Dependent<SetOf<T, Min>>
 }
@@ -104,7 +104,7 @@ export interface SubsuperGenerator<T> {
  */
 export function subsuper<T>(
     arbitrary: Arbitrary<T>,
-    constraints: RelaxedPartial<SubsuperGenerator<T>> = {}
+    constraints: MaybePartial<SubsuperGenerator<T>> = {},
 ): Dependent<[subset: T[], superset: T[], complement: T[]]> {
     const { minLength = 0, maxLength, eq, size } = constraints
     const sub = set(arbitrary, { minLength, maxLength, eq, size })

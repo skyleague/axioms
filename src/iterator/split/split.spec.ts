@@ -3,7 +3,7 @@ import { splitAt, splitLast } from './index.js'
 import { collect } from '../../array/index.js'
 import { maybeAsValue } from '../../data/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 describe('splitAt', () => {
     it('string', () => {
         const [init, rest] = splitAt('hello world!', 6)
@@ -53,7 +53,7 @@ describe('splitAt', () => {
                       3,
                     ]
             `)
-        expect(collect(rest)).toMatchInlineSnapshot(`[]`)
+        expect(collect(rest)).toMatchInlineSnapshot('[]')
     })
 
     it('over', () => {
@@ -65,12 +65,12 @@ describe('splitAt', () => {
                       3,
                     ]
             `)
-        expect(collect(rest)).toMatchInlineSnapshot(`[]`)
+        expect(collect(rest)).toMatchInlineSnapshot('[]')
     })
 
     it('negative', () => {
         const [init, rest] = splitAt([1, 2, 3], -1)
-        expect(init).toMatchInlineSnapshot(`[]`)
+        expect(init).toMatchInlineSnapshot('[]')
         expect(collect(rest)).toMatchInlineSnapshot(`
                     [
                       1,
@@ -82,7 +82,7 @@ describe('splitAt', () => {
 
     it('zero', () => {
         const [init, rest] = splitAt([1, 2, 3], 0)
-        expect(init).toMatchInlineSnapshot(`[]`)
+        expect(init).toMatchInlineSnapshot('[]')
         expect(collect(rest)).toMatchInlineSnapshot(`
                     [
                       1,

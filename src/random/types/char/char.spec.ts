@@ -74,7 +74,7 @@ describe('alphaChar', () => {
     it('extra characters', () => {
         forAll(
             utf16().chain((extra) => alphaChar(extra).map((c) => [c, extra] as const)),
-            ([c, extra]) => `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz${extra}`.includes(c)
+            ([c, extra]) => `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz${extra}`.includes(c),
         )
     })
 
@@ -95,7 +95,7 @@ describe('lowerAlphaChar', () => {
     it('extra characters', () => {
         forAll(
             utf16().chain((extra) => lowerAlphaChar(extra).map((c) => [c, extra] as const)),
-            ([c, extra]) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c)
+            ([c, extra]) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c),
         )
     })
 
@@ -116,7 +116,7 @@ describe('alphaNumericChar', () => {
     it('extra characters', () => {
         forAll(
             utf16().chain((extra) => alphaNumericChar(extra).map((c) => [c, extra] as const)),
-            ([c, extra]) => `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`.includes(c)
+            ([c, extra]) => `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`.includes(c),
         )
     })
 
@@ -137,7 +137,7 @@ describe('lowerAlphaNumericChar', () => {
     it('extra characters', () => {
         forAll(
             utf16().chain((extra) => lowerAlphaNumericChar(extra).map((c) => [c, extra] as const)),
-            ([c, extra]) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c)
+            ([c, extra]) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c),
         )
     })
 
@@ -152,6 +152,7 @@ describe('asciiChar', () => {
     })
 
     it('allowed characters', () => {
+        // biome-ignore lint/suspicious/noControlCharactersInRegex: This is intentional
         forAll(asciiChar(), (c) => /[\x00-\x7F]/.test(c))
     })
 })

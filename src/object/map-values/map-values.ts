@@ -18,9 +18,9 @@ import { fromEntries } from '../from-entries/index.js'
  *
  * @group Object
  */
-export function mapValues<T extends ArrayLike<unknown> | {}, Mapper extends (v: T[keyof T], k: keyof T) => unknown>(
+export function mapValues<T extends ArrayLike<unknown> | object, Mapper extends (v: T[keyof T], k: keyof T) => unknown>(
     obj: T,
-    mapper: Mapper
+    mapper: Mapper,
 ): {
     [K in keyof T]: Mapper extends (v: T[K], k: K) => infer O ? O : never
 } {

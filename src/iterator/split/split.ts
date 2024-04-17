@@ -33,7 +33,7 @@ import { take } from '../take/index.js'
  */
 export function splitAt<T>(xs: Traversable<T>, at: number): [T[], Traverser<T>] {
     const takeIterator = take(xs, at)
-    const first = []
+    const first: T[] = []
     let it = next(takeIterator)
     while (isRight(it)) {
         first.push(it.right)
@@ -69,6 +69,7 @@ export function splitAt<T>(xs: Traversable<T>, at: number): [T[], Traverser<T>] 
  */
 export function splitLast<T>(xs: Traversable<T>): [T[], Maybe<T>] {
     const array = [...xs]
+    // biome-ignore lint/style/noNonNullAssertion: The array is guaranteed to have a value at this index
     const last = array.length > 0 ? array.pop()! : Nothing
     return [array, last]
 }

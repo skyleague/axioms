@@ -3,7 +3,7 @@ import { halves, halvesf, splits, towards, towardsf } from './shrink.js'
 import { collect } from '../../../array/collect/collect.js'
 import { take } from '../../../iterator/take/take.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('towards', () => {
     it('simple', () => {

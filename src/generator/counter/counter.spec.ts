@@ -1,7 +1,7 @@
 import { counter } from './index.js'
 
 import { collect } from '../../array/index.js'
-import { take, allEqual } from '../../iterator/index.js'
+import { allEqual, take } from '../../iterator/index.js'
 import { forAll, natural, tuple } from '../../random/index.js'
 import { range } from '../index.js'
 

@@ -28,7 +28,7 @@ import { takeWhile } from '../take/index.js'
  */
 export function span<T, R>(xs: Traversable<T, R>, predicate: (x: T) => boolean): [T[], Traverser<T, R>] {
     const takeIterator = takeWhile(xs, predicate)
-    const first = []
+    const first: T[] = []
     let it = next(takeIterator)
     while (isRight(it)) {
         first.push(it.right)

@@ -36,6 +36,7 @@ export function queue<T>(initialize: Traversable<T> = []): QueueGenerator<T> {
     const states: Traversable<T>[] = [initialize]
     const generator: QueueGenerator<T> = (function* () {
         while (states.length > 0) {
+            // biome-ignore lint/style/noNonNullAssertion: we know that `states` is not empty
             const next = states.shift()!
             yield* next
         }

@@ -28,6 +28,7 @@ import type { AsyncTraversable } from '../../type/async/async.js'
  *
  * ### Proposals
  * - [`Array.prototype.fromAsync`](https://github.com/tc39/proposal-array-from-async)
+ * - [`AsyncIterator.prototype.toArray`](https://github.com/tc39/proposal-async-iterator-helpers)
  *
  * @param xs - The values to map over.
  *

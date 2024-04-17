@@ -1,8 +1,7 @@
-// #region json
-
-import type { Json } from '../../../type/json/index.js'
 import { Nothing } from '../../../type/maybe/index.js'
-import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { Maybe } from '../../../type/maybe/maybe.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
+import type { JsonValue, Primitive } from '../../../types.js'
 import type { ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { array } from '../array/index.js'
@@ -55,7 +54,7 @@ export interface JsonGenerator {
  *
  * @group Arbitrary
  */
-export function json(constraints: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
+export function json(constraints: MaybePartial<JsonGenerator> = {}): Dependent<JsonValue> {
     const { utf = false, type = 'object', size } = constraints
     const arbs = [
         ...(type === 'value' ? [boolean(), utf ? utf16({ size }) : string({ size }), integer(), float(), constant(null)] : []),
@@ -72,7 +71,7 @@ export function json(constraints: RelaxedPartial<JsonGenerator> = {}): Dependent
                 ? [
                       array(
                           memoizeArbitrary(() => json({ utf, type: 'value', size })),
-                          { minLength: 0, maxLength: 5, size }
+                          { minLength: 0, maxLength: 5, size },
                       ),
                   ]
                 : []),
@@ -101,8 +100,6 @@ export interface PrimitiveGenerator {
     nothing: boolean
 }
 
-export type PrimitiveType = Nothing | boolean | number | string | symbol | null | undefined
-
 /**
  * It returns an arbitrary that generates primitives.
  *
@@ -119,13 +116,9 @@ export type PrimitiveType = Nothing | boolean | number | string | symbol | null 
  *
  * @group Arbitrary
  */
-export function primitive(
-    context: RelaxedPartial<PrimitiveGenerator> & { nothing: false }
-): Dependent<boolean | number | string | null | undefined>
-export function primitive(
-    context?: RelaxedPartial<PrimitiveGenerator>
-): Dependent<Nothing | boolean | number | string | null | undefined>
-export function primitive(context: RelaxedPartial<PrimitiveGenerator> = {}): Dependent<PrimitiveType | PrimitiveType[]> {
+export function primitive(context: MaybePartial<PrimitiveGenerator> & { nothing: false }): Dependent<Primitive>
+export function primitive(context?: MaybePartial<PrimitiveGenerator>): Dependent<Maybe<Primitive>>
+export function primitive(context: MaybePartial<PrimitiveGenerator> = {}): Dependent<Maybe<Primitive>> {
     const {
         integer: generateInteger = true,
         float: generateFloat = true,
@@ -144,7 +137,7 @@ export function primitive(context: RelaxedPartial<PrimitiveGenerator> = {}): Dep
         ...(generateSymbol ? [symbol()] : []),
         ...(generateNull ? [constant(null)] : []),
         ...(generateUndefined ? [constant(undefined)] : []),
-        ...(generateNothing ? [constant(Nothing)] : [])
+        ...(generateNothing ? [constant(Nothing)] : []),
     )
 }
 
@@ -164,7 +157,7 @@ export type UnknownGenerator = PrimitiveGenerator & {
     size: ArbitrarySize
 }
 
-export type UnknownType = PrimitiveType | PrimitiveType[] | { [k: string]: UnknownType }
+export type UnknownType = Maybe<Primitive> | Maybe<Primitive>[] | { [k: string]: UnknownType }
 
 /**
  * It returns an arbitrary that generates unknown values.
@@ -183,12 +176,12 @@ export type UnknownType = PrimitiveType | PrimitiveType[] | { [k: string]: Unkno
  * @group Arbitrary
  */
 export function unknown(
-    context: RelaxedPartial<UnknownGenerator> & { nothing: false }
+    context: MaybePartial<UnknownGenerator> & { nothing: false },
 ): Dependent<boolean | number | string | null | undefined>
 export function unknown(
-    context?: RelaxedPartial<UnknownGenerator>
+    context?: MaybePartial<UnknownGenerator>,
 ): Dependent<Nothing | boolean | number | string | null | undefined>
-export function unknown(context: RelaxedPartial<UnknownGenerator> = {}): Dependent<UnknownType> {
+export function unknown(context: MaybePartial<UnknownGenerator> = {}): Dependent<UnknownType> {
     const {
         integer: generateInteger = true,
         float: generateFloat = true,
@@ -215,7 +208,7 @@ export function unknown(context: RelaxedPartial<UnknownGenerator> = {}): Depende
             : []),
         ...(generateObject && maxDepth > 0
             ? [record([string(), unknown({ maxDepth: maxDepth - 1, size })], { minLength: 0, maxLength: 5, size })]
-            : [])
+            : []),
     )
 }
 

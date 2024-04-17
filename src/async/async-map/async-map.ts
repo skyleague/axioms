@@ -19,6 +19,7 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  *
  * ### Alternatives
  * - [p-map-series](https://github.com/sindresorhus/p-map-series)
+ * - [`AsyncIterator.prototype.map`](https://github.com/tc39/proposal-async-iterator-helpers)
  *
  * @param xs - The values to map over.
  *
@@ -31,7 +32,7 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  */
 export async function* asyncMap<I, O>(
     xs: AsyncTraversable<I>,
-    mapper: (x: I, index: number) => O | Promise<O>
+    mapper: (x: I, index: number) => O | Promise<O>,
 ): AsyncTraversable<O> {
     let i = 0
     for await (const x of xs) {

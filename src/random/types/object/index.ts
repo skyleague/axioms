@@ -1,1 +1,1 @@
-export { type ObjectGenerator, object } from './object.js'
+export { object } from './object.js'

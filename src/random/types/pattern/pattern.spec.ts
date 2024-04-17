@@ -4,7 +4,7 @@ import { collect, repeat, take } from '../../../index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
-import { it, expect } from 'vitest'
+import { expect, it } from 'vitest'
 
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
@@ -13,9 +13,9 @@ it('random sample', () => {
         collect(
             take(
                 repeat(() => apattern.sample(ctx)),
-                10
-            )
-        )
+                10,
+            ),
+        ),
     ).toMatchInlineSnapshot(`
       [
         "n2408bB",

@@ -20,7 +20,6 @@ import type { InfiniteGenerator } from '../../type/index.js'
  */
 export function* counter(start = 0): InfiniteGenerator<number> {
     let i = start
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
         yield i++
     }

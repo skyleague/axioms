@@ -3,7 +3,7 @@ import { findLast } from './index.js'
 import { counter } from '../../generator/index.js'
 import { isNothing } from '../../guard/index.js'
 import { take } from '../../iterator/index.js'
-import { forAll, array, integer, natural } from '../../random/index.js'
+import { array, forAll, integer, natural } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
@@ -42,7 +42,7 @@ it('finds first randomly inserted', () => {
 })
 
 it('simple', () => {
-    expect(findLast(take(counter(), 123), (i) => i > 10)).toMatchInlineSnapshot(`122`)
+    expect(findLast(take(counter(), 123), (i) => i > 10)).toMatchInlineSnapshot('122')
 })
 
 it('generator', () => {
@@ -54,5 +54,5 @@ it('generator', () => {
 })
 
 it('Nothing when nothing found', () => {
-    expect(findLast(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot(`Symbol((Nothing))`)
+    expect(findLast(take(counter(100), 100), (i) => i < 10)).toMatchInlineSnapshot('Symbol((Nothing))')
 })

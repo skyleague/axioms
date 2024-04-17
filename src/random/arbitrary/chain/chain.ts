@@ -17,8 +17,8 @@ export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
         children: applicative(() =>
             concat(
                 map(x.children, (c) => collapseArbitraryTree(c)),
-                x.value.children
-            )
+                x.value.children,
+            ),
         ),
     }
 }

@@ -2,7 +2,7 @@ import { drop, dropWhile } from './index.js'
 
 import { collect } from '../../array/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('drop', () => {
     it('string', () => {
@@ -19,7 +19,7 @@ describe('drop', () => {
     })
 
     it('short', () => {
-        expect(collect(drop([1, 2], 6))).toMatchInlineSnapshot(`[]`)
+        expect(collect(drop([1, 2], 6))).toMatchInlineSnapshot('[]')
     })
 
     it('negative', () => {
@@ -68,7 +68,7 @@ describe('dropWhile', () => {
     })
 
     it('all', () => {
-        expect(collect(dropWhile([1, 2, 3], (x) => x < 9))).toMatchInlineSnapshot(`[]`)
+        expect(collect(dropWhile([1, 2, 3], (x) => x < 9))).toMatchInlineSnapshot('[]')
     })
 
     it('none', () => {

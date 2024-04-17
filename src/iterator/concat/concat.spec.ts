@@ -2,7 +2,7 @@ import { concat } from './index.js'
 
 import { collect } from '../../array/index.js'
 import { range, repeat } from '../../generator/index.js'
-import { forAll, tuple, array, unknown } from '../../random/index.js'
+import { array, forAll, tuple, unknown } from '../../random/index.js'
 import { allEqual, take } from '../index.js'
 
 import { expect, it } from 'vitest'
@@ -80,15 +80,15 @@ it('concat take 2 repeat 1 take 2 repeat 2 === 1 1 2 2', () => {
             concat(
                 take(
                     repeat(() => 1),
-                    2
+                    2,
                 ),
 
                 take(
                     repeat(() => 2),
-                    2
-                )
-            )
-        )
+                    2,
+                ),
+            ),
+        ),
     ).toMatchInlineSnapshot(`
         [
           1,

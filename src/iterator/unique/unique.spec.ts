@@ -23,8 +23,8 @@ it('keys groupby identity X === map string unique X', () => {
         expect(
             intersection(
                 collect(unique(xs)).map((x) => JSON.stringify(x)),
-                grouped
-            ).size
+                grouped,
+            ).size,
         ).toBe(grouped.length)
     })
 })

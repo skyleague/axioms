@@ -39,10 +39,12 @@ export function stack<T>(initialize: Traversable<T> = []): StackGenerator<T> {
     const pending: Traverser<T>[] = [toTraverser(initialize)]
     const generator: StackGenerator<T> = (function* () {
         while (pending.length > 0) {
+            // biome-ignore lint/style/noNonNullAssertion: we know that pending is not empty
             let node = next(pending[pending.length - 1]!)
             while (isLeft(node) && pending.length > 0) {
                 pending.pop()
                 if (pending.length > 0) {
+                    // biome-ignore lint/style/noNonNullAssertion: we know that pending is not empty
                     node = next(pending[pending.length - 1]!)
                 }
             }

@@ -1,4 +1,4 @@
-import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { float } from '../float/index.js'
 import { integer } from '../integer/index.js'
@@ -34,7 +34,7 @@ export interface PropertyKeyGenerator {
  *
  * @group Arbitrary
  */
-export function propertyKey(constraints: RelaxedPartial<PropertyKeyGenerator> = {}): Dependent<PropertyKey> {
+export function propertyKey(constraints: MaybePartial<PropertyKeyGenerator> = {}): Dependent<PropertyKey> {
     const {
         integer: generateInteger = true,
         float: generateFloat = true,
@@ -45,6 +45,6 @@ export function propertyKey(constraints: RelaxedPartial<PropertyKeyGenerator> = 
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),
         ...(generateString ? [alphaNumeric()] : []),
-        ...(generateSymbol ? [symbol()] : [])
+        ...(generateSymbol ? [symbol()] : []),
     )
 }

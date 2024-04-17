@@ -17,7 +17,7 @@ import { equal } from '../../iterator/equal/index.js'
 import { array, deterministicInteger, forAll, integer, shuffle, tuple, unknown } from '../../random/index.js'
 import { identity } from '../../util/index.js'
 
-import { expect, describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('eitherAsValue', () => {
     it('simple', () => {
@@ -28,14 +28,14 @@ describe('eitherAsValue', () => {
     it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => x === eitherAsValue(either)
+            ([x, either]) => x === eitherAsValue(either),
         )
     })
 
     it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => x === eitherAsValue(either)
+            ([x, either]) => x === eitherAsValue(either),
         )
     })
 })
@@ -58,14 +58,14 @@ describe('mapRight', () => {
     it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => equal({ left: x }, mapRight(either, deterministicInteger))
+            ([x, either]) => equal({ left: x }, mapRight(either, deterministicInteger)),
         )
     })
 
     it('right', () => {
         forAll(
             unknown().map((x) => [deterministicInteger(x), { right: x }] as const),
-            ([x, either]) => equal({ right: x }, mapRight(either, deterministicInteger))
+            ([x, either]) => equal({ right: x }, mapRight(either, deterministicInteger)),
         )
     })
 })
@@ -104,9 +104,9 @@ describe('mapRights', () => {
                 { right: deterministicInteger(xs) },
                 mapRights(
                     xs.map((x) => ({ right: x })),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 
@@ -120,15 +120,15 @@ describe('mapRights', () => {
                             shuffle(
                                 concat(
                                     xs.map((x) => ({ right: x })),
-                                    [{ left: left1 }]
-                                )
+                                    [{ left: left1 }],
+                                ),
                             ),
-                            [{ left: left2 }]
-                        )
+                            [{ left: left2 }],
+                        ),
                     ),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 })
@@ -140,20 +140,20 @@ describe('whenRight', () => {
                     "left": 0,
                   }
           `)
-        expect(whenRight({ right: 0 }, identity)).toMatchInlineSnapshot(`0`)
+        expect(whenRight({ right: 0 }, identity)).toMatchInlineSnapshot('0')
     })
 
     it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => equal({ left: x }, whenRight(either, deterministicInteger))
+            ([x, either]) => equal({ left: x }, whenRight(either, deterministicInteger)),
         )
     })
 
     it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => deterministicInteger(x) === whenRight(either, deterministicInteger)
+            ([x, either]) => deterministicInteger(x) === whenRight(either, deterministicInteger),
         )
     })
 })
@@ -189,9 +189,9 @@ describe('whenRights', () => {
                 deterministicInteger(xs),
                 whenRights(
                     xs.map((x) => ({ right: x })),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 
@@ -205,15 +205,15 @@ describe('whenRights', () => {
                             shuffle(
                                 concat(
                                     xs.map((x) => ({ right: x })),
-                                    [{ left: left1 }]
-                                )
+                                    [{ left: left1 }],
+                                ),
                             ),
-                            [{ left: left2 }]
-                        )
+                            [{ left: left2 }],
+                        ),
                     ),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 })
@@ -236,14 +236,14 @@ describe('mapLeft', () => {
     it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => equal({ right: x }, mapLeft(either, deterministicInteger))
+            ([x, either]) => equal({ right: x }, mapLeft(either, deterministicInteger)),
         )
     })
 
     it('left', () => {
         forAll(
             unknown().map((x) => [deterministicInteger(x), { left: x }] as const),
-            ([x, either]) => equal({ left: x }, mapLeft(either, deterministicInteger))
+            ([x, either]) => equal({ left: x }, mapLeft(either, deterministicInteger)),
         )
     })
 })
@@ -275,9 +275,9 @@ describe('mapLefts', () => {
                 { left: deterministicInteger(xs) },
                 mapLefts(
                     xs.map((x) => ({ left: x })),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 
@@ -291,22 +291,22 @@ describe('mapLefts', () => {
                             shuffle(
                                 concat(
                                     xs.map((x) => ({ left: x })),
-                                    [{ right: right1 }]
-                                )
+                                    [{ right: right1 }],
+                                ),
                             ),
-                            [{ right: right2 }]
-                        )
+                            [{ right: right2 }],
+                        ),
                     ),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 })
 
 describe('whenLeft', () => {
     it('simple', () => {
-        expect(whenLeft({ left: 0 }, identity)).toMatchInlineSnapshot(`0`)
+        expect(whenLeft({ left: 0 }, identity)).toMatchInlineSnapshot('0')
         expect(whenLeft({ right: 0 }, identity)).toMatchInlineSnapshot(`
             {
               "right": 0,
@@ -317,14 +317,14 @@ describe('whenLeft', () => {
     it('right', () => {
         forAll(
             unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => equal({ right: x }, whenLeft(either, deterministicInteger))
+            ([x, either]) => equal({ right: x }, whenLeft(either, deterministicInteger)),
         )
     })
 
     it('left', () => {
         forAll(
             unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => deterministicInteger(x) === whenLeft(either, deterministicInteger)
+            ([x, either]) => deterministicInteger(x) === whenLeft(either, deterministicInteger),
         )
     })
 })
@@ -357,9 +357,9 @@ describe('whenLefts', () => {
                 deterministicInteger(xs),
                 whenLefts(
                     xs.map((x) => ({ left: x })),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 
@@ -373,15 +373,15 @@ describe('whenLefts', () => {
                             shuffle(
                                 concat(
                                     xs.map((x) => ({ left: x })),
-                                    [{ right: right1 }]
-                                )
+                                    [{ right: right1 }],
+                                ),
                             ),
-                            [{ right: right2 }]
-                        )
+                            [{ right: right2 }],
+                        ),
                     ),
-                    deterministicInteger
-                )
-            )
+                    deterministicInteger,
+                ),
+            ),
         )
     })
 })

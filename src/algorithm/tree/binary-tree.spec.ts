@@ -1,5 +1,5 @@
 import type { BinaryTree } from './index.js'
-import { dfsNLR, dfsLRN } from './index.js'
+import { dfsLRN, dfsNLR } from './index.js'
 
 import { expect, it } from 'vitest'
 
