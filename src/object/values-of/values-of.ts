@@ -1,6 +1,4 @@
-import type { KeyOf } from '../../type/index.js'
-
-export type ValuesOf<T> = T extends (infer I)[] ? I[] : T[KeyOf<T>][]
+export type ValuesOf<T extends ArrayLike<unknown> | {}> = T extends readonly (infer I)[] ? I[] : T[keyof T][]
 
 /**
  * Returns an array of values of the enumerable properties of an object.
@@ -23,6 +21,6 @@ export type ValuesOf<T> = T extends (infer I)[] ? I[] : T[KeyOf<T>][]
  *
  * @group Object
  */
-export function valuesOf<T extends ArrayLike<unknown> | {}>(obj: T): ValuesOf<T> {
+export function valuesOf<const T extends ArrayLike<unknown> | {}>(obj: T): ValuesOf<T> {
     return Object.values(obj) as ValuesOf<T>
 }
