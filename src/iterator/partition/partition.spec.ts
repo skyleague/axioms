@@ -14,7 +14,7 @@ import { tuple } from '../../random/types/tuple/tuple.js'
 import { type Mappable, toTraversable } from '../../type/traversable/traversable.js'
 import { partition } from './partition.js'
 
-import { expect, it } from 'vitest'
+import { expect, expectTypeOf, it } from 'vitest'
 
 function* interleave<X, Y>(xs: X[], ys: Y[], seed: number) {
     const rng = xoroshiro128plus(BigInt(seed))
@@ -60,4 +60,9 @@ it('partition (interleave xs, ys), isX == [xs, ys]', () => {
             expect(Ys).toEqual(ys)
         },
     )
+})
+
+it('partition is correctly typed', () => {
+    expectTypeOf(partition([1, 2], (x) => x % 2 === 0)).toEqualTypeOf<[number[], number[]]>()
+    expectTypeOf(partition([1, 2, '4'], isString)).toEqualTypeOf<[string[], number[]]>()
 })
