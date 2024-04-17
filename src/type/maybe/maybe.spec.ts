@@ -3,11 +3,11 @@ import { Nothing } from './index.js'
 import { expect, it } from 'vitest'
 
 it('Nothing serializes', () => {
-    expect(`${Nothing.toString()}`).toEqual('Symbol((Nothing))')
+    expect(Nothing.toString()).toEqual('Symbol((Nothing))')
 })
 
 it('Nothing string coerces', () => {
-    expect(`${String(Nothing)}`).toEqual('Symbol((Nothing))')
+    expect(String(Nothing)).toEqual('Symbol((Nothing))')
 })
 
 it('Nothing assignable to Nothing', () => {

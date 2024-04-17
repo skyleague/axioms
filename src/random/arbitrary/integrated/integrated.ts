@@ -14,10 +14,10 @@ export interface Integrated<C, T> extends Arbitrary<T> {
     value: (context: ArbitraryContext, x?: T) => Tree<T>
     random: (context?: ArbitraryContext) => T
     shrink: (x: T) => Tree<T>
-    filter<S extends T>(f: (x: T) => x is S): Dependent<S>
-    filter(f: (x: T) => boolean): Dependent<T>
-    map: <U>(f: (x: T) => U) => Dependent<U>
-    chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
+    filter<S extends T>(f: (x: T, context: ArbitraryContext) => x is S): Dependent<S>
+    filter(f: (x: T, context: ArbitraryContext) => boolean): Dependent<T>
+    map: <U>(f: (x: T, context: ArbitraryContext) => U) => Dependent<U>
+    chain: <U>(f: (x: T, context: ArbitraryContext) => Arbitrary<U>) => Dependent<U>
     constant: () => Dependent<T>
 }
 
@@ -42,22 +42,28 @@ export function integratedArbitrary<C, T>({
             : (lconstraints: C, context: ArbitraryContext) => {
                   const { bias } = context
                   if (bias !== undefined) {
-                      return sample(biased(lconstraints, { ...context, bias }), context)
+                      const oldBias = context.bias
+                      context.bias = bias
+                      const biasedConstraints = biased(lconstraints, context as BiasedArbitraryContext)
+                      const sampled = sample(biasedConstraints, context)
+                      context.bias = oldBias
+                      return sampled
                   }
-                  return sample(lconstraints, context)
+                  const sampled = sample(lconstraints, context)
+                  return sampled
               }
-    const integrated = {
+    const integrated: Integrated<C, T> = {
         constraints,
         sample: (context: ArbitraryContext) => biasedSample(constraints, context),
         value: (context: ArbitraryContext, x?: T) =>
             applicativeTree(shrink(constraints, x ?? biasedSample(constraints, context))),
         random: (context?: ArbitraryContext) => biasedSample(constraints, context ?? (localContext ??= arbitraryContext())),
         shrink: (x: T) => shrink(constraints, x),
-        filter: <S extends T>(fn: (x: T) => x is S) => filterArbitrary(integrated, fn),
-        map: <U>(fn: (x: T) => U) => mapArbitrary(integrated, fn),
-        chain: <U>(fn: (x: T) => Arbitrary<U>) => chainArbitrary(integrated, fn),
+        filter: <S extends T>(fn: (x: T, context: ArbitraryContext) => x is S) => filterArbitrary(integrated, fn),
+        map: <U>(fn: (x: T, context: ArbitraryContext) => U) => mapArbitrary(integrated, fn),
+        chain: <U>(fn: (x: T, context: ArbitraryContext) => Arbitrary<U>) => chainArbitrary(integrated, fn),
         constant: () => constantArbitrary(integrated),
-    }
+    } satisfies Integrated<C, T>
 
     return integrated
 }

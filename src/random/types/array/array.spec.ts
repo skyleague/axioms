@@ -25,6 +25,18 @@ describe('array', () => {
         })
     })
 
+    it('length is parametrized', () => {
+        forAll(
+            tuple(integer({ min: 0, max: 10 }), integer({ min: 0, max: 10 })).chain(([a, b]) => {
+                const minLength = a
+                const maxLength = a + b
+                return array(integer(), { minLength, maxLength }).map((xs) => [xs, minLength, maxLength] as const)
+            }),
+            // inclusive
+            ([xs, minLength, maxLength]) => minLength <= xs.length && xs.length <= maxLength
+        )
+    })
+
     it('check min constraint', () => {
         forAll(
             natural({ max: 1000 }).chain((min) => {
@@ -40,7 +52,7 @@ describe('array', () => {
             natural({ min: 1, max: 1000 }).chain((max) => {
                 return tuple(constant(max), array(integer(), { maxLength: max }))
             }),
-            ([max, xs]) => xs.length < max,
+            ([max, xs]) => xs.length <= max,
             { seed: 42n }
         )
     })

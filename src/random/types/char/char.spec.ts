@@ -18,6 +18,8 @@ import { describe, it } from 'vitest'
 
 import util from 'node:util'
 
+const isPrintable = (str: string) => /^[ -~]+$/.test(str)
+
 describe('char', () => {
     it('length is always 1', () => {
         forAll(char(), (c) => c.length === 1)
@@ -25,6 +27,10 @@ describe('char', () => {
 
     it('allowed characters', () => {
         forAll(char(), (c) => 32 <= c.charCodeAt(0) && c.charCodeAt(0) <= 126)
+    })
+
+    it('all printable', () => {
+        forAll(char(), isPrintable)
     })
 })
 
@@ -36,6 +42,10 @@ describe('hexChar', () => {
     it('allowed characters', () => {
         forAll(hexChar(), (c) => '0123456789abcdef'.includes(c))
     })
+
+    it('all printable', () => {
+        forAll(hexChar(), isPrintable)
+    })
 })
 
 describe('base64Char', () => {
@@ -45,6 +55,10 @@ describe('base64Char', () => {
 
     it('allowed characters', () => {
         forAll(base64Char(), (c) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.includes(c))
+    })
+
+    it('all printable', () => {
+        forAll(base64Char(), isPrintable)
     })
 })
 
@@ -63,6 +77,10 @@ describe('alphaChar', () => {
             ([c, extra]) => `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz${extra}`.includes(c)
         )
     })
+
+    it('all printable', () => {
+        forAll(alphaChar(), isPrintable)
+    })
 })
 
 describe('lowerAlphaChar', () => {
@@ -79,6 +97,10 @@ describe('lowerAlphaChar', () => {
             utf16().chain((extra) => lowerAlphaChar(extra).map((c) => [c, extra] as const)),
             ([c, extra]) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c)
         )
+    })
+
+    it('all printable', () => {
+        forAll(lowerAlphaChar(), isPrintable)
     })
 })
 
@@ -97,6 +119,10 @@ describe('alphaNumericChar', () => {
             ([c, extra]) => `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`.includes(c)
         )
     })
+
+    it('all printable', () => {
+        forAll(alphaNumericChar(), isPrintable)
+    })
 })
 
 describe('lowerAlphaNumericChar', () => {
@@ -113,6 +139,10 @@ describe('lowerAlphaNumericChar', () => {
             utf16().chain((extra) => lowerAlphaNumericChar(extra).map((c) => [c, extra] as const)),
             ([c, extra]) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c)
         )
+    })
+
+    it('all printable', () => {
+        forAll(lowerAlphaNumericChar(), isPrintable)
     })
 })
 

@@ -26,16 +26,16 @@ it('distribution', () => {
         )
     ).toMatchInlineSnapshot(`
       {
-        "0": 110,
-        "1": 99,
-        "2": 99,
-        "3": 112,
+        "0": 88,
+        "1": 117,
+        "2": 91,
+        "3": 105,
         "4": 100,
-        "5": 90,
-        "6": 98,
-        "7": 105,
-        "8": 96,
-        "9": 91,
+        "5": 99,
+        "6": 84,
+        "7": 117,
+        "8": 105,
+        "9": 94,
       }
     `)
 
@@ -50,13 +50,14 @@ it('distribution', () => {
         )
     ).toMatchInlineSnapshot(`
       {
-        "0": 90,
-        "1": 93,
-        "2": 114,
-        "3": 96,
-        "4": 99,
-        "5": 102,
-        "6": 104,
+        "0": 89,
+        "1": 92,
+        "10": 10,
+        "2": 112,
+        "3": 97,
+        "4": 97,
+        "5": 101,
+        "6": 100,
         "7": 109,
         "8": 100,
         "9": 93,
@@ -68,11 +69,13 @@ it('counter example - positive', () => {
     expect(() => {
         forAll(natural({ max: 20 }), (v) => v > 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 44 tests (seed: 42n)
+      [AssertionError: Counter example found after 44 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
-      0]
+      0
+
+      ]
     `)
 })
 
@@ -80,11 +83,13 @@ it('counter example - negative', () => {
     expect(() => {
         forAll(natural(), (v) => v <= 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1 tests (seed: 42n)
+      [AssertionError: Counter example found after 1 tests (seed: 42n)
       Shrunk 3 time(s)
       Counter example:
 
-      1]
+      1
+
+      ]
     `)
 })
 
@@ -92,11 +97,13 @@ it('counter example - equal', () => {
     expect(() => {
         forAll(natural({ max: 20 }), (v) => v !== 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 44 tests (seed: 42n)
+      [AssertionError: Counter example found after 44 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
-      0]
+      0
+
+      ]
     `)
 })
 
@@ -115,11 +122,13 @@ it('counter example - asymmetric', () => {
             { seed: 42n, tests: 2000, timeout: false }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 811 tests (seed: 42n)
-      Shrunk 10 time(s)
+      [AssertionError: Counter example found after 130 tests (seed: 42n)
+      Shrunk 7 time(s)
       Counter example:
 
-      [ 998991, 999001 ]]
+      [ 999001, 999011 ]
+
+      ]
     `)
 })
 
@@ -136,16 +145,18 @@ it('counter example - symmetric', () => {
             { seed: 42n, tests: 2000, timeout: false }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1271 tests (seed: 42n)
-      Shrunk 12 time(s)
+      [AssertionError: Counter example found after 130 tests (seed: 42n)
+      Shrunk 6 time(s)
       Counter example:
 
-      [ 998976, 997977 ]]
+      [ 999001, 998002 ]
+
+      ]
     `)
 })
 
 it('random sample', () => {
-    const ctx = { rng: xoroshiro128plus(1638968569864n) }
+    const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = natural({ min: 0, max: 1000 })
     expect(
         collect(
@@ -156,16 +167,16 @@ it('random sample', () => {
         )
     ).toMatchInlineSnapshot(`
       [
-        550,
+        551,
         270,
         471,
         36,
-        805,
-        37,
+        806,
+        38,
         79,
-        390,
+        391,
         180,
-        148,
+        149,
       ]
     `)
 })

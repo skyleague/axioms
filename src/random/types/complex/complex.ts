@@ -3,14 +3,16 @@
 import type { Json } from '../../../type/json/index.js'
 import { Nothing } from '../../../type/maybe/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
+import type { ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { array } from '../array/index.js'
 import { boolean } from '../boolean/index.js'
-import { dict } from '../dict/index.js'
 import { float } from '../float/index.js'
+import { memoizeArbitrary } from '../helper/helper.js'
 import { constant } from '../helper/index.js'
 import { integer } from '../integer/index.js'
 import { oneOf } from '../one-of/index.js'
+import { record } from '../record/index.js'
 import { string, utf16, utf16Surrogate } from '../string/index.js'
 import { symbol } from '../symbol/index.js'
 
@@ -20,10 +22,6 @@ import { symbol } from '../symbol/index.js'
  * @group Arbitrary
  */
 export interface JsonGenerator {
-    /**
-     * The maximum nesting allowed in array/object.
-     */
-    maxDepth: number
     /**
      * Controls whether strings should be generated with utf16.
      */
@@ -35,6 +33,7 @@ export interface JsonGenerator {
      * * value - generates a primitive/object/array value
      */
     type: 'array' | 'object' | 'value'
+    size?: ArbitrarySize
 }
 
 /**
@@ -57,19 +56,27 @@ export interface JsonGenerator {
  * @group Arbitrary
  */
 export function json(constraints: RelaxedPartial<JsonGenerator> = {}): Dependent<Json> {
-    const { maxDepth = 2, utf = false, type = 'object' } = constraints
+    const { utf = false, type = 'object', size } = constraints
     const arbs = [
-        ...(type === 'value' || maxDepth === 0 ? [utf ? utf16() : string(), integer(), float(), boolean(), constant(null)] : []),
-        ...(maxDepth > 0
-            ? [
-                  ...(type !== 'array'
-                      ? [dict([string(), json({ maxDepth: maxDepth - 1, utf, type: 'value' })], { minLength: 0, maxLength: 5 })]
-                      : []),
-                  ...(type !== 'object'
-                      ? [array(json({ maxDepth: maxDepth - 1, utf, type: 'value' }), { minLength: 0, maxLength: 5 })]
-                      : []),
-              ]
-            : []),
+        ...(type === 'value' ? [boolean(), utf ? utf16({ size }) : string({ size }), integer(), float(), constant(null)] : []),
+        ...[
+            ...(type !== 'array'
+                ? [
+                      record([string({ size }), memoizeArbitrary(() => json({ utf, type: 'value', size }))], {
+                          minLength: 0,
+                          size,
+                      }),
+                  ]
+                : []),
+            ...(type !== 'object'
+                ? [
+                      array(
+                          memoizeArbitrary(() => json({ utf, type: 'value', size })),
+                          { minLength: 0, maxLength: 5, size }
+                      ),
+                  ]
+                : []),
+        ],
     ]
     return oneOf(...arbs)
 }
@@ -154,6 +161,7 @@ export type UnknownGenerator = PrimitiveGenerator & {
     array: boolean
     object: boolean
     maxDepth: number
+    size: ArbitrarySize
 }
 
 export type UnknownType = PrimitiveType | PrimitiveType[] | { [k: string]: UnknownType }
@@ -192,18 +200,21 @@ export function unknown(context: RelaxedPartial<UnknownGenerator> = {}): Depende
         array: generateArray = true,
         object: generateObject = true,
         maxDepth = 1,
+        size,
     } = context
     return oneOf(
         ...(generateInteger ? [integer()] : []),
         ...(generateFloat ? [float()] : []),
         ...(generateBoolean ? [boolean()] : []),
-        ...(generateString ? [utf16Surrogate()] : []),
+        ...(generateString ? [utf16Surrogate({ size })] : []),
         ...(generateNull ? [constant(null)] : []),
         ...(generateUndefined ? [constant(undefined)] : []),
         ...(generateNothing ? [constant(Nothing)] : []),
-        ...(generateArray && maxDepth > 0 ? [array(unknown({ maxDepth: maxDepth - 1 }), { minLength: 0, maxLength: 5 })] : []),
+        ...(generateArray && maxDepth > 0
+            ? [array(unknown({ maxDepth: maxDepth - 1, size }), { minLength: 0, maxLength: 5, size })]
+            : []),
         ...(generateObject && maxDepth > 0
-            ? [dict([string(), unknown({ maxDepth: maxDepth - 1 })], { minLength: 0, maxLength: 5 })]
+            ? [record([string(), unknown({ maxDepth: maxDepth - 1, size })], { minLength: 0, maxLength: 5, size })]
             : [])
     )
 }

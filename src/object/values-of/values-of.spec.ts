@@ -1,11 +1,11 @@
 import { valuesOf } from './index.js'
 
-import { forAll, dict, unknown, string, array, oneOf, integer } from '../../random/index.js'
+import { forAll, record, unknown, string, array, oneOf, integer } from '../../random/index.js'
 
 import { expect, it } from 'vitest'
 
 it('valuesOf === Object.values', () => {
-    forAll(dict(unknown()), (o) => {
+    forAll(record(unknown()), (o) => {
         expect(valuesOf(o)).toStrictEqual(Object.values(o))
     })
 })
@@ -27,7 +27,7 @@ it('valuesOf [1, 2, 3]', () => {
 })
 
 it('valuesOf union object and array', () => {
-    forAll(oneOf(array(string()), dict([integer(), integer()])), (o) => {
+    forAll(oneOf(array(string()), record([integer(), integer()])), (o) => {
         expect(valuesOf(o)).toStrictEqual(Object.values(o))
     })
     const _foo: number[] = valuesOf([1, 2, 3])

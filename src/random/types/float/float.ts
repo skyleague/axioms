@@ -5,19 +5,8 @@ import type { ArbitraryContext, Integrated } from '../../arbitrary/index.js'
 import { integratedArbitrary } from '../../arbitrary/index.js'
 import { towardsf } from '../../arbitrary/shrink/shrink.js'
 
-/**
- * Describes how floats are allowed to be generated.
- *
- * @group Arbitrary
- */
 export interface FloatConstraints {
-    /**
-     * The minimum value to generate.
-     */
     min: number
-    /**
-     * The maximum value to generate.
-     */
     max: number
 }
 
@@ -28,6 +17,32 @@ function sampleFloat({ min, max }: FloatConstraints, { rng }: ArbitraryContext):
 function shrinkFloat({ min, max }: FloatConstraints, x: number): Tree<number> {
     const destination = min <= 0 && max >= 0 ? 0 : min < 0 ? max : min
     return expandTree((v) => towardsf(destination, v), tree(x, [tree(destination)]))
+}
+
+/**
+ * Describes how floats are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
+export interface FloatGenerator {
+    /**
+     * The minimum value to generate.
+     */
+    min: number
+
+    /**
+     * Is the minimum value included in the generation.
+     */
+    minInclusive: boolean
+    /**
+     * The maximum value to generate (exclusive).
+     */
+    max: number
+
+    /**
+     * Is the maximum value included in the generation.
+     */
+    maxInclusive: boolean
 }
 
 /**
@@ -48,8 +63,23 @@ function shrinkFloat({ min, max }: FloatConstraints, x: number): Tree<number> {
  *
  * @group Arbitrary
  */
-export function float(constraints: RelaxedPartial<FloatConstraints> = {}): Integrated<FloatConstraints, number> {
-    const { min = -Math.pow(2, 31), max = Math.pow(2, 31) } = constraints
+export function float({
+    min = -Math.pow(2, 31),
+    minInclusive = true,
+    max = Math.pow(2, 31),
+    maxInclusive = true,
+}: RelaxedPartial<FloatGenerator> = {}): Integrated<FloatConstraints, number> {
+    // shift the min and max to the correct value
+    if (!minInclusive) {
+        min += Number.EPSILON
+    }
+    if (!maxInclusive) {
+        max -= Number.EPSILON
+    }
+
+    if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) {
+        throw new Error('The minimum value must be less than the maximum value, and be finite')
+    }
 
     return integratedArbitrary({
         sample: sampleFloat,

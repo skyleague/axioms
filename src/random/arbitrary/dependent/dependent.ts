@@ -9,11 +9,11 @@ import { constantArbitrary } from '../transform/transform.js'
 export interface Dependent<T> extends Arbitrary<T> {
     sample(context: ArbitraryContext): T
     random: (context?: ArbitraryContext) => T
-    filter<S extends T>(f: (x: T) => x is S): Dependent<S>
-    filter(f: (x: T) => boolean): Dependent<T>
+    filter<S extends T>(f: (x: T, context: ArbitraryContext) => x is S): Dependent<S>
+    filter(f: (x: T, context: ArbitraryContext) => boolean): Dependent<T>
 
-    map: <U>(f: (x: T) => U) => Dependent<U>
-    chain: <U>(f: (x: T) => Arbitrary<U>) => Dependent<U>
+    map: <U>(f: (x: T, context: ArbitraryContext) => U) => Dependent<U>
+    chain: <U>(f: (x: T, context: ArbitraryContext) => Arbitrary<U>) => Dependent<U>
     constant: () => Dependent<T>
 }
 
@@ -26,9 +26,9 @@ export function dependentArbitrary<T>(f: (context: ArbitraryContext) => Tree<T>)
         sample: (context: ArbitraryContext) => f(context).value,
         value: (context: ArbitraryContext) => f(context),
         random: (context?: ArbitraryContext) => f(context ?? (localContext ??= arbitraryContext())).value,
-        filter: <S extends T>(fn: (x: T) => x is S) => filterArbitrary(dependent, fn),
-        map: <U>(fn: (x: T) => U) => mapArbitrary(dependent, fn),
-        chain: <U>(fn: (x: T) => Arbitrary<U>) => chainArbitrary(dependent, fn),
+        filter: <S extends T>(fn: (x: T, context: ArbitraryContext) => x is S) => filterArbitrary(dependent, fn),
+        map: <U>(fn: (x: T, context: ArbitraryContext) => U) => mapArbitrary(dependent, fn),
+        chain: <U>(fn: (x: T, context: ArbitraryContext) => Arbitrary<U>) => chainArbitrary(dependent, fn),
         constant: () => constantArbitrary(dependent),
     }
     return dependent

@@ -28,25 +28,25 @@ it('distribution', () => {
         )
     ).toMatchInlineSnapshot(`
       {
-        "-1": 56,
-        "-2": 53,
-        "-3": 47,
-        "-4": 61,
-        "-5": 43,
-        "-6": 56,
-        "-7": 51,
-        "-8": 34,
-        "-9": 48,
-        "0": 92,
-        "1": 51,
-        "2": 59,
-        "3": 56,
-        "4": 40,
-        "5": 58,
-        "6": 39,
-        "7": 57,
-        "8": 50,
-        "9": 49,
+        "-1": 52,
+        "-2": 57,
+        "-3": 45,
+        "-4": 63,
+        "-5": 46,
+        "-6": 51,
+        "-7": 49,
+        "-8": 42,
+        "-9": 42,
+        "0": 97,
+        "1": 46,
+        "2": 52,
+        "3": 61,
+        "4": 49,
+        "5": 46,
+        "6": 57,
+        "7": 43,
+        "8": 58,
+        "9": 44,
       }
     `)
 
@@ -63,27 +63,29 @@ it('distribution', () => {
       {
         "-1": 47,
         "-10": 48,
-        "-2": 52,
-        "-3": 54,
-        "-4": 42,
+        "-2": 50,
+        "-3": 56,
+        "-4": 41,
         "-5": 59,
-        "-6": 55,
-        "-7": 45,
-        "-8": 48,
-        "-9": 42,
-        "0": 47,
-        "1": 55,
-        "2": 45,
-        "3": 59,
+        "-6": 54,
+        "-7": 46,
+        "-8": 47,
+        "-9": 41,
+        "0": 48,
+        "1": 52,
+        "10": 6,
+        "2": 47,
+        "3": 56,
         "4": 56,
         "5": 53,
-        "6": 44,
-        "7": 56,
-        "8": 46,
-        "9": 47,
+        "6": 49,
+        "7": 52,
+        "8": 49,
+        "9": 43,
       }
     `)
 })
+
 it('distribution - small numbers', () => {
     const xs: number[] = []
 
@@ -102,26 +104,27 @@ it('distribution - small numbers', () => {
         )
     ).toMatchInlineSnapshot(`
       {
-        "-1": 1445,
-        "-10": 1207,
-        "-2": 1528,
-        "-3": 1470,
-        "-4": 518,
-        "-5": 514,
-        "-6": 503,
-        "-7": 476,
-        "-8": 1151,
-        "-9": 1169,
-        "0": 1522,
-        "1": 1508,
-        "2": 1566,
-        "3": 514,
-        "4": 512,
-        "5": 491,
-        "6": 490,
-        "7": 1116,
-        "8": 1158,
-        "9": 1142,
+        "-1": 1307,
+        "-10": 985,
+        "-2": 1345,
+        "-3": 1309,
+        "-4": 510,
+        "-5": 476,
+        "-6": 482,
+        "-7": 959,
+        "-8": 970,
+        "-9": 994,
+        "0": 1301,
+        "1": 1411,
+        "10": 962,
+        "2": 1338,
+        "3": 1356,
+        "4": 511,
+        "5": 459,
+        "6": 475,
+        "7": 958,
+        "8": 903,
+        "9": 989,
       }
     `)
 })
@@ -130,11 +133,13 @@ it('counter example - positive', () => {
     expect(() => {
         forAll(integer(), (v) => v > 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1 tests (seed: 42n)
+      [AssertionError: Counter example found after 1 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
-      0]
+      0
+
+      ]
     `)
 })
 
@@ -142,11 +147,13 @@ it('counter example - negative', () => {
     expect(() => {
         forAll(integer(), (v) => v <= 0, { seed: 42n, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 4 tests (seed: 42n)
+      [AssertionError: Counter example found after 4 tests (seed: 42n)
       Shrunk 31 time(s)
       Counter example:
 
-      1]
+      1
+
+      ]
     `)
 })
 
@@ -154,11 +161,13 @@ it('counter example - equal', () => {
     expect(() => {
         forAll(integer(), (v) => v !== 0, { seed: 42n, tests: 2000, timeout: false })
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 2 tests (seed: 42n)
+      [AssertionError: Counter example found after 2 tests (seed: 42n)
       Shrunk 1 time(s)
       Counter example:
 
-      0]
+      0
+
+      ]
     `)
 })
 
@@ -234,9 +243,9 @@ it('show small tree 2', () => {
     `)
 })
 
-it('check min constraint', () => {
+it('check min constraint - inclusive', () => {
     forAll(
-        integer().chain((min) => {
+        integer({ min: 0, max: 100 }).chain((min) => {
             return tuple(constant(min), integer({ min }))
         }),
         ([min, x]) => x >= min,
@@ -244,10 +253,30 @@ it('check min constraint', () => {
     )
 })
 
-it('check max constraint', () => {
+it('check max constraint - inclusive', () => {
     forAll(
-        integer().chain((max) => {
+        integer({ min: 0, max: 100 }).chain((max) => {
             return tuple(constant(max), integer({ max }))
+        }),
+        ([max, x]) => x <= max,
+        { seed: 42n }
+    )
+})
+
+it('check min constraint - exclusive', () => {
+    forAll(
+        integer({ min: 0, max: 100 }).chain((min) => {
+            return tuple(constant(min), integer({ min, minInclusive: false }))
+        }),
+        ([min, x]) => x >= min,
+        { seed: 42n }
+    )
+})
+
+it('check max constraint - exclusive', () => {
+    forAll(
+        integer({ min: 0, max: 10 }).chain((max) => {
+            return tuple(constant(max), integer({ max, maxInclusive: false }))
         }),
         ([max, x]) => x < max,
         { seed: 42n }
@@ -260,7 +289,7 @@ it.skip('check min constraint - shrinking', () => {
             const aint = integer({ min })
             return tuple(constant(min), aint, constant(aint))
         }),
-        ([min, x, aint]) => all(dfsPreOrder(aint.shrink(x)), (v) => v >= min),
+        ([min, x, aint]) => all(dfsPreOrder(aint.shrink(x)), (v) => v > min),
         { seed: 42n, tests: 10000 }
     )
 })
@@ -298,11 +327,13 @@ it('counter example - asymmetric', () => {
             { seed: 42n, tests: 2000, timeout: false }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 811 tests (seed: 42n)
-      Shrunk 10 time(s)
+      [AssertionError: Counter example found after 130 tests (seed: 42n)
+      Shrunk 7 time(s)
       Counter example:
 
-      [ 998991, 999001 ]]
+      [ 999001, 999011 ]
+
+      ]
     `)
 })
 
@@ -319,16 +350,18 @@ it('counter example - symmetric', () => {
             { seed: 42n, tests: 2000, timeout: false }
         )
     }).toThrowErrorMatchingInlineSnapshot(`
-      [FalsifiedError: Counter example found after 1271 tests (seed: 42n)
-      Shrunk 12 time(s)
+      [AssertionError: Counter example found after 130 tests (seed: 42n)
+      Shrunk 6 time(s)
       Counter example:
 
-      [ 998976, 997977 ]]
+      [ 999001, 998002 ]
+
+      ]
     `)
 })
 
 it('random sample', () => {
-    const ctx = { rng: xoroshiro128plus(1638968569864n) }
+    const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = integer({ min: 0, max: 1000 })
     expect(
         collect(
@@ -339,16 +372,16 @@ it('random sample', () => {
         )
     ).toMatchInlineSnapshot(`
       [
-        550,
+        551,
         270,
         471,
         36,
-        805,
-        37,
+        806,
+        38,
         79,
-        390,
+        391,
         180,
-        148,
+        149,
       ]
     `)
 })

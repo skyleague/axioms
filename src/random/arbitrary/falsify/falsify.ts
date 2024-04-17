@@ -1,4 +1,5 @@
 import type { Tree } from '../../../algorithm/index.js'
+import { recoverTry } from '../../../data/try/try.js'
 import { enumerate } from '../../../generator/index.js'
 import { isDefined, isFailure, isJust } from '../../../guard/index.js'
 import type { Traversable, Maybe, Try } from '../../../type/index.js'
@@ -8,22 +9,14 @@ import { InfeasibleTree } from '../shrink/shrink.js'
 
 import { performance } from 'node:perf_hooks'
 
-export interface Falsified<T> {
-    counterExample: T
-    counterExampleStr: string
-    error: Maybe<Error>
-    depth: number
-    tests: number
-}
-
-export class FalsifiedError<T> extends Error {
-    public constructor(falsified: Falsified<T>, { seed }: { seed: bigint }) {
+export class FalsifiedError extends Error {
+    public constructor(falsified: Falsified, { seed }: { seed: bigint }) {
         const counterExampleStr = [
             `Counter example found after ${falsified.tests} tests (seed: ${seed}n)`,
             `Shrunk ${falsified.depth} time(s)`,
             `Counter example:`,
             '',
-            falsified.counterExampleStr,
+            falsified.counterExample,
         ].join('\n')
 
         super([counterExampleStr, ...(isJust(falsified.error) ? ['', falsified.error.message] : [])].join('\n'))
@@ -52,72 +45,65 @@ export class FalsifiedError<T> extends Error {
 
 export interface FalsifyOptions<T> {
     values: () => Traversable<Try<Tree<T>>>
-    predicate: (x: T) => [boolean, Maybe<Error>]
+    predicate: (x: T) => Try<true>
     maxDepth: number
     counterExample: T | undefined
     timeout: number | false
     tests: number
 }
 
+export interface Falsified {
+    counterExample: string
+    error: Error
+    depth: number
+    tests: number
+}
+
 /**
  * @internal
  */
-export function falsify<T>({
-    values,
-    predicate,
-    maxDepth,
-    counterExample,
-    timeout,
-    tests,
-}: FalsifyOptions<T>): Maybe<Falsified<T>> {
+export function falsify<T>({ values, predicate, maxDepth, counterExample, timeout, tests }: FalsifyOptions<T>): Maybe<Falsified> {
     if (isDefined(counterExample)) {
-        const [holds, error] = predicate(counterExample)
-        if (!holds) {
+        const holdOrError = predicate(counterExample)
+        if (holdOrError !== true) {
             return {
-                counterExample,
-                counterExampleStr: toString(counterExample),
-                error,
+                counterExample: toString(counterExample),
+                error: holdOrError,
                 depth: 0,
                 tests: 0,
             }
         }
         return Nothing
     }
-    let smallest = undefined
+    let smallest: Falsified | undefined = undefined
     let failure: Error | undefined = undefined
     const startTime = performance.now()
-    for (const [i, tree] of enumerate(values())) {
-        if (isFailure(tree)) {
-            failure = tree
+    for (const [i, tryTree] of enumerate(values())) {
+        if (isFailure(tryTree)) {
+            failure = tryTree
             continue
         }
-        const timeBudget = timeout !== false ? (timeout - (performance.now() - startTime)) / (tests - i) : false
-        let foundCounterExample: Maybe<Tree<T>> = Nothing
-        const [holds] = predicate(tree.value)
-        if (!holds) {
-            const found = findSmallest({ tree, predicate, depth: maxDepth, timeBudget })
-            foundCounterExample = found.tree
-            const str = toString(foundCounterExample.value)
-            const strLength = str.length ?? -1
-
-            const [, error] = predicate(foundCounterExample.value)
-            if (smallest === undefined || smallest[1] > strLength || (smallest[1] === strLength && smallest[0] > str)) {
-                smallest = [
-                    str,
-                    strLength,
-                    {
-                        counterExample: foundCounterExample.value,
-                        counterExampleStr: str,
-                        error,
-                        depth: maxDepth - found.depth,
-                        tests: i + 1,
-                    },
-                ] as const
-            }
+        const holdsOrError = predicate(tryTree.value)
+        const holdsOrCounterExample = recoverTry(holdsOrError, (error) => {
+            const timeBudget = timeout !== false ? (timeout - (performance.now() - startTime)) / (tests - i) : false
+            const found = findSmallest({ tree: tryTree, predicate, depth: maxDepth, timeBudget, error, value: tryTree.value })
+            return found
+        })
+        if (holdsOrCounterExample !== true && 'tree' in holdsOrCounterExample) {
+            const counterExampleStr = toString(holdsOrCounterExample.tree.value)
+            smallest =
+                smallest === undefined || smallest.counterExample.length > counterExampleStr.length
+                    ? ({
+                          counterExample: counterExampleStr,
+                          error: holdsOrCounterExample.error,
+                          depth: maxDepth - holdsOrCounterExample.depth,
+                          tests: i + 1,
+                      } as const)
+                    : smallest
         }
     }
-    if (smallest) {
-        return smallest[2]
+    if (smallest !== undefined) {
+        return smallest
     }
     if (isDefined(failure)) {
         throw failure
@@ -130,25 +116,37 @@ export function findSmallest<T>({
     predicate,
     depth,
     timeBudget,
+    error,
+    value,
     startTime = performance.now(),
 }: {
     tree: Tree<T>
-    predicate: (x: T) => [boolean, Maybe<Error>]
+    predicate: (x: T) => Try<true>
     depth: number
     timeBudget: number | false
+    error: Error
+    value: unknown
     startTime?: number
-}): { tree: Tree<T>; depth: number } {
+}) {
     if (depth > 0) {
         for (const child of tree.children) {
             const timeSinceStart = performance.now() - startTime
             if (timeBudget !== false && timeSinceStart > timeBudget) {
-                return { tree, depth }
+                return { tree, depth, error, value }
             }
 
             try {
-                const [holds] = predicate(child.value)
-                if (!holds) {
-                    return findSmallest({ tree: child, predicate, depth: depth - 1, timeBudget, startTime })
+                const holdsOrError = predicate(child.value)
+                if (holdsOrError !== true) {
+                    return findSmallest({
+                        tree: child,
+                        predicate,
+                        depth: depth - 1,
+                        timeBudget,
+                        startTime,
+                        error: holdsOrError,
+                        value: child.value,
+                    })
                 }
             } catch (e) {
                 if (!(e instanceof InfeasibleTree)) {
@@ -158,12 +156,12 @@ export function findSmallest<T>({
         }
     }
 
-    return { tree, depth }
+    return { tree, depth, error, value }
 }
 
 export interface AsyncFalsifyOptions<T> {
     values: () => Traversable<Try<Tree<T>>>
-    predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
+    predicate: (x: T) => Promise<Try<true>>
     maxDepth: number
     counterExample: T | undefined
     timeout: number | false
@@ -180,14 +178,13 @@ export async function asyncFalsify<T>({
     counterExample,
     timeout,
     tests,
-}: AsyncFalsifyOptions<T>): Promise<Maybe<Falsified<T>>> {
+}: AsyncFalsifyOptions<T>): Promise<Maybe<Falsified>> {
     if (isDefined(counterExample)) {
-        const [holds, error] = await predicate(counterExample)
-        if (!holds) {
+        const holdOrError = await predicate(counterExample)
+        if (holdOrError !== true) {
             return {
-                counterExample,
-                counterExampleStr: toString(counterExample),
-                error,
+                counterExample: toString(counterExample),
+                error: holdOrError,
                 depth: 0,
                 tests: 0,
             }
@@ -197,38 +194,39 @@ export async function asyncFalsify<T>({
     let smallest = undefined
     let failure: Error | undefined = undefined
     const startTime = performance.now()
-    for (const [i, tree] of enumerate(values())) {
-        if (isFailure(tree)) {
-            failure = tree
+    for (const [i, tryTree] of enumerate(values())) {
+        if (isFailure(tryTree)) {
+            failure = tryTree
             continue
         }
-        const timeBudget = timeout !== false ? (timeout - (performance.now() - startTime)) / (tests - i) : false
-        let foundCounterExample: Maybe<Tree<T>> = Nothing
-        const [holds] = await predicate(tree.value)
-        if (!holds) {
-            const found = await asyncFindSmallest({ tree, predicate, depth: maxDepth, timeBudget })
-            foundCounterExample = found.tree
-            const str = toString(foundCounterExample.value)
-            const strLength = str.length
-
-            const [, error] = await predicate(foundCounterExample.value)
-            if (smallest === undefined || smallest[1] > strLength || (smallest[1] === strLength && smallest[0] > str)) {
-                smallest = [
-                    str,
-                    strLength,
-                    {
-                        counterExample: foundCounterExample.value,
-                        counterExampleStr: str,
-                        error,
-                        depth: maxDepth - found.depth,
-                        tests: i + 1,
-                    },
-                ] as const
-            }
+        const holdsOrError = await predicate(tryTree.value)
+        const holdsOrCounterExample = await recoverTry(holdsOrError, async (error) => {
+            const timeBudget = timeout !== false ? (timeout - (performance.now() - startTime)) / (tests - i) : false
+            const found = await asyncFindSmallest({
+                tree: tryTree,
+                predicate,
+                depth: maxDepth,
+                timeBudget,
+                error,
+                value: tryTree.value,
+            })
+            return found
+        })
+        if (holdsOrCounterExample !== true && 'tree' in holdsOrCounterExample) {
+            const counterExampleStr = toString(holdsOrCounterExample.tree.value)
+            smallest =
+                smallest === undefined || smallest.counterExample.length > counterExampleStr.length
+                    ? ({
+                          counterExample: counterExampleStr,
+                          error: holdsOrCounterExample.error,
+                          depth: maxDepth - holdsOrCounterExample.depth,
+                          tests: i + 1,
+                      } as const)
+                    : smallest
         }
     }
-    if (smallest) {
-        return smallest[2]
+    if (smallest !== undefined) {
+        return smallest
     }
     if (isDefined(failure)) {
         throw failure
@@ -241,32 +239,44 @@ export async function asyncFindSmallest<T>({
     predicate,
     depth,
     timeBudget,
+    error,
+    value,
     startTime = performance.now(),
 }: {
     tree: Tree<T>
-    predicate: (x: T) => Promise<[boolean, Maybe<Error>]>
+    predicate: (x: T) => Promise<Try<true>>
     depth: number
     timeBudget: number | false
+    error: Error
+    value: unknown
     startTime?: number
-}): Promise<{ tree: Tree<T>; depth: number }> {
+}) {
     if (depth > 0) {
         for (const child of tree.children) {
             const timeSinceStart = performance.now() - startTime
             if (timeBudget !== false && timeSinceStart > timeBudget) {
-                return { tree, depth }
+                return { tree, depth, error, value }
             }
             try {
-                const [holds] = await predicate(child.value)
-                if (!holds) {
-                    return asyncFindSmallest({ tree: child, predicate, depth: depth - 1, timeBudget, startTime })
+                const holdsOrError = await predicate(child.value)
+                if (holdsOrError !== true) {
+                    return asyncFindSmallest({
+                        tree: child,
+                        predicate,
+                        depth: depth - 1,
+                        timeBudget,
+                        startTime,
+                        error: holdsOrError,
+                        value: child.value,
+                    })
                 }
             } catch (e) {
-                if (!(e instanceof InfeasibleTree)) {
+                if (!(e instanceof InfeasibleTree) && !(e instanceof RangeError)) {
                     throw e
                 }
             }
         }
     }
 
-    return { tree, depth }
+    return { tree, depth, error, value }
 }

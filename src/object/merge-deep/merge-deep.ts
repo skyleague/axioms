@@ -23,7 +23,7 @@ export function mergeDeep<T, U>(source: U, target: T): T | U {
     const output: Record<string, unknown> = Object.assign({}, target)
     if (isObject(target) && isObject(source)) {
         for (const key of Object.keys(source)) {
-            const obj = source[key]
+            const obj: any = source[key]
             if (isObject(obj)) {
                 if (!(key in target)) {
                     Object.assign(output, { [key]: obj })
@@ -31,6 +31,7 @@ export function mergeDeep<T, U>(source: U, target: T): T | U {
                     output[key] = mergeDeep(obj, target[key])
                 }
             } else {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 Object.assign(output, { [key]: obj })
             }
         }

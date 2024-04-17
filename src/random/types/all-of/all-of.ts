@@ -24,8 +24,13 @@ export function allOf<T extends Arbitrary<Record<PropertyKey, unknown>>[]>(
 ): Dependent<UnionToIntersection<TypeOfArbitraries<T>>> {
     return tuple(...arbitraries).map((xs) => {
         let target = {}
+        if (xs.every((x) => x === null)) {
+            return null as UnionToIntersection<TypeOfArbitraries<T>>
+        }
         for (const x of xs) {
-            target = mergeDeep(omitUndefined(x), target)
+            if (x !== undefined && x !== null) {
+                target = mergeDeep(omitUndefined(x), target)
+            }
         }
         return target as UnionToIntersection<TypeOfArbitraries<T>>
     })

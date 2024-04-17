@@ -1,11 +1,11 @@
-import { tree } from '../../../algorithm/tree/index.js'
+import { memoize } from '../../../algorithm/memoize/memoize.js'
 import type { Maybe } from '../../../type/maybe/index.js'
 import { Nothing } from '../../../type/maybe/index.js'
 import type { RelaxedPartial } from '../../../type/partial/index.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import { dependentArbitrary } from '../../arbitrary/dependent/dependent.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
-import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
-import { oneOfWeighted } from '../one-of/index.js'
+import { integer } from '../integer/integer.js'
 
 export interface OptionalGenerator<N = Nothing> {
     size: number
@@ -38,9 +38,12 @@ export function optional<T, O = Nothing>(
     arbitrary: Arbitrary<T>,
     constraints: RelaxedPartial<OptionalGenerator<O>> = {}
 ): Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T> {
-    const { size = 1 } = constraints
-    const afreq = oneOfWeighted([2, constant('symbol' in constraints ? constraints.symbol : Nothing)], [size + 1, arbitrary])
-    return dependentArbitrary((ctx) => afreq.value(ctx)) as Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T>
+    return integer({ min: 0, max: 2 }).chain((i): any => {
+        if (i !== 1) {
+            return constant('symbol' in constraints ? constraints.symbol : Nothing)
+        }
+        return arbitrary
+    }) as Nothing extends O ? Dependent<Maybe<T>> : Dependent<O | T>
 }
 
 export interface PartialGenerator {
@@ -67,7 +70,7 @@ export interface PartialGenerator {
  * @returns A partial version of the given arbitrary.
  *
  * @group Arbitrary
- * @experimental
+ * @deprecated
  */
 export function partial<T>(
     arbitrary: Arbitrary<T>,
@@ -122,10 +125,11 @@ export function nullable<T>(a: Arbitrary<T>, constraints: RelaxedPartial<Nullabl
  *
  * @group Arbitrary
  */
-export function constant<T extends boolean | number | string | symbol>(x: T): Arbitrary<T>
-export function constant<T>(x: T): Arbitrary<T>
-export function constant<T>(x: T): Arbitrary<T> {
-    return {
-        value: () => tree(x, []),
-    }
+export function constant<T>(x: T): Dependent<T> {
+    return dependentArbitrary(() => ({ value: x, children: [] }))
+}
+
+export function memoizeArbitrary<T>(arb: () => Arbitrary<T>): Dependent<T> {
+    const memoizedArb = memoize(arb)
+    return dependentArbitrary<T>((ctx) => memoizedArb().value(ctx))
 }

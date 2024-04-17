@@ -1,5 +1,6 @@
 import type { RelaxedPartial } from '../../../type/partial/index.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
+import type { ArbitrarySize } from '../../arbitrary/arbitrary/size.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { array } from '../array/index.js'
 import {
@@ -29,26 +30,48 @@ export interface StringGenerator {
      * The maximum length of string to generate.
      */
     maxLength: number
-    /**
-     * A simple transformer function.
-     * @param x - The value to transform.
-     * @returns The transformed value.
-     */
-    transform: (x: string[]) => string
+
+    size?: ArbitrarySize
 }
 
 /**
  * @internal
  * @group Arbitrary
  */
-export function stringGenerator(a: Arbitrary<string>, context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
-    const { minLength = 0, maxLength = 10, transform = (s) => s.join('') } = context
-    return array(a, { minLength, maxLength }).map(transform)
+export function stringGenerator(
+    a: Arbitrary<string>,
+    context: RelaxedPartial<
+        StringGenerator & {
+            /**
+             * A simple transformer function.
+             * @param x - The value to transform.
+             * @returns The transformed value.
+             */
+            transform: (x: string[]) => string
+        }
+    > = {}
+): Dependent<string> {
+    const { minLength = 0, maxLength, size, transform = (s) => s.join('') } = context
+    return array(a, { minLength, maxLength, size }).map(transform)
+}
+
+export interface StringConstraints extends StringGenerator {
+    format:
+        | 'default'
+        | 'ascii'
+        | 'utf16'
+        | 'utf16-surrogate'
+        | 'alpha'
+        | 'lower-alpha'
+        | 'alpha-numeric'
+        | 'lower-alpha-numeric'
+        | 'hex'
+        | 'base64'
 }
 
 /**
  * Generate a string arbitrary.
- *
+ *q
  * ### Example
  * ```ts
  * random(string())
@@ -61,8 +84,20 @@ export function stringGenerator(a: Arbitrary<string>, context: RelaxedPartial<St
  * @group Arbitrary
  */
 
-export function string(context: RelaxedPartial<StringGenerator> = {}): Dependent<string> {
-    return stringGenerator(char(), context)
+export function string(context: RelaxedPartial<StringConstraints> = {}): Dependent<string> {
+    const { format = 'default' } = context
+    return {
+        default: () => stringGenerator(char(), context),
+        ascii: () => ascii(context),
+        utf16: () => utf16(context),
+        'utf16-surrogate': () => utf16Surrogate(context),
+        alpha: () => alpha(context),
+        'lower-alpha': () => lowerAlpha(context),
+        'alpha-numeric': () => alphaNumeric(context),
+        'lower-alpha-numeric': () => lowerAlphaNumeric(context),
+        hex: () => hex(context),
+        base64: () => base64(context),
+    }[format]()
 }
 
 /**

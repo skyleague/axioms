@@ -76,7 +76,7 @@ export function char(options: Partial<CharGenerator> = {}): Dependent<string> {
 export function hexChar(): Dependent<string> {
     return charGenerator({
         min: 0,
-        max: 16,
+        max: 15,
         transform: (x) => x.toString(16),
     })
 }

@@ -5,19 +5,8 @@ import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../..
 import { binarySearchTree } from '../../arbitrary/shrink/shrink.js'
 import { weightedChoice } from '../choice/index.js'
 
-/**
- * Describes how integers are allowed to be generated.
- *
- * @group Arbitrary
- */
 export interface IntegerConstraints {
-    /**
-     * The minimum value to generate.
-     */
     min: number
-    /**
-     * The maximum value to generate.
-     */
     max: number
 }
 
@@ -32,7 +21,7 @@ function integerLogLike(v: number): number {
 }
 
 function sampleInteger({ min, max }: IntegerConstraints, { rng }: ArbitraryContext): number {
-    return Math.floor(rng.sample() * (max - min) + min)
+    return Math.floor(rng.sample() * (max - min + 1) + min)
 }
 
 function biasInteger({ min, max }: IntegerConstraints, { rng }: BiasedArbitraryContext): IntegerConstraints {
@@ -67,6 +56,32 @@ function shrinkInteger({ min, max }: IntegerConstraints, x: number): Tree<number
 }
 
 /**
+ * Describes how integers are allowed to be generated.
+ *
+ * @group Arbitrary
+ */
+export interface IntegerGenerator {
+    /**
+     * The minimum value to generate.
+     */
+    min: number
+
+    /**
+     * Is the minimum value included in the generation.
+     */
+    minInclusive: boolean
+    /**
+     * The maximum value to generate (exclusive).
+     */
+    max: number
+
+    /**
+     * Is the maximum value included in the generation.
+     */
+    maxInclusive: boolean
+}
+
+/**
  * It returns an arbitrary that generates integers between -2^31 and 2^31.
  *
  * ### Example
@@ -80,8 +95,23 @@ function shrinkInteger({ min, max }: IntegerConstraints, x: number): Tree<number
  *
  * @group Arbitrary
  */
-export function integer(constraints: RelaxedPartial<IntegerConstraints> = {}): Integrated<IntegerConstraints, number> {
-    const { min = -Math.pow(2, 31), max = Math.pow(2, 31) } = constraints
+export function integer({
+    min = -Math.pow(2, 31),
+    minInclusive = true,
+    max = Math.pow(2, 31),
+    maxInclusive = true,
+}: RelaxedPartial<IntegerGenerator> = {}): Integrated<IntegerConstraints, number> {
+    // shift the min and max to the correct value
+    if (!minInclusive) {
+        min += 1
+    }
+    if (!maxInclusive) {
+        max -= 1
+    }
+
+    if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) {
+        throw new Error('The minimum value must be less than the maximum value, and be finite')
+    }
 
     return integratedArbitrary({
         sample: sampleInteger,

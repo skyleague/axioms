@@ -34,7 +34,7 @@ export function at<Xs extends any[], N extends number>(
 export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T>
 export function at<T, N extends number = number>(xs: Traversable<T>, n: N): Maybe<T> {
     if (isArray<T>(xs)) {
-        return n >= xs.length ? Nothing : xs[n]!
+        return (n >= xs.length ? Nothing : xs[n]) as Maybe<T>
     }
     // slow iterator compatible version
     return head(drop(xs, n))
