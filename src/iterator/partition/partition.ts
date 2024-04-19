@@ -26,8 +26,8 @@ export type Partition<U, T> = [T[], Exclude<U, T>[]]
  *
  * @group Iterators
  */
-export function partition<T>(xs: Traversable<T>, by: (item: T, index: number) => boolean): Partition<T, T>
 export function partition<U, T extends U>(xs: Traversable<U>, by: (item: U, index: number) => item is T): Partition<U, T>
+export function partition<T>(xs: Traversable<T>, by: (item: T, index: number) => boolean): [T[], T[]]
 export function partition<U, T extends U>(
     xs: Traversable<U>,
     by: ((item: U, index: number) => item is T) | ((item: T, index: number) => boolean),
