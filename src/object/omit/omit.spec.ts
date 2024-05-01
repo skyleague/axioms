@@ -117,16 +117,12 @@ describe('omit', () => {
     })
 
     it('key filtered if not omited', () => {
-        forAll(
-            record(unknown()),
-            (x) => {
-                const filtered = omit(
-                    x,
-                    keysOf(x).filter((x) => deterministicBoolean(x)),
-                )
-                return all(keysOf(x), (k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
-            },
-            { counterExample: { ' ': 0 } },
-        )
+        forAll(record(unknown()), (x) => {
+            const filtered = omit(
+                x,
+                keysOf(x).filter((x) => deterministicBoolean(x)),
+            )
+            return all(keysOf(x), (k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+        })
     })
 })

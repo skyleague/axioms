@@ -1,5 +1,4 @@
 import { mergeDeep } from '../../../object/_internal/merge-deep/merge-deep.js'
-import { omitUndefined } from '../../../object/omit/omit.js'
 import type { UnionToIntersection } from '../../../types.js'
 import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Dependent } from '../../arbitrary/dependent/dependent.js'
@@ -27,7 +26,7 @@ export function allOf<T extends Arbitrary<Record<PropertyKey, unknown>>[]>(
         let target = {}
         for (const x of xs) {
             if (x !== undefined && x !== null) {
-                target = mergeDeep(omitUndefined(x), target)
+                target = mergeDeep(x, target)
             }
         }
         return target as UnionToIntersection<TypeOfArbitraries<T>>

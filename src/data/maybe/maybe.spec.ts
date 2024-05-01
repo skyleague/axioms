@@ -8,6 +8,7 @@ import {
     whenJust,
     whenJusts,
     whenNothing,
+    whenNothings,
 } from './maybe.js'
 
 import { isJust, isLeft, isNothing, isRight } from '../../guard/index.js'
@@ -18,7 +19,8 @@ import type { Either, Maybe } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
 import { whenLeft, whenRight } from '../either/index.js'
 
-import { assertType, describe, expect, it } from 'vitest'
+import { assertType, describe, expect, expectTypeOf, it } from 'vitest'
+import type { Left, Right } from '../../type/either/either.js'
 
 class FooError extends Error {
     public foo() {
@@ -55,6 +57,13 @@ describe('leftToMaybe', () => {
         }
         expect(x).toEqual(new FooError('wut'))
     })
+
+    it('types', () => {
+        expectTypeOf(leftToMaybe({ left: 42 })).toEqualTypeOf<42>()
+        expectTypeOf(leftToMaybe({ right: 42 })).toEqualTypeOf<Nothing>()
+        expectTypeOf(leftToMaybe({ right: 42 } as Either<unknown, 42>)).toEqualTypeOf<unknown>()
+        expectTypeOf(leftToMaybe({ right: 42 } as Either<42, unknown>)).toEqualTypeOf<Maybe<42>>()
+    })
 })
 
 describe('rightToMaybe', () => {
@@ -80,6 +89,13 @@ describe('rightToMaybe', () => {
             x = new FooError('wut')
         }
         expect(x).toEqual(new FooError('wut'))
+    })
+
+    it('types', () => {
+        expectTypeOf(rightToMaybe({ left: 42 })).toEqualTypeOf<Nothing>()
+        expectTypeOf(rightToMaybe({ right: 42 })).toEqualTypeOf<42>()
+        expectTypeOf(rightToMaybe({ right: 42 } as Either<unknown, 42>)).toEqualTypeOf<Maybe<42>>()
+        expectTypeOf(rightToMaybe({ right: 42 } as Either<42, unknown>)).toEqualTypeOf<Maybe<unknown>>()
     })
 })
 
@@ -116,6 +132,12 @@ describe('maybeToRight', () => {
         }
         expect(x).toEqual({ right: new FooError('wut') })
     })
+
+    it('types', () => {
+        expectTypeOf(maybeToRight(42, 'fallback')).toEqualTypeOf<Right<42>>()
+        expectTypeOf(maybeToRight(Nothing, 'fallback')).toEqualTypeOf<Left<'fallback'>>()
+        expectTypeOf(maybeToRight(Nothing as Maybe<42>, 'fallback')).toEqualTypeOf<Either<'fallback', 42>>()
+    })
 })
 
 describe('maybeToLeft', () => {
@@ -151,6 +173,12 @@ describe('maybeToLeft', () => {
         }
         expect(x).toEqual({ left: new FooError('wut') })
     })
+
+    it('types', () => {
+        expectTypeOf(maybeToLeft(42, 'fallback')).toEqualTypeOf<Left<42>>()
+        expectTypeOf(maybeToLeft(Nothing, 'fallback')).toEqualTypeOf<Right<'fallback'>>()
+        expectTypeOf(maybeToLeft(Nothing as Maybe<42>, 'fallback')).toEqualTypeOf<Either<42, 'fallback'>>()
+    })
 })
 
 describe('maybeAsValue', () => {
@@ -162,16 +190,33 @@ describe('maybeAsValue', () => {
     it('just', () => {
         forAll(unknown({ nothing: false }), (just) => maybeAsValue(just) === just)
     })
+
+    it('types', () => {
+        expectTypeOf(maybeAsValue(42)).toEqualTypeOf<42>()
+        expectTypeOf(maybeAsValue(Nothing)).toEqualTypeOf<undefined>()
+        expectTypeOf(maybeAsValue(Nothing as Maybe<42>)).toEqualTypeOf<42 | undefined>()
+    })
 })
 
 describe('whenJust', () => {
     it('simple', () => {
         expect(whenJust(0, (x) => `${x}${x}`)).toMatchInlineSnapshot(`"00"`)
-        expect(whenJust<string>(Nothing, (x) => `${x}${x}`)).toMatchInlineSnapshot('Symbol((Nothing))')
+        expect(whenJust(Nothing as Maybe<string>, (x) => `${x}${x}`)).toMatchInlineSnapshot('Symbol((Nothing))')
     })
 
     it('just', () => {
         forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
+    })
+
+    it('types', () => {
+        expectTypeOf(whenJust(Nothing, (_: never) => 'foobar' as const)).toEqualTypeOf<Nothing>()
+        expectTypeOf(whenJust(42, (_: 42) => 'foobar' as const)).toEqualTypeOf<'foobar'>()
+
+        expectTypeOf(whenJust(Nothing, (_: never) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Nothing>()
+        expectTypeOf(whenJust(42, (_: 42) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
+
+        expectTypeOf(whenJust(Nothing as Maybe<42>, (_: 42) => 'foobar' as const)).toEqualTypeOf<Maybe<42> | 'foobar'>()
+        expectTypeOf(whenJust(Nothing as Maybe<42>, (_: 42) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<42 | 'foobar'>>()
     })
 })
 
@@ -203,6 +248,19 @@ describe('whenJusts', () => {
     it('first nothing', () => {
         forAll(array(integer()), (xs) => isNothing(whenJusts(shuffle(concat(xs, [Nothing])), deterministicInteger)))
     })
+
+    it('types', () => {
+        expectTypeOf(whenJusts([Nothing], (_: never[]) => 'foobar' as const)).toEqualTypeOf<Nothing>()
+        expectTypeOf(whenJusts([42], (_: [42]) => 'foobar' as const)).toEqualTypeOf<'foobar'>()
+
+        expectTypeOf(whenJusts([Nothing], (_: never[]) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Nothing>()
+        expectTypeOf(whenJusts([42], (_: [42]) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
+
+        expectTypeOf(whenJusts([Nothing as Maybe<42>], (_: [42]) => 'foobar' as const)).toEqualTypeOf<Nothing | 'foobar'>()
+        expectTypeOf(whenJusts([Nothing as Maybe<42>], (_: [42]) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<
+            Nothing | 'foobar'
+        >()
+    })
 })
 
 describe('whenNothing', () => {
@@ -213,6 +271,62 @@ describe('whenNothing', () => {
 
     it('just', () => {
         forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
+    })
+
+    it('types', () => {
+        expectTypeOf(whenNothing(Nothing, () => 'foobar' as const)).toEqualTypeOf<'foobar'>()
+        expectTypeOf(whenNothing(42, () => 'foobar' as const)).toEqualTypeOf<42>()
+
+        expectTypeOf(whenNothing(Nothing, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
+        expectTypeOf(whenNothing(42, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<42>()
+
+        expectTypeOf(whenNothing(Nothing as Maybe<42>, () => 'foobar' as const)).toEqualTypeOf<Maybe<42> | 'foobar'>()
+        expectTypeOf(whenNothing(Nothing as Maybe<42>, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<42 | 'foobar'>>()
+    })
+})
+
+describe('whenNothings', () => {
+    it('simple', () => {
+        expect(whenNothings([Nothing], () => 'foobar')).toEqual('foobar')
+        expect(whenNothings([0], () => 'foobar')).toEqual(Nothing)
+    })
+
+    it('all nothing', () => {
+        forAll(array(integer()), (xs) => {
+            expect(
+                whenNothings(
+                    xs.map(() => Nothing),
+                    () => xs,
+                ),
+            ).toEqual(xs)
+        })
+    })
+
+    it('first just', () => {
+        forAll([array(integer()), integer()], ([xs, x]) => {
+            expect(
+                whenNothings(
+                    shuffle(
+                        concat(
+                            xs.map(() => Nothing),
+                            [x],
+                        ),
+                    ),
+                    () => xs,
+                ),
+            ).toEqual(Nothing)
+        })
+    })
+
+    it('types', () => {
+        expectTypeOf(whenNothings([Nothing], () => 'foobar' as const)).toEqualTypeOf<'foobar'>()
+        expectTypeOf(whenNothings([42], () => 'foobar' as const)).toEqualTypeOf<Nothing>()
+
+        expectTypeOf(whenNothings([Nothing], () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
+        expectTypeOf(whenNothings([42], () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Nothing>()
+
+        expectTypeOf(whenNothings([Nothing as Maybe<42>], () => 'foobar' as const)).toEqualTypeOf<Nothing | 'foobar'>()
+        expectTypeOf(whenNothings([Nothing as Maybe<42>], () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
     })
 })
 
@@ -227,10 +341,23 @@ describe('asMaybe', () => {
         assertType<Nothing>(asMaybe('foobar', 'foobar'))
         const foo: string | undefined = undefined as unknown as string | undefined
         assertType<Maybe<string>>(asMaybe(foo))
-        assertType<Maybe<undefined>>(asMaybe(foo, 'foobar'))
+        assertType<Maybe<string | undefined>>(asMaybe(foo, 'foobar'))
     })
 
     it('just', () => {
         forAll(unknown({ undefined: false }), (just) => asMaybe(just) === just)
+    })
+
+    it('types', () => {
+        expectTypeOf(asMaybe(42)).toEqualTypeOf<42>()
+        expectTypeOf(asMaybe(undefined)).toEqualTypeOf<Nothing>()
+        expectTypeOf(asMaybe(undefined as 42 | undefined)).toEqualTypeOf<Maybe<42>>()
+
+        expectTypeOf(asMaybe(42, 'foobar')).toEqualTypeOf<42>()
+        expectTypeOf(asMaybe(undefined, 'foobar')).toEqualTypeOf<undefined>()
+        expectTypeOf(asMaybe(undefined as 42 | undefined, 'foobar')).toEqualTypeOf<42 | undefined>()
+
+        expectTypeOf(asMaybe('foobar', 'foobar')).toEqualTypeOf<Nothing>()
+        expectTypeOf(asMaybe(42 as 42 | 'foobar', 'foobar')).toEqualTypeOf<Maybe<42>>()
     })
 })

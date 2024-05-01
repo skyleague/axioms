@@ -2,7 +2,8 @@ import { isLeft, isRight } from '../../guard/index.js'
 import type { Either, Left, Right } from '../../type/index.js'
 
 /**
- * If the Either is a Left, return the Left value, otherwise return the Right value.
+ * Extracts and returns the value from an Either type, whether it is a Left or a Right.
+ * This function discriminates between Left and Right and returns the contained value directly.
  *
  * ### Example
  * ```ts
@@ -13,20 +14,22 @@ import type { Either, Left, Right } from '../../type/index.js'
  * // => "bar"
  * ```
  *
- * @param x - The either value to unpack.
- *
- * @returns The unpacked value.
- *
- * @typeParam L - The left type.
- * @typeParam R - The right type.
- *
+ * @param x - The Either value to extract from.
+ * @returns The value contained in the Either.
+ * @typeParam L - The type of the Left value.
+ * @typeParam R - The type of the Right value.
  * @group Combinators
  */
-export function eitherAsValue<L>(x: Left<L>): L
-export function eitherAsValue<R>(x: Right<R>): R
-export function eitherAsValue<L, R>(x: Either<L, R>): L | R
-export function eitherAsValue<L, R>(x: Either<L, R>): L | R {
-    return 'left' in x ? x.left : x.right
+export function eitherAsValue<const E extends Either<unknown, unknown>>(
+    x: E,
+): E extends Left<infer L> ? (E extends Right<infer R> ? L | R : L) : E extends Right<infer R> ? R : never {
+    return ('left' in x ? x.left : x.right) as E extends Left<infer L>
+        ? E extends Right<infer R>
+            ? L | R
+            : L
+        : E extends Right<infer R>
+          ? R
+          : never
 }
 
 export type ArgRights<Xs> = Xs extends [infer X, ...infer Rest]
@@ -36,6 +39,7 @@ export type ArgRights<Xs> = Xs extends [infer X, ...infer Rest]
       : Xs extends (infer I)[]
         ? (I extends Right<infer R> ? R : never)[]
         : []
+
 export type ArgLefts<Xs> = Xs extends [infer X, ...infer Rest]
     ? [X extends Left<infer L> ? L : never, ...ArgLefts<Rest>]
     : Xs extends []
@@ -45,8 +49,8 @@ export type ArgLefts<Xs> = Xs extends [infer X, ...infer Rest]
         : []
 
 /**
- * If the input is a left, return it, otherwise apply the function to the right value and return the
- * result.
+ * Applies a transformation function to the `Right` value of an `Either` type, if present.
+ * If the input is a `Left`, it remains unchanged.
  *
  * ### Example
  * ```ts
@@ -57,21 +61,23 @@ export type ArgLefts<Xs> = Xs extends [infer X, ...infer Rest]
  * // => { left: "bar" }
  * ```
  *
- * @param x - The either value to map.
- * @param f - The map function.
- * @returns The mapped either object.
+ * @param x - The `Either` value to map.
+ * @param f - The transformation function to apply to the `Right` value.
+ * @returns An `Either` object where the `Right` has been transformed if present, or the original `Left`.
  *
- * @typeParam L - The left type.
- * @typeParam R - The right type.
- * @typeParam T - The mapped type.
+ * @typeParam E - The type of the Either.
+ * @typeParam T - The type of the transformed `Right` value.
  *
  * @group Combinators
  */
-export function mapRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Either<L, T> {
+export function mapRight<const E extends Either<unknown, unknown>, T>(
+    x: E,
+    f: (r: E extends Right<infer R> ? R : never) => T,
+): E extends Right<unknown> ? Right<T> : E {
     if (isLeft(x)) {
-        return x
+        return x as E extends Right<unknown> ? Right<T> : E
     }
-    return { right: f(x.right) }
+    return { right: f(x.right as E extends Right<infer R> ? R : never) } as E extends Right<unknown> ? Right<T> : E
 }
 
 /**
@@ -98,10 +104,14 @@ export function mapRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Either<L, T>
  *
  * @group Combinators
  */
-export function mapRights<Xs extends Either<unknown, unknown>[], T>(
+export function mapRights<const Xs extends Either<unknown, unknown>[], const T>(
     xs: readonly [...Xs],
     f: (rs: ArgRights<Xs>) => T,
-): Either<ArgLefts<Xs>[number], T> {
+): ArgRights<Xs> extends never[]
+    ? Left<ArgLefts<Xs>[number]>
+    : ArgLefts<Xs>[number] extends never[]
+      ? Right<T>
+      : Left<ArgLefts<Xs>[number]> | Right<T> {
     return whenRights(xs, (...args) => ({ right: f(...args) }))
 }
 
@@ -128,11 +138,14 @@ export function mapRights<Xs extends Either<unknown, unknown>[], T>(
  *
  * @group Combinators
  */
-export function whenRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Left<L> | T {
+export function whenRight<const E extends Either<unknown, unknown>, T extends Either<unknown, unknown>>(
+    x: E,
+    f: (r: E extends Right<infer R> ? R : never) => T,
+): E extends Right<unknown> ? T : E {
     if (isLeft(x)) {
-        return x
+        return x as E extends Right<unknown> ? T : E
     }
-    return f(x.right)
+    return f(x.right as E extends Right<infer R> ? R : never) as E extends Right<unknown> ? T : E
 }
 
 /**
@@ -142,10 +155,10 @@ export function whenRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Left<L> | T
  *
  * ### Example
  * ```ts
- * whenRights([{ right: 'foo' }, { right: 'bar' }], ([x0, x1]) => `${x0}${x1}`)
- * // => "foobar"
+ * whenRights([{ right: 'foo' }, { right: 'bar' }], ([x0, x1]) => ({right: `${x0}${x1}`}))
+ * // => { right: "foobar"}
  *
- * whenRights([{ left: 'bar' }, { right: 'fooz' }], ([x0, x1]) => `${x0}${x1}`)
+ * whenRights([{ left: 'bar' }, { right: 'fooz' }], ([x0, x1]) => ({right: `${x0}${x1}`}))
  * // => { left: "bar" }
  * ```
  *
@@ -159,15 +172,23 @@ export function whenRight<L, R, T>(x: Either<L, R>, f: (r: R) => T): Left<L> | T
  *
  * @group Combinators
  */
-export function whenRights<Xs extends Either<unknown, unknown>[], T>(
+export function whenRights<const Xs extends Either<unknown, unknown>[], T extends Either<unknown, unknown>>(
     xs: readonly [...Xs],
     f: (rs: ArgRights<Xs>) => T,
-): Left<ArgLefts<Xs>[number]> | T {
+): ArgRights<Xs> extends never[]
+    ? Left<ArgLefts<Xs>[number]>
+    : ArgLefts<Xs>[number] extends never[]
+      ? T
+      : Left<ArgLefts<Xs>[number]> | T {
     const l = xs.find((x) => !isRight(x))
     if (l !== undefined) {
         return l as Left<ArgLefts<Xs>[number]>
     }
-    return f(xs.map((x) => (x as Right<unknown>).right) as ArgRights<Xs>)
+    return f(xs.map((x) => (x as Right<unknown>).right) as ArgRights<Xs>) as ArgRights<Xs> extends never[]
+        ? Left<ArgLefts<Xs>[number]>
+        : ArgLefts<Xs>[number] extends never[]
+          ? T
+          : Left<ArgLefts<Xs>[number]> | T
 }
 
 /**
@@ -193,11 +214,14 @@ export function whenRights<Xs extends Either<unknown, unknown>[], T>(
  *
  * @group Combinators
  */
-export function mapLeft<L, R, T>(x: Either<L, R>, f: (r: L) => T): Either<T, R> {
+export function mapLeft<const E extends Either<unknown, unknown>, T>(
+    x: E,
+    f: (l: E extends Left<infer L> ? L : never) => T,
+): E extends Left<unknown> ? Left<T> : E {
     if (isRight(x)) {
-        return x
+        return x as E extends Left<unknown> ? Left<T> : E
     }
-    return { left: f(x.left) }
+    return { left: f(x.left as E extends Left<infer L> ? L : never) } as E extends Left<unknown> ? Left<T> : E
 }
 
 /**
@@ -224,10 +248,14 @@ export function mapLeft<L, R, T>(x: Either<L, R>, f: (r: L) => T): Either<T, R> 
  *
  * @group Combinators
  */
-export function mapLefts<Xs extends Either<unknown, unknown>[], T>(
+export function mapLefts<const Xs extends Either<unknown, unknown>[], const T>(
     xs: readonly [...Xs],
     f: (ls: ArgLefts<Xs>) => T,
-): Either<T, ArgRights<Xs>[number]> {
+): ArgLefts<Xs> extends never[]
+    ? Right<ArgRights<Xs>[number]>
+    : ArgRights<Xs>[number] extends never[]
+      ? Left<T>
+      : Left<T> | Right<ArgRights<Xs>[number]> {
     return whenLefts(xs, (args) => ({ left: f(args) }))
 }
 
@@ -254,11 +282,15 @@ export function mapLefts<Xs extends Either<unknown, unknown>[], T>(
  *
  * @group Combinators
  */
-export function whenLeft<L, R, T>(x: Either<L, R>, f: (r: L) => T): Right<R> | T {
+
+export function whenLeft<const E extends Either<unknown, unknown>, T extends Either<unknown, unknown>>(
+    x: E,
+    f: (l: E extends Left<infer L> ? L : never) => T,
+): E extends Left<unknown> ? T : E {
     if (isRight(x)) {
-        return x
+        return x as E extends Left<unknown> ? T : E
     }
-    return f(x.left)
+    return f(x.left as E extends Left<infer L> ? L : never) as E extends Left<unknown> ? T : E
 }
 
 /**
@@ -285,15 +317,23 @@ export function whenLeft<L, R, T>(x: Either<L, R>, f: (r: L) => T): Right<R> | T
  *
  * @group Combinators
  */
-export function whenLefts<Xs extends Either<unknown, unknown>[], T>(
+export function whenLefts<const Xs extends Either<unknown, unknown>[], T>(
     xs: readonly [...Xs],
     f: (rs: ArgLefts<Xs>) => T,
-): Right<ArgRights<Xs>[number]> | T {
+): ArgLefts<Xs> extends never[]
+    ? Right<ArgRights<Xs>[number]>
+    : ArgRights<Xs>[number] extends never[]
+      ? T
+      : Right<ArgRights<Xs>[number]> | T {
     const l = xs.find((x) => !isLeft(x))
     if (l !== undefined) {
         return l as Right<ArgRights<Xs>[number]>
     }
-    return f(xs.map((x) => (x as Left<unknown>).left) as ArgLefts<Xs>)
+    return f(xs.map((x) => (x as Left<unknown>).left) as ArgLefts<Xs>) as ArgLefts<Xs> extends never[]
+        ? Right<ArgRights<Xs>[number]>
+        : ArgRights<Xs>[number] extends never[]
+          ? T
+          : Right<ArgRights<Xs>[number]> | T
 }
 
 /**
@@ -319,8 +359,8 @@ export function swapEither<L, R>(x: Either<L, R>): Either<R, L> {
 }
 
 /**
- * Returns {@link x.right} when `x` is a {@link Right} type, otherwise
- * throw {@link x.left}.
+ * Returns {@link right} when `x` is a {@link Right} type, otherwise
+ * throw {@link left}.
  *
  * ### Pseudocode
  * ```ts
@@ -351,11 +391,13 @@ export function swapEither<L, R>(x: Either<L, R>): Either<R, L> {
  *
  * @see [Factorial - Wikipedia](https://en.wikipedia.org/wiki/Factorial)
  */
-export function eitherToError<L, R>(x: Either<L, R>): R {
+export function eitherToError<const E extends Either<unknown, unknown>>(
+    x: E,
+): E extends Right<infer R> ? (E extends Left<unknown> ? R : R) : never {
     if (isLeft(x)) {
         throw x.left
     }
-    return x.right
+    return x.right as E extends Right<infer R> ? (E extends Left<unknown> ? R : R) : never
 }
 
 /**
@@ -371,7 +413,7 @@ export function eitherToError<L, R>(x: Either<L, R>): R {
  *
  * @group Combinators
  */
-export function right<R>(x: R): Right<R> {
+export function right<const R>(x: R): Right<R> {
     return { right: x }
 }
 
@@ -388,6 +430,6 @@ export function right<R>(x: R): Right<R> {
  *
  * @group Combinators
  */
-export function left<L>(x: L): Left<L> {
+export function left<const L>(x: L): Left<L> {
     return { left: x }
 }

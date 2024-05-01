@@ -19,7 +19,7 @@ import type { Simplify } from '../../types.js'
  * @group Object
  */
 export function pickBy<
-    T extends ArrayLike<unknown> | object,
+    const T extends ArrayLike<unknown> | object,
     Predicate extends ([key, value]: [key: keyof T, value: T[keyof T]]) => boolean,
 >(obj: T, predicate: Predicate): Partial<T> {
     return Object.fromEntries(

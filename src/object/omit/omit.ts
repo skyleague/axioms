@@ -13,7 +13,7 @@ export type OmitUndefined<T> = Simplify<
     }
 >
 
-export function omitUndefined<T extends ArrayLike<unknown> | object>(obj: T): OmitUndefined<T> {
+export function omitUndefined<const T extends ArrayLike<unknown> | object>(obj: T): OmitUndefined<T> {
     return pickBy(obj, ([, v]) => v !== undefined) as unknown as OmitUndefined<T>
 }
 
@@ -36,7 +36,7 @@ export function omitUndefined<T extends ArrayLike<unknown> | object>(obj: T): Om
  * @group Object
  */
 export function omitBy<
-    T extends ArrayLike<unknown> | object,
+    const T extends ArrayLike<unknown> | object,
     Predicate extends ([key, value]: [key: keyof T, value: T[keyof T]]) => boolean,
 >(obj: T, predicate: Predicate): Partial<T> {
     return Object.fromEntries(
@@ -65,7 +65,7 @@ export function omitBy<
  *
  * @group Object
  */
-export function omit<T extends ArrayLike<unknown> | object, K extends keyof T>(
+export function omit<const T extends ArrayLike<unknown> | object, K extends keyof T>(
     obj: T,
     keys: readonly K[],
 ): Simplify<Except<T, K, { requireExactProps: true }>> {
