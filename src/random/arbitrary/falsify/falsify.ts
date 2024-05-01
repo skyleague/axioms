@@ -2,6 +2,7 @@ import type { Tree } from '../../../algorithm/index.js'
 import { recoverTry } from '../../../data/try/try.js'
 import { enumerate } from '../../../generator/index.js'
 import { isDefined, isFailure, isJust } from '../../../guard/index.js'
+import { isSuccess } from '../../../guard/is-success/is-success.js'
 import type { Maybe, Traversable, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { inspect } from '../../../util/_internal/inspect/inspect.js'
@@ -89,17 +90,23 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample, timeou
             const found = findSmallest({ tree: tryTree, predicate, depth: maxDepth, timeBudget, error, value: tryTree.value })
             return found
         })
-        if (holdsOrCounterExample !== true && 'tree' in holdsOrCounterExample) {
-            const counterExampleStr = inspect(holdsOrCounterExample.tree.value)
+        const counterExample = recoverTry(holdsOrCounterExample, (error) => {
+            return { tree: tryTree, depth: maxDepth, error, value: tryTree.value }
+        })
+        if (counterExample !== true && isSuccess(counterExample)) {
+            const counterExampleStr = inspect(counterExample.tree.value)
             smallest =
                 smallest === undefined || smallest.counterExample.length > counterExampleStr.length
                     ? ({
                           counterExample: counterExampleStr,
-                          error: holdsOrCounterExample.error,
-                          depth: maxDepth - holdsOrCounterExample.depth,
+                          error: counterExample.error,
+                          depth: maxDepth - counterExample.depth,
                           tests: i + 1,
                       } as const)
                     : smallest
+        } else if (isFailure(counterExample)) {
+            // this means that the generation has failed irrecoverably
+            throw counterExample
         }
     }
     if (smallest !== undefined) {
@@ -149,9 +156,10 @@ export function findSmallest<T>({
                     })
                 }
             } catch (e) {
-                if (!(e instanceof InfeasibleTree)) {
-                    throw e
+                if (e instanceof InfeasibleTree || e instanceof RangeError) {
+                    return { tree, depth, error, value }
                 }
+                throw e
             }
         }
     }
@@ -212,17 +220,23 @@ export async function asyncFalsify<T>({
             })
             return found
         })
-        if (holdsOrCounterExample !== true && 'tree' in holdsOrCounterExample) {
-            const counterExampleStr = inspect(holdsOrCounterExample.tree.value)
+        const counterExample = recoverTry(holdsOrCounterExample, (error) => {
+            return { tree: tryTree, depth: maxDepth, error, value: tryTree.value }
+        })
+        if (counterExample !== true && isSuccess(counterExample)) {
+            const counterExampleStr = inspect(counterExample.tree.value)
             smallest =
                 smallest === undefined || smallest.counterExample.length > counterExampleStr.length
                     ? ({
                           counterExample: counterExampleStr,
-                          error: holdsOrCounterExample.error,
-                          depth: maxDepth - holdsOrCounterExample.depth,
+                          error: counterExample.error,
+                          depth: maxDepth - counterExample.depth,
                           tests: i + 1,
                       } as const)
                     : smallest
+        } else if (isFailure(counterExample)) {
+            // this means that the generation has failed irrecoverably
+            throw counterExample
         }
     }
     if (smallest !== undefined) {
@@ -271,9 +285,10 @@ export async function asyncFindSmallest<T>({
                     })
                 }
             } catch (e) {
-                if (!(e instanceof InfeasibleTree || e instanceof RangeError)) {
-                    throw e
+                if (e instanceof InfeasibleTree || e instanceof RangeError) {
+                    return { tree, depth, error, value }
                 }
+                throw e
             }
         }
     }

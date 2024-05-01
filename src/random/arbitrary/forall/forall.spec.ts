@@ -73,6 +73,19 @@ it('counter example with jest expect', () => {
     }).toThrow(/^Counter example found after \d+ tests \(seed: 42n\)/)
 })
 
+it('async - counter example with jest expect', async () => {
+    await expect(
+        asyncForAll(
+            integer(),
+            // biome-ignore lint/suspicious/useAwait: it's a test
+            async (i) => {
+                expect(Math.abs(i)).toBeLessThanOrEqual(600000)
+            },
+            { seed: 42n, timeout: false },
+        ),
+    ).rejects.toThrow(/^Counter example found after \d+ tests \(seed: 42n\)/)
+})
+
 it('timeout async', async () => {
     await expect(
         asyncForAll(
