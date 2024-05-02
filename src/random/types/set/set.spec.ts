@@ -14,6 +14,7 @@ import { unknown } from '../complex/complex.js'
 import { integer } from '../integer/integer.js'
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
+import { constants } from '../constants/constants.js'
 
 describe('set', () => {
     it('all unique - number', () => {
@@ -49,7 +50,59 @@ describe('set', () => {
             forAll(set(integer({ min: 1332584308, max: 1332584308 }), { minLength: 2 }), (xs) => {
                 return xs.length !== 2 && collect(unique(xs)).length === 2
             }),
-        ).toThrowErrorMatchingInlineSnapshot('[Tree is found infeasible]')
+        ).toThrowErrorMatchingInlineSnapshot('[Error: The minimum value must be less than the maximum value, and be finite]')
+    })
+
+    it('random sample', () => {
+        const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
+        const aint = set(integer({ min: 0, max: 1 }))
+        expect(
+            collect(
+                take(
+                    repeat(() => aint.sample(ctx)),
+                    10,
+                ),
+            ),
+        ).toMatchInlineSnapshot(`
+          [
+            [
+              0,
+            ],
+            [
+              0,
+            ],
+            [
+              0,
+              1,
+            ],
+            [],
+            [
+              0,
+              1,
+            ],
+            [
+              1,
+            ],
+            [
+              1,
+              0,
+            ],
+            [
+              0,
+            ],
+            [
+              0,
+            ],
+            [
+              1,
+              0,
+            ],
+          ]
+        `)
+    }, 10)
+
+    it('cardinality', () => {
+        expect(set(constants('foo', 'bar')).supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('undefined')
     })
 })
 

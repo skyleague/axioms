@@ -29,11 +29,13 @@ export function integratedArbitrary<C, T>({
     shrink,
     constraints,
     biased,
+    supremumCardinality,
 }: {
     sample: (constraints: C, context: ArbitraryContext) => T
     shrink: (constraints: C, x: T) => Tree<T>
     constraints: C
     biased?: (constraints: C, context: BiasedArbitraryContext) => C
+    supremumCardinality?: ((context: ArbitraryContext) => number) | undefined
 }): Integrated<C, T> {
     let localContext: ArbitraryContext | undefined
     const biasedSample =
@@ -64,6 +66,7 @@ export function integratedArbitrary<C, T>({
         map: <U>(fn: (x: T, context: ArbitraryContext) => U) => mapArbitrary(integrated, fn),
         chain: <U>(fn: (x: T, context: ArbitraryContext) => Arbitrary<U>) => chainArbitrary(integrated, fn),
         constant: () => constantArbitrary(integrated),
+        supremumCardinality,
     } satisfies Integrated<C, T>
 
     return integrated

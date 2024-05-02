@@ -7,20 +7,20 @@ import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { string } from '../string/index.js'
 
-import { describe, expect, it } from 'vitest'
+import { expect, it } from 'vitest'
+import { constant } from '../helper/helper.js'
 
-describe('record', () => {
-    it('random sample', () => {
-        const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
-        const aint = record(string())
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
+it('random sample', () => {
+    const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
+    const aint = record(string())
+    expect(
+        collect(
+            take(
+                repeat(() => aint.sample(ctx)),
+                10,
             ),
-        ).toMatchInlineSnapshot(`
+        ),
+    ).toMatchInlineSnapshot(`
           [
             {
               "#'E1.9e+": "z^<)",
@@ -80,5 +80,10 @@ describe('record', () => {
             },
           ]
         `)
-    })
+})
+
+it('cardinality', () => {
+    expect(record([constant('foo'), constant('bar')]).supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot(
+        'undefined',
+    )
 })

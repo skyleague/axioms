@@ -1,7 +1,5 @@
-import { mapTree } from '../../../algorithm/tree/index.js'
 import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
-import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/index.js'
 
 /**
@@ -82,25 +80,22 @@ export interface DatetimeGenerator {
  */
 export function datetime(context: MaybePartial<DatetimeGenerator> = {}): Dependent<Date> {
     const { minDate: minDatetime, maxDate: maxDatetime, precision = 'seconds', range = 'relevant' } = context
-    const atimestamp = timestamp({ min: minDatetime?.getTime(), max: maxDatetime?.getTime(), range })
-    return dependentArbitrary((ctx) =>
-        mapTree(atimestamp.value(ctx), (i) => {
-            const d = new Date(i)
-            if (!['milliseconds'].includes(precision)) {
-                d.setMilliseconds(0)
-            }
-            if (!['milliseconds', 'seconds'].includes(precision)) {
-                d.setSeconds(0)
-            }
-            if (!['milliseconds', 'seconds', 'minutes'].includes(precision)) {
-                d.setMinutes(0)
-            }
-            if (!['milliseconds', 'seconds', 'minutes', 'hours'].includes(precision)) {
-                d.setHours(0)
-            }
-            return d
-        }),
-    )
+    return timestamp({ min: minDatetime?.getTime(), max: maxDatetime?.getTime(), range }).map((i) => {
+        const d = new Date(i)
+        if (!['milliseconds'].includes(precision)) {
+            d.setMilliseconds(0)
+        }
+        if (!['milliseconds', 'seconds'].includes(precision)) {
+            d.setSeconds(0)
+        }
+        if (!['milliseconds', 'seconds', 'minutes'].includes(precision)) {
+            d.setMinutes(0)
+        }
+        if (!['milliseconds', 'seconds', 'minutes', 'hours'].includes(precision)) {
+            d.setHours(0)
+        }
+        return d
+    })
 }
 
 export interface DateGenerator {
@@ -125,11 +120,11 @@ export interface DateGenerator {
  */
 export function date(constraints: MaybePartial<DateGenerator> = {}): Dependent<string> {
     const { minDate, maxDate, range = 'relevant' } = constraints
-    const atimestamp = datetime({
+
+    return datetime({
         minDate: minDate !== undefined ? new Date(minDate) : undefined,
         maxDate: maxDate !== undefined ? new Date(maxDate) : undefined,
         range,
         precision: 'days',
-    })
-    return dependentArbitrary((ctx) => mapTree(atimestamp.value(ctx), (d) => d.toISOString().slice(0, 10)))
+    }).map((d) => d.toISOString().slice(0, 10))
 }

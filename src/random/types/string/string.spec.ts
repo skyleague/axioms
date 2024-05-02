@@ -96,6 +96,10 @@ describe('string', () => {
     it('all printable', () => {
         forAll(string({ minLength: 1 }), isPrintable)
     })
+
+    it('cardinality', () => {
+        expect(string().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('950')
+    })
 })
 
 describe('hex', () => {
@@ -165,6 +169,10 @@ describe('hex', () => {
     it('allowed characters', () => {
         forAll(hex(), (str) => str.split('').every((c) => '0123456789abcdef'.includes(c)))
     })
+
+    it('cardinality', () => {
+        expect(hex().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('160')
+    })
 })
 
 describe('base64', () => {
@@ -211,6 +219,10 @@ describe('base64', () => {
         forAll(base64(), (str) =>
             str.split('').every((c) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.includes(c)),
         )
+    })
+
+    it('cardinality', () => {
+        expect(base64().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('640')
     })
 })
 
@@ -289,6 +301,10 @@ describe('alpha', () => {
                 str.split('').every((c) => `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz${extra}`.includes(c)),
         )
     })
+
+    it('cardinality', () => {
+        expect(alpha().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('520')
+    })
 })
 
 describe('lowerAlpha', () => {
@@ -364,6 +380,10 @@ describe('lowerAlpha', () => {
             utf16().chain((extra) => lowerAlpha({ extra }).map((c) => [c, extra] as const)),
             ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxy${extra}`.includes(c)),
         )
+    })
+
+    it('cardinality', () => {
+        expect(alpha().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('520')
     })
 })
 
@@ -444,6 +464,10 @@ describe('alphaNumeric', () => {
                 str.split('').every((c) => `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${extra}`.includes(c)),
         )
     })
+
+    it('cardinality', () => {
+        expect(alphaNumeric().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('620')
+    })
 })
 
 describe('lowerAlphaNumeric', () => {
@@ -520,6 +544,10 @@ describe('lowerAlphaNumeric', () => {
             ([str, extra]) => str.split('').every((c) => `abcdefghijklmnopqrstuvwxyz0123456789${extra}`.includes(c)),
         )
     })
+
+    it('cardinality', () => {
+        expect(lowerAlphaNumeric().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('360')
+    })
 })
 
 describe('ascii', () => {
@@ -590,6 +618,10 @@ describe('ascii', () => {
         // biome-ignore lint/suspicious/noControlCharactersInRegex: This is a valid use case for control characters
         forAll(ascii(), (str) => str.split('').every((c) => /[\x00-\x7F]/.test(c)))
     })
+
+    it('cardinality', () => {
+        expect(ascii().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('1270')
+    })
 })
 
 describe('utf16', () => {
@@ -639,6 +671,10 @@ describe('utf16', () => {
     it('allowed characters', () => {
         forAll(utf16(), (str) => util.toUSVString(str) === str)
     })
+
+    it('cardinality', () => {
+        expect(utf16().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('655360')
+    })
 })
 
 describe('utf16Surrogate', () => {
@@ -685,5 +721,9 @@ describe('utf16Surrogate', () => {
 
     it('allowed characters', () => {
         forAll(utf16Surrogate(), (str) => util.toUSVString(str) === str)
+    })
+
+    it('cardinality', () => {
+        expect(utf16Surrogate().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('11141120')
     })
 })

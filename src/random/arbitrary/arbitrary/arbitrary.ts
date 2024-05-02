@@ -11,6 +11,7 @@ import { splitX, splits } from '../shrink/shrink.js'
 
 export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>
+    supremumCardinality?: ((context: ArbitraryContext) => number) | undefined
 }
 
 export type AsArbitrary<T extends ArbitraryOrLiteral<unknown>> = T extends readonly unknown[]

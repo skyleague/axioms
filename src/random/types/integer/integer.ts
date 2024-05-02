@@ -121,5 +121,6 @@ export function integer({
             min,
             max,
         },
+        supremumCardinality: () => max - min + 1,
     })
 }

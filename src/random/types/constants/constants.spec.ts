@@ -1,4 +1,5 @@
-import { expectTypeOf, it } from 'vitest'
+import { expect, expectTypeOf, it } from 'vitest'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import type { Dependent } from '../../arbitrary/dependent/dependent.js'
 import { forAll, random } from '../../arbitrary/index.js'
 import { object } from '../object/index.js'
@@ -18,4 +19,8 @@ it('simple', () => {
 
 it('has the correct types', () => {
     expectTypeOf(constants('foo', 'bar')).toEqualTypeOf<Dependent<'foo' | 'bar'>>()
+})
+
+it('cardinality', () => {
+    expect(constants('foo', 'bar').supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('2')
 })

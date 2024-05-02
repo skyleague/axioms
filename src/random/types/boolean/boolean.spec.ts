@@ -53,3 +53,7 @@ it('counter example - false', () => {
       ]
     `)
 })
+
+it('cardinality', () => {
+    expect(boolean().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('2')
+})

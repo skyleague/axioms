@@ -27,7 +27,7 @@ export interface RecordGenerator {
  *
  * @group Arbitrary
  */
-export function record<T, K extends PropertyKey>(
+export function record<const T, K extends PropertyKey>(
     keyValue: Arbitrary<T> | [Arbitrary<K>, Arbitrary<T>],
     context: MaybePartial<RecordGenerator> = {},
 ): Dependent<Record<string, T>> {

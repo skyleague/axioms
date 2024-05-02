@@ -9,7 +9,8 @@ import { natural } from '../index.js'
 import { integer } from '../integer/index.js'
 import { tuple } from '../tuple/tuple.js'
 
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 
 describe('array', () => {
     it('simple', () => {
@@ -91,5 +92,9 @@ describe('array', () => {
             },
             { seed: 42n },
         )
+    })
+
+    it('cardinality', () => {
+        expect(array(integer()).supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('42949672970')
     })
 })

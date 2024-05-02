@@ -123,7 +123,7 @@ export function nullable<T>(a: Arbitrary<T>, constraints: MaybePartial<NullableG
  * @group Arbitrary
  */
 export function constant<const T>(x: T): Dependent<T> {
-    return dependentArbitrary(() => ({ value: x, children: [] }))
+    return dependentArbitrary(() => ({ value: x, children: [] }), { supremumCardinality: () => 1 })
 }
 
 export function memoizeArbitrary<T>(arb: () => Arbitrary<T>): Dependent<T> {

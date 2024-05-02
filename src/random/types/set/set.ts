@@ -65,8 +65,19 @@ export function set<T, Min extends number = number>(
             return !xs.some((x) => eq(y, x))
         },
         arbitrary,
-        { minLength, maxLength, size },
+        {
+            minLength,
+            maxLength,
+            size,
+            cardinality: (x, ctx) => {
+                if (arbitrary.supremumCardinality !== undefined) {
+                    return Math.min(x, arbitrary.supremumCardinality(ctx))
+                }
+                return x
+            },
+        },
     )
+
     return dependentArbitrary((ctx) => {
         // make sure we don't shrink to an array with duplicates
         // biome-ignore lint/suspicious/noExplicitAny: end recursive type evaluation

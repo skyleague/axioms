@@ -26,5 +26,10 @@ function shrinkBoolean(_: undefined, x: boolean): Tree<boolean> {
  * @group Arbitrary
  */
 export function boolean(): Integrated<undefined, boolean> {
-    return integratedArbitrary({ sample: sampleBoolean, shrink: shrinkBoolean, constraints: undefined })
+    return integratedArbitrary({
+        sample: sampleBoolean,
+        shrink: shrinkBoolean,
+        constraints: undefined,
+        supremumCardinality: () => 2,
+    })
 }

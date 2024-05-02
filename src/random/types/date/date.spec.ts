@@ -60,6 +60,10 @@ describe('datetime', () => {
           ]
         `)
     })
+
+    it('cardinality', () => {
+        expect(datetime().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('8640000000001')
+    })
 })
 
 describe('date', () => {
@@ -87,5 +91,9 @@ describe('date', () => {
             "2010-10-08",
           ]
         `)
+    })
+
+    it('cardinality', () => {
+        expect(date().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('8640000000001')
     })
 })

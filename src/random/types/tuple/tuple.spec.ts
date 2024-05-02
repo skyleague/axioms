@@ -120,3 +120,7 @@ it('show small tree - integers', () => {
     const tree1 = arb.value(ctx)
     expect(showTree(tree1, { maxDepth: 2 })).toMatchSnapshot()
 })
+
+it('cardinality', () => {
+    expect(tuple(integer(), integer()).supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('18446744082299486000')
+})

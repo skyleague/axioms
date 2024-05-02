@@ -14,9 +14,10 @@ import {
 import { forAll } from '../../arbitrary/index.js'
 import { utf16 } from '../string/index.js'
 
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import util from 'node:util'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 
 const isPrintable = (str: string) => /^[ -~]+$/.test(str)
 
@@ -32,6 +33,10 @@ describe('char', () => {
     it('all printable', () => {
         forAll(char(), isPrintable)
     })
+
+    it('cardinality', () => {
+        expect(char().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('95')
+    })
 })
 
 describe('hexChar', () => {
@@ -46,6 +51,10 @@ describe('hexChar', () => {
     it('all printable', () => {
         forAll(hexChar(), isPrintable)
     })
+
+    it('cardinality', () => {
+        expect(hexChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('16')
+    })
 })
 
 describe('base64Char', () => {
@@ -59,6 +68,10 @@ describe('base64Char', () => {
 
     it('all printable', () => {
         forAll(base64Char(), isPrintable)
+    })
+
+    it('cardinality', () => {
+        expect(base64Char().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('64')
     })
 })
 
@@ -81,6 +94,10 @@ describe('alphaChar', () => {
     it('all printable', () => {
         forAll(alphaChar(), isPrintable)
     })
+
+    it('cardinality', () => {
+        expect(alphaChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('52')
+    })
 })
 
 describe('lowerAlphaChar', () => {
@@ -101,6 +118,10 @@ describe('lowerAlphaChar', () => {
 
     it('all printable', () => {
         forAll(lowerAlphaChar(), isPrintable)
+    })
+
+    it('cardinality', () => {
+        expect(lowerAlphaChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('25')
     })
 })
 
@@ -123,6 +144,10 @@ describe('alphaNumericChar', () => {
     it('all printable', () => {
         forAll(alphaNumericChar(), isPrintable)
     })
+
+    it('cardinality', () => {
+        expect(alphaNumericChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('62')
+    })
 })
 
 describe('lowerAlphaNumericChar', () => {
@@ -144,6 +169,10 @@ describe('lowerAlphaNumericChar', () => {
     it('all printable', () => {
         forAll(lowerAlphaNumericChar(), isPrintable)
     })
+
+    it('cardinality', () => {
+        expect(lowerAlphaNumericChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('36')
+    })
 })
 
 describe('asciiChar', () => {
@@ -155,6 +184,10 @@ describe('asciiChar', () => {
         // biome-ignore lint/suspicious/noControlCharactersInRegex: This is intentional
         forAll(asciiChar(), (c) => /[\x00-\x7F]/.test(c))
     })
+
+    it('cardinality', () => {
+        expect(asciiChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('127')
+    })
 })
 
 describe('utf16Char', () => {
@@ -165,6 +198,10 @@ describe('utf16Char', () => {
     it('allowed characters', () => {
         forAll(utf16Char(), (c) => util.toUSVString(c) === c)
     })
+
+    it('cardinality', () => {
+        expect(utf16Char().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('65536')
+    })
 })
 
 describe('utf16SurrogateChar', () => {
@@ -174,5 +211,9 @@ describe('utf16SurrogateChar', () => {
 
     it('allowed characters', () => {
         forAll(utf16SurrogateChar(), (c) => util.toUSVString(c) === c)
+    })
+
+    it('cardinality', () => {
+        expect(utf16SurrogateChar().supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('1114112')
     })
 })

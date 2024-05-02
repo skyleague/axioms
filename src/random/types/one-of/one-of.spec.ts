@@ -408,6 +408,10 @@ describe('oneOf', () => {
         expectTypeOf(oneOf(integer(), string())).toEqualTypeOf<Dependent<number | string>>()
         expectTypeOf(oneOf(constant('foo'), constant('bar'))).toEqualTypeOf<Dependent<'foo' | 'bar'>>()
     })
+
+    it('cardinality', () => {
+        expect(oneOf(integer(), string()).supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('4294968247')
+    })
 })
 
 describe('oneOfWeighted', () => {

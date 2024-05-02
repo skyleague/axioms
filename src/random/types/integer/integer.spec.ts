@@ -399,3 +399,7 @@ it('random sample', () => {
       ]
     `)
 })
+
+it('cardinality', () => {
+    expect(integer({ min: 0, max: 1000 }).supremumCardinality?.(arbitraryContext())).toMatchInlineSnapshot('1001')
+})

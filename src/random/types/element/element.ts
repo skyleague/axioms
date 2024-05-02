@@ -1,6 +1,4 @@
-import { mapTree } from '../../../algorithm/tree/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
-import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/index.js'
 
 /**
@@ -25,6 +23,5 @@ import { integer } from '../integer/index.js'
 export function element<T extends unknown[] | string>(
     elements: T extends string ? string : T,
 ): Dependent<T extends string ? string : T[number]> {
-    const aint = integer({ min: 0, max: elements.length - 1 })
-    return dependentArbitrary((context) => mapTree(aint.value(context), (n) => elements[n] as T extends string ? string : T))
+    return integer({ min: 0, max: elements.length - 1 }).map((n) => elements[n] as T extends string ? string : T)
 }

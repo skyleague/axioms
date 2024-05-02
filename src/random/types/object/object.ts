@@ -1,7 +1,6 @@
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import type { ArbitraryContext } from '../../arbitrary/context/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
-import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { constant } from '../helper/index.js'
 import { tuple } from '../tuple/index.js'
 
@@ -30,7 +29,7 @@ export function object<T extends Record<PropertyKey, Arbitrary<unknown>>>(
 ): Dependent<{ [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never }> {
     const keys = Object.keys(properties)
     if (keys.length === 0) {
-        return dependentArbitrary((context) => constant({}).value(context)) as Dependent<{
+        return constant({}) as Dependent<{
             [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
         }>
     }

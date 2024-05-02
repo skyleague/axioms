@@ -9,7 +9,9 @@ import type { Dependent } from '../dependent/index.js'
  * @internal
  */
 export function mapArbitrary<T, U>(a: Arbitrary<T>, f: (x: T, context: ArbitraryContext) => U): Dependent<U> {
-    return dependentArbitrary((context) => mapTree(a.value(context), (v) => f(v, context)))
+    return dependentArbitrary((context) => mapTree(a.value(context), (v) => f(v, context)), {
+        supremumCardinality: a.supremumCardinality,
+    })
 }
 
 /**
