@@ -35,7 +35,7 @@ export interface FloatGenerator {
      */
     minInclusive: boolean
     /**
-     * The maximum value to generate (exclusive).
+     * The maximum value to generate (inclusive).
      */
     max: number
 
