@@ -60,7 +60,7 @@ export function set<T, Min extends number = number>(
     const aarray = arrayWith(
         (y, xs, i, { maxLength: max }) => {
             if (i > max * 4) {
-                throw new InfeasibleTree()
+                return new InfeasibleTree()
             }
             return !xs.some((x) => eq(y, x))
         },

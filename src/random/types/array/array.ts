@@ -1,5 +1,7 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
+import { isFailure } from '../../../guard/is-failure/is-failure.js'
 import type { MaybePartial } from '../../../type/partial/partial.js'
+import type { Try } from '../../../type/try/try.js'
 import type { ReadonlyTuple } from '../../../types.js'
 import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
@@ -120,7 +122,7 @@ export function arrayWith<T, Min extends number = number>(
         xs: T[],
         skippedInRow: number,
         constraints: Pick<ArrayGenerator<T, number>, 'minLength' | 'maxLength'>,
-    ) => boolean,
+    ) => Try<boolean>,
     arbitrary: Arbitrary<T>,
     constraints: MaybePartial<ArrayWithGenerator<T, Min>> = {},
 ): Dependent<ArrayOf<T, Min>> {
@@ -170,7 +172,16 @@ export function arrayWith<T, Min extends number = number>(
                 let skippedInRow = 0
                 while (xs.length !== size) {
                     const x = biasedValue()
-                    if (predicate(x.value, vals, skippedInRow, newConstraints)) {
+                    const shouldAdd = predicate(x.value, vals, skippedInRow, newConstraints)
+                    if (isFailure(shouldAdd)) {
+                        // just accept the total array
+                        if (xs.length > minLength) {
+                            break
+                        }
+                        throw shouldAdd
+                    }
+
+                    if (shouldAdd) {
                         xs.push(x)
                         vals.push(x.value)
                         skippedInRow = 0
