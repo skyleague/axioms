@@ -101,7 +101,7 @@ export function forAll<const T extends ArbitraryOrLiteral<unknown>>(
     const maybeCounterExample = falsify<TypeOfArbitrary<AsArbitrary<T>>>({
         predicate: (x) =>
             mapTry(
-                asTry(() => predicate(x, context) ?? true),
+                asTry(() => predicate(structuredClone(x), context) ?? true),
                 (holds) => (holds ? holds : new Error()),
             ),
         values: () => valuesFromArbitrary({ maxSkips, evaluatedArbitrary, context, period, tests }),
@@ -116,6 +116,7 @@ export function forAll<const T extends ArbitraryOrLiteral<unknown>>(
         throw error
     }
 }
+
 export async function asyncForAll<const T extends ArbitraryOrLiteral<unknown>>(
     arbitrary: T,
     // biome-ignore lint/suspicious/noConfusingVoidType: This is a valid use case for void
@@ -141,7 +142,12 @@ export async function asyncForAll<const T extends ArbitraryOrLiteral<unknown>>(
     })
     const maybeCounterExample = await asyncFalsify<TypeOfArbitrary<AsArbitrary<T>>>({
         predicate: async (x) =>
-            mapTry(await asTry(async () => (await predicate(x, context)) ?? true), (holds) => (holds ? holds : new Error())),
+            mapTry(
+                await asTry(async () => {
+                    return (await predicate(structuredClone(x), context)) ?? true
+                }),
+                (holds) => (holds ? holds : new Error()),
+            ),
         values: () => valuesFromArbitrary({ maxSkips, evaluatedArbitrary, context, period, tests }),
         maxDepth: shrinks,
         counterExample,
