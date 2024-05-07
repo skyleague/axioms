@@ -18,9 +18,10 @@ import { tuple } from '../tuple/index.js'
  * @group Arbitrary
  */
 export function domain(): Dependent<string> {
-    return tuple(array(subdomain(), { minLength: 1, maxLength: 4 }), lowerAlphaNumeric({ minLength: 2, maxLength: 12 })).map(
-        ([subdomains, tld]) => `${subdomains.join('.')}.${tld}`,
-    )
+    return tuple(
+        array(subdomain(), { minLength: 1, maxLength: 4, size: 's' }),
+        lowerAlphaNumeric({ minLength: 2, maxLength: 12, size: 's' }),
+    ).map(([subdomains, tld]) => `${subdomains.join('.')}.${tld}`)
 }
 
 /**
@@ -37,7 +38,9 @@ export function domain(): Dependent<string> {
  * @group Arbitrary
  */
 export function subdomain(): Dependent<string> {
-    return tuple(lowerAlphaNumericChar(), lowerAlphaNumeric({ maxLength: 61, extra: '-' }), lowerAlphaNumericChar()).map((xs) =>
-        xs.join(''),
-    )
+    return tuple(
+        lowerAlphaNumericChar(),
+        lowerAlphaNumeric({ maxLength: 61, extra: '-', size: 's' }),
+        lowerAlphaNumericChar(),
+    ).map((xs) => xs.join(''))
 }
