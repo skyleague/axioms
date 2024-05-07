@@ -1,3 +1,5 @@
+import { memoize } from '../../../algorithm/memoize/memoize.js'
+import { LRUCacheResolver } from '../../../algorithm/memoize/resolver.js'
 import type { Tree } from '../../../algorithm/tree/index.js'
 import type { Arbitrary } from '../arbitrary/index.js'
 import { chainArbitrary } from '../chain/index.js'
@@ -14,7 +16,7 @@ export interface Dependent<T> extends Arbitrary<T> {
 
     map: <U>(f: (x: T, context: ArbitraryContext) => U) => Dependent<U>
     chain: <U>(f: (x: T, context: ArbitraryContext) => Arbitrary<U>) => Dependent<U>
-    constant: () => Dependent<T>
+    constant: (isConstant?: boolean) => Dependent<T>
 }
 
 /**
@@ -33,8 +35,16 @@ export function dependentArbitrary<T>(
         filter: <S extends T>(fn: (x: T, context: ArbitraryContext) => x is S) => filterArbitrary(dependent, fn),
         map: <U>(fn: (x: T, context: ArbitraryContext) => U) => mapArbitrary(dependent, fn),
         chain: <U>(fn: (x: T, context: ArbitraryContext) => Arbitrary<U>) => chainArbitrary(dependent, fn),
-        constant: () => constantArbitrary(dependent),
-        supremumCardinality,
+        constant: (isConstant?: boolean) => (isConstant ? constantArbitrary(dependent) : dependent),
+        supremumCardinality:
+            supremumCardinality !== undefined
+                ? memoize(
+                      supremumCardinality,
+                      LRUCacheResolver({
+                          key: (ctx) => `${ctx.size}:${ctx.depth}`,
+                      }),
+                  )
+                : undefined,
     } satisfies Dependent<T>
     return dependent
 }

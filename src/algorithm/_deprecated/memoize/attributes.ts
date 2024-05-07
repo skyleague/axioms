@@ -9,6 +9,6 @@ export type MemoizeAttributes<T extends Record<PropertyKey, () => unknown>> = { 
 /**
  * @deprecated
  */
-export function memoizeAttributes<T extends Record<PropertyKey, () => unknown>>(x: T): MemoizeAttributes<T> {
-    return mapValues(x, (v) => memoize(v)) as MemoizeAttributes<T>
+export function memoizeAttributes<T extends Record<PropertyKey, () => unknown>>(x: T) {
+    return mapValues(x, (v) => memoize(v))
 }

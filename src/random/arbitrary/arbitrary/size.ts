@@ -1,4 +1,4 @@
-import type { ArbitraryContext } from '../context/context.js'
+import type { ArbitrarySizeContext } from '../context/context.js'
 
 export type RelativeSize = (typeof relativeSize)[number]
 
@@ -39,7 +39,7 @@ export function maxLengthArbitrary({
     maxLength,
     supremum = 2147483647,
 }: {
-    context: ArbitraryContext
+    context: ArbitrarySizeContext
     size?: ArbitrarySize | undefined
     minLength: number
     maxLength?: number | undefined
@@ -59,7 +59,7 @@ export function depthArbitrary({
     context,
     maxDepth,
 }: {
-    context: ArbitraryContext
+    context: ArbitrarySizeContext
     depth?: ArbitrarySize
     maxDepth?: number
 }): number {

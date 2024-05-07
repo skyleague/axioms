@@ -1,5 +1,5 @@
 import { type Arbitrary, type TypeOfArbitrary, interleave } from '../../arbitrary/arbitrary/arbitrary.js'
-import type { ArbitraryContext } from '../../arbitrary/context/context.js'
+import type { ArbitrarySizeContext } from '../../arbitrary/context/context.js'
 import { type Dependent, dependentArbitrary } from '../../arbitrary/dependent/dependent.js'
 
 /**
@@ -23,7 +23,7 @@ import { type Dependent, dependentArbitrary } from '../../arbitrary/dependent/de
 export function tuple<T extends Arbitrary<unknown>[]>(...xs: [...T]): Dependent<{ [K in keyof T]: TypeOfArbitrary<T[K]> }> {
     const supremumCardinality = xs.every((x) => x.supremumCardinality !== undefined)
         ? // biome-ignore lint/style/noNonNullAssertion: checked in the line above
-          (ctx: ArbitraryContext) => xs.reduce((acc, x) => acc * x.supremumCardinality!(ctx), 1)
+          (ctx: ArbitrarySizeContext) => xs.reduce((acc, x) => acc * x.supremumCardinality!(ctx), 1)
         : undefined
     return dependentArbitrary((context) => interleave(...xs.map((x) => x.value(context))), { supremumCardinality }) as Dependent<{
         [K in keyof T]: TypeOfArbitrary<T[K]>

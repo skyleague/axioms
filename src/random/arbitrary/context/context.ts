@@ -3,10 +3,13 @@ import type { RandomGenerator } from '../../rng/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import type { AbsoluteSize } from '../arbitrary/size.js'
 
-export interface ArbitraryContext {
-    rng: RandomGenerator
+export interface ArbitrarySizeContext {
     size: AbsoluteSize
     depth: AbsoluteSize
+}
+
+export interface ArbitraryContext extends ArbitrarySizeContext {
+    rng: RandomGenerator
     depthCounter: number
     bias?: number | undefined
     withDepth: <T>(fn: () => T) => T

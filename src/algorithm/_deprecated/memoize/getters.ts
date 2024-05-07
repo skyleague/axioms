@@ -1,6 +1,5 @@
 import { isDefined } from '../../../guard/is-defined/is-defined.js'
 import { unique } from '../../../iterator/unique/unique.js'
-import type { Memoized } from '../../memoize/memoize.js'
 import { memoize } from '../../memoize/memoize.js'
 
 /**
@@ -19,7 +18,8 @@ export function memoizeGetters<T>(x: T & { clear?: never }): Omit<T, 'clear'> & 
     ) as Omit<T, 'clear'> & { clear: (k: keyof T) => void }
     memoized.clear = (k: keyof T) => {
         const prop = Object.getOwnPropertyDescriptor(memoized, k)
-        ;(prop?.get as Memoized<unknown>).clear()
+        // biome-ignore lint/suspicious/noExplicitAny: ignore
+        ;(prop?.get as any).clear()
     }
 
     return memoized

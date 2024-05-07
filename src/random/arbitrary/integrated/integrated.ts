@@ -1,7 +1,10 @@
 import type { Tree } from '../../../algorithm/index.js'
 import { applicativeTree } from '../../../algorithm/index.js'
+import { memoize } from '../../../algorithm/memoize/memoize.js'
+import { LRUCacheResolver } from '../../../algorithm/memoize/resolver.js'
 import type { Arbitrary } from '../arbitrary/index.js'
 import { chainArbitrary } from '../chain/index.js'
+import type { ArbitrarySizeContext } from '../context/context.js'
 import type { ArbitraryContext, BiasedArbitraryContext } from '../context/index.js'
 import { arbitraryContext } from '../context/index.js'
 import type { Dependent } from '../dependent/index.js'
@@ -18,7 +21,7 @@ export interface Integrated<C, T> extends Arbitrary<T> {
     filter(f: (x: T, context: ArbitraryContext) => boolean): Dependent<T>
     map: <U>(f: (x: T, context: ArbitraryContext) => U) => Dependent<U>
     chain: <U>(f: (x: T, context: ArbitraryContext) => Arbitrary<U>) => Dependent<U>
-    constant: () => Dependent<T>
+    constant: (isConstant?: boolean) => Dependent<T>
 }
 
 /**
@@ -35,7 +38,7 @@ export function integratedArbitrary<C, T>({
     shrink: (constraints: C, x: T) => Tree<T>
     constraints: C
     biased?: (constraints: C, context: BiasedArbitraryContext) => C
-    supremumCardinality?: ((context: ArbitraryContext) => number) | undefined
+    supremumCardinality?: ((context: ArbitrarySizeContext) => number) | undefined
 }): Integrated<C, T> {
     let localContext: ArbitraryContext | undefined
     const biasedSample =
@@ -65,8 +68,16 @@ export function integratedArbitrary<C, T>({
         filter: <S extends T>(fn: (x: T, context: ArbitraryContext) => x is S) => filterArbitrary(integrated, fn),
         map: <U>(fn: (x: T, context: ArbitraryContext) => U) => mapArbitrary(integrated, fn),
         chain: <U>(fn: (x: T, context: ArbitraryContext) => Arbitrary<U>) => chainArbitrary(integrated, fn),
-        constant: () => constantArbitrary(integrated),
-        supremumCardinality,
+        constant: (isConstant) => (isConstant ? constantArbitrary(integrated) : integrated),
+        supremumCardinality:
+            supremumCardinality !== undefined
+                ? memoize(
+                      supremumCardinality,
+                      LRUCacheResolver({
+                          key: (ctx) => `${ctx.size}:${ctx.depth}`,
+                      }),
+                  )
+                : undefined,
     } satisfies Integrated<C, T>
 
     return integrated

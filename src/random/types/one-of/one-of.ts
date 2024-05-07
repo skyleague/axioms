@@ -1,6 +1,6 @@
 import type { Arbitrary, TypeOfArbitraries } from '../../arbitrary/arbitrary/index.js'
 import { type ArbitrarySize, depthArbitrary } from '../../arbitrary/arbitrary/size.js'
-import type { ArbitraryContext } from '../../arbitrary/context/context.js'
+import type { ArbitrarySizeContext } from '../../arbitrary/context/context.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/dependent.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { weightedChoice } from '../choice/choice.js'
@@ -59,7 +59,7 @@ export function oneOfWeighted<T extends readonly [number, Arbitrary<unknown>][]>
     // we are drawing from the union of sets, our best guess is to assume no overlap in the cardinality
     const supremumCardinality = arbitraries.every((x) => x[1].supremumCardinality !== undefined)
         ? // biome-ignore lint/style/noNonNullAssertion: checked in the line above
-          (ctx: ArbitraryContext) => arbitraries.reduce((acc, x) => acc + x[1].supremumCardinality!(ctx), 0)
+          (ctx: ArbitrarySizeContext) => arbitraries.reduce((acc, x) => acc + x[1].supremumCardinality!(ctx), 0)
         : undefined
     const choices = weightedChoice(arbitraries)
     return dependentArbitrary(

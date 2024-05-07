@@ -6,12 +6,12 @@ import { concat } from '../../../iterator/concat/concat.js'
 import { map } from '../../../iterator/map/map.js'
 import { type Traversable, toTraverser } from '../../../type/traversable/traversable.js'
 import type { Simplify } from '../../../types.js'
-import type { ArbitraryContext } from '../context/context.js'
+import type { ArbitraryContext, ArbitrarySizeContext } from '../context/context.js'
 import { splitX, splits } from '../shrink/shrink.js'
 
 export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>
-    supremumCardinality?: ((context: ArbitraryContext) => number) | undefined
+    supremumCardinality?: ((context: ArbitrarySizeContext) => number) | undefined
 }
 
 export type AsArbitrary<T extends ArbitraryOrLiteral<unknown>> = T extends readonly unknown[]

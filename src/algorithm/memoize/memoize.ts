@@ -1,17 +1,12 @@
 import type { Resolver } from './resolver.js'
 import { cacheResolver } from './resolver.js'
 
-import type { ConstExpr } from '../../type/function/index.js'
-
 /**
  * A memoized function.
  */
-export interface Memoized<T> {
-    /**
-     * A constant function.
-     */
-    (): T
 
+// biome-ignore lint/complexity/noBannedTypes: This is a memoize function that is used to cache the result of a function.
+export type Memoized<Fn extends Function> = Fn & {
     /**
      * Clears the memoized cache state, and allows for reevaluation.
      */
@@ -49,8 +44,11 @@ export interface Memoized<T> {
  *
  * @group Algorithm
  */
-export function memoize<T>(getter: ConstExpr<T>, resolver: Resolver<T> = cacheResolver()): Memoized<T> {
-    const memoized: Memoized<T> = () => resolver(getter)
+
+// biome-ignore lint/suspicious/noExplicitAny: This is a memoize function that is used to cache the result of a function.
+export function memoize<Fn extends (...args: any) => any>(getter: Fn, resolver: Resolver<Fn> = cacheResolver()): Memoized<Fn> {
+    // biome-ignore lint/suspicious/noExplicitAny: This is a memoize function that is used to cache the result of a function.
+    const memoized: Memoized<Fn> = ((...args: any) => resolver(getter, ...args)) as Memoized<Fn>
 
     memoized.clear = () => {
         resolver.clear()

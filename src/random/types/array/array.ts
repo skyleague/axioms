@@ -6,7 +6,7 @@ import type { ReadonlyTuple } from '../../../types.js'
 import { interleaveList } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
 import { type ArbitrarySize, maxLengthArbitrary } from '../../arbitrary/arbitrary/size.js'
-import { type ArbitraryContext, arbitraryContext } from '../../arbitrary/context/context.js'
+import { type ArbitraryContext, type ArbitrarySizeContext, arbitraryContext } from '../../arbitrary/context/context.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { dependentArbitrary } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/integer.js'
@@ -57,7 +57,7 @@ export function array<T, Min extends number = number>(
 ): Dependent<ArrayOf<T, Min>> {
     const { minLength = 0, maxLength } = constraints
 
-    const inferMaxLength = (ctx: ArbitraryContext) =>
+    const inferMaxLength = (ctx: ArbitrarySizeContext) =>
         maxLengthArbitrary({
             context: ctx,
             size: constraints.size,
