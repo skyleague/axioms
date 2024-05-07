@@ -1,4 +1,5 @@
 import type { Dependent } from '../../arbitrary/dependent/index.js'
+import { array } from '../array/array.js'
 import { domain } from '../domain/domain.js'
 import { lowerAlphaNumeric } from '../string/index.js'
 import { tuple } from '../tuple/index.js'
@@ -18,8 +19,11 @@ import { tuple } from '../tuple/index.js'
  */
 export function email(): Dependent<string> {
     // @TODO include dot-atoms, quoted strings, escaped chars
-    const local = lowerAlphaNumeric({ extra: "!#$%&'*+-/=^_`{|}~.", minLength: 1, maxLength: 64 })
-    return tuple(local, domain())
+    const local = lowerAlphaNumeric({ extra: "!#$%&'*+-/=^_`{|}~", minLength: 1, maxLength: 64 })
+    return tuple(
+        array(local, { minLength: 1, maxLength: 32 }).map((xs) => xs.join('.')),
+        domain(),
+    )
         .map(([local, dom]) => `${local}@${dom}`)
         .filter((x) => x.length <= 254)
 }

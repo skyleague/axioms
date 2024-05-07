@@ -175,7 +175,7 @@ export function arrayWith<T, Min extends number = number>(
                     const shouldAdd = predicate(x.value, vals, skippedInRow, newConstraints)
                     if (isFailure(shouldAdd)) {
                         // just accept the total array
-                        if (xs.length > minLength) {
+                        if (xs.length >= minLength) {
                             break
                         }
                         throw shouldAdd
