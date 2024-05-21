@@ -168,8 +168,8 @@ export function maybeAsValue<const T extends Maybe<unknown>>(
 export function whenJust<const T extends Maybe<unknown>, const M extends Maybe<unknown> = T>(
     x: T,
     f: (x: Just<T>) => M,
-): [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? T : T | M) : M {
-    return (isJust(x) ? f(x) : Nothing) as [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? T : T | M) : M
+): [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? T : Maybe<M>) : M {
+    return (isJust(x) ? f(x) : Nothing) as [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? T : Maybe<M>) : M
 }
 
 export type ArgJust<Xs> = Xs extends [infer X, ...infer Rest]

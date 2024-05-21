@@ -215,8 +215,18 @@ describe('whenJust', () => {
         expectTypeOf(whenJust(Nothing, (_: never) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Nothing>()
         expectTypeOf(whenJust(42, (_: 42) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
 
-        expectTypeOf(whenJust(Nothing as Maybe<42>, (_: 42) => 'foobar' as const)).toEqualTypeOf<Maybe<42> | 'foobar'>()
-        expectTypeOf(whenJust(Nothing as Maybe<42>, (_: 42) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<42 | 'foobar'>>()
+        expectTypeOf(whenJust(Nothing as Maybe<42>, (_: 42) => 'foobar' as const)).toEqualTypeOf<Maybe<'foobar'>>()
+        expectTypeOf(whenJust(Nothing as Maybe<42>, (_: 42) => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
+
+        expectTypeOf(
+            whenJust(Nothing as Maybe<42>, (_: 42) => ({
+                foo: 42,
+            })),
+        ).toEqualTypeOf<
+            Maybe<{
+                readonly foo: 42
+            }>
+        >()
     })
 })
 
