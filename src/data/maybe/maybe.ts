@@ -242,8 +242,8 @@ export function whenJusts<const Xs extends unknown[], const M extends Maybe<unkn
 export function whenNothing<const T extends Maybe<unknown>, const M extends Maybe<unknown> = T>(
     x: T,
     f: () => M,
-): [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? M : M | T) : T {
-    return (isNothing(x) ? f() : x) as [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? M : M | T) : T
+): [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? M : M | Just<T>) : T {
+    return (isNothing(x) ? f() : x) as [Nothing] extends [T] ? (IsEqual<T, Nothing> extends true ? M : M | Just<T>) : T
 }
 
 /**

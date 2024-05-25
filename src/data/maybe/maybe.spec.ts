@@ -290,8 +290,8 @@ describe('whenNothing', () => {
         expectTypeOf(whenNothing(Nothing, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<'foobar'>>()
         expectTypeOf(whenNothing(42, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<42>()
 
-        expectTypeOf(whenNothing(Nothing as Maybe<42>, () => 'foobar' as const)).toEqualTypeOf<Maybe<42> | 'foobar'>()
-        expectTypeOf(whenNothing(Nothing as Maybe<42>, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<Maybe<42 | 'foobar'>>()
+        expectTypeOf(whenNothing(Nothing as Maybe<42>, () => 'foobar' as const)).toEqualTypeOf<42 | 'foobar'>()
+        expectTypeOf(whenNothing(Nothing as Maybe<42>, () => 'foobar' as Maybe<'foobar'>)).toEqualTypeOf<42 | Maybe<'foobar'>>()
     })
 })
 
