@@ -5,7 +5,7 @@ import { range } from '../../generator/index.js'
 import { asyncForAll, forAll, integer, tuple, unknown } from '../../random/index.js'
 
 import { describe, expect, it, vi } from 'vitest'
-import { LRUCacheResolver } from './resolver.js'
+import { LRUCacheResolver, cacheResolver } from './resolver.js'
 
 describe('cache resolver', () => {
     it('simple', () => {
@@ -16,6 +16,16 @@ describe('cache resolver', () => {
 
         mem.clear()
         expect(mem()).toEqual(1)
+    })
+
+    it('types', () => {
+        // @ts-expect-error
+        memoize((x: number) => x)
+        // @ts-expect-error
+        memoize((x: number) => x, cacheResolver())
+        // @ts-expect-error
+        memoize((x: number) => x, ttlCacheResolver())
+        memoize((x: number) => x, LRUCacheResolver())
     })
 
     it('mem x = x', () => {

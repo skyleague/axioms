@@ -46,6 +46,10 @@ export type Memoized<Fn extends Function> = Fn & {
  */
 
 // biome-ignore lint/suspicious/noExplicitAny: This is a memoize function that is used to cache the result of a function.
+export function memoize<Fn extends () => any>(getter: Fn): Memoized<Fn>
+// biome-ignore lint/suspicious/noExplicitAny: This is a memoize function that is used to cache the result of a function.
+export function memoize<Fn extends (...args: any) => any>(getter: Fn, resolver: Resolver<Fn>): Memoized<Fn>
+// biome-ignore lint/suspicious/noExplicitAny: This is a memoize function that is used to cache the result of a function.
 export function memoize<Fn extends (...args: any) => any>(getter: Fn, resolver: Resolver<Fn> = cacheResolver()): Memoized<Fn> {
     // biome-ignore lint/suspicious/noExplicitAny: This is a memoize function that is used to cache the result of a function.
     const memoized: Memoized<Fn> = ((...args: any) => resolver(getter, ...args)) as Memoized<Fn>
