@@ -2,6 +2,10 @@ import { map } from '../../iterator/map/index.js'
 import type { Traversable } from '../../type/traversable/index.js'
 
 /**
+ * @deprecated use Array.prototype.entries() instead
+ */
+export function enumerate<T>(xs: T[]): Traversable<[number, T], void>
+/**
  * Creates a generator that enumerates each value of the given {@link Traversable},
  * and gives back a pair with the index on the first position, and the value on the second position.
  *
@@ -27,6 +31,8 @@ import type { Traversable } from '../../type/traversable/index.js'
  *
  * @group Generators
  */
+
+export function enumerate<T>(xs: Traversable<T>): Traversable<[number, T], void>
 export function* enumerate<T>(xs: Traversable<T>): Traversable<[number, T], void> {
     yield* map(xs, (x, i) => [i, x])
 }
