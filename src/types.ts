@@ -2,6 +2,7 @@ export type {
     Primitive,
     Simplify,
     Except,
+    Exact,
     EmptyObject,
     NonEmptyObject,
     UnknownArray,
