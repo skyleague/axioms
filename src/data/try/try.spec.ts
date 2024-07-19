@@ -95,6 +95,11 @@ describe('asTry', () => {
         const fn = () => asTry(() => 'foo') as Try<string>
         expectTypeOf(asTry(fn)).toEqualTypeOf<Try<string>>()
     })
+
+    it('noinfer type', () => {
+        const fn = () => asTry(() => 'foo') as Try<NoInfer<string>>
+        expectTypeOf(asTry(fn)).toEqualTypeOf<Try<string>>()
+    })
 })
 
 describe('transformTry', () => {

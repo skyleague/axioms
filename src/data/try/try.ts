@@ -118,8 +118,12 @@ export type TryPromise<T> = T extends Promise<Try<infer P>> ? Promise<Try<P>> : 
  *
  * @group Combinators
  */
-export function transformTry<T, U>(x: Try<T>, s: (e: T) => TryPromise<U>, f: (e: Failure) => TryPromise<U>) {
-    return asTry(() => (isSuccess(x) ? s(x) : f(x)))
+export function transformTry<T extends Try<unknown>, U>(
+    x: T,
+    s: (e: Success<T>) => TryPromise<U>,
+    f: (e: Failure) => TryPromise<U>,
+) {
+    return asTry(() => (isSuccess(x) ? s(x) : f(x as Failure)))
 }
 
 /**
@@ -142,7 +146,7 @@ export function transformTry<T, U>(x: Try<T>, s: (e: T) => TryPromise<U>, f: (e:
  *
  * @group Combinators
  */
-export function mapTry<U, T>(x: Try<T>, fn: (e: T) => U): AsTry<U> {
+export function mapTry<U, T extends Try<unknown>>(x: T, fn: (e: Success<T>) => U): AsTry<U> {
     return (isSuccess(x) ? asTry(() => fn(x)) : x) as AsTry<U>
 }
 
@@ -166,8 +170,8 @@ export function mapTry<U, T>(x: Try<T>, fn: (e: T) => U): AsTry<U> {
  *
  * @group Combinators
  */
-export function recoverTry<U, T>(x: Try<T>, recover: (e: Failure) => U): AsTry<U> | Try<T> {
-    return (isFailure(x) ? asTry(() => recover(x)) : x) as AsTry<U> | Try<T>
+export function recoverTry<U, T extends Try<unknown>>(x: T, recover: (e: Failure) => U): AsTry<U> | T {
+    return (isFailure(x) ? asTry(() => recover(x)) : x) as AsTry<U> | T
 }
 
 /**
@@ -189,8 +193,8 @@ export function recoverTry<U, T>(x: Try<T>, recover: (e: Failure) => U): AsTry<U
  *
  * @group Combinators
  */
-export function tryToEither<T>(x: Try<T>): Either<Failure, T> {
-    return isSuccess(x) ? { right: x } : { left: x }
+export function tryToEither<T extends Try<unknown>>(x: T): Either<Failure, Success<T>> {
+    return isSuccess(x) ? { right: x } : { left: x as Failure }
 }
 
 /**
@@ -236,8 +240,8 @@ export function tryFromEither<L, R extends Success<unknown>>(x: Either<L, R>): T
  *
  * @group Combinators
  */
-export function tryToMaybe<T>(x: Try<T>): T extends Failure ? Nothing : T {
-    return (isSuccess(x) ? x : Nothing) as T extends Failure ? Nothing : T
+export function tryToMaybe<T extends Try<unknown>>(x: T): T extends Failure ? Nothing : Success<T> {
+    return (isSuccess(x) ? x : Nothing) as T extends Failure ? Nothing : Success<T>
 }
 
 /**
@@ -259,8 +263,8 @@ export function tryToMaybe<T>(x: Try<T>): T extends Failure ? Nothing : T {
  *
  * @group Combinators
  */
-export function tryAsValue<T>(x: Try<T>): T extends Failure ? undefined : T {
-    return (isSuccess(x) ? x : undefined) as T extends Failure ? undefined : T
+export function tryAsValue<T extends Try<unknown>>(x: T): T extends Failure ? undefined : Success<T> {
+    return (isSuccess(x) ? x : undefined) as T extends Failure ? undefined : Success<T>
 }
 
 /**
@@ -282,9 +286,9 @@ export function tryAsValue<T>(x: Try<T>): T extends Failure ? undefined : T {
  *
  * @group Combinators
  */
-export function tryToError<T>(x: Try<T>): T extends Failure ? never : T {
+export function tryToError<T extends Try<unknown>>(x: T): T extends Failure ? never : Success<T> {
     if (isFailure(x)) {
         throw x
     }
-    return x as T extends Failure ? never : T
+    return x as T extends Failure ? never : Success<T>
 }

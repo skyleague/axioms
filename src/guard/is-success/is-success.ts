@@ -1,4 +1,4 @@
-import type { Failure, Success } from '../../type/try/index.js'
+import type { Success } from '../../type/try/index.js'
 import { isError } from '../is-error/index.js'
 
 /**
@@ -19,6 +19,6 @@ import { isError } from '../is-error/index.js'
  *
  * @group Guards
  */
-export function isSuccess<T, O = unknown>(x: Failure | O | Success<T>): x is Success<T> {
+export function isSuccess<T>(x: T): x is Success<T> {
     return !isError(x)
 }
