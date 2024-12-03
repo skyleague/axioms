@@ -1,5 +1,5 @@
+import type { Mappable } from '../../../type/_deprecated/traversable/index.js'
 import { toGenerator, toTraversable, toTraverser } from '../../../type/index.js'
-import type { Mappable } from '../../../type/traversable/index.js'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { integer } from '../integer/index.js'
 

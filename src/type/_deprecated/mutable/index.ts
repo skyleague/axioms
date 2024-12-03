@@ -1,1 +1,1 @@
-export { type DeepMutable, type Mutable } from './mutable.js'
+export type { DeepMutable, Mutable } from './mutable.js'

@@ -1,0 +1,63 @@
+/**
+ * @deprecated use Iterator instead
+ */
+export type Traverser<T, R = unknown> = Iterator<T, R, void>
+
+/**
+ * @deprecated use Iterable instead
+ */
+export type Traversable<T, R = unknown> = Iterable<T, R>
+export type Mappable<T, R = unknown> = Traversable<T, R> | Traverser<T, R> | (() => Generator<T, R, void>)
+/**
+ * @deprecated This should not be used anymore.
+ */
+export type TraversableItem<T> = T extends Traversable<infer I> ? I : T
+
+export type ToTraverser<Xs extends Mappable<unknown>> = Xs extends Mappable<infer T, infer R> ? Traverser<T, R> : never
+/**
+ * @deprecated Use `toTraversable(xs)[Symbol.iterator]()` instead
+ */
+export function toTraverser<Xs extends Mappable<unknown>>(xs: Xs): ToTraverser<Xs> {
+    //return isIterable(xs) ? xs[Symbol.iterator]() : isGeneratorFunction(xs) ? xs() : xs
+    // inlined
+    if (typeof xs === 'string' || Symbol.iterator in xs) {
+        return (xs as Traversable<unknown>)[Symbol.iterator]() as ToTraverser<Xs>
+    }
+    if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
+        return xs() as unknown as ToTraverser<Xs>
+    }
+    return xs as unknown as ToTraverser<Xs>
+}
+
+export type ToTraversable<Xs extends Mappable<unknown>> = Xs extends Mappable<infer T, infer R> ? Traversable<T, R> : never
+/**
+ * @deprecated This should not be used anymore.
+ */
+export function toTraversable<Xs extends Mappable<unknown>>(xs: Xs): ToTraversable<Xs> {
+    //return isIterable(xs) ? xs : isGeneratorFunction(xs) ? xs() : { [Symbol.iterator]: () => xs }
+    // inlined
+    if (typeof xs === 'string' || Symbol.iterator in xs) {
+        return xs as unknown as ToTraversable<Xs>
+    }
+    if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
+        return xs() as unknown as ToTraversable<Xs>
+    }
+    return { [Symbol.iterator]: () => xs } as ToTraversable<Xs>
+}
+
+/**
+ * @deprecated This should not be used anymore.
+ */
+export function lazy<Xs extends Traversable<unknown>>(xs: () => Xs): Xs {
+    return { [Symbol.iterator]: () => toTraverser(xs()) } as unknown as Xs
+}
+
+export type ToGenerator<Xs extends Mappable<unknown>, R> = Xs extends Mappable<infer T> ? Traversable<T, R> : never
+/**
+ * @deprecated This should not be used anymore.
+ */
+export function toGenerator<Xs extends Mappable<unknown>, R = unknown>(xs: Xs, returnValue?: R): ToGenerator<Xs, R>
+export function* toGenerator<Xs extends Mappable<unknown>, R = unknown>(xs: Xs, returnValue?: R) {
+    yield* toTraversable(xs)
+    return returnValue as R
+}

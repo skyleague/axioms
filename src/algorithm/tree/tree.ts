@@ -1,8 +1,8 @@
 import { queue } from '../../generator/queue/index.js'
 import { stack } from '../../generator/stack/index.js'
+import { filter } from '../../iterator/_deprecated/filter/index.js'
+import { map } from '../../iterator/_deprecated/map/index.js'
 import { applicative } from '../../iterator/applicative/index.js'
-import { filter } from '../../iterator/filter/index.js'
-import { map } from '../../iterator/map/index.js'
 import type { Traversable } from '../../type/index.js'
 
 /**

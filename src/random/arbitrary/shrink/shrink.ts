@@ -1,10 +1,10 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
 import { zipWith } from '../../../array/zip/zip.js'
+import { map } from '../../../iterator/_deprecated/map/map.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
-import { map } from '../../../iterator/map/map.js'
-import type { Traversable } from '../../../type/traversable/traversable.js'
+import type { Traversable } from '../../../type/_deprecated/traversable/traversable.js'
 
 /**
  * @internal

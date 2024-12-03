@@ -133,7 +133,8 @@ export function LRUCacheResolver<Fn extends (...args: any) => any>({
         if (cache.has(key)) {
             cache.delete(key)
         } else if (cache.size >= maxItems) {
-            cache.delete(cache.keys().next().value)
+            // biome-ignore lint/style/noNonNullAssertion: we have a positive size
+            cache.delete(cache.keys().next().value!)
         }
         cache.set(key, val)
     }

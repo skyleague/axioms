@@ -11,7 +11,7 @@ import { mappableFunc } from '../../random/types/mappable/mappable.js'
 import { oneOf } from '../../random/types/one-of/one-of.js'
 import { string } from '../../random/types/string/string.js'
 import { tuple } from '../../random/types/tuple/tuple.js'
-import { type Mappable, toTraversable } from '../../type/traversable/traversable.js'
+import { type Mappable, toTraversable } from '../../type/_deprecated/traversable/traversable.js'
 import { partition } from './partition.js'
 
 import { expect, expectTypeOf, it } from 'vitest'

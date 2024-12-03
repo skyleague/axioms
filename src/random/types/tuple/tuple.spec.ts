@@ -2,7 +2,7 @@ import { tuple } from './tuple.js'
 
 import { showTree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
-import { repeat } from '../../../generator/repeat/repeat.js'
+import { repeat } from '../../../generator/_deprecated/repeat/repeat.js'
 import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/index.js'
