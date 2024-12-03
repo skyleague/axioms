@@ -1,6 +1,6 @@
 import { asTry, mapTry } from '../../../data/try/try.js'
 import { isJust, isObject } from '../../../guard/index.js'
-import { replicate } from '../../../iterator/replicate/index.js'
+import { replicate } from '../../../iterator/_deprecated/replicate/index.js'
 import { object } from '../../index.js'
 import { xoroshiro128plus } from '../../rng/xoroshiro128plus/index.js'
 import { tuple } from '../../types/tuple/tuple.js'

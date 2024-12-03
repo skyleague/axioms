@@ -1,7 +1,7 @@
 import { halves, halvesf, splits, towards, towardsf } from './shrink.js'
 
 import { collect } from '../../../array/collect/collect.js'
-import { take } from '../../../iterator/take/take.js'
+import { take } from '../../../iterator/_deprecated/take/take.js'
 
 import { describe, expect, it } from 'vitest'
 

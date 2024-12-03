@@ -1,10 +1,10 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
 import { zip } from '../../../array/zip/zip.js'
+import { map } from '../../../iterator/_deprecated/map/map.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
-import { map } from '../../../iterator/map/map.js'
-import { type Traversable, toTraverser } from '../../../type/traversable/traversable.js'
+import { toTraverser } from '../../../type/_deprecated/traversable/traversable.js'
 import type { Simplify } from '../../../types.js'
 import type { ArbitraryContext, ArbitrarySizeContext } from '../context/context.js'
 import { splitX, splits } from '../shrink/shrink.js'
@@ -68,8 +68,8 @@ export function interleave<U extends Tree<unknown>[]>(
 /**
  * @internal
  */
-export function shrinkAll<U extends Tree<unknown>[]>(xs: U): Traversable<[...U]> {
-    return zip(...xs.map((x) => x.children)) as unknown as Traversable<[...U]>
+export function shrinkAll<U extends Tree<unknown>[]>(xs: U): IteratorObject<[...U]> {
+    return zip(...xs.map((x) => x.children)) as unknown as IteratorObject<[...U]>
 }
 
 /**

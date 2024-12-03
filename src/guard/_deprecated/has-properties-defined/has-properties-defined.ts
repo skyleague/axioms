@@ -1,4 +1,4 @@
-import { all } from '../../../iterator/all/index.js'
+import { all } from '../../../iterator/_deprecated/all/index.js'
 import type { RequireKeys } from '../../../type/_deprecated/keys/index.js'
 import type { KeysOfUnion } from '../../../types.js'
 import { asArray } from '../../as-array/index.js'

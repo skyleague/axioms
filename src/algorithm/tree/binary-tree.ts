@@ -1,5 +1,4 @@
 import { stack } from '../../generator/stack/index.js'
-import type { Traversable } from '../../type/index.js'
 
 /**
  * A type that represents a binary tree (which has a maximum of 2 children; left, and right).
@@ -32,7 +31,7 @@ export interface BinaryTree<T> {
  *
  * @group Algorithm
  */
-export function* dfsNLR<T>(node: BinaryTree<T>): Traversable<T, void> {
+export function* dfsNLR<T>(node: BinaryTree<T>): IteratorObject<T, void> {
     const nodes = stack([node])
     for (const x of nodes) {
         yield x.value
@@ -54,7 +53,7 @@ export function* dfsNLR<T>(node: BinaryTree<T>): Traversable<T, void> {
  *
  * @group Algorithm
  */
-export function* dfsLRN<T>(node: BinaryTree<T>): Traversable<T, void> {
+export function* dfsLRN<T>(node: BinaryTree<T>): IteratorObject<T, void> {
     const nodes = stack([node])
     const ordered: T[] = []
     for (const x of nodes) {

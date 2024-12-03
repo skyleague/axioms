@@ -1,7 +1,7 @@
 import { seeder2, splitmix64 } from './seed.js'
 
 import { collect } from '../../../array/collect/collect.js'
-import { take } from '../../../iterator/take/take.js'
+import { take } from '../../../iterator/_deprecated/take/take.js'
 
 import { expect, it } from 'vitest'
 
