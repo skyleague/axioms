@@ -1,6 +1,6 @@
 export * from './_deprecated/clone-deep/index.js'
 export * from './_deprecated/has/index.js'
-export * from './ensure-values/index.js'
+export * from './_deprecated/ensure-values/index.js'
 export * from './entries-of/index.js'
 export * from './from-entries/index.js'
 export * from './keys-of/index.js'

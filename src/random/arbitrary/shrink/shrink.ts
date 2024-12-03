@@ -1,10 +1,9 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
 import { collect } from '../../../array/collect/collect.js'
 import { zipWith } from '../../../array/zip/zip.js'
+import { map } from '../../../iterator/_deprecated/map/map.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import { concat } from '../../../iterator/concat/concat.js'
-import { map } from '../../../iterator/map/map.js'
-import type { Traversable } from '../../../type/traversable/traversable.js'
 
 /**
  * @internal
@@ -61,7 +60,7 @@ export function halves(from: number): number[] {
 /**
  * @internal
  */
-export function* towardsf(destination: number, x: number): Traversable<number, void> {
+export function* towardsf(destination: number, x: number): IteratorObject<number, void> {
     if (Math.abs(destination - x) < Number.EPSILON) {
         return
     }
@@ -73,7 +72,7 @@ export function* towardsf(destination: number, x: number): Traversable<number, v
 /**
  * @internal
  */
-export function* halvesf(from: number): Traversable<number, void> {
+export function* halvesf(from: number): IteratorObject<number, void> {
     let x = from
     while (Math.abs(x) > Number.EPSILON) {
         yield x
@@ -84,7 +83,7 @@ export function* halvesf(from: number): Traversable<number, void> {
 /**
  * @internal
  */
-export function* splits<T>(xs: T[]): Traversable<[T[], T, T[]], void> {
+export function* splits<T>(xs: T[]): IteratorObject<[T[], T, T[]], void> {
     for (let i = 0; i < xs.length; ++i) {
         // biome-ignore lint/style/noNonNullAssertion: The loop is bounded by the length of xs
         yield [xs.slice(0, i), xs[i]!, xs.slice(i + 1)]

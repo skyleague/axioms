@@ -30,6 +30,7 @@ import { toTraversable } from '../../type/index.js'
  * @typeParam T - The element type.
  *
  * @group Array
+ * @deprecated Use `xs.toArray()` instead
  */
 export function collect<T>(xs: Mappable<T>): T[] {
     return [...toTraversable(xs)]

@@ -1,8 +1,8 @@
 import { isJust } from '../../guard/index.js'
 import type { ComparablePrimitive, Maybe, Traversable, TraversableItem } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
-import { foldl1 } from '../fold/index.js'
-import { map } from '../map/index.js'
+import { foldl1 } from '../_deprecated/fold/index.js'
+import { map } from '../_deprecated/map/index.js'
 
 /**
  * Calculate the minimum value of the given items.

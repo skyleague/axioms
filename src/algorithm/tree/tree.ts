@@ -1,8 +1,8 @@
 import { queue } from '../../generator/queue/index.js'
 import { stack } from '../../generator/stack/index.js'
+import { filter } from '../../iterator/_deprecated/filter/index.js'
+import { map } from '../../iterator/_deprecated/map/index.js'
 import { applicative } from '../../iterator/applicative/index.js'
-import { filter } from '../../iterator/filter/index.js'
-import { map } from '../../iterator/map/index.js'
 import type { Traversable } from '../../type/index.js'
 
 /**
@@ -135,7 +135,7 @@ export function evaluateTree<T>(x: Tree<T>): Tree<T> {
     }
 }
 
-export function* dfsPreOrder<T>(node: Tree<T>): Traversable<T, void> {
+export function* dfsPreOrder<T>(node: Tree<T>): IteratorObject<T, void> {
     const nodes = stack([node])
     for (const x of nodes) {
         yield x.value
@@ -143,7 +143,7 @@ export function* dfsPreOrder<T>(node: Tree<T>): Traversable<T, void> {
     }
 }
 
-export function* dfsPostOrder<T>(node: Tree<T>): Traversable<T, void> {
+export function* dfsPostOrder<T>(node: Tree<T>): IteratorObject<T, void> {
     const nodes = stack([node])
     const ordered: T[] = []
     for (const x of nodes) {
@@ -156,7 +156,7 @@ export function* dfsPostOrder<T>(node: Tree<T>): Traversable<T, void> {
     }
 }
 
-export function* bfs<T>(node: Tree<T>): Traversable<T, void> {
+export function* bfs<T>(node: Tree<T>): IteratorObject<T, void> {
     const nodes = queue([node])
     for (const x of nodes) {
         yield x.value
