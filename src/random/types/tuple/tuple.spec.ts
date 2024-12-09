@@ -1,14 +1,10 @@
-import { tuple } from './tuple.js'
-
 import { showTree } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/collect/collect.js'
-import { repeat } from '../../../generator/_deprecated/repeat/repeat.js'
-import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { boolean } from '../boolean/boolean.js'
 import { integer } from '../integer/index.js'
+import { tuple } from './tuple.js'
 
 import { expect, it } from 'vitest'
 
@@ -29,14 +25,7 @@ it('counter example - equal', () => {
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = tuple(integer(), integer())
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
       [
         [
           218084956,
@@ -109,6 +98,27 @@ it('show small tree', () => {
           |   └─ false,0
           └─ true,1
               └─ false,1"
+    `)
+})
+
+it('show small tree - filtered', () => {
+    const ctx = arbitraryContext({
+        rng: xoroshiro128plus(42n),
+    })
+    const arb = tuple(boolean(), integer({ min: 0, max: 10 })).filter(([_b, i]) => i > 4)
+    const tree1 = arb.value(ctx)
+    expect(showTree(tree1, { maxDepth: 6 })).toMatchInlineSnapshot(
+        `
+      "└─ true,5
+          └─ false,5"
+    `,
+    )
+    const tree2 = arb.value(ctx)
+    expect(showTree(tree2, { maxDepth: 6 })).toMatchInlineSnapshot(`
+      "└─ false,8
+          ├─ false,6
+          |   └─ false,5
+          └─ false,7"
     `)
 })
 

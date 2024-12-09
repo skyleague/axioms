@@ -1,9 +1,8 @@
 import type { Tree } from '../../../algorithm/index.js'
 import { recoverTry } from '../../../data/try/try.js'
-import { enumerate } from '../../../generator/index.js'
 import { isDefined, isFailure, isJust } from '../../../guard/index.js'
 import { isSuccess } from '../../../guard/is-success/is-success.js'
-import type { Maybe, Traversable, Try } from '../../../type/index.js'
+import type { Maybe, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { inspect } from '../../../util/_internal/inspect/inspect.js'
 import { InfeasibleTree } from '../shrink/shrink.js'
@@ -45,7 +44,7 @@ export class FalsifiedError extends Error {
 }
 
 export interface FalsifyOptions<T> {
-    values: () => Traversable<Try<Tree<T>>>
+    values: () => Iterator<Try<Tree<T>>>
     predicate: (x: T) => Try<true>
     maxDepth: number
     counterExample: T | undefined
@@ -79,7 +78,7 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample, timeou
     let smallest: Falsified | undefined = undefined
     let failure: Error | undefined = undefined
     const startTime = performance.now()
-    for (const [i, tryTree] of enumerate(values())) {
+    for (const [i, tryTree] of Iterator.from(values()).map((x, i) => [i, x] as const)) {
         if (isFailure(tryTree)) {
             failure = tryTree
             continue
@@ -168,7 +167,7 @@ export function findSmallest<T>({
 }
 
 export interface AsyncFalsifyOptions<T> {
-    values: () => Traversable<Try<Tree<T>>>
+    values: () => Iterable<Try<Tree<T>>>
     predicate: (x: T) => Promise<Try<true>>
     maxDepth: number
     counterExample: T | undefined
@@ -202,7 +201,7 @@ export async function asyncFalsify<T>({
     let smallest = undefined
     let failure: Error | undefined = undefined
     const startTime = performance.now()
-    for (const [i, tryTree] of enumerate(values())) {
+    for (const [i, tryTree] of Iterator.from(values()).map((x, i) => [i, x] as const)) {
         if (isFailure(tryTree)) {
             failure = tryTree
             continue

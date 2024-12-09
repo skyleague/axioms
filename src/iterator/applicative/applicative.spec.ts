@@ -1,18 +1,14 @@
-import { applicative } from './index.js'
-
-import { collect } from '../../array/index.js'
-import { range } from '../../generator/index.js'
-import { allEqual, take } from '../../iterator/index.js'
 import { array, forAll, unknown } from '../../random/index.js'
 import { constant } from '../../random/types/helper/helper.js'
 import { integer } from '../../random/types/integer/integer.js'
 import { tuple } from '../../random/types/tuple/tuple.js'
+import { applicative } from './index.js'
 
 import { expect, it, vi } from 'vitest'
 
 it('make reentrant', () => {
-    const xs = range(1, 5)
-    expect(collect(xs)).toMatchInlineSnapshot(`
+    const xs = [1, 2, 3, 4].values()
+    expect(xs.toArray()).toMatchInlineSnapshot(`
         [
           1,
           2,
@@ -20,10 +16,10 @@ it('make reentrant', () => {
           4,
         ]
     `)
-    expect(collect(xs)).toMatchInlineSnapshot('[]')
+    expect(xs.toArray()).toMatchInlineSnapshot('[]')
 
-    const axs = applicative(range(1, 5))
-    expect(collect(axs)).toMatchInlineSnapshot(`
+    const axs = applicative(() => [1, 2, 3, 4].values())
+    expect(Iterator.from(axs).toArray()).toMatchInlineSnapshot(`
         [
           1,
           2,
@@ -31,7 +27,7 @@ it('make reentrant', () => {
           4,
         ]
     `)
-    expect(collect(axs)).toMatchInlineSnapshot(`
+    expect(Iterator.from(axs).toArray()).toMatchInlineSnapshot(`
         [
           1,
           2,
@@ -44,44 +40,47 @@ it('make reentrant', () => {
 it('make reentrant - lazy', () => {
     const fn = vi.fn()
     function* gen() {
-        for (const x of range(5)) {
+        for (const x of [0, 1, 2, 3, 4]) {
             fn()
             yield x
         }
     }
-    const axs = applicative(gen())
+    const axs = applicative(gen)
 
-    expect(collect(take(axs, 0))).toEqual([])
+    // Take 0
+    const iter0 = Iterator.from(axs).take(0)
+    expect([iter0.next().value]).toEqual([undefined])
     expect(fn).not.toHaveBeenCalled()
 
-    const take2 = collect(take(axs, 2))
-    expect(fn).toHaveBeenCalledTimes(2)
-    expect(collect(take(axs, 2))).toEqual(take2)
+    // Take 2
+    const iter2 = Iterator.from(axs).take(2)
+    expect([iter2.next().value, iter2.next().value, iter2.next().value]).toEqual([0, 1, undefined])
     expect(fn).toHaveBeenCalledTimes(2)
 
-    expect(collect(take(axs, 3))).toMatchInlineSnapshot(`
-        [
-          0,
-          1,
-          2,
-        ]
-    `)
-    expect(fn).toHaveBeenCalledTimes(3)
-
-    expect(collect(axs)).toMatchInlineSnapshot(`
-        [
-          0,
-          1,
-          2,
-          3,
-          4,
-        ]
-    `)
+    // Take 3
+    const iter3 = Iterator.from(axs).take(3)
+    expect([iter3.next().value, iter3.next().value, iter3.next().value, iter3.next().value]).toEqual([0, 1, 2, undefined])
     expect(fn).toHaveBeenCalledTimes(5)
+
+    // Take all
+    const iterAll = Iterator.from(axs)
+    expect([
+        iterAll.next().value,
+        iterAll.next().value,
+        iterAll.next().value,
+        iterAll.next().value,
+        iterAll.next().value,
+        iterAll.next().value,
+    ]).toEqual([0, 1, 2, 3, 4, undefined])
+    expect(fn).toHaveBeenCalledTimes(10)
+    expect(Iterator.from(axs).toArray()).toEqual([0, 1, 2, 3, 4])
+    expect(fn).toHaveBeenCalledTimes(15)
 })
 
 it('identity', () => {
-    forAll(array(unknown()), (xs) => allEqual(applicative(xs), xs))
+    forAll(array(unknown()), (xs) => {
+        expect(Iterator.from(applicative(() => xs)).toArray()).toEqual(xs)
+    })
 })
 
 it('should be applicative', () => {
@@ -114,7 +113,7 @@ it('should be applicative', () => {
             }
             expect(ms).toEqual(xs.slice(0, m))
 
-            expect(collect(ys)).toEqual(xs)
+            expect(Iterator.from(ys).toArray()).toEqual(xs)
         },
     )
 })

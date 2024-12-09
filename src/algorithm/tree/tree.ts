@@ -1,9 +1,5 @@
 import { queue } from '../../generator/queue/index.js'
 import { stack } from '../../generator/stack/index.js'
-import { filter } from '../../iterator/_deprecated/filter/index.js'
-import { map } from '../../iterator/_deprecated/map/index.js'
-import { applicative } from '../../iterator/applicative/index.js'
-import type { Traversable } from '../../type/index.js'
 
 /**
  * A type that represents a tree with an enumerable amount of children.
@@ -20,7 +16,7 @@ export interface Tree<T> {
     /**
      * The children in the tree node.
      */
-    children: Traversable<Tree<T>>
+    children: Iterable<Tree<T>>
 }
 
 /**
@@ -32,7 +28,7 @@ export interface Tree<T> {
  *
  * @group Algorithm
  */
-export function tree<T>(x: T, children?: Traversable<Tree<T>>): Tree<T> {
+export function tree<T>(x: T, children?: Iterable<Tree<T>>): Tree<T> {
     return { value: x, children: children ?? [] }
 }
 
@@ -45,9 +41,9 @@ export function tree<T>(x: T, children?: Traversable<Tree<T>>): Tree<T> {
  *
  * @group Algorithm
  */
-export function applicativeTree<T>(x: Tree<T>): Tree<T> {
-    return { value: x.value, children: applicative(map(x.children, (c) => applicativeTree(c))) }
-}
+// export function applicativeTree<T>(x: Tree<T>): Tree<T> {
+//     return { value: x.value, children: applicative(Iterator.from(x.children).map((c) => applicativeTree(c))) }
+// }
 
 /**
  * Map a function over the tree starting with the root node, and mapping
@@ -74,7 +70,7 @@ export function applicativeTree<T>(x: Tree<T>): Tree<T> {
  * @group Algorithm
  */
 export function mapTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
-    return { value: f(x.value), children: map(x.children, (c) => mapTree(c, f)) }
+    return { value: f(x.value), children: Iterator.from(x.children).map((c) => mapTree(c, f)) }
 }
 
 /**
@@ -103,10 +99,9 @@ export function mapTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
 export function filterTree<T>(x: Tree<T>, f: (x: T) => boolean): Tree<T> {
     return {
         value: x.value,
-        children: map(
-            filter(x.children, (c) => f(c.value)),
-            (c) => filterTree(c, f),
-        ),
+        children: Iterator.from(x.children)
+            .filter((c) => f(c.value))
+            .map((c) => filterTree(c, f)),
     }
 }
 
@@ -117,21 +112,21 @@ export function pruneTree<T>(x: Tree<T>): Tree<T> {
     }
 }
 
-export function unfoldTree<T>(f: (x: T) => Traversable<T>, x: T): Tree<T> {
-    return { value: x, children: map(f(x), (c) => unfoldTree(f, c)) }
+export function unfoldTree<T>(f: (x: T) => Iterable<T>, x: T): Tree<T> {
+    return { value: x, children: Iterator.from(f(x)).map((c) => unfoldTree(f, c)) }
 }
 
-export function expandTree<T>(f: (x: T) => Traversable<T>, x: Tree<T>): Tree<T> {
+export function expandTree<T>(f: (x: T) => Iterable<T>, x: Tree<T>): Tree<T> {
     return {
         value: x.value,
-        children: map(f(x.value), (c) => unfoldTree(f, c)),
+        children: Iterator.from(f(x.value)).map((c) => unfoldTree(f, c)),
     }
 }
 
 export function evaluateTree<T>(x: Tree<T>): Tree<T> {
     return {
         value: x.value,
-        children: map(x.children, (c) => evaluateTree(c)),
+        children: Iterator.from(x.children).map((c) => evaluateTree(c)),
     }
 }
 

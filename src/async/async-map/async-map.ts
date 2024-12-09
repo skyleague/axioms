@@ -1,7 +1,5 @@
-import type { AsyncTraversable } from '../../type/async/index.js'
-
 /**
- * Map over an {@link AsyncTraversable}, and give the results back as an {@link AsyncTraversable} generator.
+ * Map over an {@link AsyncIterable}, and give the results back as an {@link AsyncIterable} generator.
  *
  * ### Example
  * ```ts
@@ -31,9 +29,9 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  * @group Async
  */
 export async function* asyncMap<I, O>(
-    xs: AsyncTraversable<I>,
+    xs: AsyncIterable<I> | Iterable<I>,
     mapper: (x: I, index: number) => O | Promise<O>,
-): AsyncTraversable<O> {
+): AsyncIterable<O> {
     let i = 0
     for await (const x of xs) {
         yield await mapper(x, i)

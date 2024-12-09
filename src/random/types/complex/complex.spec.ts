@@ -1,13 +1,10 @@
-import { json, primitive, unknown } from './index.js'
-
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
 import { isObject } from '../../../guard/index.js'
-import { equal, take } from '../../../iterator/index.js'
+import { equal } from '../../../iterator/index.js'
 import { forAll } from '../../../random/arbitrary/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { constant, oneOf } from '../index.js'
+import { json, primitive, unknown } from './index.js'
 
 import { describe, expect, it } from 'vitest'
 
@@ -17,14 +14,7 @@ describe('json', () => {
     it('random sample - default', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = json()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             {
               "#l#'E": false,
@@ -139,14 +129,7 @@ describe('json', () => {
     it('random sample - object', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = json({ type: 'object' })
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             {
               "#l#'E": false,
@@ -261,14 +244,7 @@ describe('json', () => {
     it('random sample - array', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = json({ type: 'array' })
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             [
               true,
@@ -352,14 +328,7 @@ describe('json', () => {
     it('random sample - value', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = json({ type: 'value' })
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             -987316204.8333645,
             -1991294021.561513,
@@ -401,14 +370,7 @@ describe('json', () => {
     it('random sample - xs', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), depth: 'xs' })
         const aint = json()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             {
               "#l#'E": false,
@@ -559,14 +521,7 @@ describe('primitive', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = primitive()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             "򀋲鹃",
             null,
@@ -587,14 +542,7 @@ describe('unknown', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = unknown()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             null,
             true,

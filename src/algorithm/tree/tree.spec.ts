@@ -1,9 +1,7 @@
 import type { Tree } from './index.js'
 import { mapTree } from './index.js'
 
-import { bfs, dfsPostOrder, dfsPreOrder, filterTree, showTree, tree } from './tree.js'
-
-import { sum } from '../../array/index.js'
+import { bfs, filterTree, showTree, tree } from './tree.js'
 
 import { expect, it } from 'vitest'
 
@@ -33,74 +31,6 @@ it('filter tree', () => {
             └─ 3"
     `)
     expect(showTree(t)).toMatchInlineSnapshot(`"└─ 1"`)
-})
-
-it('preorder', () => {
-    const t: Tree<number> = {
-        value: 1,
-        children: [
-            {
-                value: 2,
-                children: [
-                    { value: 4, children: [] },
-                    { value: 5, children: [] },
-                ],
-            },
-            {
-                value: 3,
-                children: [
-                    { value: 6, children: [] },
-                    { value: 7, children: [] },
-                ],
-            },
-        ],
-    }
-
-    expect([...dfsPreOrder(t)]).toMatchInlineSnapshot(`
-        [
-          1,
-          2,
-          4,
-          5,
-          3,
-          6,
-          7,
-        ]
-    `)
-})
-
-it('postorder', () => {
-    const t: Tree<number> = {
-        value: 1,
-        children: [
-            {
-                value: 2,
-                children: [
-                    { value: 4, children: [] },
-                    { value: 5, children: [] },
-                ],
-            },
-            {
-                value: 3,
-                children: [
-                    { value: 6, children: [] },
-                    { value: 7, children: [] },
-                ],
-            },
-        ],
-    }
-
-    expect([...dfsPostOrder(t)]).toMatchInlineSnapshot(`
-        [
-          7,
-          6,
-          3,
-          5,
-          4,
-          2,
-          1,
-        ]
-    `)
 })
 
 it('bfs', () => {
@@ -151,5 +81,5 @@ it('tree', () => {
           7,
         ]
     `)
-    expect(sum(bfs(root))).toMatchInlineSnapshot('28')
+    expect(bfs(root).reduce((a, b) => a + b, 0)).toMatchInlineSnapshot('28')
 })

@@ -1,5 +1,2 @@
-export * from './_deprecated/attempt/index.js'
-export * from './_deprecated/date/index.js'
-export * from './_deprecated/identity/index.js'
 export * from './sort/index.js'
 export * from './trampoline/index.js'

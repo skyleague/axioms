@@ -1,25 +1,18 @@
-import { set, subsuper } from './set.js'
-
-import { collect } from '../../../array/collect/collect.js'
-import { repeat } from '../../../generator/_deprecated/repeat/repeat.js'
-import { take } from '../../../iterator/_deprecated/take/take.js'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { unique } from '../../../iterator/unique/unique.js'
-import { difference } from '../../../set/_deprecated/difference/difference.js'
-import { isSuperset } from '../../../set/_deprecated/is-superset/is-super.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/forall.js'
 import { random } from '../../arbitrary/random/random.js'
 import { xoroshiro128plus } from '../../rng/xoroshiro128plus/xoroshiro128plus.js'
 import { unknown } from '../complex/complex.js'
-import { integer } from '../integer/integer.js'
-
-import { describe, expect, expectTypeOf, it } from 'vitest'
 import { constants } from '../constants/constants.js'
+import { integer } from '../integer/integer.js'
+import { set, subsuper } from './set.js'
 
 describe('set', () => {
     it('all unique - number', () => {
         const size = 1000
-        forAll(set(integer({ min: 0, max: size })), (xs) => xs.length === collect(unique(xs)).length, { seed: 1638968569864n })
+        forAll(set(integer({ min: 0, max: size })), (xs) => xs.length === unique(xs).toArray().length, { seed: 1638968569864n })
     })
 
     it('always larger than minsize', () => {
@@ -48,7 +41,7 @@ describe('set', () => {
     it('stops on infeasible', () => {
         expect(() =>
             forAll(set(integer({ min: 1332584308, max: 1332584308 }), { minLength: 2 }), (xs) => {
-                return xs.length !== 2 && collect(unique(xs)).length === 2
+                return xs.length !== 2 && unique(xs).toArray().length === 2
             }),
         ).toThrowErrorMatchingInlineSnapshot('[Error: The minimum value must be less than the maximum value, and be finite]')
     })
@@ -56,14 +49,7 @@ describe('set', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = set(integer({ min: 0, max: 1 }))
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             [
               0,
@@ -110,14 +96,7 @@ describe('subsuper', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = subsuper(integer({ min: 0, max: 100 }))
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             [
               [
@@ -375,13 +354,13 @@ describe('subsuper', () => {
     })
 
     it('S U X, S C X', () => {
-        forAll(subsuper(unknown()), ([sub, superset]) => isSuperset(superset, sub))
+        forAll(subsuper(unknown()), ([sub, superset]) => new Set(superset).isSupersetOf(new Set(sub)))
     })
 
     it('S U X, ~ X C S \\ X', () => {
         forAll(subsuper(unknown()), ([sub, superset]) => {
-            const complement = [...difference(superset, sub)]
-            return complement.length === 0 || !isSuperset(sub, complement)
+            const complement = [...new Set(superset).difference(new Set(sub))]
+            return complement.length === 0 || !new Set(sub).isSupersetOf(new Set(complement))
         })
     })
 })

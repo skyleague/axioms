@@ -1,5 +1,3 @@
-import type { Traversable } from '../../type/index.js'
-
 /**
  * A queue generator type.
  *
@@ -11,7 +9,7 @@ export interface QueueGenerator<T> extends Generator<T, void> {
      *
      * @param xs - The values to enqueue.
      */
-    enqueue(...xs: Traversable<T>[]): void
+    enqueue(...xs: Iterable<T>[]): void
 }
 
 /**
@@ -32,8 +30,8 @@ export interface QueueGenerator<T> extends Generator<T, void> {
  * @group Generators
  * @alpha
  */
-export function queue<T>(initialize: Traversable<T> = []): QueueGenerator<T> {
-    const states: Traversable<T>[] = [initialize]
+export function queue<T>(initialize: Iterable<T> = []): QueueGenerator<T> {
+    const states: Iterable<T>[] = [initialize]
     const generator: QueueGenerator<T> = (function* () {
         while (states.length > 0) {
             // biome-ignore lint/style/noNonNullAssertion: we know that `states` is not empty
@@ -42,7 +40,7 @@ export function queue<T>(initialize: Traversable<T> = []): QueueGenerator<T> {
         }
     })() as QueueGenerator<T>
 
-    generator.enqueue = (...xss: Traversable<T>[]) => {
+    generator.enqueue = (...xss: Iterable<T>[]) => {
         for (const xs of xss) {
             states.push(xs)
         }

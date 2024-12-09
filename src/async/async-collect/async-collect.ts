@@ -1,7 +1,5 @@
-import type { AsyncTraversable } from '../../type/async/async.js'
-
 /**
- * Collect the values from an {@link AsyncTraversable} and return them as an array.
+ * Collect the values from an {@link AsyncIterable} and return them as an array.
  *
  * ### Example
  * ```ts
@@ -39,7 +37,7 @@ import type { AsyncTraversable } from '../../type/async/async.js'
  *
  * @group Async
  */
-export async function asyncCollect<T>(xs: AsyncTraversable<T>): Promise<T[]> {
+export async function asyncCollect<T>(xs: AsyncIterable<T> | Iterable<T>): Promise<T[]> {
     const ys: T[] = []
     for await (const item of xs) {
         ys.push(item)

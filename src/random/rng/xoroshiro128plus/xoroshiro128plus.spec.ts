@@ -1,12 +1,8 @@
+import { expect, it } from 'vitest'
 import { xoroshiro128plus } from './index.js'
 
-import { collect, sum } from '../../../array/index.js'
-import { take } from '../../../iterator/index.js'
-
-import { expect, it } from 'vitest'
-
 it('snapshot', () => {
-    expect(collect(take(xoroshiro128plus(42n), 20))).toMatchInlineSnapshot(`
+    expect(xoroshiro128plus(42n).take(20).toArray()).toMatchInlineSnapshot(`
       [
         709760481641776491n,
         557825853539905235n,
@@ -35,7 +31,7 @@ it('snapshot', () => {
 it('jump', () => {
     const gen = xoroshiro128plus(42n)
     gen.jump()
-    expect(collect(take(gen, 20))).toMatchInlineSnapshot(`
+    expect(gen.take(20).toArray()).toMatchInlineSnapshot(`
       [
         4575205303074301362n,
         1313241623868421872n,
@@ -81,7 +77,7 @@ it('[0,1) interval', () => {
         mean += val / total
     }
     expect(vals.every((v) => v >= 0 && v < 1)).toBe(true)
-    const variance = sum(vals.map((v) => (v - mean) ** 2 / total))
+    const variance = vals.map((v) => (v - mean) ** 2 / total).reduce((a, b) => a + b, 0)
     expect(Math.abs(variance - 1 / 12)).toBeLessThan(0.001)
     expect(Math.abs(mean - 0.5)).toBeLessThan(0.01)
 })

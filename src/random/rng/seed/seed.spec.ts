@@ -1,9 +1,5 @@
-import { seeder2, splitmix64 } from './seed.js'
-
-import { collect } from '../../../array/collect/collect.js'
-import { take } from '../../../iterator/_deprecated/take/take.js'
-
 import { expect, it } from 'vitest'
+import { seeder2, splitmix64 } from './seed.js'
 
 it('produces valid seeds', () => {
     expect(seeder2(42n)).toMatchInlineSnapshot(`
@@ -18,7 +14,7 @@ it('produces valid seeds', () => {
         11303639812522640203n,
       ]
     `)
-    expect(collect(take(splitmix64(1234567n), 5))).toEqual([
+    expect(splitmix64(1234567n).take(5).toArray()).toEqual([
         6457827717110365317n,
         3203168211198807973n,
         9817491932198370423n,

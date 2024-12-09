@@ -1,8 +1,6 @@
-import { isJust } from '../../guard/index.js'
-import type { ComparablePrimitive, Maybe, Traversable, TraversableItem } from '../../type/index.js'
+import type { IterableElement } from 'type-fest'
 import { Nothing } from '../../type/index.js'
-import { foldl1 } from '../_deprecated/fold/index.js'
-import { map } from '../_deprecated/map/index.js'
+import type { Maybe } from '../../type/maybe/maybe.js'
 
 /**
  * Calculate the minimum value of the given items.
@@ -18,16 +16,22 @@ import { map } from '../_deprecated/map/index.js'
  *
  * @param xs - The values to check.
  *
- * @returns The minimum value of the traversable.
+ * @returns The minimum value of the Iterable.
  *
  * @typeParam T - The element type.
  *
  * @group Iterators
  */
-export function min<T extends Traversable<ComparablePrimitive>>(
+export function min<T extends Iterable<bigint | number | string>>(
     xs: T,
-): T extends Traversable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    return foldl1(xs, (a, b) => (b < a ? b : a)) as T extends Traversable<infer I>
+): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
+    let min: bigint | number | string | undefined = undefined
+    for (const x of xs) {
+        if (min === undefined || x < min) {
+            min = x
+        }
+    }
+    return (min ?? Nothing) as T extends Iterable<infer I>
         ? T extends readonly [unknown, ...unknown[]]
             ? T[number]
             : Maybe<I>
@@ -48,21 +52,26 @@ export function min<T extends Traversable<ComparablePrimitive>>(
  *
  * @param xs - The values to check.
  *
- * @returns The minimum value of the traversable.
+ * @returns The minimum value of the Iterable.
  *
  * @typeParam T - The element type.
  *
  * @group Iterators
  */
-export function minBy<T extends Traversable<unknown>>(
+export function minBy<T extends Iterable<unknown>>(
     xs: T,
-    f: (item: TraversableItem<T>) => ComparablePrimitive,
-): T extends Traversable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    const xMin = foldl1(
-        map(xs, (x) => [x, f(x as TraversableItem<T>)] as const),
-        (acc, x) => (x[1] < acc[1] ? x : acc),
-    )
-    return (isJust(xMin) ? xMin[0] : Nothing) as T extends Traversable<infer I>
+    f: (item: IterableElement<T>) => bigint | number | string,
+): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
+    let min: unknown = undefined
+    let minValue: bigint | number | string | undefined = undefined
+    for (const x of xs) {
+        const value = f(x as IterableElement<T>)
+        if (minValue === undefined || value < minValue) {
+            min = x
+            minValue = value
+        }
+    }
+    return (min ?? Nothing) as T extends Iterable<infer I>
         ? T extends readonly [unknown, ...unknown[]]
             ? T[number]
             : Maybe<I>

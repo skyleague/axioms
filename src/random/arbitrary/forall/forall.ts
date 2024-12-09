@@ -1,6 +1,5 @@
 import { asTry, mapTry } from '../../../data/try/try.js'
 import { isJust, isObject } from '../../../guard/index.js'
-import { replicate } from '../../../iterator/_deprecated/replicate/index.js'
 import { object } from '../../index.js'
 import { xoroshiro128plus } from '../../rng/xoroshiro128plus/index.js'
 import { tuple } from '../../types/tuple/tuple.js'
@@ -50,29 +49,35 @@ function valuesFromArbitrary<T>({
     period: number
     tests: number
 }) {
-    return replicate((i, ctx = { skips: 0 }) => {
-        while (ctx.skips < maxSkips) {
-            try {
-                const value = evaluatedArbitrary.value(
-                    arbitraryContext({ ...context, bias: context.rng.sample() < 0.5 ? context.rng.sample() : undefined }),
-                )
+    return (function* () {
+        for (let i = 0; i < tests; i++) {
+            const ctx = { skips: 0 }
+            while (ctx.skips < maxSkips) {
+                try {
+                    const value = evaluatedArbitrary.value(
+                        arbitraryContext({ ...context, bias: context.rng.sample() < 0.5 ? context.rng.sample() : undefined }),
+                    )
 
-                if (i > 0 && i % period === 0) {
-                    context.rng.jump()
-                }
-                ctx.skips = 0
-                return value
-            } catch (e) {
-                if (e instanceof InfeasibleTree) {
-                    ctx.skips++
-                } else {
-                    throw e
+                    if (i > 0 && i % period === 0) {
+                        context.rng.jump()
+                    }
+                    ctx.skips = 0
+                    yield value
+                    break
+                } catch (e) {
+                    if (e instanceof InfeasibleTree) {
+                        ctx.skips++
+                    } else {
+                        throw e
+                    }
                 }
             }
+            if (ctx.skips >= maxSkips) {
+                console.warn("Couldn't generate a value in a reasonable amount of time")
+                yield new InfeasibleTree()
+            }
         }
-        console.warn("Couldn't generate a value in a reasonable amount of time")
-        return new InfeasibleTree()
-    }, tests)
+    })()
 }
 
 export function forAll<const T extends ArbitraryOrLiteral<unknown>>(

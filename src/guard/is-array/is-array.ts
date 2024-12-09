@@ -1,5 +1,3 @@
-import type { Traversable } from '../../type/index.js'
-
 /**
  * Checks if `xs` is classified as {@link Array}.
  *
@@ -19,10 +17,10 @@ import type { Traversable } from '../../type/index.js'
  *
  * @returns Returns `true` if `xs` is an {@link Array}, else `false`.
  *
- * @typeParam I - The element type of the {@link Traversable} class.
+ * @typeParam I - The element type of the {@link Iterable} class.
  *
  * @group Guards
  */
-export function isArray<I>(xs: Traversable<I> | unknown): xs is I[] {
+export function isArray<I>(xs: Iterable<I> | unknown): xs is I[] {
     return Array.isArray(xs)
 }

@@ -1,12 +1,8 @@
-import { natural } from './index.js'
-
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { groupBy, replicate, take } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, forAll } from '../../arbitrary/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { tuple } from '../index.js'
+import { natural } from './index.js'
 
 import { expect, it } from 'vitest'
 
@@ -17,12 +13,11 @@ it('distribution', () => {
 
     expect(
         mapValues(
-            groupBy(
-                replicate(() => natural().sample(context), 1000),
+            Object.groupBy(
+                Array.from({ length: 1000 }, () => natural().sample(context)),
                 (x) => x % 10,
             ),
-
-            (v) => v.length,
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {
@@ -41,12 +36,11 @@ it('distribution', () => {
 
     expect(
         mapValues(
-            groupBy(
-                replicate(() => natural({ min: 0, max: 100 }).sample(context), 1000),
+            Object.groupBy(
+                Array.from({ length: 1000 }, () => natural({ min: 0, max: 100 }).sample(context)),
                 (x) => Math.floor(x / 10),
             ),
-
-            (v) => v.length,
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {
@@ -172,14 +166,7 @@ it('counter example - symmetric', () => {
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = natural({ min: 0, max: 1000 })
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
       [
         551,
         270,

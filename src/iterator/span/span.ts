@@ -1,11 +1,6 @@
-import { next } from '../../generator/_deprecated/next/index.js'
-import { isRight } from '../../guard/is-right/index.js'
-import type { Traversable, Traverser } from '../../type/_deprecated/traversable/index.js'
-import { takeWhile } from '../_deprecated/take/index.js'
-
 /**
  * Returns a tuple where first element is longest prefix of `xs` of elements
- * that satisfy the predicate and second element is the remainder of the traversable.
+ * that satisfy the predicate and second element is the remainder of the Iterable.
  *
  * ### Example
  * ```ts
@@ -18,7 +13,7 @@ import { takeWhile } from '../_deprecated/take/index.js'
  * ```
  *
  * @param xs - The values to span.
- * @param predicate - The predicate to split the traversable on.
+ * @param predicate - The predicate to split the Iterable on.
  * @returns A tuple.
  *
  * @typeParam T - The element type.
@@ -26,14 +21,30 @@ import { takeWhile } from '../_deprecated/take/index.js'
  *
  * @group Iterators
  */
-export function span<T, R>(xs: Traversable<T, R>, predicate: (x: T) => boolean): [T[], Traverser<T, R>] {
-    const takeIterator = takeWhile(xs, predicate)
+export function span<T, R>(xs: Iterable<T, R>, predicate: (x: T) => boolean): [T[], IteratorObject<T, R>] {
     const first: T[] = []
-    let it = next(takeIterator)
-    while (isRight(it)) {
-        first.push(it.right)
-        it = next(takeIterator)
+    const iterator = xs[Symbol.iterator]()
+    let current = iterator.next()
+
+    while (!current.done && predicate(current.value)) {
+        first.push(current.value)
+        current = iterator.next()
     }
-    const rest = it.left
-    return [first, rest]
+
+    const rest = {
+        [Symbol.iterator]() {
+            let hasReturnedCurrent = false
+            return {
+                next() {
+                    if (!hasReturnedCurrent && !current.done) {
+                        hasReturnedCurrent = true
+                        return current
+                    }
+                    return iterator.next()
+                },
+            }
+        },
+    }
+
+    return [first, Iterator.from(rest) as IteratorObject<T, R>]
 }

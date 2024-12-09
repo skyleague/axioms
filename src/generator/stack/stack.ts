@@ -1,7 +1,4 @@
-import { isLeft, isRight } from '../../guard/index.js'
-import type { Traversable, Traverser } from '../../type/index.js'
-import { toTraverser } from '../../type/index.js'
-import { next } from '../_deprecated/next/index.js'
+import {} from '../../guard/index.js'
 
 /**
  * A stack generator type.
@@ -14,7 +11,7 @@ export interface StackGenerator<T> extends Generator<T, void> {
      *
      * @param xs - The values to stack.
      */
-    push(...xs: Traversable<T>[]): void
+    push(...xs: Iterable<T>[]): void
 }
 
 /**
@@ -35,28 +32,28 @@ export interface StackGenerator<T> extends Generator<T, void> {
  * @group Generators
  * @alpha
  */
-export function stack<T>(initialize: Traversable<T> = []): StackGenerator<T> {
-    const pending: Traverser<T>[] = [toTraverser(initialize)]
+export function stack<T>(initialize: Iterable<T> = []): StackGenerator<T> {
+    const pending: Iterator<T>[] = [Iterator.from(initialize)]
     const generator: StackGenerator<T> = (function* () {
         while (pending.length > 0) {
             // biome-ignore lint/style/noNonNullAssertion: we know that pending is not empty
-            let node = next(pending[pending.length - 1]!)
-            while (isLeft(node) && pending.length > 0) {
+            let node = pending[pending.length - 1]!.next()
+            while (node.done && pending.length > 0) {
                 pending.pop()
                 if (pending.length > 0) {
                     // biome-ignore lint/style/noNonNullAssertion: we know that pending is not empty
-                    node = next(pending[pending.length - 1]!)
+                    node = pending[pending.length - 1]!.next()
                 }
             }
-            if (isRight(node)) {
-                yield node.right
+            if (!node.done) {
+                yield node.value
             }
         }
     })() as StackGenerator<T>
 
-    generator.push = (...xss: Traversable<T>[]) => {
+    generator.push = (...xss: Iterable<T>[]) => {
         for (const xs of xss) {
-            pending.push(toTraverser(xs))
+            pending.push(Iterator.from(xs))
         }
     }
 

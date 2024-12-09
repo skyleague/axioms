@@ -1,3 +1,6 @@
+import { concat } from '../../iterator/concat/index.js'
+import { equal } from '../../iterator/equal/index.js'
+import { array, forAll, integer, shuffle, tuple, unknown } from '../../random/index.js'
 import {
     eitherAsValue,
     eitherToError,
@@ -14,12 +17,8 @@ import {
     whenRights,
 } from './either.js'
 
-import { collect } from '../../array/collect/index.js'
-import { concat } from '../../iterator/concat/index.js'
-import { equal } from '../../iterator/equal/index.js'
-import { array, deterministicInteger, forAll, integer, shuffle, tuple, unknown } from '../../random/index.js'
-
 import { describe, expect, expectTypeOf, it } from 'vitest'
+import { func } from '../../random/types/func/func.js'
 import type { Either, Left, Right } from '../../type/either/either.js'
 
 describe('eitherAsValue', () => {
@@ -117,15 +116,19 @@ describe('mapRight', () => {
 
     it('left', () => {
         forAll(
-            unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => equal({ left: x }, mapRight(either, deterministicInteger)),
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { left: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(mapRight(either, fn)).toEqual({ left: x })
+            },
         )
     })
 
     it('right', () => {
         forAll(
-            unknown().map((x) => [deterministicInteger(x), { right: x }] as const),
-            ([x, either]) => equal({ right: x }, mapRight(either, deterministicInteger)),
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { right: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(mapRight(either, fn)).toEqual({ right: fn(x) })
+            },
         )
     })
 
@@ -178,37 +181,33 @@ describe('mapRights', () => {
     })
 
     it('all right', () => {
-        forAll(array(integer()), (xs) =>
-            equal(
-                { right: deterministicInteger(xs) },
+        forAll([array(integer()), func(integer())], ([xs, fn]) => {
+            expect(
                 mapRights(
                     xs.map((x) => ({ right: x })),
-                    deterministicInteger,
+                    fn,
                 ),
-            ),
-        )
+            ).toEqual({ right: fn(xs) })
+        })
     })
 
     it('first left', () => {
-        forAll(tuple(array(integer()), integer(), integer()), ([xs, left1, left2]) =>
-            equal(
-                { left: left1 },
+        forAll(tuple(array(integer()), integer(), integer(), func(integer())), ([xs, left1, left2, fn]) => {
+            expect(
                 mapRights(
-                    collect(
-                        concat(
-                            shuffle(
-                                concat(
-                                    xs.map((x) => ({ right: x })),
-                                    [{ left: left1 }],
-                                ),
+                    concat(
+                        shuffle(
+                            concat(
+                                xs.map((x) => ({ right: x })),
+                                [{ left: left1 }],
                             ),
-                            [{ left: left2 }],
                         ),
-                    ),
-                    deterministicInteger,
+                        [{ left: left2 }],
+                    ).toArray(),
+                    fn,
                 ),
-            ),
-        )
+            ).toEqual({ left: left1 })
+        })
     })
 
     it('types', () => {
@@ -248,26 +247,28 @@ describe('whenRight', () => {
 
     it('left', () => {
         forAll(
-            unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) =>
-                equal(
-                    { left: x },
-                    whenRight(either, (y) => ({ left: deterministicInteger(y) })),
-                ),
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { left: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(whenRight(either, (y) => ({ left: fn(y) }))).toEqual({ left: x })
+            },
         )
     })
 
     it('right - right', () => {
         forAll(
-            unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => deterministicInteger(x) === whenRight(either, (y) => ({ right: deterministicInteger(y) })).right,
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { right: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(whenRight(either, (y) => ({ right: fn(y) }))).toEqual({ right: fn(x) })
+            },
         )
     })
 
     it('right - left', () => {
         forAll(
-            unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => deterministicInteger(x) === whenRight(either, (y) => ({ left: deterministicInteger(y) })).left,
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { right: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(whenRight(either, (y) => ({ left: fn(y) }))).toEqual({ left: fn(x) })
+            },
         )
     })
 
@@ -352,65 +353,53 @@ describe('whenRights', () => {
     })
 
     it('all right - right', () => {
-        forAll(array(integer()), (xs) =>
-            equal(
-                right(deterministicInteger(xs)),
-                whenRights(xs.map(right), (x) => right(deterministicInteger(x))),
-            ),
-        )
+        forAll([array(integer()), func(integer())], ([xs, fn]) => {
+            expect(whenRights(xs.map(right), (x) => right(fn(x)))).toEqual(right(fn(xs)))
+        })
     })
 
     it('all right - left', () => {
-        forAll(array(integer()), (xs) =>
-            equal(
-                left(deterministicInteger(xs)),
-                whenRights(xs.map(right), (x) => left(deterministicInteger(x))),
-            ),
-        )
+        forAll([array(integer()), func(integer())], ([xs, fn]) => {
+            expect(whenRights(xs.map(right), (x) => left(fn(x)))).toEqual(left(fn(xs)))
+        })
     })
 
     it('first left - right', () => {
-        forAll(tuple(array(integer()), integer(), integer()), ([xs, left1, left2]) =>
-            equal(
-                { left: left1 },
+        forAll(tuple(array(integer()), integer(), integer(), func(integer())), ([xs, left1, left2, fn]) => {
+            expect(
                 whenRights(
-                    collect(
-                        concat(
-                            shuffle(
-                                concat(
-                                    xs.map((x) => ({ right: x })),
-                                    [{ left: left1 }],
-                                ),
+                    concat(
+                        shuffle(
+                            concat(
+                                xs.map((x) => ({ right: x })),
+                                [{ left: left1 }],
                             ),
-                            [{ left: left2 }],
                         ),
-                    ),
-                    (x) => right(deterministicInteger(x)),
+                        [{ left: left2 }],
+                    ).toArray(),
+                    (x) => right(fn(x)),
                 ),
-            ),
-        )
+            ).toEqual({ left: left1 })
+        })
     })
 
     it('first left - left', () => {
-        forAll(tuple(array(integer()), integer(), integer()), ([xs, left1, left2]) =>
-            equal(
-                { left: left1 },
+        forAll(tuple(array(integer()), integer(), integer(), func(integer())), ([xs, left1, left2, fn]) => {
+            expect(
                 whenRights(
-                    collect(
-                        concat(
-                            shuffle(
-                                concat(
-                                    xs.map((x) => ({ right: x })),
-                                    [{ left: left1 }],
-                                ),
+                    concat(
+                        shuffle(
+                            concat(
+                                xs.map((x) => ({ right: x })),
+                                [{ left: left1 }],
                             ),
-                            [{ left: left2 }],
                         ),
-                    ),
-                    (x) => left(deterministicInteger(x)),
+                        [{ left: left2 }],
+                    ).toArray(),
+                    (x) => left(fn(x)),
                 ),
-            ),
-        )
+            ).toEqual({ left: left1 })
+        })
     })
 
     it('types - left', () => {
@@ -471,15 +460,19 @@ describe('mapLeft', () => {
 
     it('right', () => {
         forAll(
-            unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) => equal({ right: x }, mapLeft(either, deterministicInteger)),
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { right: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(mapLeft(either, fn)).toEqual({ right: x })
+            },
         )
     })
 
     it('left', () => {
         forAll(
-            unknown().map((x) => [deterministicInteger(x), { left: x }] as const),
-            ([x, either]) => equal({ left: x }, mapLeft(either, deterministicInteger)),
+            tuple(integer(), func(integer())).map(([x, fn]) => [x, { left: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(mapLeft(either, fn)).toEqual({ left: fn(x) })
+            },
         )
     })
 
@@ -525,34 +518,32 @@ describe('mapLefts', () => {
     })
 
     it('all left', () => {
-        forAll(array(integer()), (xs) =>
+        forAll([array(integer()), func(integer())], ([xs, fn]) =>
             equal(
-                { left: deterministicInteger(xs) },
+                { left: fn(xs) },
                 mapLefts(
                     xs.map((x) => ({ left: x })),
-                    deterministicInteger,
+                    fn,
                 ),
             ),
         )
     })
 
     it('first right', () => {
-        forAll(tuple(array(integer()), integer(), integer()), ([xs, right1, right2]) =>
+        forAll(tuple(array(integer()), integer(), integer(), func(integer())), ([xs, right1, right2, fn]) =>
             equal(
                 { right: right1 },
                 mapLefts(
-                    collect(
-                        concat(
-                            shuffle(
-                                concat(
-                                    xs.map((x) => ({ left: x })),
-                                    [{ right: right1 }],
-                                ),
+                    concat(
+                        shuffle(
+                            concat(
+                                xs.map((x) => ({ left: x })),
+                                [{ right: right1 }],
                             ),
-                            [{ right: right2 }],
                         ),
-                    ),
-                    deterministicInteger,
+                        [{ right: right2 }],
+                    ).toArray(),
+                    fn,
                 ),
             ),
         )
@@ -595,26 +586,28 @@ describe('whenLeft', () => {
 
     it('right', () => {
         forAll(
-            unknown().map((x) => [x, { right: x }] as const),
-            ([x, either]) =>
-                equal(
-                    { right: x },
-                    whenLeft(either, (y) => ({ right: deterministicInteger(y) })),
-                ),
+            tuple(unknown(), func(integer())).map(([x, fn]) => [x, { right: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(whenLeft(either, (y) => ({ right: fn(y) }))).toEqual({ right: x })
+            },
         )
     })
 
     it('left - right', () => {
         forAll(
-            unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => deterministicInteger(x) === whenLeft(either, (y) => ({ right: deterministicInteger(y) })).right,
+            tuple(integer(), func(integer())).map(([x, fn]) => [x, { left: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(whenLeft(either, (y) => ({ right: fn(y) })).right).toEqual(fn(x))
+            },
         )
     })
 
     it('left - left', () => {
         forAll(
-            unknown().map((x) => [x, { left: x }] as const),
-            ([x, either]) => deterministicInteger(x) === whenLeft(either, (y) => ({ left: deterministicInteger(y) })).left,
+            tuple(integer(), func(integer())).map(([x, fn]) => [x, { left: x }, fn] as const),
+            ([x, either, fn]) => {
+                expect(whenLeft(either, (y) => ({ left: fn(y) })).left).toEqual(fn(x))
+            },
         )
     })
 
@@ -690,65 +683,53 @@ describe('whenLefts', () => {
     })
 
     it('all left - right', () => {
-        forAll(array(integer()), (xs) =>
-            equal(
-                right(deterministicInteger(xs)),
-                whenLefts(xs.map(left), (x) => right(deterministicInteger(x))),
-            ),
-        )
+        forAll(tuple(array(integer()), func(integer())), ([xs, fn]) => {
+            expect(whenLefts(xs.map(left), (x) => right(fn(x)))).toEqual(right(fn(xs)))
+        })
     })
 
     it('all left - left', () => {
-        forAll(array(integer()), (xs) =>
-            equal(
-                left(deterministicInteger(xs)),
-                whenLefts(xs.map(left), (x) => left(deterministicInteger(x))),
-            ),
-        )
+        forAll(tuple(array(integer()), func(integer())), ([xs, fn]) => {
+            expect(whenLefts(xs.map(left), (x) => left(fn(x)))).toEqual(left(fn(xs)))
+        })
     })
 
     it('first right - right', () => {
-        forAll(tuple(array(integer()), integer(), integer()), ([xs, right1, right2]) =>
-            equal(
-                { right: right1 },
+        forAll(tuple(array(integer()), integer(), integer(), func(integer())), ([xs, right1, right2, fn]) => {
+            expect(
                 whenLefts(
-                    collect(
-                        concat(
-                            shuffle(
-                                concat(
-                                    xs.map((x) => ({ left: x })),
-                                    [{ right: right1 }],
-                                ),
+                    concat(
+                        shuffle(
+                            concat(
+                                xs.map((x) => ({ left: x })),
+                                [{ right: right1 }],
                             ),
-                            [{ right: right2 }],
                         ),
-                    ),
-                    (x) => right(deterministicInteger(x)),
+                        [{ right: right2 }],
+                    ).toArray(),
+                    (x) => right(fn(x)),
                 ),
-            ),
-        )
+            ).toEqual({ right: right1 })
+        })
     })
 
     it('first right - left', () => {
-        forAll(tuple(array(integer()), integer(), integer()), ([xs, right1, right2]) =>
-            equal(
-                { right: right1 },
+        forAll(tuple(array(integer()), integer(), integer(), func(integer())), ([xs, right1, right2, fn]) => {
+            expect(
                 whenLefts(
-                    collect(
-                        concat(
-                            shuffle(
-                                concat(
-                                    xs.map((x) => ({ left: x })),
-                                    [{ right: right1 }],
-                                ),
+                    concat(
+                        shuffle(
+                            concat(
+                                xs.map((x) => ({ left: x })),
+                                [{ right: right1 }],
                             ),
-                            [{ right: right2 }],
                         ),
-                    ),
-                    (x) => left(deterministicInteger(x)),
+                        [{ right: right2 }],
+                    ).toArray(),
+                    (x) => left(fn(x)),
                 ),
-            ),
-        )
+            ).toEqual({ right: right1 })
+        })
     })
 
     it('types - left', () => {

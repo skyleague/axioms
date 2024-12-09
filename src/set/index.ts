@@ -1,6 +1,0 @@
-export * from './_deprecated/difference/index.js'
-export * from './_deprecated/intersection/index.js'
-export * from './_deprecated/is-disjoint/index.js'
-export * from './_deprecated/is-subset/index.js'
-export * from './_deprecated/is-superset/index.js'
-export * from './_deprecated/union/index.js'

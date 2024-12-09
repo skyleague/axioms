@@ -18,7 +18,7 @@ export type ArrayOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [..
  *
  * @group Arbitrary
  */
-export interface ArrayGenerator<T, Min extends number> {
+export interface ArrayGenerator<T, Min extends number = number> {
     /**
      * The minimum length of array to generate.
      */

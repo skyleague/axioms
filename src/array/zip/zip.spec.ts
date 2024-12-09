@@ -1,16 +1,11 @@
-import { zip, zipWith } from './index.js'
-
-import { counter } from '../../generator/index.js'
-import { allEqual } from '../../iterator/index.js'
 import { array, forAll, unknown } from '../../random/index.js'
-import { collect } from '../index.js'
+import { zip, zipWith } from './index.js'
 
 import { describe, expect, it } from 'vitest'
 
 describe('zip', () => {
     it('simple', () => {
-        const zipped = collect(zip([1, 2, 3], [1, 2, 3]))
-        expect(zipped).toEqual([
+        expect(zip([1, 2, 3], [1, 2, 3]).toArray()).toEqual([
             [1, 1],
             [2, 2],
             [3, 3],
@@ -18,17 +13,15 @@ describe('zip', () => {
     })
 
     it('empty', () => {
-        const zipped = collect(zip([]))
-        expect(zipped).toEqual([])
+        expect(zip([]).toArray()).toEqual([])
     })
 
     it('zip empty', () => {
-        const zipped = zip([])
-        expect(collect(zip(...zipped))).toEqual([])
+        expect(zip(...zip([])).toArray()).toEqual([])
     })
 
     it('array argument', () => {
-        expect(collect(zip([1, 2, 3], [1, 2, 3]))).toEqual([
+        expect(zip([1, 2, 3], [1, 2, 3]).toArray()).toEqual([
             [1, 1],
             [2, 2],
             [3, 3],
@@ -36,7 +29,7 @@ describe('zip', () => {
     })
 
     it('variadic argument', () => {
-        expect(collect(zip([1, 2, 3], ['1', '2', '3']))).toEqual([
+        expect(zip([1, 2, 3], ['1', '2', '3']).toArray()).toEqual([
             [1, '1'],
             [2, '2'],
             [3, '3'],
@@ -44,28 +37,28 @@ describe('zip', () => {
     })
 
     it('zipzip', () => {
-        expect(collect(zip(...zip([1, 2, 3], [1, 2, 3])))).toEqual([
+        expect(zip(...zip([1, 2, 3], [1, 2, 3])).toArray()).toEqual([
             [1, 2, 3],
             [1, 2, 3],
         ])
     })
 
     it('uneven', () => {
-        expect(collect(zip([1, 2, 3, 4], [1, 2, 3, 4], [1, 2]))).toEqual([
+        expect(zip([1, 2, 3, 4], [1, 2, 3, 4], [1, 2]).toArray()).toEqual([
             [1, 1, 1],
             [2, 2, 2],
         ])
     })
 
     it('strings', () => {
-        expect(collect(zip([...'ABCD'], [...'ABCD'], [...'AB']))).toEqual([
+        expect(zip([...'ABCD'], [...'ABCD'], [...'AB']).toArray()).toEqual([
             ['A', 'A', 'A'],
             ['B', 'B', 'B'],
         ])
     })
 
     it('with generator', () => {
-        expect(collect(zip([...'ABCD'], [...'ABCD'], [...'AB'], counter()))).toEqual([
+        expect(zip([...'ABCD'], [...'ABCD'], [...'AB'], [0, 1, 3, 4, 5]).toArray()).toEqual([
             ['A', 'A', 'A', 0],
             ['B', 'B', 'B', 1],
         ])
@@ -82,22 +75,26 @@ describe('zip', () => {
             yield 'a'
             yield 'b'
         }
-        expect(collect(zip(foo(), bar(), [1, 2]))).toEqual([
+        expect(zip(foo(), bar(), [1, 2]).toArray()).toEqual([
             [1, 'a', 1],
             [2, 'b', 2],
         ])
     })
 
     it('nothing', () => {
-        expect(collect(zip([], []))).toEqual([])
+        expect(zip([], []).toArray()).toEqual([])
     })
 
     it('zip zip xs === xs, n > 0', () => {
-        forAll(array(unknown(), { minLength: 1 }), (xs) => allEqual(zip(...zip(xs, xs)), [xs, xs]))
+        forAll(array(unknown(), { minLength: 1 }), (xs) => {
+            expect(zip(...zip(xs, xs)).toArray()).toEqual([xs, xs])
+        })
     })
 
     it('zip zip xs === xs, n === 0', () => {
-        forAll(array(unknown(), { maxLength: 0 }), (xs) => allEqual(zip(...zip(xs, xs)), []))
+        forAll(array(unknown(), { maxLength: 0 }), (xs) => {
+            expect(zip(...zip(xs, xs)).toArray()).toEqual([])
+        })
     })
 })
 
@@ -105,7 +102,7 @@ describe('zipWith', () => {
     const add = (a: number, b: number) => a + b
 
     it('simple', () => {
-        expect(collect(zipWith(add, [1, 2, 3], [3, 2, 1]))).toMatchInlineSnapshot(`
+        expect(zipWith(add, [1, 2, 3], [3, 2, 1]).toArray()).toMatchInlineSnapshot(`
             [
               4,
               4,

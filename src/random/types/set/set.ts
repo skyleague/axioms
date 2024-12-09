@@ -1,10 +1,8 @@
 import type { Tree } from '../../../algorithm/tree/index.js'
 import { filterTree } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/collect/index.js'
 import { equal } from '../../../iterator/equal/index.js'
 import { concat } from '../../../iterator/index.js'
 import { unique } from '../../../iterator/unique/index.js'
-import { difference } from '../../../set/_deprecated/difference/index.js'
 import type { MaybePartial } from '../../../type/partial/partial.js'
 import type { ReadonlyTuple } from '../../../types.js'
 import type { Arbitrary } from '../../arbitrary/arbitrary/index.js'
@@ -18,7 +16,7 @@ import { arrayWith } from '../array/index.js'
 import { tuple } from '../tuple/index.js'
 
 function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): Tree<T[]> {
-    return filterTree(vals, (x) => collect(unique(x, eq)).length === x.length)
+    return filterTree(vals, (x) => unique(x, eq).toArray().length === x.length)
 }
 
 export type SetOf<T, Min extends number> = Min extends 0 | 1 | 2 | 3 | 4 ? [...ReadonlyTuple<T, Min>, ...T[]] : T[]
@@ -122,7 +120,7 @@ export function subsuper<T>(
     const complement = set(arbitrary, { minLength, maxLength, eq, size })
     const pair = tuple(sub, complement)
     return mapArbitrary(pair, ([xs, cs]) => {
-        const superset = collect(unique(concat(xs, cs), eq))
-        return [xs, superset, [...difference(superset, xs)]]
+        const superset = unique(concat(xs, cs), eq).toArray()
+        return [xs, superset, [...new Set(superset).difference(new Set(xs))]]
     })
 }

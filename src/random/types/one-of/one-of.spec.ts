@@ -1,10 +1,4 @@
-import { oneOf, oneOfWeighted } from './one-of.js'
-
 import { showTree } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/collect/collect.js'
-import { repeat } from '../../../generator/_deprecated/repeat/repeat.js'
-import { take } from '../../../iterator/_deprecated/take/take.js'
-import { groupBy, replicate } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
 import type { Dependent } from '../../arbitrary/dependent/dependent.js'
@@ -15,6 +9,7 @@ import { integer } from '../integer/integer.js'
 import { object } from '../object/object.js'
 import { string } from '../string/string.js'
 import { tuple } from '../tuple/tuple.js'
+import { oneOf, oneOfWeighted } from './one-of.js'
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
@@ -39,12 +34,11 @@ describe('oneOf', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => arb.sample(context), 10000),
+                Object.groupBy(
+                    Array.from({ length: 10000 }, () => arb.sample(context)),
                     (x) => Math.floor(x / 10),
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -72,12 +66,11 @@ describe('oneOf', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => arb.sample(context), 10000),
+                Object.groupBy(
+                    Array.from({ length: 10000 }, () => arb.sample(context)),
                     (x) => x,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -97,11 +90,12 @@ describe('oneOf', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => arb.sample(context), 100),
+                Object.groupBy(
+                    Array.from({ length: 100 }, () => arb.sample(context)),
+
                     (x) => JSON.stringify(x),
                 ),
-                (g) => g.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -127,11 +121,12 @@ describe('oneOf', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => arb.sample(context), 100),
+                Object.groupBy(
+                    Array.from({ length: 100 }, () => arb.sample(context)),
+
                     (x) => JSON.stringify(x),
                 ),
-                (g) => g.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -162,11 +157,12 @@ describe('oneOf', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => arb.sample(context), 100),
+                Object.groupBy(
+                    Array.from({ length: 100 }, () => arb.sample(context)),
+
                     (x) => JSON.stringify(x),
                 ),
-                (g) => g.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -265,14 +261,7 @@ describe('oneOf', () => {
                 object(Object.fromEntries([...dictKeys.map((k) => [k, memoizeArbitrary(() => schema)])])),
             ),
         )
-        expect(
-            collect(
-                take(
-                    repeat(() => schema.sample(ctx)),
-                    100,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 100 }, () => schema.sample(ctx))).toMatchInlineSnapshot(`
           [
             true,
             true,
@@ -435,12 +424,12 @@ describe('oneOfWeighted', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => arb.sample(context), 10000),
+                Object.groupBy(
+                    Array.from({ length: 10000 }, () => arb.sample(context)),
                     (x) => Math.floor(x / 10),
                 ),
 
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {

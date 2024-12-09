@@ -37,8 +37,3 @@ export function record<const T, K extends PropertyKey>(
         return object(Object.fromEntries(keys.map((k) => [k, value] as const)))
     })
 }
-
-/**
- * @deprecated Use `record` instead.
- */
-export const dict = record

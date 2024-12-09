@@ -1,3 +1,11 @@
+import type { Promisable } from 'type-fest'
+import { isFailure } from '../../guard/is-failure/index.js'
+import { isSuccess } from '../../guard/is-success/index.js'
+import { isThrown } from '../../guard/is-thrown/index.js'
+import { asyncForAll, forAll, primitive, string, tuple } from '../../random/index.js'
+import type { AsyncConstExpr, Either, Maybe, Try } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import { left, right } from '../either/index.js'
 import {
     asTry,
     failure,
@@ -10,14 +18,6 @@ import {
     tryToError,
     tryToMaybe,
 } from './try.js'
-
-import { isFailure } from '../../guard/is-failure/index.js'
-import { isSuccess } from '../../guard/is-success/index.js'
-import { isThrown } from '../../guard/is-thrown/index.js'
-import { asyncForAll, forAll, primitive, string, tuple } from '../../random/index.js'
-import type { AsyncConstExpr, Either, Maybe, Promisable, Try } from '../../type/index.js'
-import { Nothing } from '../../type/index.js'
-import { left, right } from '../either/index.js'
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
