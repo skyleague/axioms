@@ -1,7 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { ipv4, ipv6 } from './ip.js'
@@ -10,14 +7,7 @@ describe('ipv4', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = ipv4()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
         [
           "140.69.120.9",
           "206.9.20.100",
@@ -36,14 +26,7 @@ describe('ipv4', () => {
     it('random sample - xl', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), size: 'xl' as const })
         const aint = ipv4()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
         [
           "140.69.120.9",
           "206.9.20.100",
@@ -64,14 +47,7 @@ describe('ipv4', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = ipv6()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
         [
           "70c0:6224:1f2b:aeff:8752:b4fe:7d3e:6238",
           "c7c5:a419:1b87:fbab:969f:4d05:ee02:678f",
@@ -90,14 +66,7 @@ describe('ipv4', () => {
     it('random sample - xl', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), size: 'xl' as const })
         const aint = ipv6()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
         [
           "70c0:6224:1f2b:aeff:8752:b4fe:7d3e:6238",
           "c7c5:a419:1b87:fbab:969f:4d05:ee02:678f",

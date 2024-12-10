@@ -2,11 +2,13 @@ import { omit, omitBy, omitUndefined } from './index.js'
 
 import type { OmitUndefined } from './omit.js'
 
-import { all, equal } from '../../iterator/index.js'
-import { deterministicBoolean, forAll, record, unknown } from '../../random/index.js'
+import { equal } from '../../iterator/index.js'
+import { forAll, record, unknown } from '../../random/index.js'
 import { keysOf, pickBy } from '../index.js'
 
 import { describe, expect, it } from 'vitest'
+import { boolean } from '../../random/types/boolean/boolean.js'
+import { func } from '../../random/types/func/func.js'
 
 describe('omitUndefined', () => {
     it('omitUndefined x === identity, if all values defined', () => {
@@ -16,14 +18,14 @@ describe('omitUndefined', () => {
     it('key filtered in both filtered and original', () => {
         forAll(record(unknown()), (x) => {
             const filtered = omitUndefined(x)
-            return all(keysOf(filtered), (k) => k in x && k in filtered)
+            return keysOf(filtered).every((k) => k in x && k in filtered)
         })
     })
 
     it('key in filtered if not omitted', () => {
         forAll(record(unknown()), (x) => {
             const filtered = omitUndefined(x)
-            return all(keysOf(x), (k) => (x[k] !== undefined ? k in filtered : !(k in filtered) && k in x))
+            return keysOf(x).every((k) => (x[k] !== undefined ? k in filtered : !(k in filtered) && k in x))
         })
     })
 
@@ -63,23 +65,23 @@ describe('omitBy', () => {
     })
 
     it('key filtered in both filtered and original', () => {
-        forAll(record(unknown()), (x) => {
-            const filtered = omitBy(x, (key) => deterministicBoolean(key))
-            return all(keysOf(filtered), (k) => k in x && k in filtered)
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
+            const filtered = omitBy(x, fn)
+            return keysOf(filtered).every((k) => k in x && k in filtered)
         })
     })
 
     it('key filtered if not picked', () => {
-        forAll(record(unknown()), (x) => {
-            const filtered = omitBy(x, ([k]) => deterministicBoolean(k))
-            return all(keysOf(x), (k) => !(deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
+            const filtered = omitBy(x, ([k]) => fn(k))
+            return keysOf(x).every((k) => !(fn(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })
 
     it('omitBy ~ pickBy', () => {
-        forAll(record(unknown()), (x) => {
-            const omitted = omitBy(x, ([k]) => deterministicBoolean(k))
-            const picked = pickBy(x, ([k]) => !deterministicBoolean(k))
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
+            const omitted = omitBy(x, ([k]) => fn(k))
+            const picked = pickBy(x, ([k]) => !fn(k))
             return equal(omitted, picked)
         })
     })
@@ -107,22 +109,22 @@ describe('omit', () => {
     })
 
     it('key filtered in both filtered and original', () => {
-        forAll(record(unknown()), (x) => {
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
             const filtered = omit(
                 x,
-                keysOf(x).filter((x) => deterministicBoolean(x)),
+                keysOf(x).filter((x) => fn(x)),
             )
-            return all(keysOf(filtered), (k) => k in x && k in filtered)
+            return keysOf(filtered).every((k) => k in x && k in filtered)
         })
     })
 
     it('key filtered if not omited', () => {
-        forAll(record(unknown()), (x) => {
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
             const filtered = omit(
                 x,
-                keysOf(x).filter((x) => deterministicBoolean(x)),
+                keysOf(x).filter((x) => fn(x)),
             )
-            return all(keysOf(x), (k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+            return keysOf(x).every((k) => (!fn(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })
 })

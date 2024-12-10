@@ -1,26 +1,14 @@
-import { record } from './record.js'
-
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
+import { expect, it } from 'vitest'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
-import { string } from '../string/index.js'
-
-import { expect, it } from 'vitest'
 import { constant } from '../helper/helper.js'
+import { string } from '../string/index.js'
+import { record } from './record.js'
 
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = record(string())
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             {
               "#'E1.9e+": "z^<)",

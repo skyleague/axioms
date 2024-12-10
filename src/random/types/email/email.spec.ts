@@ -1,6 +1,3 @@
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 
@@ -10,14 +7,7 @@ import { email } from './email.js'
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = email()
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
       [
         "zb+c.v.io%.~h.z9^{|x4ys.%&n.{ry/k\`uuin2l@22n9yld.uc.yre-0zz.wnv8tj3ala76",
         "3x@tr76zd4x8jp2.7x2byq6pv.ntrat",
@@ -36,14 +26,7 @@ it('random sample', () => {
 it('random sample - xl', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), size: 'xl' as const })
     const aint = email()
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
       [
         "$z3t.+pz#26^=7{^f/'292*8f'3i$=vd9$-y5i6i$~#!|4my37lbh94r%m}uzn='u8.3!4md+rg9ee|d+3}p1vhru63_*+/i-3e{/\`fqnlnjzk*im^d-w|o}t'e{/g*'_|@sb3fbb9.eq0xhym3pk.sima.vl1d5pkj",
         "pwm0-$~m}+gcltu-bh5s~$3!s&.3/r%_^&c3bv\`&jq~394x2c.7/'$vf^l!3vivs.'$=k}|{{*&u%ck%4ek\`g&!_eo5/!s=~da|#jdqvt2.3=fw\`y3yybada1r0j$-ruzp#4aj.g#5^h=k'6.3n#.7=v|}emd3jpp$55al9#ltm+i7no2ca^y{%u{s3jm7\`1s_9*ga##b=5x&|s*=49h9.8\`mnz_+4l^--hsi!l8v8@o5il.mnjfplewda6.9d",

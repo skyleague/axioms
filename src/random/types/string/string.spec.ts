@@ -1,3 +1,9 @@
+import { mapValues } from '../../../object/index.js'
+import { arbitraryContext, forAll } from '../../arbitrary/index.js'
+import { xoroshiro128plus } from '../../rng/index.js'
+import { constant } from '../helper/helper.js'
+import { integer } from '../integer/index.js'
+import { tuple } from '../tuple/index.js'
 import {
     alpha,
     alphaNumeric,
@@ -11,18 +17,9 @@ import {
     utf16Surrogate,
 } from './string.js'
 
-import { groupBy, replicate } from '../../../iterator/index.js'
-import { mapValues } from '../../../object/index.js'
-import { arbitraryContext, forAll } from '../../arbitrary/index.js'
-import { xoroshiro128plus } from '../../rng/index.js'
-import { constant } from '../helper/helper.js'
-import { integer } from '../integer/index.js'
-import { tuple } from '../tuple/index.js'
-
 import { describe, expect, it } from 'vitest'
 
 import util from 'node:util'
-import { collect } from '../../../array/collect/collect.js'
 
 const isPrintable = (str: string) => /^[ -~]+$/.test(str)
 
@@ -66,12 +63,12 @@ describe('string', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => string().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => string().sample(context)),
                     (x) => x.length,
                 ),
 
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -107,7 +104,7 @@ describe('string', () => {
             rng: xoroshiro128plus(44n),
         })
 
-        expect(collect(replicate(() => string({ size: 'xs' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: 'xs' }).sample(context))).toMatchInlineSnapshot(`
           [
             "R",
             "'",
@@ -122,7 +119,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: 's' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: 's' }).sample(context))).toMatchInlineSnapshot(`
           [
             "G",
             "\`A9mB",
@@ -137,7 +134,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: 'm' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: 'm' }).sample(context))).toMatchInlineSnapshot(`
           [
             "|1PAED3l^k",
             "BIfS@%*:M;m8gkNFY:9D%tcsFW]A_v&VEu%@?{Vn_5Rl:tMBsqf6\`:71D9",
@@ -152,7 +149,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: 'l' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: 'l' }).sample(context))).toMatchInlineSnapshot(`
           [
             "9IjQX]8q\`-2]~.7iL;fj^s12CgJa&S)m(2}[UX.bO5)mK@exopast{>I1DW*xMLrs~9Gs[=NX~e5/bgg^!w}poaP6>W  K:_?q2]llD.ND}]BCVEa&~HNmhv]^k5azwe1AX \\G8(?W4MUnZWvqVC.;$Bm9Udj7p4^--g;!z6a6"R[=7!'&GWr/?NC4@#-XsCMqK-XZ+ 7N96ok/w~,jgwu@qa'FGx/\`6xv-%E'\\uRJ&e-0*D{\`pV!{o1!HP%6H&t^ygKJ<@J"eB!Di>guD\${K5p[W@q1A?E,vZ"s5MjY.L0nKK+H6&k\\OW7wq"t<Oh} #b;:;JK$Kt_@oes5D|$hspUUjx7ma_I,i7c%0 :+<.*7V<MWKDF9S9|pig7J\`6rJKIw!M?rZ_d<;P,=M}c$dNl'@ak5}9g:LK/1675na M<9G^T\\J:U]-1<3YO"{BK-H"}V $yCa+e!3Rn}VkMBh3x)0Kyj+40AxCU;3$-/g'.z[Sm#Ci_7@Lp(GeFebSI71gwCFA437L.Iyo>DthNQ:\\Nf=h0_5&6UNsl*8lhJQB'fBzzdbnM(Z_Pu,@F=)'>"&r*I"j0(6OwZZ<E]KIpB Z9_#<.,6b-y~_.NpMz9Hk3$^'@U#?{o{Y|=Dz24Sd\\yE]SE<wn ynGG\\sUzeO#Y8NM8UlXhH]"f$a",
             "^YY<WL^vE3@8{KzXzK774RxK^5,%i\`YnkcsS7bOS*o[/u0EbBV9{Sp~WED+\`"7%esA{-.B:q/p&d8{7PcsQtrY$6BS5 66I*k,su-k;vEVG4*Oi9.vS,;Z)gJ0u4pYhHWnh<ll,<{-<'*)N[&\\8R*Tt uJ%Uf/CZmU~jc6Cr^lEZ]XmM)D=>YvusI,2fC+^l%lhU%wIvlP[ ^OSUXDZo.c@dJ9~LM8FRpqm?9<Ts-PkRX&?@^+9AkgL$h*4eU4ihU8KG3kMIV$}Qra&4 o!)Xh.on=u+>M6FldURX4}cngmuhVs(\\:?)P'aTE#x!)B?Q,bS+Jx@i?JJN^%+uOS+(i{;zUB+B+uTm^O9'Y1i%"h1Wg4{puHKEpWGk m_\`l'+pk0KZ>"U<AfIfspY?@Q]T]Ty72m|ea^Is\`.$l|SJ=d6>eoH}r3M^|tT2J]/Vx>5<^EQDx?]'H\\!L{;~{,pO~,\`_=P5^>Ooaw!!41?@';mg@\\<~p1fz>N1wZ",
@@ -167,7 +164,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: 'xl' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: 'xl' }).sample(context))).toMatchInlineSnapshot(`
           [
             "q2|@8:(&Dk.ddyiVlYjPb}PW0hUNirq\\f5GZJ]x^Vs|foKb'p0jck8=A_+3b@A GB8@{P[D3AnxgS8v%O;ye8jb)>Z,K sm@.'GLBp;IUuNu>FtV(,93+=fBv,:fLv9l]_,^4Q+,{M1Thbb-5&"lB1M-|ai9kkH3:HR~U{N[ =I%Okhe\`kCr!fAAJ=#%&"Ho+vWDD\\qF[-IwZ!Zn\\,Xola$<%y}*aV]{\\59,CTEAnIxu:?P7p7u)5MoWU-mR;,funB!5XN^C!1w[,t;IplC9~6xI~k1e<_^"GAZ$?fI'%tj3^hJ\`dB[\`G%'a(eA#cI/=+Cz;QTFym2ZB0m]4x~h1xYw2*K,}0$U1Jac9^Kus,nD}i/:kixz1<5~/QZ9,S-;L|viJnRrC^g(-<|D2]$\\ZBU'elnp@Ws[zBaw@Kk\\n5KmG;CL(~T5xbW/G~*K&+qP/IX0ad~>odIgpBN?AkW3#(v+QQSko.u%iw+wm\\9jc/EPHqh\\1[V5b6c_Hbx;d"->ON}6S h>$[g_J,L7Gs&s+vrIC~G^Z-~h7isW>FN:R%Yl*fQ+Y4SHBW|+TIl3+**Q)xT1-PXE..%*h)-)BG6%wv^0sp"_T:aSXzSRCF:qP+Do<VKP/0<\`H#h57)V/ig)P{ #Mw-dJHxY(e_hdgD\`b 11c6UYm+Kf*kLWgg+U)lr+FIh8FD{y%l}t6@*3)hL^0cXSN)Ph\\NvN|B{h,' M/4|eJ8?4_nrwI^f.{fbO_W".3CfGzDZJQL{($@hr*bOk!@&F2:Dga=6,wHCl \\SctOvXK*cLTh# 4?""PFuxZ]fE!v6~'?uAL~w:?\`/6+y9LA}A%*m_rL$<ScVNKTmEHZYd%cs$}FfX0?U r]pYU"5hs AVG8aUNoL56OA_[eYwh8ONg-lm?;g?p'd,;!Isjw."CYI^AM2Sre_]8w(2-55*\`f/9^3BWHS-jW,\\H\`l7u=CcUgS[HM'g63f5$-1^YbI6-YjFLJb i={hBkIn*r|QE\`N,PEDJ*3Ce{gj86\\%k?*GzZreL-k\`ySgs?4#ZBo-!e^G[Qy6sm@AjZz|g-=+hCPZA;_TU;_M_~nx&>TU<]FEFuHv^3H|^[dX_MV>q},1g+=STs>qwnr0;' i+jAIB(.*~UM(OL+:l9L&.D9,fyGWVv3'>sdjdh{~UZvnq.P_m&UN#Tbs9c'm*Z&!k\`\\XxG_"S"Z!RtD~VDp44A7;hKc%R.?EV6ePAdQcql^;8>2fyP<N7RB;(9E.)AAp#~fRnR<b\\(9|aV~NSt<t8 AITxG\\[eZ!JEP~)gdFwVaC3 {{1lyn_<5FP(ZQtuP.Qw@H?pc[<>WDcz"1MAT0~W8 1XtgK_KQbVN2&)I.hAGu-H[INY=Fv4.hxGb=a1-%lJ.Ekhh@i2QBnr=X|Y4*br5<{"KHX*x!m1ZSAs5!b_AUF@/*:,5UDxEb'ED!jepE6Gwk&Su$^*bS_Z+!@\\'mpr ks|WIo.u(5s/>eRHmb9&OwC&Y)B~xnqu;(iam~n315]u'-HVC zbV<fmv\\ tvQ#kRAG+?tCN_b|"~QL2N;T_M!\\:|Hu7wvAOA^P,U-(^Jh20S,gtr+!Z>P/K75]tRV?3(e@_oFdQlh'D(U3a_M\\?I4:!b+ofQogw@@Jz5'S%sSmH~ 1m*.45}W%?I1TQP-!#'s.A\\^x%r%*h3bpXLqwX^;z>:%,M!^fa.]2T[&v$Nc|.Gmhn(GY!0o5P~zNVycV*20x,f7O="|H3tcNgmXrOI8exPN#:qs+XSw0;YD,O=+NrBr.,ybqMV_2G\\iE}*O?^&kT 2XmjL9<=C|4v[mzN/OhW/s\`;~&*EuedW}T8u=T1I\`\\%roJ3vI)WgiP&^j4}hgG#?<W"|V3BVDx=6x<!'E$n 0rU3a9m3h #lX;wm'cB['P.H^%?qZ^'.25U6=aSo$N<pvVKpIjD5nKmrG+< 7_Gl-,4^ :)f>wt2_qW?qnKjIeR3Hbl#2?@}eq=;#fH6V4GF~*pAgv9d&[!l-]T~JbLaBM-^s'9*$U/=AP #Lo<R6SMVutP7lp[..nN/nrNKlX)R.hJ # 8w~'%j3hf{sor{-.;~o{fSP}IGD,{FEIpXAtZ3jEV2%%dgz JKC@^&0eiSSLq6"F/]#>4Wg=a27iBaM&ZWY!.p.,12@FX=t!6W0x+pEey]t&\`}V54S$x#>~jzs8OkBe]A/M!u4>S~[_oW5n2tS{otQd\`=c|"?5U.]>w2TWp@nHG<k~QR/;9PYbVNSjsc)wKk\\mgZ1M'6!;_eI~+bQJ_1d@Vk":Pj7K[gl)0+MfxjqJErh"lgrN?M}T8{d{/F2T.aHdJ?jI8jtjLNg:V6kg_I&"!,=e\`QY']F6C]pJ?$dG}^E:/{/|PEQ5&@nKz-FB70p"NgEFMIIKGL)PS.I"P\`1 {R#Sf"]q9#4iH2<k1\`-7r$O2pPl7N*}vLb=ZWPYT>Y5by\\={(K>IOJ\`+MTd&0^Hy3q^~'fq>R<!AoRAAL8P<ZeBN:,)6]*YUnG5#5 *Mjo5c$(4&b=PDFd,PM?p!L\`t'2"BVk3mFc]E6]BTtfq\`P0^j4\\PP)KPK>Sfqz-dCb1QP4bV(MFVnvLa-2\`,LCjC9Tc})gH_jg@aq3iEgtKrx3qn2X%91q2EG|ZXd,d?d}O XPU;]iKF"Sr6,EVT8}3G"q[dLU~u(L|@:WOQy7}9Aa,PY0sC[''/VyO})/AwMZi&7X$'PX?u9Q\\<x87p8GDH8h4HwDb}{q!PEey]wio33xqaXN@q/tXg{m.T>C)*/ym?/A>YoVYxt%mAJG'lgibB)Q~x&f$c:aH+O<tSiHM=Nd'7.lT[9A&cMlWk8kGLa7\`B/C'OwXJzyh$,b't:Vm'7g!voseRS~EvMG]I8]_bb4zeP^..jMxZt\\,BZv;!uBbp&pYR-e?ewa#oz!CJ9z/[0\`N?r98.2mb.}0OT]9PT{!J|7{\\y50MCD4QY1<-L%gT_q(BXFpQm?dccig~(ss#gJ)V-F2*6u4.QEWwf{J5vg*}i$PpO:f&Y%A8I,[SAWoV82al84lnlAA y9G!Nd??2"{^8oL6|]:A[Kx&tR>I4N zvmOK(aA7[zKL0MM.%R$N?9H}YPCVMna1/36lp$8^p?n>|0"h(uMF&^Sr}?fe'z3Cmu&xgeo[:!qr>vT\\Fp W%$mc$&xlg}\`Dwyq)C'5PztRO&0a)A}oTMmz5;m>;WS1B=G.\`$Q2sFsc2!b1V)56829'm4%+3/{}KG(X9|Gj{74:;N9s!Y*P+XaAuMKPnwy s~>B\`+&hNN7IZ4FY+;8}EK<46_#S$~h/^J5>{udb!_w8Q\\t7cyS(!@6~_<+/:#QNr2LT]3/djOYj0iAGyy'p:u}dOB+ZLG sP|D6V&Jt}dYoK[FhOb0\\NE+_O6]Y^-zLt0XIe*i4\`#Y8P2sGC<ZGM8p&Y|mCNIA-{<.NYb%~X)wa{y#-^Ytd?nUwXi{H<O'%X(={T$$4!1-UU|/?#}q_-kO Z+w]U^b]i:6GYvv9/3q<R-h^;3L-rVJ<2~\\oQFFDJ|5rTLzU}P(T~!Jv382xqhj80s#1hSuo#qm/!jsUt~+d~#Q{YUX>3NQ/8TQH"N4j_@W-9=^0&A QO<]O;_#'~ST\`*~^G|8[K#gb;lbVE|Hc.IPt_^KL\\;.'_BR8diGf\\3UJ*bXQ-v3n:A6RHv.KflXw $_DWjhMr6S<+$rS!7F4a'9|7kNEK8l@*=L:|6[Fef;3H&f__h5F.e+Q~6=6TAcc%mGR?"[vzgi&%S:+.&Qd%lK",
             "\`]dQ*p-+'iMNh.-{Xg'~F<i:+u?NG0]$!n_{JbY?%:_1.&5GCEg+#VcX*z@o>>)@mq=ETZ@kgeo+ZcaEx*{<P\\[\\c$m8|Z_"8x{z}HdXYU0!eDY)ry$T_$R"r\`\\Bns]VQTG@\`gpn^xWZqFTAW\`TETD558X*P"@JzW>_Tn=#)PdeD+|_#z?vc>v"k4+79^YOx8;t%kv.L2x^8:sLZD9;:=.])qs?29Y" SePe\`&c_9uFy@GYT|!-4kt+azA{!4.dolu;Z&m=Z;i-jpR4WQA]MZ{%})OyfM[$Fa[{9A\\>/EKpJ=\`@KH0C\\Qz_ju"K_9@yja1ST\\hvRDfx<#4M~UKP9mFt4@IFpW>;]U8b!<X7&BdgbD}c5txcH;7RpRt6\\s&=e)'^#=,BZgLc)oua5GL=Dw. PL1yBaE}T]OK_o$7#^_|bECwlw6f"j?s,Psq}!L=+EdT=6Y":3*D6,,ip0fBZ\`$B=eAiJJrzH?TLZ,g8kT[#O@~0R\\!Xs1Nfpq~(ce*=41Ml\\rQqT:iuF,#.EIo}\\Sj;BN{p+t3%2@EUloE(bTh/:{_g1HutM@>(A!FT2?IMT@pD"Ln"J'X R/>iRVvj>I!31aIK}\`r/wCZuo+oZb/n]xWcc?oM)GSx49/yXmn1"nu$:g)UQunfh8}*mB#c ZiO$IJ\`fyt\\29{+rr!^90CfWu=6_DP} }  oBjLFCCYsf#X6'q5A\`]- GBB6!x%,x*4.Vxg\\'B.TLspxjKaN%2uC75y]N;$%8]j*@a!p{HiLDzUzBc@q?H3<-\`#,Ydt/bOaE^$Pt{QcgwMMS.J]( "ya#IQ\\qY$<IYThD6Po$kf@eItA@.Vx?,YmWjMq,FZnSR}#.t-%9h7bVM,#Dx"O1_h8+2Q1{3LM;7x'snWqdVhE7bi2Fty9K0;2O\`H1qKaK{~r9^yk~h\`A_O|c,@X4?v!GB{=Yp9#;&D#Ng}T<D=NGws,pfL4f?Bhd(O6Vs_J]-wsZ$^^uUvx<gn-[D;UwwKH 3ecK9_1Ir^TB*+qsmy[;=@k)]\\CmNMv["La(Xr0$f"=I,q39h)'<gsjE!Ur]5xWjwJ0~[|v10Y,M>c\\l/}80\`Qx-?$>|J~Dlpl/6+|f}~w[4(tJ@pP]|(6c+mIC @mfSp_QP\\X6\`&_p'_C<zL*E}>0N#=0=!RCYwe)U$!bZ,lL('xy+GmNaG7\`y~2cI4}f69>NyMc<|\\y3AXUwc6W|9x8i:hT2Z<rc,<xF}7 ^B\`9'z?_m!g"1rTSu8yU#/P\`&FxRd*b0+BIc0z~9%"'9KnCWr*u,P\\ w:Wi{?v/l^L6cmCTJqGHbK{*b&0+_P,\\/<+@hq4WhY'c=_0#YrLX-*h^vzlcra48>.~rc.?p3rHgzX;qx?UcXkBH~?isK ]u5-6hx;=URKng"$&~XVt$4x|W#\`ed8p/[kXgJd_zbNO1OcHae-M2Fwvcj_G)|5+R6I"v][l?(T;T\`CN6Fr*/KD2Iax|')o23x9T)gHk>#c!.xvs<LA3I]\`*Prrmmzarkew,Ny/W5L]-m J_<rSY\`e&pvj$?|Xoz~}X2N@y1(5"/a*brw|?a+pa1,zL_.~Sx_hZ|m:@#ak4eN!KqQijg2opLZ>CjVd=@CvmMdj9oY~ZTvV9h8cgpD)&GtB#ly,l41][!}-)$Pjusrdx~M\\8TK1EdAp(^39YNNR!G^[Z3u+V$NIK$$!<:-V=S58yH+-$M{B5B2L<B{tQjGWL~eiu>s[orgpvgq>[vm"%#"u 41$CLc,Mw2IA&6Z13k?>HenZ]U{:CmsX$k|mqQ=I2_ae5bY o#r=[qu_-,Fga$or!k,|:!X(~EE<9^'"+RAC? LEttktuUk|"Dw$N3g?S,!4 ;R|>6@I%&0IB)}~,BD1IK7u;"^+gk6nC%I)~#Tm4*V7<;=<3mXstgK3<Sf7cXV{#oC4CM>hC/u"GK<+^)!F]s:8G2T]T)-J_LwpzW<MLZOl+C3G7ld3D\\%B{Bod*#pC!3m:^]eAh0xO6$1]19#g}oBZZgSKs}eR}uXNGRTP[jW5I@@cqu$U7d&47L]\\o+WKl8ca}_dD804*oXOb~xlF7w{gNMk?w.u. jGoy%3ipUa_J)GV&0^ ),Po<>o=PR i9(U/gIZ<h/2;pTBS!pWL"^_ clT]{(K(HciHY%3gNPMC s=)_gy?AJmE*L>f[Ydm'u;];06eEnYJFjPd&p$b0J3Z|v4$a]c(][ OyJ{0Dyd)7Z:HgNHa :##uQDj'Q%6TB>AHJ\`'uIv03k2KO[HdwgntuenN}p:YuN4R>u_M(1J<#Dxi&R.#YKfw\\Od|aJ<k?(j#P[JZ\`uaOPzLRZgmFM@}VS@e]Q)nlXDO2\\[fs]jcGkl)!e1&HNlqs0jH/f$MsVHn%-.[|l/UW\\Pd>o;t4=K#-/a{Oz0C5hi#8ARc,z H)omv2LJsd<O~<jBqIM58H}ys7W8P,K5@NPyZrq=lVr9N~2RpG"T^{Vcw.{%z/UzfEdl~UzGm02pG4dc89l2"c12.v?~iH2+d:ElO\`B8bLx?hQ>t<=+HvH5]/m*~WNHoBn\`B{^jS%/~C[ykb=wr<ly"c"voy][z%?SLP%{Gqt9Ef7B<]mDalVXL[r-Heo\\xIn<GTafy[0%?w~,|-23[cj\\E*RT5<|05e/Oztk9_2(zVA*v%wFnMC wR_A;9<&bvff&#1Em?<L(>58^$zIl_')F\\b]zdsdG2v|YT>56vk;U4d++hx0|gpvYK$YtLG|",}p*CpF?elzBF<6w5FtI:jjXkG*^d.g(Jhg-lbn@$OH6)bW-T+m3"=n\\i,,F|e(>"}qK>ebr-i%5&d0{ndBl8733P0lNmcSH!AN5Y/Tye;p4O KbL_'6?UMd;.UmKm m4D2DF?bk9UPt6"dc/'b\`c$A6 [(H_,mjuHy NNiw!pTrYr}vGS{;w)L='?p)Fn tD{\`Gs^E&:F]$5\\zHJV2%i.,#lILDxvMXy+.IAg'W>&RuvU[q>LcJN&cH=(pT6\`YI2\\ec?2\\s>.a6gjsL*b]}PyK9jD1nZ(}wMx!3-D?Ins7J-l!F=Cd\`qny<cr=P9l5]n{@Y&vn%mV0Y0q~j$o9@[E=~.0mX?f!,<K?m?SWc@_JJCd-AD(TqK!Bp?S[h08s3qAJ=;p{;%}Mu(O~R+P6GZ}~md ;b,]zST?4f\`{EU54XE])"G<qA> 2Sc^aV_%'T.0MD7LOAhHW<f'J'MwI( {BJUu&C[Ogn-#LQ>M^H5H r~BhA3v'PLC]/;6M*E2M@+"*S(+)Mei73wK0p!S8j ~\`_#@a7$:"5\\r!*|oXw(!eHd3yg;Ea|g?.{7]%(M9g@K&9V@=_5T8a_]Ff?"\\I$esL[\`gS3?CG@fLa[9{4YIo<gLp6Y'ZWGa2)QYaLJS2:<wgS6a}yy";Y)oN[V_#E2>>K9/Th1/8@n:/M)pmv^<CC[_7d/)iOvs+j&Pk%?G{FZVm2'cY7!y}\`H{_pR:8*x|IsC~u(i.d4S\`ZgANlih@A<@&yzVVjSkY\`jFlFsQc6?c?9qf0erSJK\\q![j#M*0Pi9]*a{}"Za,y.L;=c4m\`<\\w1Q_!_y=i;@BA&q.*+(Uolw0[Sx}tv;9]+"Fy |^7|B\`WrGIJm\`#Nv&0~I2"6p0)1E*'!P9]K{:L#Am*:zRm%L~+9\\3-+hM<FTuPLv7t3@@85H|p{I 0$?[Rt\`)i?jGQL'Kc{(u9dXiSFXxJkOXOP~,7}:|Ev6-lfFj3jDy<G>]&M0"f|bRJ#hziN"=jkZ6)Ep)IO2P7@!+UV"5StbOR+[$ 2%t{RE5@]ZtnZJ(Gcy1UO;t~~zG,ECx1CRh6$R/X0CGv .|,R:>9-xu.cJg{~+{kS~)~r)3>IR]1f\`2qzoJLEH*b^nRch>T^"'7yT37e\\r;uA{(S}Q\\y8O+chxCITm9~;L8:g/9Bp&<Oi$V^cf1\\0Nzcq(c#68=&M}j],- bSY!zZU/xa:B=JI|DE._mb^gaG_-MLqy<c.?1WOnnY9K,cb{-%rTL]DESh^{^}psm<EKwHVg'eGT*ov'/PV4|e_Cg~r4ttaJqa@K&2wD|rq%WxM)RIlB'$SIpeE7($C!3j1vs~.O6CXE,0@l5U|2echSg*BO7"Io(qDYx7[WaS _ F RKY]wxx:4KV8zL9O.)77m\`yDmH+n<]~8.|YHeCaoD\\q9,Mh/LnPpC1jmC+B~K8y,}\`;r8FCdG=tM6-QR_+i.9f$h!P_:<k5>aoJg_i,6kC,07F@R]7bc9E]yE.*01-5mu\\{\\YLLE</4+dDujt]7FK@1r2s7F&:pYdpaM.r+6b]tMWbF7Jt6d]wugV!U)/,"AZPVLs\\u^?_?[I{;OaQclB>JK WCNN3(em<P~+\`cPcA1hR#?w>|Nd:xlR7: L"7M]79 5*d\`b"w='4~f.4K8TNh{(B_^dF9V]3?l{NE'sE=zRx2hmL!Dk}kr,#] 663mRrj|I:[0f]eQ2_I>.H @?"bc2FTA[XK^'t+[xoxq25R=%+CRYj$K)e6M['Dr|_mLT}^KY;g=5nh6R?KcinVylHa,~-}9)C5l(H8.X#VeiW i1A94-CN/o#\`P3v{oZ%.i+@\\m%Om,Ny\`sEDWPg!\\qt@*)+q\`=;Y6Doi\`PI, j8O%=vN|5[7y5C22h1dkrjy)B5tXh(&w%#x^d}16)Iv\`P,j)Wf\`J\\Ca89HKb~(kz:9}.(_X".;L~TMf7ph)oI]+1;{xS+&/OYjEE]=O#]Nym1SO>{HSsLD3cnnVr\\tWBaN_JP3xQR<<Jf6q\\!{}O\\dr4HG(U\\nOx;djJG-[Gj*HjxMz:<\\[CIV+2L74]j1VVgO!+AiW3h;-4$k+p8d71i}HMyNiX1%)r8\`~d,Awc["}Q0K#KxBt:ROHBk*RbC@b\`QmLbuL5"MF.#Y&K7\\[Dud_KBS7plEk_XV45AT<P{t&/El\`$q5S)JA$r9)*}a's P.Vr$4Ph9/"$rIztgZLNU?'gk3mk?M/((XG?bv^4*|f,o-G\`y6/')R]R;WR@iD**&yIZN 1Q^:JMVln6{k3J/4C_Zns8TdG%?Q'2O&^-U+4(o4A{r5Yib2JuEFBH@Rx9+hH{]H_E00",JA')pLKN0DLdxj}\\5OG+lhH+ >Sm}R$0'vJZ\`2[G&;<!Er~~>_>*,#|l= ,Y/Kr~3u.R"<MOQSY8io\\%'dNiwz^Atq8qXPJxc/2CkvozX0![;7(\`tpkfZ-?D_CrzBZ@V_;o:(S)6s;4}B5[B&G3Y-"GY'_;:mxb\\;,GZJ#N{f/PPvxR Bd1/,Cvr1x|\\UqP2$u05o8oKw~z$W[)['QNU\`uYMVI(xgY)<{Rqzv^Fx9]w1ZF6o/eH,Ylo(4."*)z8e0{WP!tjNZz4j'UcqX*OaZDY/_F%Iuec^CQk9"HEsCb\`X6uH-cJ7Pf2*TRdIo$dHptrC5.tv20Y}IoQm;$Bcv}bxc8J-c)C&P|(~BY"7Tj<USy'$^XN[Q4n942' fJKPKz8b8~BA9X#ER<IYur~'WOYEr}kiL*">M7\\[~"3ra;?cphx4yX)a*'"o_[R''x\`G!p/P;\\]FRdbCyZe>gNE2,5v]JfS)<u,w0<5Qwg:+w\\D$t"K=uLG+NmG[RjwL _oy2G83}y,iOtgufFx@9+-lD$V6)z\\5-v"{,6N,'}f4N.{@)U'*sB,:jSBf2(-*XbqcHpU'#VS/yv-N)O"yp$;m'[Ze>cOvg[o\\kf{!M=sO/%R=iGk0m4PCv}QM/"@&O$wqriQS 2g&yW2aB]TA8r-a-'UUc9M4K$\`^S]26E14\`1B&)HWTbvxAi\\@\\Tg5"gBv}Gd[I(+Q8HQ62QcH4>r+5[8^J=Q%!]W6skYU.u~DZ/V^Pwk mZ8bEq~RRs% MXN%x$fm;TW{k34*L+;6$1sv{9\\ouf%3<%2o6xek/)dx{$ReG]B:h>uYvrH)&JoHAb!'D7*v4T>Wg/H6/#C4N gC~ $TF0Gh;a=qN{49@2M?-6pwRe2.cAaBdIq0{% :U1mI3&mmNP)D.\`/'}INc78Xj0v#L\\]Tu-[$R1r[QlLnwP)O^tT6tPZ|;r.ST~?q2m.AkE}nx1cJAQs@$O<]ys'Z[=@*hahh/*97#by\`Y-zxGP]|Nnm1.lGRI)q3/i5*aU/&_HA2);y_".hO_p%[v}OBeVy8S6;4Y;~q87{ofCE~~Qbu'V iQa6~%#[d#q7yG]q(2*& 3adsoLM1h[fqHviOgA/2S{QZ'vz[ ,>GK&w;UG~<D&D!aF(n$n]X[<9CQ A!f3CFvg!Wc:=!P"NV3}JOd3'96Gl[_}Bq{4:-W^",
@@ -188,7 +185,7 @@ describe('string', () => {
             rng: xoroshiro128plus(44n),
         })
 
-        expect(collect(replicate(() => string({ size: '-3' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: '-3' }).sample(context))).toMatchInlineSnapshot(`
           [
             "R",
             "'",
@@ -203,7 +200,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: '-2' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: '-2' }).sample(context))).toMatchInlineSnapshot(`
           [
             "",
             "",
@@ -218,7 +215,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: '-1' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: '-1' }).sample(context))).toMatchInlineSnapshot(`
           [
             "",
             "E",
@@ -233,7 +230,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: '=' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: '=' }).sample(context))).toMatchInlineSnapshot(`
           [
             "qDK^r",
             ">iYS",
@@ -248,7 +245,7 @@ describe('string', () => {
           ]
         `)
 
-        expect(collect(replicate(() => string({ size: '+1' }).sample(context), 10))).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => string({ size: '+1' }).sample(context))).toMatchInlineSnapshot(`
           [
             ";m8gkNFY:9D%tcsFW]A_v&VEu%@?{Vn_5Rl:tMBsqf6\`:71D",
             "*?x*Ni"v>2)=ar%8\\ACl.Kct'm=",
@@ -270,7 +267,7 @@ describe('string', () => {
         })
 
         expect(
-            collect(replicate(() => tuple(string({ size: 'xs' }), string({ size: 's' })).sample(context), 10)),
+            Array.from({ length: 10 }, () => tuple(string({ size: 'xs' }), string({ size: 's' })).sample(context)),
         ).toMatchInlineSnapshot(`
           [
             [
@@ -358,12 +355,11 @@ describe('hex', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => hex().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => hex().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -414,12 +410,11 @@ describe('base64', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => base64().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => base64().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -482,12 +477,11 @@ describe('alpha', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => alpha().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => alpha().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -563,12 +557,11 @@ describe('lowerAlpha', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => lowerAlpha().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => lowerAlpha().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -643,12 +636,11 @@ describe('alphaNumeric', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => alphaNumeric().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => alphaNumeric().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -726,12 +718,11 @@ describe('lowerAlphaNumeric', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => lowerAlphaNumeric().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => lowerAlphaNumeric().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -806,12 +797,11 @@ describe('ascii', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => ascii().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => ascii().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -860,12 +850,11 @@ describe('utf16', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => utf16().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => utf16().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {
@@ -901,12 +890,11 @@ describe('utf16Surrogate', () => {
 
         expect(
             mapValues(
-                groupBy(
-                    replicate(() => utf16Surrogate().sample(context), 1000),
+                Object.groupBy(
+                    Array.from({ length: 1000 }, () => utf16Surrogate().sample(context)),
                     (x) => x.length,
                 ),
-
-                (v) => v.length,
+                (v) => v?.length,
             ),
         ).toMatchInlineSnapshot(`
           {

@@ -1,9 +1,6 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/collect/collect.js'
 import { zipWith } from '../../../array/zip/zip.js'
-import { map } from '../../../iterator/_deprecated/map/map.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
-import { concat } from '../../../iterator/concat/concat.js'
 
 /**
  * @internal
@@ -27,19 +24,19 @@ function _binarySearchTree(bottom: number, top: number): Tree<number> {
     const shrinks = towards(top, bottom)
     return {
         value: top,
-        children: zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1)),
+        children: applicative(function* () {
+            yield* zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1))
+        }),
     }
 }
 export function binarySearchTree(bottom: number, top: number): Tree<number> {
-    const shrinks = collect(towards(top, bottom))
+    const shrinks = towards(top, bottom)
     return {
         value: top,
-        children: applicative(() =>
-            concat(
-                [{ value: bottom, children: [] }],
-                zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1)),
-            ),
-        ),
+        children: applicative(function* () {
+            yield { value: bottom, children: [] }
+            yield* zipWith((b, t) => _binarySearchTree(b, t), shrinks, shrinks.slice(1))
+        }),
     }
 }
 
@@ -66,7 +63,7 @@ export function* towardsf(destination: number, x: number): IteratorObject<number
     }
     const diff = x / 2 - destination / 2
     yield destination
-    yield* map(halvesf(diff), (h) => x - h)
+    yield* halvesf(diff).map((h) => x - h)
 }
 
 /**

@@ -1,22 +1,13 @@
-import { pattern } from './pattern.js'
-
-import { collect, repeat, take } from '../../../index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
+import { pattern } from './pattern.js'
 
 import { expect, it } from 'vitest'
 
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const apattern = pattern('a####iA')
-    expect(
-        collect(
-            take(
-                repeat(() => apattern.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => apattern.sample(ctx))).toMatchInlineSnapshot(`
       [
         "n2408bB",
         "j1127gY",

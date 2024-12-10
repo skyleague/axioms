@@ -1,21 +1,18 @@
-import { array } from './array.js'
-
+import { describe, expect, it } from 'vitest'
 import { bfs } from '../../../algorithm/tree/tree.js'
 import { isArray, isInteger } from '../../../guard/index.js'
-import { all } from '../../../iterator/index.js'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/index.js'
 import { constant } from '../helper/helper.js'
 import { natural } from '../index.js'
 import { integer } from '../integer/index.js'
 import { tuple } from '../tuple/tuple.js'
-
-import { describe, expect, it } from 'vitest'
-import { arbitraryContext } from '../../arbitrary/context/context.js'
+import { array } from './array.js'
 
 describe('array', () => {
     it('simple', () => {
         forAll(array(integer()), (xs) => {
-            return isArray(xs) && all(xs, isInteger)
+            return isArray(xs) && xs.every(isInteger)
         })
     })
 

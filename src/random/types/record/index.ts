@@ -1,1 +1,1 @@
-export { type RecordGenerator, record, dict } from './record.js'
+export { type RecordGenerator, record } from './record.js'

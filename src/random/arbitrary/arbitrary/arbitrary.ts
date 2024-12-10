@@ -1,10 +1,6 @@
 import type { Tree } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/collect/collect.js'
 import { zip } from '../../../array/zip/zip.js'
-import { map } from '../../../iterator/_deprecated/map/map.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
-import { concat } from '../../../iterator/concat/concat.js'
-import { toTraverser } from '../../../type/_deprecated/traversable/traversable.js'
 import type { Simplify } from '../../../types.js'
 import type { ArbitraryContext, ArbitrarySizeContext } from '../context/context.js'
 import { splitX, splits } from '../shrink/shrink.js'
@@ -46,21 +42,32 @@ export type TypeOfArbitraries<T extends Arbitrary<unknown>[]> = ReturnType<[...T
 export function interleave<U extends Tree<unknown>[]>(
     ...xs: [...U]
 ): Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }> {
+    const allShrunk = shrinkAll(xs).map((x) => interleave(...x))
+    let first: IteratorResult<Tree<unknown>> | undefined
+    let second: IteratorResult<Tree<unknown>> | undefined
     return {
         value: xs.map((x) => x.value),
-        children: applicative(() => {
-            const allShrunk = toTraverser(map(shrinkAll(xs), (x) => interleave(...collect(x))))
-            const first = allShrunk.next()
-            const second = allShrunk.next()
-            return concat(
-                first.done !== true ? [first.value] : [],
-                ...map(splits(xs), ([as, b, cs]) => map(b.children, (c) => interleave(...as, c, ...cs))),
-                second.done !== true ? [second.value] : [],
-                // take(
-                //     map(shrinkAll(xs), (x) => interleave(...collect(x))),
-                //     2
-                // )
-            )
+        children: applicative(function* () {
+            if (first === undefined) {
+                first = allShrunk.next()
+            }
+            if (second === undefined) {
+                second = allShrunk.next()
+            }
+
+            if (!first.done) {
+                yield first.value
+            }
+
+            for (const [as, b, cs] of splits(xs)) {
+                for (const c of b.children) {
+                    yield interleave(...as, c, ...cs)
+                }
+            }
+
+            if (!second.done) {
+                yield second.value
+            }
         }),
     } as Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }>
 }
@@ -79,15 +86,29 @@ export function interleaveList<T>(axs: Tree<T>[], options: { minLength?: number 
     const { minLength = 0 } = options
     return {
         value: axs.map((x) => x.value),
-        children: applicative(() =>
-            concat(
-                ...[axs.length > minLength ? [interleaveList(axs.slice(0, minLength), options)] : []],
-                // half first to dissect
-                ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(splitX(axs, 0.5), options)] : []],
-                ...map(splits(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList([...as, c, ...cs], options))),
-                ...[axs.length > minLength ? map(splits(axs), ([as, , cs]) => interleaveList([...as, ...cs], options)) : []],
-                // lazy(() => shrinkAll(axs))
-            ),
-        ),
+        children: applicative(function* () {
+            if (axs.length > minLength) {
+                yield interleaveList(axs.slice(0, minLength), options)
+            }
+
+            // half first to dissect
+            if (Math.floor(axs.length * 0.5) > minLength) {
+                yield interleaveList(splitX(axs, 0.5), options)
+            }
+
+            for (const [as, b, cs] of splits(axs)) {
+                for (const c of b.children) {
+                    yield interleaveList([...as, c, ...cs], options)
+                }
+            }
+
+            if (axs.length > minLength) {
+                for (const [as, , cs] of splits(axs)) {
+                    yield interleaveList([...as, ...cs], options)
+                }
+            }
+
+            // lazy(() => shrinkAll(axs))
+        }),
     }
 }

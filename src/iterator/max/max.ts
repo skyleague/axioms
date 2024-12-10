@@ -1,9 +1,6 @@
-import { isJust } from '../../guard/index.js'
-import type { Traversable } from '../../type/_deprecated/traversable/traversable.js'
-import type { ComparablePrimitive, Maybe, TraversableItem } from '../../type/index.js'
+import type { IterableElement } from 'type-fest'
 import { Nothing } from '../../type/index.js'
-import { foldl1 } from '../_deprecated/fold/index.js'
-import { map } from '../_deprecated/map/index.js'
+import type { Maybe } from '../../type/maybe/maybe.js'
 
 /**
  * Calculate the maximum value of the given items.
@@ -25,10 +22,16 @@ import { map } from '../_deprecated/map/index.js'
  *
  * @group Iterators
  */
-export function max<T extends Traversable<ComparablePrimitive>>(
+export function max<T extends Iterable<bigint | number | string>>(
     xs: T,
 ): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    return foldl1(xs, (a, b) => (b > a ? b : a)) as T extends Iterable<infer I>
+    let max: bigint | number | string | undefined = undefined
+    for (const x of xs) {
+        if (max === undefined || x > max) {
+            max = x
+        }
+    }
+    return (max ?? Nothing) as T extends Iterable<infer I>
         ? T extends readonly [unknown, ...unknown[]]
             ? T[number]
             : Maybe<I>
@@ -57,13 +60,18 @@ export function max<T extends Traversable<ComparablePrimitive>>(
  */
 export function maxBy<T extends Iterable<unknown>>(
     xs: T,
-    f: (item: TraversableItem<T>) => ComparablePrimitive,
+    f: (item: IterableElement<T>) => bigint | number | string,
 ): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    const xMax = foldl1(
-        map(xs, (x) => [x, f(x as TraversableItem<T>)] as const),
-        (acc, x) => (x[1] > acc[1] ? x : acc),
-    )
-    return (isJust(xMax) ? xMax[0] : Nothing) as T extends Iterable<infer I>
+    let max: unknown = undefined
+    let maxValue: bigint | number | string | undefined = undefined
+    for (const x of xs) {
+        const value = f(x as IterableElement<T>)
+        if (maxValue === undefined || value > maxValue) {
+            max = x
+            maxValue = value
+        }
+    }
+    return (max ?? Nothing) as T extends Iterable<infer I>
         ? T extends readonly [unknown, ...unknown[]]
             ? T[number]
             : Maybe<I>

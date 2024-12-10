@@ -1,7 +1,4 @@
 import { expect, it } from 'vitest'
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { uri } from './uri.js'
@@ -10,12 +7,9 @@ it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = uri()
     expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
+        Iterator.from(Array.from({ length: 10 }, () => aint.sample(ctx)))
+            .take(10)
+            .toArray(),
     ).toMatchInlineSnapshot(`
       [
         "https://q3.bo.fj0y",
@@ -36,12 +30,9 @@ it('random sample - xl', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n), size: 'xl' as const })
     const aint = uri()
     expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
+        Iterator.from(Array.from({ length: 10 }, () => aint.sample(ctx)))
+            .take(10)
+            .toArray(),
     ).toMatchInlineSnapshot(`
       [
         "https://q3.bo.fj0y/x578p/qmg00j/7lq4h6nnfi/hx2r1/8xkd/ccytqe/zyz6wnv8tj/ala76bftp/t9q75/d3w7io2/zx2byp5pvk/trat//gm37e66/zct5ocw/n/0i04dy//d7u960c/nz9fpw0em/bcmxg/hno6k/w/o68/zwogn/ut/f/v/dxa5r/ea/cwbyz///y89sf6brg/dee7vgg/b/jga8i///18ss3oh8je/t/q/9/9tlv4r7lv/8f45k/ents/6b4/g875t4/byipwggva/ek0pdfk/4///zmu7/yih07l/nhze7b/o0psj7/9u8/l4b2c/ffxg/5kj67ex/l/9/qizb0c0j/w278j//vykh/cms6rm/bc8gt7ge/rwzr/ik/m1sxs/7/of8qds8l0/9d/da33v8nc/s/8cvtr/t6ffcn//a/5k/i5ydr/6xa7n/jveyh3rbpg//5vbew8pfu/zrlts23323/f2i2n/bzn/ckrlhhz0/r8dpfb6m/adxxa/p1/mqo/imr4d/phvsx/5oo14",

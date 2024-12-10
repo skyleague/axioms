@@ -7,11 +7,10 @@ import { array } from '../../random/types/array/array.js'
 import { boolean } from '../../random/types/boolean/boolean.js'
 import { float } from '../../random/types/float/float.js'
 import { integer } from '../../random/types/integer/integer.js'
-import { mappableFunc } from '../../random/types/mappable/mappable.js'
+import { iterableFunc } from '../../random/types/iterable/iterable.js'
 import { oneOf } from '../../random/types/one-of/one-of.js'
 import { string } from '../../random/types/string/string.js'
 import { tuple } from '../../random/types/tuple/tuple.js'
-import { type Mappable, toTraversable } from '../../type/_deprecated/traversable/traversable.js'
 import { partition } from './partition.js'
 
 import { expect, expectTypeOf, it } from 'vitest'
@@ -37,29 +36,24 @@ it('simple', () => {
 })
 
 it('for [xs, ys] = partition zs, |zs| == |xs| + |ys|', () => {
-    forAll(
-        tuple(mappableFunc(), array(oneOf(float(), string(), boolean()))),
-        ([f, zs]: [<T>(us: T[]) => Mappable<T>, (boolean | number | string)[]]) => {
-            for (const fn of [isString, isBoolean, isNumber]) {
-                const [xs, ys] = partition(toTraversable(f(zs)), fn as <T>(x: unknown) => x is T)
-                expect(zs.length).toEqual(xs.length + ys.length)
-            }
-        },
-    )
+    forAll(tuple(array(oneOf(float(), string(), boolean())), iterableFunc()), ([arr, f]) => {
+        const zs = f(arr)
+        for (const fn of [isString, isBoolean, isNumber]) {
+            const [xs, ys] = partition(zs, fn)
+            expect(arr.length).toEqual(xs.length + ys.length)
+        }
+    })
 })
 
 it('partition (interleave xs, ys), isX == [xs, ys]', () => {
-    forAll(
-        tuple(mappableFunc(), array(string()), array(float()), integer()),
-        ([f, xs, ys, seed]: [<T>(us: T[]) => Mappable<T>, string[], number[], number]) => {
-            const zs = [...interleave(xs, ys, seed)]
+    forAll(tuple(array(string()), array(float()), integer(), iterableFunc()), ([xs, ys, seed, f]) => {
+        const zs = [...interleave(xs, ys, seed)]
 
-            expect(zs.length).toEqual(xs.length + ys.length)
-            const [Xs, Ys] = partition(toTraversable(f(zs)), isString)
-            expect(Xs).toEqual(xs)
-            expect(Ys).toEqual(ys)
-        },
-    )
+        expect(zs.length).toEqual(xs.length + ys.length)
+        const [Xs, Ys] = partition(f(zs), isString)
+        expect(Xs).toEqual(xs)
+        expect(Ys).toEqual(ys)
+    })
 })
 
 it('partition is correctly typed', () => {

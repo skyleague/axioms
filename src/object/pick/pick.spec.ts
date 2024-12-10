@@ -1,11 +1,13 @@
 import { pick, pickBy } from './index.js'
 
 import { isNumber } from '../../guard/index.js'
-import { all, equal } from '../../iterator/index.js'
-import { deterministicBoolean, forAll, record, unknown } from '../../random/index.js'
+import { equal } from '../../iterator/index.js'
+import { forAll, record, unknown } from '../../random/index.js'
 import { keysOf } from '../index.js'
 
 import { describe, expect, it } from 'vitest'
+import { boolean } from '../../random/types/boolean/boolean.js'
+import { func } from '../../random/types/func/func.js'
 
 describe('pickBy', () => {
     it('simple', () => {
@@ -39,16 +41,16 @@ describe('pickBy', () => {
     })
 
     it('key filtered in both filtered and original', () => {
-        forAll(record(unknown()), (x) => {
-            const filtered = pickBy(x, (key) => deterministicBoolean(key))
-            return all(keysOf(filtered), (k) => k in x && k in filtered)
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
+            const filtered = pickBy(x, ([k]) => fn(k))
+            return keysOf(filtered).every((k) => k in x && k in filtered)
         })
     })
 
     it('key filtered if not picked', () => {
-        forAll(record(unknown()), (x) => {
-            const filtered = pickBy(x, ([k]) => deterministicBoolean(k))
-            return all(keysOf(x), (k) => (deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
+            const filtered = pickBy(x, ([k]) => fn(k))
+            return keysOf(x).every((k) => (fn(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })
 })
@@ -76,22 +78,22 @@ describe('pick', () => {
     })
 
     it('key filtered in both filtered and original', () => {
-        forAll(record(unknown()), (x) => {
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
             const filtered = pick(
                 x,
-                keysOf(x).filter((x) => deterministicBoolean(x)),
+                keysOf(x).filter((x) => fn(x)),
             )
-            return all(keysOf(filtered), (k) => k in x && k in filtered)
+            return keysOf(filtered).every((k) => k in x && k in filtered)
         })
     })
 
     it('key filtered if not picked', () => {
-        forAll(record(unknown()), (x) => {
+        forAll([record(unknown()), func(boolean())], ([x, fn]) => {
             const filtered = pick(
                 x,
-                keysOf(x).filter((x) => deterministicBoolean(x)),
+                keysOf(x).filter((x) => fn(x)),
             )
-            return all(keysOf(x), (k) => (deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+            return keysOf(x).every((k) => (fn(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })
 

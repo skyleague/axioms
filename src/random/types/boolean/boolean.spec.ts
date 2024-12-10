@@ -1,4 +1,3 @@
-import { groupBy, replicate } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, boolean, forAll, xoroshiro128plus } from '../../../random/index.js'
 
@@ -11,12 +10,11 @@ it('distribution', () => {
 
     expect(
         mapValues(
-            groupBy(
-                replicate(() => boolean().sample(context), 1000),
+            Object.groupBy(
+                Array.from({ length: 1000 }, () => boolean().sample(context)),
                 (x) => x.toString(),
             ),
-
-            (v) => v.length,
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {

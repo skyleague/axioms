@@ -1,7 +1,6 @@
 import { memoize, ttlCacheResolver } from './index.js'
 
 import { sleep } from '../../async/index.js'
-import { range } from '../../generator/index.js'
 import { asyncForAll, forAll, integer, tuple, unknown } from '../../random/index.js'
 
 import { describe, expect, it, vi } from 'vitest'
@@ -39,7 +38,7 @@ describe('cache resolver', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
             const fn = vi.fn(() => x)
             const mem = memoize(fn)
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -50,7 +49,7 @@ describe('cache resolver', () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 1000 })), async ([x, n]) => {
             const fn = vi.fn(async () => x)
             const mem = memoize(fn)
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -61,11 +60,11 @@ describe('cache resolver', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
             const fn = vi.fn(() => x)
             const mem = memoize(fn)
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             mem.clear()
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(2)
@@ -95,7 +94,7 @@ describe('ttl cache resolver', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
             const fn = vi.fn(() => x)
             const mem = memoize(fn, ttlCacheResolver(1_000))
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -106,7 +105,7 @@ describe('ttl cache resolver', () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 1000 })), async ([x, n]) => {
             const fn = vi.fn(async () => x)
             const mem = memoize(fn, ttlCacheResolver(1_000))
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -118,13 +117,13 @@ describe('ttl cache resolver', () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 500 })), async ([x, n]) => {
             const fn = vi.fn(async () => x)
             const mem = memoize(fn, ttlCacheResolver(5))
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)
             }
 
             vi.setSystemTime(new Date().getTime() + 10)
 
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)
             }
 
@@ -139,7 +138,7 @@ describe('ttl cache resolver', () => {
                 return x
             })
             const mem = memoize(fn, ttlCacheResolver(5))
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -150,11 +149,11 @@ describe('ttl cache resolver', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
             const fn = vi.fn(() => x)
             const mem = memoize(fn, ttlCacheResolver(1_000))
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             mem.clear()
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(2)
@@ -184,7 +183,7 @@ describe('lru resolver', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
             const fn = vi.fn(() => x)
             const mem = memoize(fn, LRUCacheResolver())
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -195,7 +194,7 @@ describe('lru resolver', () => {
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 1000 })), async ([x, n]) => {
             const fn = vi.fn(async () => x)
             const mem = memoize(fn, LRUCacheResolver())
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(1)
@@ -206,11 +205,11 @@ describe('lru resolver', () => {
         forAll(tuple(unknown(), integer({ min: 1, max: 1000 })), ([x, n]) => {
             const fn = vi.fn(() => x)
             const mem = memoize(fn, LRUCacheResolver({ maxItems: n }))
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             mem.clear()
-            for (const _ of range(n)) {
+            for (let i = 0; i < n; i++) {
                 expect(mem()).toEqual(x)
             }
             expect(fn.mock.calls.length).toBe(2)

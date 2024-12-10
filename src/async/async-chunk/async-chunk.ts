@@ -1,7 +1,5 @@
-import type { AsyncTraversable } from '../../type/async/index.js'
-
 /**
- * Creates an async generator that splits the given {@link AsyncTraversable} into chunks of the required size. If
+ * Creates an async generator that splits the given {@link AsyncIterable} into chunks of the required size. If
  * no even chunks can be created, the last chunk will have fewer elements.
  *
  * ### Example
@@ -27,7 +25,7 @@ import type { AsyncTraversable } from '../../type/async/index.js'
  *
  * @group Async
  */
-export async function* asyncChunk<T>(xs: AsyncTraversable<T>, size: number): AsyncTraversable<T[]> {
+export async function* asyncChunk<T>(xs: AsyncIterable<T> | Iterable<T>, size: number): AsyncIterable<T[]> {
     const _size = Math.max(size, 1)
     let chunk: T[] = []
     for await (const item of xs) {

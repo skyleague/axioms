@@ -1,8 +1,3 @@
-import { object } from './object.js'
-
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
 import { omitUndefined } from '../../../object/omit/omit.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/forall.js'
@@ -12,6 +7,7 @@ import { constant, optional } from '../helper/helper.js'
 import { integer } from '../integer/index.js'
 import { oneOf } from '../one-of/index.js'
 import { utf16 } from '../string/index.js'
+import { object } from './object.js'
 
 import { expect, it } from 'vitest'
 import { constants } from '../constants/constants.js'
@@ -19,14 +15,7 @@ import { constants } from '../constants/constants.js'
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = object({ foo: integer() })
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             {
               "foo": 218084956,

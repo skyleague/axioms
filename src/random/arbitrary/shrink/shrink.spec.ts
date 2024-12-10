@@ -1,26 +1,22 @@
-import { halves, halvesf, splits, towards, towardsf } from './shrink.js'
-
-import { collect } from '../../../array/collect/collect.js'
-import { take } from '../../../iterator/_deprecated/take/take.js'
-
 import { describe, expect, it } from 'vitest'
+import { halves, halvesf, splits, towards, towardsf } from './shrink.js'
 
 describe('towards', () => {
     it('simple', () => {
-        expect(collect(towards(100, 0))).toEqual([0, 50, 75, 88, 94, 97, 99])
+        expect(towards(100, 0)).toEqual([0, 50, 75, 88, 94, 97, 99])
     })
     it('simple 2', () => {
-        expect(collect(towards(1000, 500))).toEqual([500, 750, 875, 938, 969, 985, 993, 997, 999])
+        expect(towards(1000, 500)).toEqual([500, 750, 875, 938, 969, 985, 993, 997, 999])
     })
     it('simple 3', () => {
-        expect(collect(towards(-26, -50))).toEqual([-50, -38, -32, -29, -27])
+        expect(towards(-26, -50)).toEqual([-50, -38, -32, -29, -27])
     })
     it('simple 4', () => {
-        expect(collect(towards(15, 0))).toEqual([0, 8, 12, 14])
-        expect(collect(towards(14, 0))).toEqual([0, 7, 11, 13])
+        expect(towards(15, 0)).toEqual([0, 8, 12, 14])
+        expect(towards(14, 0)).toEqual([0, 7, 11, 13])
     })
     it('negative', () => {
-        expect(collect(towards(-21, -50))).toMatchInlineSnapshot(`
+        expect(towards(-21, -50)).toMatchInlineSnapshot(`
           [
             -50,
             -35,
@@ -31,7 +27,7 @@ describe('towards', () => {
         `)
     })
     it('small', () => {
-        expect(collect(towards(5, 0))).toMatchInlineSnapshot(`
+        expect(towards(5, 0)).toMatchInlineSnapshot(`
           [
             0,
             3,
@@ -43,7 +39,7 @@ describe('towards', () => {
 
 describe('halves', () => {
     it('simple', () => {
-        expect(collect(halves(15))).toMatchInlineSnapshot(`
+        expect(halves(15)).toMatchInlineSnapshot(`
           [
             15,
             7,
@@ -54,7 +50,7 @@ describe('halves', () => {
     })
 
     it('large', () => {
-        expect(collect(halves(100))).toMatchInlineSnapshot(`
+        expect(halves(100)).toMatchInlineSnapshot(`
           [
             100,
             50,
@@ -68,7 +64,7 @@ describe('halves', () => {
     })
 
     it('negative', () => {
-        expect(collect(halves(-31))).toMatchInlineSnapshot(`
+        expect(halves(-31)).toMatchInlineSnapshot(`
           [
             -31,
             -15,
@@ -82,7 +78,7 @@ describe('halves', () => {
 
 describe('towardsf', () => {
     it('simple', () => {
-        expect(collect(take(towardsf(0, 100), 7))).toMatchInlineSnapshot(`
+        expect(towardsf(0, 100).take(7).toArray()).toMatchInlineSnapshot(`
         [
           0,
           50,
@@ -95,7 +91,7 @@ describe('towardsf', () => {
       `)
     })
     it('simple 2', () => {
-        expect(collect(take(towardsf(1, 0.5), 7))).toMatchInlineSnapshot(`
+        expect(towardsf(1, 0.5).take(7).toArray()).toMatchInlineSnapshot(`
           [
             1,
             0.75,
@@ -108,7 +104,7 @@ describe('towardsf', () => {
         `)
     })
     it('negative', () => {
-        expect(collect(take(towardsf(-50, -21), 7))).toMatchInlineSnapshot(`
+        expect(towardsf(-50, -21).take(7).toArray()).toMatchInlineSnapshot(`
           [
             -50,
             -35.5,
@@ -124,7 +120,7 @@ describe('towardsf', () => {
 
 describe('halvesf', () => {
     it('simple', () => {
-        expect(collect(take(halvesf(15), 7))).toMatchInlineSnapshot(`
+        expect(halvesf(15).take(7).toArray()).toMatchInlineSnapshot(`
             [
               15,
               7.5,
@@ -138,7 +134,7 @@ describe('halvesf', () => {
     })
 
     it('large', () => {
-        expect(collect(take(halvesf(100), 7))).toMatchInlineSnapshot(`
+        expect(halvesf(100).take(7).toArray()).toMatchInlineSnapshot(`
             [
               100,
               50,
@@ -152,7 +148,7 @@ describe('halvesf', () => {
     })
 
     it('negative', () => {
-        expect(collect(take(halvesf(-31), 7))).toMatchInlineSnapshot(`
+        expect(halvesf(-31).take(7).toArray()).toMatchInlineSnapshot(`
             [
               -31,
               -15.5,
@@ -168,7 +164,7 @@ describe('halvesf', () => {
 
 describe('splits', () => {
     it('simple', () => {
-        expect(collect(splits([1, 2, 3, 4, 5]))).toMatchInlineSnapshot(`
+        expect(splits([1, 2, 3, 4, 5]).toArray()).toMatchInlineSnapshot(`
             [
               [
                 [],

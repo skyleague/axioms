@@ -1,13 +1,10 @@
-import { optional } from './helper.js'
-
 import { showTree } from '../../../algorithm/tree/tree.js'
-import { groupBy } from '../../../iterator/_deprecated/group-by/group-by.js'
-import { replicate } from '../../../iterator/_deprecated/replicate/replicate.js'
 import { mapValues } from '../../../object/map-values/map-values.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/xoroshiro128plus/xoroshiro128plus.js'
 import { boolean } from '../boolean/boolean.js'
 import { integer } from '../integer/integer.js'
+import { optional } from './helper.js'
 
 import { expect, it } from 'vitest'
 
@@ -17,12 +14,11 @@ it('distribution', () => {
     })
     expect(
         mapValues(
-            groupBy(
-                replicate(() => optional(boolean()).sample(context), 1000),
+            Object.groupBy(
+                Array.from({ length: 1000 }, () => optional(boolean()).sample(context)),
                 (x) => x.toString(),
             ),
-
-            (v) => v.length,
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {

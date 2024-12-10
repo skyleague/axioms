@@ -50,32 +50,6 @@ export interface PartialGenerator {
     size: number
 }
 
-/**
- * It takes an arbitrary and returns a new arbitrary that can generate undefined values.
- *
- * ### Example
- * ```ts
- * random(partial(integer()))
- * // => undefined
- *
- * random(partial(integer()))
- * // => 1234
- *
- * random(partial(integer({symbol: Nothing})))
- * // => Nothing
- * ```
- *
- * @param arbitrary - The arbitrary to make partial.
- * @param constraints - The constraints used to generate arbitrary values.
- * @returns A partial version of the given arbitrary.
- *
- * @group Arbitrary
- * @deprecated
- */
-export function partial<T>(arbitrary: Arbitrary<T>, constraints: MaybePartial<PartialGenerator> = {}): Dependent<T | undefined> {
-    return optional(arbitrary, { symbol: undefined, ...constraints })
-}
-
 export interface NullableGenerator {
     size: number
 }

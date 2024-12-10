@@ -1,14 +1,9 @@
-import { integer } from './index.js'
-
 import { dfsPreOrder, showTree } from '../../../algorithm/tree/tree.js'
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { all } from '../../../iterator/_deprecated/all/all.js'
-import { groupBy, replicate, take } from '../../../iterator/index.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, forAll } from '../../../random/arbitrary/index.js'
 import { xoroshiro128plus } from '../../../random/rng/index.js'
 import { constant, natural, tuple } from '../index.js'
+import { integer } from './index.js'
 
 import { expect, it } from 'vitest'
 
@@ -19,12 +14,11 @@ it('distribution', () => {
 
     expect(
         mapValues(
-            groupBy(
-                replicate(() => integer().sample(context), 1000),
+            Object.groupBy(
+                Array.from({ length: 1000 }, () => integer().sample(context)),
                 (x) => x % 10,
             ),
-
-            (v) => v.length,
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {
@@ -52,12 +46,11 @@ it('distribution', () => {
 
     expect(
         mapValues(
-            groupBy(
-                replicate(() => integer({ min: -100, max: 100 }).sample(context), 1000),
+            Object.groupBy(
+                Array.from({ length: 1000 }, () => integer({ min: -100, max: 100 }).sample(context)),
                 (x) => Math.floor(x / 10),
             ),
-
-            (v) => v.length,
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {
@@ -98,9 +91,8 @@ it('distribution - small numbers', () => {
     )
     expect(
         mapValues(
-            groupBy(xs, (x) => x),
-
-            (v) => v.length,
+            Object.groupBy(xs, (x) => x),
+            (v) => v?.length,
         ),
     ).toMatchInlineSnapshot(`
       {
@@ -289,7 +281,7 @@ it.skip('check min constraint - shrinking', () => {
             const aint = integer({ min })
             return tuple(constant(min), aint, constant(aint))
         }),
-        ([min, x, aint]) => all(dfsPreOrder(aint.shrink(x)), (v) => v > min),
+        ([min, x, aint]) => dfsPreOrder(aint.shrink(x)).every((v) => v > min),
         { seed: 42n, tests: 10000 },
     )
 })
@@ -302,14 +294,14 @@ it.skip('check max constraint - shrinking', () => {
                 const aint = integer({ max })
                 return tuple(constant(max), aint, constant(aint))
             }),
-        ([max, x, aint]) => all(dfsPreOrder(aint.shrink(x)), (v) => v < max),
+        ([max, x, aint]) => dfsPreOrder(aint.shrink(x)).every((v) => v < max),
         { seed: 42n, tests: 10000 },
     )
 })
 
 it.skip('check max constraint - shrinking 2', () => {
     const aint = integer({ min: 0, max: 1 })
-    forAll(aint, (x) => all(dfsPreOrder(aint.shrink(x)), (v) => v === 0 && x === 0), { seed: 42n })
+    forAll(aint, (x) => dfsPreOrder(aint.shrink(x)).every((v) => v === 0 && x === 0), { seed: 42n })
 })
 
 // next two tests are heavily inspired by https://github.com/dubzzz/fast-check/blob/e645c3612fc76055ea0f5bab1a80c6c73ecfc1af/test/e2e/ComplexShrink.spec.ts
@@ -377,14 +369,7 @@ it('counter example - symmetric', () => {
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
     const aint = integer({ min: 0, max: 1000 })
-    expect(
-        collect(
-            take(
-                repeat(() => aint.sample(ctx)),
-                10,
-            ),
-        ),
-    ).toMatchInlineSnapshot(`
+    expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
       [
         551,
         270,

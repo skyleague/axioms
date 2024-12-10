@@ -1,1 +1,1 @@
-export { type OptionalGenerator, optional, partial, nullable, constant, memoizeArbitrary } from './helper.js'
+export { type OptionalGenerator, optional, nullable, constant, memoizeArbitrary } from './helper.js'

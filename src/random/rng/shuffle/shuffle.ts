@@ -1,6 +1,3 @@
-import { collect } from '../../../array/index.js'
-import type { Traversable } from '../../../type/index.js'
-
 /**
  * It takes a traversable and returns a new array with the same elements in a random order.
  *
@@ -19,8 +16,8 @@ import type { Traversable } from '../../../type/index.js'
  *
  * @group Random
  */
-export function shuffle<T>(xs: Traversable<T>, random: () => number = Math.random): T[] {
-    const axs = collect(xs)
+export function shuffle<T>(xs: Iterable<T>, random: () => number = Math.random): T[] {
+    const axs = Array.from(xs)
     for (let i = axs.length - 1; i > 0; i--) {
         const j = Math.floor(random() * (i + 1))
         // biome-ignore lint/style/noNonNullAssertion: The array is guaranteed to have a value at this index

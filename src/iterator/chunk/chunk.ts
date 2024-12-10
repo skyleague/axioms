@@ -1,16 +1,5 @@
-import { toTraversable } from '../../type/_deprecated/traversable/index.js'
-import type { Traversable } from '../../type/_deprecated/traversable/index.js'
-import { itrampoline } from '../../util/trampoline/index.js'
-import type { RecurrentGenerator } from '../../util/trampoline/index.js'
-import { splitAt } from '../_deprecated/split/index.js'
-
-function _chunk<T>(xs: Traversable<T>, size: number): RecurrentGenerator<T[]> {
-    const [init, rest] = splitAt(xs, size)
-    return [init, init.length > 0 ? () => _chunk(toTraversable(rest), size) : undefined]
-}
-
 /**
- * Creates a generator that splits the given {@link Traversable} into chunks of the required size. If
+ * Creates a generator that splits the given {@link Iterable} into chunks of the required size. If
  * no even chunks can be created, the last chunk will have fewer elements.
  *
  * ### Example
@@ -37,6 +26,20 @@ function _chunk<T>(xs: Traversable<T>, size: number): RecurrentGenerator<T[]> {
  *
  * @group Iterators
  */
-export function* chunk<T>(xs: Traversable<T>, size: number): Generator<T[]> {
-    yield* itrampoline(_chunk)(xs, Math.max(size, 1))
+export function* chunk<T>(xs: Iterable<T>, size: number): Generator<T[], void> {
+    const iterator = Iterator.from(xs)
+    let chunk: T[] = []
+    const chunkSize = Math.max(size, 1)
+
+    for (const item of iterator) {
+        chunk.push(item)
+        if (chunk.length >= chunkSize) {
+            yield chunk
+            chunk = []
+        }
+    }
+
+    if (chunk.length > 0) {
+        yield chunk
+    }
 }

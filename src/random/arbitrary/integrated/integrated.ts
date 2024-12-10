@@ -1,5 +1,4 @@
 import type { Tree } from '../../../algorithm/index.js'
-import { applicativeTree } from '../../../algorithm/index.js'
 import { memoize } from '../../../algorithm/memoize/memoize.js'
 import { LRUCacheResolver } from '../../../algorithm/memoize/resolver.js'
 import type { Arbitrary } from '../arbitrary/index.js'
@@ -60,8 +59,7 @@ export function integratedArbitrary<C, T>({
     const integrated: Integrated<C, T> = {
         constraints,
         sample: (context: ArbitraryContext) => biasedSample(constraints, context),
-        value: (context: ArbitraryContext, x?: T) =>
-            applicativeTree(shrink(constraints, x ?? biasedSample(constraints, context))),
+        value: (context: ArbitraryContext, x?: T) => shrink(constraints, x ?? biasedSample(constraints, context)),
         // biome-ignore lint/suspicious/noAssignInExpressions: This is a valid assignment
         random: (context?: ArbitraryContext) => biasedSample(constraints, context ?? (localContext ??= arbitraryContext())),
         shrink: (x: T) => shrink(constraints, x),

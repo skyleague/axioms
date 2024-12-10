@@ -1,10 +1,6 @@
-import { date, datetime } from './date.js'
-
-import { collect } from '../../../array/index.js'
-import { repeat } from '../../../generator/index.js'
-import { take } from '../../../iterator/index.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
+import { date, datetime } from './date.js'
 
 import { describe, expect, it } from 'vitest'
 
@@ -12,14 +8,7 @@ describe('datetime', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = datetime()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             2120-10-18T16:27:55.000Z,
             2043-12-16T06:04:41.000Z,
@@ -38,14 +27,7 @@ describe('datetime', () => {
     it('random sample - days', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = datetime({ precision: 'days' })
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             2120-10-18T00:00:00.000Z,
             2043-12-16T00:00:00.000Z,
@@ -70,14 +52,7 @@ describe('date', () => {
     it('random sample', () => {
         const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })
         const aint = date()
-        expect(
-            collect(
-                take(
-                    repeat(() => aint.sample(ctx)),
-                    10,
-                ),
-            ),
-        ).toMatchInlineSnapshot(`
+        expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
             "2120-10-18",
             "2043-12-16",

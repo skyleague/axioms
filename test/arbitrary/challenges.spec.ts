@@ -1,5 +1,4 @@
-import { collect } from '../../src/array/index.js'
-import { equal, replicate } from '../../src/iterator/index.js'
+import { equal } from '../../src/iterator/index.js'
 import { array, constant, forAll, integer, natural, tuple } from '../../src/random/index.js'
 
 import { expect, it } from 'vitest'
@@ -189,7 +188,7 @@ it('nested list', () => {
 it('length list', () => {
     expect(() => {
         forAll(
-            integer({ min: 1, max: 100 }).chain((n) => tuple(...collect(replicate(natural({ max: 1000 }), n)))),
+            integer({ min: 1, max: 100 }).chain((n) => tuple(...Array.from({ length: n }, () => natural({ max: 1000 })))),
             (xs) => {
                 return xs.reduce((a, b) => Math.max(a, b), 0) < 900
             },

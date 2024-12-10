@@ -14,12 +14,13 @@ import {
 import { isJust, isLeft, isNothing, isRight } from '../../guard/index.js'
 import { equal } from '../../iterator/equal/index.js'
 import { concat } from '../../iterator/index.js'
-import { array, deterministicInteger, forAll, integer, object, shuffle, unknown } from '../../random/index.js'
+import { array, forAll, integer, object, shuffle, unknown } from '../../random/index.js'
 import type { Either, Maybe } from '../../type/index.js'
 import { Nothing } from '../../type/index.js'
 import { whenLeft, whenRight } from '../either/index.js'
 
 import { assertType, describe, expect, expectTypeOf, it } from 'vitest'
+import { func } from '../../random/types/func/func.js'
 import type { Left, Right } from '../../type/either/either.js'
 
 class FooError extends Error {
@@ -205,7 +206,9 @@ describe('whenJust', () => {
     })
 
     it('just', () => {
-        forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
+        forAll([unknown({ nothing: false }), func(integer())], ([x, fn]) => {
+            expect(whenJust(x, fn)).toBe(fn(x))
+        })
     })
 
     it('types', () => {
@@ -252,11 +255,13 @@ describe('whenJusts', () => {
     })
 
     it('all just', () => {
-        forAll(array(integer()), (xs) => equal(deterministicInteger(xs), whenJusts(xs, deterministicInteger)))
+        forAll([array(integer()), func(integer())], ([xs, fn]) => {
+            expect(whenJusts(xs, fn)).toEqual(fn(xs))
+        })
     })
 
     it('first nothing', () => {
-        forAll(array(integer()), (xs) => isNothing(whenJusts(shuffle(concat(xs, [Nothing])), deterministicInteger)))
+        forAll([array(integer()), func(integer())], ([xs, fn]) => isNothing(whenJusts(shuffle(concat(xs, [Nothing])), fn)))
     })
 
     it('types', () => {
@@ -280,7 +285,9 @@ describe('whenNothing', () => {
     })
 
     it('just', () => {
-        forAll(unknown({ nothing: false }), (x) => equal(deterministicInteger(x), whenJust(x, deterministicInteger)))
+        forAll([unknown({ nothing: false }), func(integer())], ([x, fn]) => {
+            expect(whenJust(x, fn)).toEqual(fn(x))
+        })
     })
 
     it('types', () => {

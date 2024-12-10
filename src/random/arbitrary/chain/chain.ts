@@ -1,8 +1,6 @@
 import type { Tree } from '../../../algorithm/index.js'
 import { mapTree } from '../../../algorithm/index.js'
-import { map } from '../../../iterator/_deprecated/map/index.js'
-import { applicative } from '../../../iterator/applicative/index.js'
-import { concat } from '../../../iterator/concat/index.js'
+import { applicative } from '../../../iterator/applicative/applicative.js'
 import type { Arbitrary } from '../arbitrary/index.js'
 import type { ArbitraryContext } from '../context/context.js'
 import type { Dependent } from '../dependent/index.js'
@@ -14,12 +12,10 @@ import { dependentArbitrary } from '../dependent/index.js'
 export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
     return {
         value: x.value.value,
-        children: applicative(() =>
-            concat(
-                map(x.children, (c) => collapseArbitraryTree(c)),
-                x.value.children,
-            ),
-        ),
+        children: applicative(function* () {
+            yield* Iterator.from(x.children).map((c) => collapseArbitraryTree(c))
+            yield* x.value.children
+        }),
     }
 }
 
