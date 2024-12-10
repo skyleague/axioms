@@ -1,7 +1,7 @@
-import { next } from '../../generator/next/index.js'
+import { next } from '../../generator/_deprecated/next/index.js'
 import { isRight } from '../../guard/is-right/index.js'
-import { toTraverser } from '../../type/traversable/index.js'
-import type { Traversable } from '../../type/traversable/index.js'
+import { toTraverser } from '../../type/_deprecated/traversable/index.js'
+import type { Traversable } from '../../type/_deprecated/traversable/index.js'
 
 type ZipItem<Arr> = Arr extends Generator<infer G> ? G : Arr extends (infer I)[] ? I : never
 type Zip<T> = { [K in keyof T]: ZipItem<T[K]> }
@@ -9,7 +9,18 @@ type Unzip<T> = {
     [K in keyof T]: readonly T[K][]
 }
 
-export function* zip<T extends readonly [...Traversable<unknown>[]]>(...xs: [...T]): Traversable<Zip<T>> {
+/**
+ * Take the {@link Traversable}s and return a {@link Traversable} of tuples.
+ *
+ * The function evaluates the {@link Traversable}s and converts them into arrays.
+ *
+ * ### Example
+ * ```ts
+ * collect(zip([1, 2, 3], [1, 2, 3]))
+ * // => [[1, 1], [2, 2], [3, 3]]
+ * ```
+ */
+export function* zip<T extends readonly [...Traversable<unknown>[]]>(...xs: [...T]): IteratorObject<Zip<T>> {
     if (xs.length === 0) {
         return
     }

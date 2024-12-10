@@ -4,7 +4,7 @@ import { array } from '../../random/types/array/array.js'
 import { unknown } from '../../random/types/complex/complex.js'
 import { mappableFunc } from '../../random/types/mappable/mappable.js'
 import { tuple } from '../../random/types/tuple/tuple.js'
-import { toTraversable } from '../../type/traversable/traversable.js'
+import { toTraversable } from '../../type/_deprecated/traversable/traversable.js'
 import { allEqual } from './equal.js'
 
 it('xs === mappable(xs)', () => {

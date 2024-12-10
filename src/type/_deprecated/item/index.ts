@@ -1,1 +1,1 @@
-export { type Item } from './item.js'
+export type { Item } from './item.js'

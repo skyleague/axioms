@@ -1,7 +1,7 @@
-import { next } from '../../generator/next/index.js'
 import { isLeft, isRight } from '../../guard/index.js'
 import type { Traversable, Traverser } from '../../type/index.js'
 import { toTraverser } from '../../type/index.js'
+import { next } from '../_deprecated/next/index.js'
 
 /**
  * A stack generator type.

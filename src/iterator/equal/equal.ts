@@ -33,6 +33,7 @@ import deepEqual from 'fast-deep-equal/es6/index.js'
  * @typeParam T - The element type.
  *
  * @group Iterators
+ * @deprecated Too complex to use in practice.
  */
 export function allEqual<
     Xs extends Traversable<unknown>,

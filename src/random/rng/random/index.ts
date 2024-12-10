@@ -1,1 +1,1 @@
-export { type RandomGenerator } from './random.js'
+export type { RandomGenerator } from './random.js'
