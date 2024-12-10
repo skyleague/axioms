@@ -44,4 +44,5 @@ export type {
     IsEmptyObject,
     IfEmptyObject,
     IsEqual,
+    Promisable,
 } from 'type-fest'
