@@ -1,0 +1,62 @@
+:root,
+::backdrop {
+    --sl-color-white: #ffffff;
+    --sl-color-gray-1: #cdff00;
+    --sl-color-gray-2: #00ccff;
+    --sl-color-gray-3: #cdff00;
+
+    --sl-color-gray-4: #6800ff;
+    --sl-color-gray-5: #cdff00;
+    --sl-color-gray-6: #151313;
+
+    --sl-hue-green: 101;
+    --sl-color-green-low: #101010;
+    --sl-color-green: #cdff00;
+    --sl-color-green-high: #00ccff;
+
+    --sl-hue-blue: 234;
+    --sl-color-blue-low: #101010;
+    --sl-color-blue-high: #00ccff;
+
+    --sl-hue-purple: 281;
+    --sl-color-purple-low: #101010;
+    --sl-color-purple: #6800ff;
+    --sl-color-purple-high: #cdff00;
+    --sl-color-bg-inline-code: #6800ff3d;
+    --sl-color-bg-nav: #6800ff;
+
+    --sl-color-accent-low: #101010;
+    --sl-color-accent: #6800ff;
+    --sl-color-accent-high: #00ccff;
+
+    --sl-color-backdrop-overlay: rgba(0, 0, 0, 0.66);
+}
+
+:root[data-theme="light"],
+[data-theme="light"] ::backdrop {
+    --sl-color-white: #000000;
+    --sl-color-gray-4: #ffffff;
+    --sl-color-gray-1: #cdff00;
+    --sl-color-gray-3: #00ccff;
+
+    --sl-color-gray-2: #0000ee;
+    --sl-color-gray-5: #3898ec;
+    --sl-color-black: #ffffff;
+
+    --sl-color-accent-low: #00ccff;
+    --sl-color-accent: #6800ff;
+    --sl-color-accent-high: #0000ee;
+
+    --sl-color-text: #000000;
+    --sl-color-text-accent: #6800ff;
+    --sl-color-text-invert: #ffffff;
+    --sl-color-bg: #ffffff;
+    --sl-color-bg-nav: #3898ec;
+    --sl-color-bg-sidebar: #ffffff;
+    --sl-color-bg-inline-code: #ccff003d;
+    --sl-color-bg-accent: #0000ee;
+    --sl-color-hairline-light: #6800ff;
+    --sl-color-hairline-shade: rgba(56, 152, 236, 0%);
+
+    --sl-color-backdrop-overlay: rgba(56, 152, 236, 0%);
+}
