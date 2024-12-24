@@ -1,13 +1,15 @@
+import markdoc from '@astrojs/markdoc'
 import starlight from '@astrojs/starlight'
 // @ts-check
 import { defineConfig } from 'astro/config'
 import { createStarlightTypeDocPlugin } from 'starlight-typedoc'
 
-const [barStarlightTypeDoc, barTypeDocSidebarGroup] = createStarlightTypeDocPlugin()
-
+const [_barStarlightTypeDoc, _barTypeDocSidebarGroup] = createStarlightTypeDocPlugin()
+import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc'
 // https://astro.build/config
 export default defineConfig({
     integrations: [
+        markdoc(),
         starlight({
             title: 'Axioms',
             logo: {
@@ -19,34 +21,34 @@ export default defineConfig({
                 github: 'https://github.com/withastro/starlight',
             },
             plugins: [
-                barStarlightTypeDoc({
+                starlightTypeDoc({
                     entryPoints: ['../src/index.ts'],
-                    tsconfig: '../tsconfig.json',
+                    tsconfig: 'tsconfig.json',
                     sidebar: {
                         collapsed: true,
-                        label: 'Arbitrary axioms',
                     },
                     typeDoc: {
-                        readme: '../README.md',
+                        categorizeByGroup: true,
+                        groupOrder: 'alphabetically',
+                        groupReferencesByType: true,
+                        excludePrivate: false,
+                        cleanOutputDir: true,
+                        hideBreadcrumbs: true,
+                        disableSources: true,
+
+                        markdownItOptions: {
+                            html: true,
+                            breaks: true,
+                            linkify: true,
+                            typographer: true,
+                        },
                     },
                 }),
             ],
             sidebar: [
-                {
-                    label: 'Guides',
-                    items: [
-                        // Each item here is one entry in the navigation menu.
-                        { label: 'Intro', slug: 'guides/intro' },
-                    ],
-                },
-                {
-                    label: 'Arbitrary axioms',
-                    items: [barTypeDocSidebarGroup],
-                },
-                {
-                    label: 'Reference',
-                    autogenerate: { directory: 'reference' },
-                },
+                { label: 'Installation', slug: 'guides/intro' },
+                { label: 'Axioms', slug: 'generated-docs' },
+                typeDocSidebarGroup,
             ],
         }),
     ],

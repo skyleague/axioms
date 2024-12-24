@@ -1,8 +1,8 @@
 :root,
 ::backdrop {
-    --sl-color-white: #ffffff;
+    --sl-color-white: #00ccff;
     --sl-color-gray-1: #cdff00;
-    --sl-color-gray-2: #00ccff;
+    --sl-color-gray-2: #fff;
     --sl-color-gray-3: #cdff00;
 
     --sl-color-gray-4: #6800ff;
@@ -59,4 +59,9 @@
     --sl-color-hairline-shade: rgba(56, 152, 236, 0%);
 
     --sl-color-backdrop-overlay: rgba(56, 152, 236, 0%);
+}
+
+h2 {
+    border-bottom: 1px solid #3898ec;
+    padding-bottom: 1%;
 }
