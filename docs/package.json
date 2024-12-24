@@ -3,17 +3,15 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "dev": "astro dev ",
+    "start": "npx tsx generate-index.ts && astro dev",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.30.2",
     "astro": "^5.0.2",
-    "sharp": "^0.32.5",
-    "starlight-sidebar-topics": "^0.3.0"
+    "sharp": "^0.32.5"
   },
   "devDependencies": {
     "docusaurus-plugin-typedoc": "^1.1.1",
