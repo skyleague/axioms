@@ -29,8 +29,8 @@ export function uri(): Dependent<string> {
             { symbol: '' },
         ),
         array(
-            lowerAlphaNumeric({ size: 's' }).map((x) => x),
+            lowerAlphaNumeric({ size: 's' }).map((x) => encodeURIComponent(x)),
             { size: '-2' },
-        ).map((xs) => xs.join('/')),
+        ).map((xs) => `/${xs.join('/')}`),
     ).map(([scheme, domain, port, path]) => `${scheme}://${domain}${port}${path}`)
 }

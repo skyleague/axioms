@@ -2,6 +2,7 @@ import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { array } from '../array/index.js'
 import { lowerAlphaNumericChar } from '../char/index.js'
 import { lowerAlphaNumeric } from '../string/index.js'
+import { lowerAlpha } from '../string/string.js'
 import { tuple } from '../tuple/index.js'
 
 /**
@@ -17,10 +18,25 @@ import { tuple } from '../tuple/index.js'
  *
  * @group Arbitrary
  */
-export function domain(): Dependent<string> {
+export function domain({ format = 'full' }: { format?: 'full' | 'restricted' } = {}): Dependent<string> {
+    if (format === 'restricted') {
+        return tuple(
+            array(
+                // Each subdomain part must start with alphanumeric and can contain hyphens
+                tuple(
+                    lowerAlphaNumeric({ minLength: 1, maxLength: 1 }), // First char must be alphanumeric
+                    lowerAlphaNumeric({ minLength: 1, maxLength: 61, extra: '-', size: 's' }), // Rest can have hyphens
+                ).map(([first, rest]) => first + rest),
+                { minLength: 1, maxLength: 4, size: 's' },
+            ),
+            lowerAlpha({ minLength: 2, maxLength: 12, size: 's' }), // TLD must be only letters
+        ).map(([subdomains, tld]) => `${subdomains.join('.')}.${tld}`)
+    }
+
+    // Full format allows more flexibility per RFC specs
     return tuple(
         array(subdomain(), { minLength: 1, maxLength: 4, size: 's' }),
-        lowerAlphaNumeric({ minLength: 2, maxLength: 12, size: 's' }),
+        lowerAlpha({ minLength: 2, maxLength: 12, size: 's' }),
     ).map(([subdomains, tld]) => `${subdomains.join('.')}.${tld}`)
 }
 

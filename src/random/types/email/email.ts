@@ -5,25 +5,49 @@ import { lowerAlphaNumeric } from '../string/index.js'
 import { tuple } from '../tuple/index.js'
 
 /**
- * It returns an arbitrary that generates valid email addresses according to https://datatracker.ietf.org/doc/html/rfc5322
- *
- * ### Example
- * ```ts
- * random(email())
- * // => "xt8x57fyxl3r.pq11p"
- * ```
- *
- * @returns An email arbitrary.
- *
- * @group Arbitrary
+ * Options for email address generation
  */
-export function email(): Dependent<string> {
-    // @TODO include dot-atoms, quoted strings, escaped chars
-    const local = lowerAlphaNumeric({ extra: "!#$%&'*+-/=^_`{|}~", minLength: 1, maxLength: 64 })
-    return tuple(
-        array(local, { minLength: 1, maxLength: 32 }).map((xs) => xs.join('.')),
-        domain(),
+export interface EmailOptions {
+    /**
+     * Whether to use full RFC 5322 format or a more restricted set of characters
+     * - 'full': Allows all RFC 5322 special characters
+     * - 'restricted': Allows only alphanumeric characters and common punctuation
+     */
+    format: 'full' | 'restricted'
+}
+
+/**
+ * Generates valid email addresses according to RFC 5322
+ *
+ * The local part (before @) is a dot-atom (e.g., "user.name")
+ *
+ * @param options Configuration options for email generation
+ * @returns A dependent arbitrary that generates valid email addresses
+ */
+export function email({ format = 'full' }: Partial<EmailOptions> = {}): Dependent<string> {
+    if (format === 'full') {
+        const extra = '!#$%&*+-/=^_`{|}~'
+        // Generate a regular atom (unquoted part)
+        const atom = lowerAlphaNumeric({ extra, minLength: 1, maxLength: 64 })
+
+        // Generate local part (before @)
+        const localPart = array(atom, { minLength: 1, maxLength: 32 })
+            .map((xs) => xs.join('.'))
+            .filter((str) => !str.startsWith('.') && !str.endsWith('.') && !str.includes('..'))
+
+        return tuple(localPart, domain({ format })).map(([local, dom]) => `${local}@${dom}`)
+    }
+
+    const extra = '_+-.'
+    const localPart = lowerAlphaNumeric({ extra, minLength: 1, maxLength: 64 }).filter(
+        (str) =>
+            // Must not start with a dot
+            !str.startsWith('.') &&
+            // Must not have consecutive dots
+            !str.includes('..') &&
+            // Must end with alphanumeric or + or -
+            /[A-Za-z0-9_+-]$/.test(str),
     )
-        .map(([local, dom]) => `${local}@${dom}`)
-        .filter((x) => x.length <= 254)
+
+    return tuple(localPart, domain({ format })).map(([local, dom]) => `${local}@${dom}`)
 }
