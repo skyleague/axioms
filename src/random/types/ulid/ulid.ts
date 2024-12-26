@@ -3,7 +3,7 @@ import { integer } from '../integer/integer.js'
 import { tuple } from '../tuple/index.js'
 
 function convertToPaddedBase32(num: number, paddingLength: number) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
+    const characters = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
     const toBase32 = (num: number) => {
         let base32Str = ''
         let x = num
