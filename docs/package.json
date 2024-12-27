@@ -1,6 +1,7 @@
 {
   "name": "@skyleague/documentation",
   "private": true,
+  "type": "module",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
