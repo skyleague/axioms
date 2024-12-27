@@ -37,7 +37,7 @@
     "type-fest": "^4.31.0"
   },
   "devDependencies": {
-    "@skyleague/node-standards": "^9.5.0",
+    "@skyleague/node-standards": "^9.5.1",
     "date-fns": "^4.1.0",
     "esbuild": "^0.24.2",
     "typescript": "^5.7.2"
