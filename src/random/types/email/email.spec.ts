@@ -48,16 +48,16 @@ it('restricted', () => {
     const aint = email({ format: 'restricted' })
     expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
       [
-        "ksb6bdp@je-fzry689.nliess",
-        "h_opgjviz5t@8lduccztr.9z07wov9uj.aa87b.tst-r76.cupxgktwr",
-        "5b0r9qxm@rt.xm48.wws",
-        "cw9qcyfpz@0dzbyd7u-70c.n-gpx1fmsb.mgrhoo7ke.hjwylrpk",
-        "pjw@fwr.x6.jbt.pb",
-        "1bc81-.uf@ryee.7gggbujga.ia.1st3ph9jeftfr.ywy",
-        "my7t+nx@f6kpenusm7b5.g86t57bzjpxgh.aek0qdfke5.bj",
-        "ow+z0ii3_@n0e8.u0psj8.yoxlh",
-        "c5cpggzg18l@7yf.f3qizb1c1jrw3.xgajoqhfncim",
-        "to5cd-gv_gf@wsiikrm2sy.g5of9qes9m0i-.sca",
+        "ksb6bdp@je-fzry689p.liessgyx",
+        "s7h_@ftiy2.19ylduc.rn",
+        "e.212_@vuj4ala87bfupr.976zd4x7.o70x2byq6pvk.nmanaq",
+        "n6+@60cu6pcwfow.fsvcraqcw",
+        "gqy3fntbdozh@n7kexko.80xphoju.ddcplcq",
+        "8@etc.bzbc5z9-sf6.le",
+        "efe_xggh@ja9ia.xt",
+        "uv6qi-kfgvfs@5ulw5s8mvs9g55.kdjnm",
+        "_b8yh@557bzjpxg.vze.0dfke5bc.zu8xyih.xhpjfrdxao",
+        "3ruk+@url5b3cogfygz5.j7eyflf-3qizb.bsglptxxga",
       ]
     `)
 })

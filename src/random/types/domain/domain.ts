@@ -26,7 +26,8 @@ export function domain({ format = 'full' }: { format?: 'full' | 'restricted' } =
                 tuple(
                     lowerAlphaNumeric({ minLength: 1, maxLength: 1 }), // First char must be alphanumeric
                     lowerAlphaNumeric({ minLength: 1, maxLength: 61, extra: '-', size: 's' }), // Rest can have hyphens
-                ).map(([first, rest]) => first + rest),
+                    lowerAlphaNumericChar(), // Last char must be alphanumeric
+                ).map(([first, middle, last]) => first + middle + last),
                 { minLength: 1, maxLength: 4, size: 's' },
             ),
             lowerAlpha({ minLength: 2, maxLength: 12, size: 's' }), // TLD must be only letters
