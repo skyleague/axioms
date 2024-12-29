@@ -49,16 +49,16 @@ describe('domain', () => {
         const aint = domain({ format: 'restricted' })
         expect(Array.from({ length: 10 }, () => aint.sample(ctx))).toMatchInlineSnapshot(`
           [
-            "q3.cgfj1e.ery689qurm.ssgy",
-            "qh7nofjtiy3r.nylduccztre-0.zwov9uj4ala8.bup.nylwvrc",
-            "7p37.xbyq6pvlous.ty.m8e7700cu6p.pd",
-            "015d.bd7u-70c4n.yekpsdima",
-            "xrho.whdphj",
-            "rxphojutef.vdya6rj.acwbzzbc.y-sf7brgyeee7.eeebngea",
-            "a9.8t3ph9je.trf.5ulw5s8mvs9g5.gkdjnmiwbvp",
-            "7t57bzjpxghv.qd",
-            "pfk.4c.rioxpq",
-            "0lwoh0e8bvo0p.gxhyoxl",
+            "q3b.ofj1e.ery689qurmg.sgyxiluew",
+            "ftiy2.19ylduc.rn",
+            "9z07wov9uj3.l86.dn",
+            "tr76zd4x8jp37z.2yp.kohjnmanaqe",
+            "7770.c6pcwfox0.svcr",
+            "du-70c4n0-gpx0.ima",
+            "xrhoo.hdphjwylrpk",
+            "itefewrdx.vm",
+            "acwbzzbc5.8sf7brgyeee7wg.ebn",
+            "aiaa929st3ph9j.ffrf-6-ul.umxiomye",
           ]
         `)
     })
@@ -66,6 +66,12 @@ describe('domain', () => {
     it('restricted - matches regex', () => {
         const aint = domain({ format: 'restricted' })
         const regex = /^([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i
+        forAll(aint, (x) => regex.test(x))
+    })
+
+    it('restricted - matches regex 2', () => {
+        const aint = domain({ format: 'restricted' })
+        const regex = /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
         forAll(aint, (x) => regex.test(x))
     })
 })
