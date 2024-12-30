@@ -16,7 +16,7 @@ export function* splitmix64(seed = 0n) {
 
         yield (z ^ (z >> 31n)) & b64Mask
     }
-    //@ts-expect-error
+
     return x
 }
 /**
