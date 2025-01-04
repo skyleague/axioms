@@ -2,6 +2,7 @@ import markdoc from '@astrojs/markdoc'
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import { createStarlightTypeDocPlugin } from 'starlight-typedoc'
+import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc'
 import packageJson from '../package.json' with { type: 'json' }
 
 const [_barStarlightTypeDoc, _barTypeDocSidebarGroup] = createStarlightTypeDocPlugin()
