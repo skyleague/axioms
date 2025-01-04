@@ -1,1 +1,3 @@
-docs/api
+dist/
+src/content/docs/api/
+package-lock.json

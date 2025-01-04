@@ -1,10 +1,3 @@
----
-sidebar_position: 10
-title: Axioms
----
-
-# Axioms
-
 One of the design goals of Axioms is to patch some missing gaps in existing libraries, or in the core languages - but more _importantly_ without getting in your way. This means that any function of the Axioms should be easily replaceable with other implementations from other libraries, or preferably with the implementation of ECMAScript definitions.
 
 ## FP Trap

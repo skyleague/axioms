@@ -1,14 +1,8 @@
----
-sidebar_position: 40
----
-
-# Either
-
 Usually, error handling is done using the `try`, `catch`, and `throw` primitives. We've all experienced how these primitives can make writing deterministic code harder than it needs to be since it decouples the error handling from the context in which the error was initially thrown.
 
 Luckily, functional programming has given us better ways to deal with error handling. And some of these methods are more widespread in their use. One such method is the `Either` type.
 
-## Definition
+#### Definition
 
 We define the `Either` type as:
 
@@ -22,7 +16,7 @@ The `Either` data structure is useful when you need to distinguish between succe
 
 Instead of defining the `Either` type as a true monad but rather simply as a discriminated union, we obtain simplicity.
 
-## Error Handling
+#### Error Handling
 
 The true power of the `Either` monad comes from its ability to force correct error handling. There's no simple `get` method to get the value from the object; you _explicitly_ need to choose either `left` or `right`.
 

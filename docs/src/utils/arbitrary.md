@@ -1,12 +1,6 @@
----
-sidebar_position: 40
----
-
-# Examples
-
 The best way to get started with property testing is to get your hands dirty. We'll use some examples to show you how property testing can help you find bugs and simplify the process of writing tests!
 
-## Sorting Numbers
+#### Sorting Numbers
 
 We've all been here before. You've gotten a list of numbers, and need to get it sorted in order. Luckily, you remember that there is a built in function to take care of this for you. And you start writing down the implementation:
 
@@ -71,7 +65,7 @@ function sort(xs: number[]): number[] {
 
 And now the tests succeeds! With property testing we can test all the assumptions we'd normally put in writing the implementation in the first place - without us requiring any extra effort. It does however take some practice to get used to setting up tests this way.
 
-## Contains
+#### Contains
 
 As a nice comparison with the excellent [fast-check](https://github.com/dubzzz/fast-check#getting-started) library, we also include the string contains example:
 
