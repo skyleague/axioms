@@ -11,6 +11,7 @@ import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc'
 // https://astro.build/config
 export default defineConfig({
     site: packageJson.homepage,
+    base: new URL(packageJson.repository.url).pathname,
     outDir: '../.docs',
     integrations: [
         markdoc(),
