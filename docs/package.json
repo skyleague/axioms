@@ -3,8 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev ",
-    "start": "npx tsx generate-index.ts && astro dev",
+    "dev": "astro dev",
+    "prebuild": "npm install && npx tsx generate-index.ts",
+    "build": "astro build",
+    "prestart": "npx tsx generate-index.ts",
+    "start": "astro dev",
     "preview": "astro preview",
     "astro": "astro"
   },
