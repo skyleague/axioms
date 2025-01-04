@@ -51,9 +51,10 @@
     "registry": "https://registry.npmjs.org"
   },
   "node-standards": {
-    "extends": ["library", "docusaurus"],
+    "extends": ["library"],
     "rules": {
-      "exports": false
+      "exports": false,
+      "scripts": false
     }
   }
 }
