@@ -521,6 +521,34 @@ random(constants("foo", "bar"))
 ```
 
 
+- #### [cuid2Arbitrary](/api/functions/cuid2arbitrary/)
+  
+
+> **cuid2Arbitrary**(): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
+
+It returns an arbitrary that generates valid cuid2s
+
+ 
+```ts
+random(cuid2Arbitrary())
+// => "
+```
+
+
+- #### [cuidArbitrary](/api/functions/cuidarbitrary/)
+  
+
+> **cuidArbitrary**(): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
+
+It returns an arbitrary that generates valid cuids
+
+ 
+```ts
+random(cuidArbitrary())
+// => "
+```
+
+
 - #### [date](/api/functions/date/)
   
 
@@ -555,7 +583,7 @@ random(datetime({precision: 'days'}))
 - #### [domain](/api/functions/domain/)
   
 
-> **domain**(): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
+> **domain**(`__namedParameters`): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
 
 It returns an arbitrary that generates valid domains according to https://www.ietf.org/rfc/rfc1034.txt
 
@@ -583,20 +611,6 @@ random(element("abc"))
 
 random(element([1, 2, 3]))
 // => 3
-```
-
-
-- #### [email](/api/functions/email/)
-  
-
-> **email**(): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
-
-It returns an arbitrary that generates valid email addresses according to https://datatracker.ietf.org/doc/html/rfc5322
-
- 
-```ts
-random(email())
-// => "xt8x57fyxl3r.pq11p"
 ```
 
 
@@ -764,6 +778,20 @@ random(lowerAlphaNumericChar())
 ```
 
 
+- #### [nanoidArbitrary](/api/functions/nanoidarbitrary/)
+  
+
+> **nanoidArbitrary**(): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
+
+It returns an arbitrary that generates valid nanoids
+
+ 
+```ts
+random(nanoidArbitrary())
+// => "
+```
+
+
 - #### [natural](/api/functions/natural/)
   
 
@@ -836,7 +864,7 @@ random(oneOf(object({foo: string()}), object({bar: string()})))
 - #### [oneOfWeighted](/api/functions/oneofweighted/)
   
 
-> **oneOfWeighted**\<`T`\>(...`arbitraries`): [`Dependent`](/api/interfaces/dependent/)\<`ReturnType`\<[`...T`]\[`number`\]\[`1`\]\[`"value"`\]\>\[`"value"`\]\>
+> **oneOfWeighted**\<`T`\>(...`arbitraries`): [`Dependent`](/api/interfaces/dependent/)\<`ReturnType`\<\[`...T`\]\[`number`\]\[`1`\]\[`"value"`\]\>\[`"value"`\]\>
 
 It generates an integer between 0 and the number of arbitraries passed in, and then generates a
 weighted value from the corresponding arbitrary.
@@ -999,7 +1027,7 @@ random(domain())
 - #### [subsuper](/api/functions/subsuper/)
   
 
-> **subsuper**\<`T`\>(`arbitrary`, `constraints`): [`Dependent`](/api/interfaces/dependent/)\<[`T`[], `T`[], `T`[]]\>
+> **subsuper**\<`T`\>(`arbitrary`, `constraints`): [`Dependent`](/api/interfaces/dependent/)\<\[`T`[], `T`[], `T`[]\]\>
 
 It generates a pair of sets, and returns the first set, the union of the two sets, and the
 difference between the union and the first set
@@ -1316,7 +1344,7 @@ function handleRequest(str: string): { status: number; body: string } {
 - #### [asMaybe](/api/functions/asmaybe/)
   
 
-> **asMaybe**\<`T`, `N`\>(`x`, `nothingValue`?): [`N`] *extends* [`T`] ? `IsEqual`\<`T`, `N`\> *extends* `true` ? [`Nothing`](/api/type-aliases/nothing/) : [`Maybe`](/api/type-aliases/maybe/)\<`Exclude`\<`T`, `N`\>\> : `Exclude`\<`T`, `N`\>
+> **asMaybe**\<`T`, `N`\>(`x`, `nothingValue`?): \[`N`\] *extends* \[`T`\] ? `IsEqual`\<`T`, `N`\> *extends* `true` ? [`Nothing`](/api/type-aliases/nothing/) : [`Maybe`](/api/type-aliases/maybe/)\<`Exclude`\<`T`, `N`\>\> : `Exclude`\<`T`, `N`\>
 
 Creates a Maybe from the given value.
 
@@ -1377,8 +1405,8 @@ eitherAsValue({right: "bar"})
 
 > **eitherToError**\<`E`\>(`x`): `E` *extends* [`Right`](/api/interfaces/right/)\<infer R\> ? `E` *extends* [`Left`](/api/interfaces/left/)\<`unknown`\> ? `R` : `R` : `never`
 
-Returns [right](../../../../../../api/functions/right) when `x` is a [Right](../../../../../../api/interfaces/right) type, otherwise
-throw [left](../../../../../../api/functions/left).
+Returns [right](../../../../../../../api/functions/right) when `x` is a [Right](../../../../../../../api/interfaces/right) type, otherwise
+throw [left](../../../../../../../api/functions/left).
 
  
 ```ts
@@ -1426,7 +1454,7 @@ just("foobar")
 
 > **left**\<`L`\>(`x`): [`Left`](/api/interfaces/left/)\<`L`\>
 
-Creates a [Right](../../../../../../api/interfaces/right) from the given input.
+Creates a [Right](../../../../../../../api/interfaces/right) from the given input.
 
  
 ```ts
@@ -1547,7 +1575,7 @@ mapTry(new Error("foobar"), s => `${s}${s}`)
 - #### [maybeAsValue](/api/functions/maybeasvalue/)
   
 
-> **maybeAsValue**\<`T`\>(`x`): [[`Nothing`](/api/type-aliases/nothing/)] *extends* [`T`] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? `undefined` : [`Just`](/api/type-aliases/just/)\<`T`\> \| `undefined` : [`Just`](/api/type-aliases/just/)\<`T`\>
+> **maybeAsValue**\<`T`\>(`x`): \[[`Nothing`](/api/type-aliases/nothing/)\] *extends* \[`T`\] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? `undefined` : [`Just`](/api/type-aliases/just/)\<`T`\> \| `undefined` : [`Just`](/api/type-aliases/just/)\<`T`\>
 
 This function checks if the provided Maybe value is a Just and returns the contained value.
 If the value is Nothing, it returns undefined, effectively handling optional values in your code.
@@ -1565,7 +1593,7 @@ maybeAsValue(Nothing)
 - #### [maybeToLeft](/api/functions/maybetoleft/)
   
 
-> **maybeToLeft**\<`T`, `R`\>(`x`, `right`): [[`Nothing`](/api/type-aliases/nothing/)] *extends* [`T`] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? [`Right`](/api/interfaces/right/)\<`R`\> : [`Either`](/api/type-aliases/either/)\<[`Just`](/api/type-aliases/just/)\<`T`\>, `R`\> : [`Left`](/api/interfaces/left/)\<`T`\>
+> **maybeToLeft**\<`T`, `R`\>(`x`, `right`): \[[`Nothing`](/api/type-aliases/nothing/)\] *extends* \[`T`\] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? [`Right`](/api/interfaces/right/)\<`R`\> : [`Either`](/api/type-aliases/either/)\<[`Just`](/api/type-aliases/just/)\<`T`\>, `R`\> : [`Left`](/api/interfaces/left/)\<`T`\>
 
 Transforms a Maybe value into an Either type, returning a Left containing the Just value.
 If the Maybe is Nothing, it returns a Right with a specified default value.
@@ -1583,7 +1611,7 @@ maybeToLeft(Nothing, "fallback")
 - #### [maybeToRight](/api/functions/maybetoright/)
   
 
-> **maybeToRight**\<`L`, `T`\>(`x`, `left`): [[`Nothing`](/api/type-aliases/nothing/)] *extends* [`T`] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? [`Left`](/api/interfaces/left/)\<`L`\> : [`Either`](/api/type-aliases/either/)\<`L`, [`Just`](/api/type-aliases/just/)\<`T`\>\> : [`Right`](/api/interfaces/right/)\<`T`\>
+> **maybeToRight**\<`L`, `T`\>(`x`, `left`): \[[`Nothing`](/api/type-aliases/nothing/)\] *extends* \[`T`\] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? [`Left`](/api/interfaces/left/)\<`L`\> : [`Either`](/api/type-aliases/either/)\<`L`, [`Just`](/api/type-aliases/just/)\<`T`\>\> : [`Right`](/api/interfaces/right/)\<`T`\>
 
 Converts a Maybe value to an Either type. If the input is a Just, it returns the value as a Right.
 If the input is Nothing, it returns a specified default value as a Left.
@@ -1620,7 +1648,7 @@ recoverTry(new Error("foobar"), s => "bar")
 
 > **right**\<`R`\>(`x`): [`Right`](/api/interfaces/right/)\<`R`\>
 
-Creates a [Right](../../../../../../api/interfaces/right) from the given input.
+Creates a [Right](../../../../../../../api/interfaces/right) from the given input.
 
  
 ```ts
@@ -1777,7 +1805,7 @@ tryToMaybe(new Error("foobar"))
 - #### [whenJust](/api/functions/whenjust/)
   
 
-> **whenJust**\<`T`, `M`\>(`x`, `f`): [[`Nothing`](/api/type-aliases/nothing/)] *extends* [`T`] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? `T` : [`Maybe`](/api/type-aliases/maybe/)\<`M`\> : `M`
+> **whenJust**\<`T`, `M`\>(`x`, `f`): \[[`Nothing`](/api/type-aliases/nothing/)\] *extends* \[`T`\] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? `T` : [`Maybe`](/api/type-aliases/maybe/)\<`M`\> : `M`
 
 Applies a transformation function to the value inside a Just, or returns Nothing if the value is Nothing.
 This function is used to manipulate the data within a Just, allowing for operations like transformations or computations,
@@ -1796,7 +1824,7 @@ whenJust(Nothing, (x) => `${x}${x}`)
 - #### [whenJusts](/api/functions/whenjusts/)
   
 
-> **whenJusts**\<`Xs`, `M`\>(`xs`, `f`): `ArgJust`\<`Xs`\> *extends* `never`[] ? [`Nothing`](/api/type-aliases/nothing/) : [[`Nothing`](/api/type-aliases/nothing/)] *extends* [`Xs`\[`number`\]] ? [`Nothing`](/api/type-aliases/nothing/) \| `M` : `M`
+> **whenJusts**\<`Xs`, `M`\>(`xs`, `f`): `ArgJust`\<`Xs`\> *extends* `never`[] ? [`Nothing`](/api/type-aliases/nothing/) : \[[`Nothing`](/api/type-aliases/nothing/)\] *extends* \[`Xs`\[`number`\]\] ? [`Nothing`](/api/type-aliases/nothing/) \| `M` : `M`
 
 `whenJusts` takes a tuple of `Maybe`s and a function that takes the values of the `Just`s and
 returns a `Maybe` of the result of the function.
@@ -1851,7 +1879,7 @@ whenLefts([{ right: 'bar' }, { left: 'fooz' }], ([x0, x1]) => `${x0}${x1}`)
 - #### [whenNothing](/api/functions/whennothing/)
   
 
-> **whenNothing**\<`T`, `M`\>(`x`, `f`): [[`Nothing`](/api/type-aliases/nothing/)] *extends* [`T`] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? `M` : `M` \| [`Just`](/api/type-aliases/just/)\<`T`\> : `T`
+> **whenNothing**\<`T`, `M`\>(`x`, `f`): \[[`Nothing`](/api/type-aliases/nothing/)\] *extends* \[`T`\] ? `IsEqual`\<`T`, [`Nothing`](/api/type-aliases/nothing/)\> *extends* `true` ? `M` : `M` \| [`Just`](/api/type-aliases/just/)\<`T`\> : `T`
 
 If the given Maybe is a Nothing, then return the result of the given function, otherwise return the
 given Maybe.
@@ -1977,7 +2005,7 @@ Where the `parsed` variable need to be explicitly handled for both the `left` an
 
 > **isEither**\<`L`, `R`\>(`x`): `x is Either<L, R>`
 
-Check whether given `x` is of type [Either](../../../../../../api/type-aliases/either).
+Check whether given `x` is of type [Either](../../../../../../../api/type-aliases/either).
 
  
 ```ts
@@ -1997,7 +2025,7 @@ isEither("foobar")
 
 > **isLeft**\<`L`\>(`x`): `x is Left<L>`
 
-Check whether given `x` is of type [Left](../../../../../../api/interfaces/left).
+Check whether given `x` is of type [Left](../../../../../../../api/interfaces/left).
 
  
 ```ts
@@ -2017,7 +2045,7 @@ isLeft({left: 1234} as Either<number, string>)
 
 > **isRight**\<`R`\>(`x`): `x is Right<R>`
 
-Check whether given `x` is of type [Right](../../../../../../api/interfaces/right).
+Check whether given `x` is of type [Right](../../../../../../../api/interfaces/right).
 
  
 ```ts
@@ -2064,7 +2092,7 @@ This API should not be used in production and may be trimmed from a public relea
 > **bfs**\<`T`\>(`node`): `IteratorObject`\<`T`, `void`\>
 
  
-- #### [defer](/api/functions/defer/)
+- #### [~~defer~~](/api/functions/defer/)
   
 
 > **defer**\<`T`, `Err`\>(): [`Deferred`](/api/interfaces/deferred/)\<`T`, `Err`\>
@@ -2086,6 +2114,16 @@ Use `Promise.withResolvers()` instead.
   
 
 > **dfsPreOrder**\<`T`\>(`node`): `IteratorObject`\<`T`, `void`\>
+
+ 
+- #### [email](/api/functions/email/)
+  
+
+> **email**(`options`): [`Dependent`](/api/interfaces/dependent/)\<`string`\>
+
+Generates valid email addresses according to RFC 5322
+
+The local part (before @) is a dot-atom (e.g., "user.name")
 
  
 - #### [evaluate](/api/functions/evaluate/)
@@ -2150,7 +2188,7 @@ evaluate(() => "foobar"))
 - #### [itrampoline](/api/functions/itrampoline/)
   
 
-> **itrampoline**\<`T`, `R`\>(`f`): (...`args`) => `Generator`\<`R`, `R`, `unknown`\>
+> **itrampoline**\<`T`, `R`\>(`f`): (...`args`) => `Generator`\<`R`, `R`\>
 
  
 - #### [memoizeArbitrary](/api/functions/memoizearbitrary/)
@@ -2171,7 +2209,7 @@ evaluate(() => "foobar"))
 > **showTree**\<`T`\>(`t`, `__namedParameters`): `string`
 
  
-- #### [sortStrings](/api/functions/sortstrings/)
+- #### [~~sortStrings~~](/api/functions/sortstrings/)
   
 
 > **sortStrings**(`str`, `__namedParameters`): `string`[]
@@ -2221,10 +2259,10 @@ collect(zip([1, 2, 3], [1, 2, 3]))
 ```
 
 
-- #### [zipWith](/api/functions/zipwith/)
+- #### [~~zipWith~~](/api/functions/zipwith/)
   
 
-> **zipWith**\<`T`, `R`\>(`f`, ...`xs`): `Generator`\<`R`, `void`, `unknown`\>
+> **zipWith**\<`T`, `R`\>(`f`, ...`xs`): `Generator`\<`R`, `void`\>
 
 :::caution[Deprecated]
 This API is no longer supported and may be removed in a future release.
@@ -2421,7 +2459,7 @@ isDigits("123.45")
 
 > **isEither**\<`L`, `R`\>(`x`): `x is Either<L, R>`
 
-Check whether given `x` is of type [Either](../../../../../../api/type-aliases/either).
+Check whether given `x` is of type [Either](../../../../../../../api/type-aliases/either).
 
  
 ```ts
@@ -2458,7 +2496,7 @@ isError("foobar")
 
 > **isFailure**(`x`): `x is Error`
 
-Checks if `x` is a [Failure](../../../../../../api/type-aliases/failure).
+Checks if `x` is a [Failure](../../../../../../../api/type-aliases/failure).
 
  
 ```ts
@@ -2512,7 +2550,7 @@ isInteger("foobar")
 
 > **isJust**\<`T`\>(`x`): `x is Just<T>`
 
-Checks if `x` is not [Nothing](../../../../../../api/type-aliases/nothing).
+Checks if `x` is not [Nothing](../../../../../../../api/type-aliases/nothing).
 
  
 ```ts
@@ -2532,7 +2570,7 @@ isJust(Nothing)
 
 > **isLeft**\<`L`\>(`x`): `x is Left<L>`
 
-Check whether given `x` is of type [Left](../../../../../../api/interfaces/left).
+Check whether given `x` is of type [Left](../../../../../../../api/interfaces/left).
 
  
 ```ts
@@ -2552,7 +2590,7 @@ isLeft({left: 1234} as Either<number, string>)
 
 > **isNothing**(`x`): `x is typeof Nothing`
 
-Checks if `x` is [Nothing](../../../../../../api/variables/nothing).
+Checks if `x` is [Nothing](../../../../../../../api/variables/nothing).
 
  
 ```ts
@@ -2609,7 +2647,7 @@ isPromise("foo")
 
 > **isRight**\<`R`\>(`x`): `x is Right<R>`
 
-Check whether given `x` is of type [Right](../../../../../../api/interfaces/right).
+Check whether given `x` is of type [Right](../../../../../../../api/interfaces/right).
 
  
 ```ts
@@ -2629,7 +2667,7 @@ isRight({right: "foobar"} as Either<number, string>)
 
 > **isString**(`x`): `x is string`
 
-Checks if `x` is a [string](../../../../../../api/functions/string).
+Checks if `x` is a [string](../../../../../../../api/functions/string).
 
  
 ```ts
@@ -2649,7 +2687,7 @@ isString({})
 
 > **isSuccess**\<`T`\>(`x`): `x is Success<T>`
 
-Checks if `x` is a [Success](../../../../../../api/type-aliases/success).
+Checks if `x` is a [Success](../../../../../../../api/type-aliases/success).
 
  
 ```ts
@@ -2871,7 +2909,7 @@ equal([{foo: "bar"}], [{bar: "foo"}])
 - #### [max](/api/functions/max/)
   
 
-> **max**\<`T`\>(`xs`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly [`unknown`, `...unknown[]`] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
+> **max**\<`T`\>(`xs`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly \[`unknown`, `...unknown[]`\] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
 
 Calculate the maximum value of the given items.
 
@@ -2885,7 +2923,7 @@ max([1, 2, 3])
 - #### [maxBy](/api/functions/maxby/)
   
 
-> **maxBy**\<`T`\>(`xs`, `f`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly [`unknown`, `...unknown[]`] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
+> **maxBy**\<`T`\>(`xs`, `f`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly \[`unknown`, `...unknown[]`\] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
 
 Calculate the maximum value of the given items by applying the function.
 
@@ -2899,7 +2937,7 @@ maxBy([{ 'n': 1 }, { 'n': 2 }], x => x.n)
 - #### [min](/api/functions/min/)
   
 
-> **min**\<`T`\>(`xs`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly [`unknown`, `...unknown[]`] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
+> **min**\<`T`\>(`xs`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly \[`unknown`, `...unknown[]`\] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
 
 Calculate the minimum value of the given items.
 
@@ -2913,7 +2951,7 @@ min([1, 2, 3])
 - #### [minBy](/api/functions/minby/)
   
 
-> **minBy**\<`T`\>(`xs`, `f`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly [`unknown`, `...unknown[]`] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
+> **minBy**\<`T`\>(`xs`, `f`): `T` *extends* `Iterable`\<infer I\> ? `T` *extends* readonly \[`unknown`, `...unknown[]`\] ? `T`\[`number`\] : [`Maybe`](/api/type-aliases/maybe/)\<`I`\> : `T`
 
 Calculate the minimum value of the given items by applying the function.
 
@@ -2937,7 +2975,7 @@ partition([1, 'a'], isString)
 - #### [span](/api/functions/span/)
   
 
-> **span**\<`T`, `R`\>(`xs`, `predicate`): [`T`[], `IteratorObject`\<`T`, `R`\>]
+> **span**\<`T`, `R`\>(`xs`, `predicate`): \[`T`[], `IteratorObject`\<`T`, `R`\>\]
 
 Returns a tuple where first element is longest prefix of `xs` of elements
 that satisfy the predicate and second element is the remainder of the Iterable.
@@ -3042,7 +3080,7 @@ The Nothing type should be very transient, and shouldn't be used in places where
 
 > **isJust**\<`T`\>(`x`): `x is Just<T>`
 
-Checks if `x` is not [Nothing](../../../../../../api/type-aliases/nothing).
+Checks if `x` is not [Nothing](../../../../../../../api/type-aliases/nothing).
 
  
 ```ts
@@ -3062,7 +3100,7 @@ isJust(Nothing)
 
 > **isNothing**(`x`): `x is typeof Nothing`
 
-Checks if `x` is [Nothing](../../../../../../api/variables/nothing).
+Checks if `x` is [Nothing](../../../../../../../api/variables/nothing).
 
  
 ```ts
@@ -3084,7 +3122,7 @@ isNothing("foobar")
 - #### [entriesOf](/api/functions/entriesof/)
   
 
-> **entriesOf**\<`T`\>(`obj`): `T` *extends* `UnknownArray` ? [`string`, `ArrayValues`\<`T`\>][] : `{ [K in keyof T]: [K, T[K]] }`\[keyof `T`\][]
+> **entriesOf**\<`T`\>(`obj`): `T` *extends* `UnknownArray` ? \[`string`, `ArrayValues`\<`T`\>\][] : `{ [K in keyof T]: [K, T[K]] }`\[keyof `T`\][]
 
 Returns an array of key/values of the enumerable properties of an object.
 
@@ -3283,7 +3321,7 @@ http://prng.di.unimi.it/xoroshiro128plus.c
 > **BiasedArbitraryContext**: [`ArbitraryContext`](/api/interfaces/arbitrarycontext/) & `object`
 
  
-- #### [ComparablePrimitive](/api/type-aliases/comparableprimitive/)
+- #### [~~ComparablePrimitive~~](/api/type-aliases/comparableprimitive/)
    
 - #### [Failure](/api/type-aliases/failure/)
    
@@ -3318,7 +3356,7 @@ A memoized function.
 - #### [RecurrentGenerator](/api/type-aliases/recurrentgenerator/)
   
 
-> **RecurrentGenerator**\<`R`\>: readonly [`R`, () => [`RecurrentGenerator`](/api/type-aliases/recurrentgenerator/)\<`R`\> \| `undefined`]
+> **RecurrentGenerator**\<`R`\>: readonly \[`R`, () => [`RecurrentGenerator`](/api/type-aliases/recurrentgenerator/)\<`R`\> \| `undefined`\]
 
  
 - #### [Success](/api/type-aliases/success/)
