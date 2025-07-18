@@ -1,5 +1,3 @@
-import {} from '../../guard/index.js'
-
 /**
  * A stack generator type.
  *

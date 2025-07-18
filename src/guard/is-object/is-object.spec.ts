@@ -1,8 +1,7 @@
-import { isObject } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isObject } from './index.js'
 
 it('object', () => {
     expect(isObject({})).toEqual(true)

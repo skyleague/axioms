@@ -1,4 +1,4 @@
-import { allOf } from './all-of.js'
+import { expect, it } from 'vitest'
 
 import { isString } from '../../../guard/index.js'
 import { chainArbitrary, forAll } from '../../arbitrary/index.js'
@@ -6,8 +6,7 @@ import { constant } from '../helper/index.js'
 import { object } from '../object/index.js'
 import { string } from '../string/index.js'
 import { tuple } from '../tuple/index.js'
-
-import { expect, it } from 'vitest'
+import { allOf } from './all-of.js'
 
 it('simple', () => {
     const aFoo = object({ foo: string() })

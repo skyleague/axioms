@@ -1,1 +1,1 @@
-export { pickBy, pick } from './pick.js'
+export { pick, pickBy } from './pick.js'

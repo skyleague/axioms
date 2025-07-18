@@ -1,8 +1,7 @@
-import { arbitraryContext } from '../../arbitrary/context/context.js'
-import { xoroshiro128plus } from '../../rng/index.js'
-
 import { expect, it } from 'vitest'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/forall.js'
+import { xoroshiro128plus } from '../../rng/index.js'
 import { email } from './email.js'
 
 it('random sample', () => {
@@ -64,6 +63,6 @@ it('restricted', () => {
 
 it('restricted - matches regex', () => {
     const aint = email({ format: 'restricted' })
-    const regex = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i
+    const regex = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i
     forAll(aint, (x) => regex.test(x))
 })

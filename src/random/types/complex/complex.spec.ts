@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { isObject } from '../../../guard/index.js'
 import { equal } from '../../../iterator/index.js'
 import { forAll } from '../../../random/arbitrary/index.js'
@@ -5,8 +6,6 @@ import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { constant, oneOf } from '../index.js'
 import { json, primitive, unknown } from './index.js'
-
-import { describe, expect, it } from 'vitest'
 
 const isPrintable = (str: string) => /^[ -~]+$/.test(str)
 

@@ -1,9 +1,8 @@
-import { evaluate } from './evaluate.js'
+import { expectTypeOf, it } from 'vitest'
 
 import { sleep } from '../../async/index.js'
 import { asyncForAll, forAll, unknown } from '../../random/index.js'
-
-import { expectTypeOf, it } from 'vitest'
+import { evaluate } from './evaluate.js'
 
 it('constant', () => {
     forAll(unknown(), (x) => evaluate(x) === x)

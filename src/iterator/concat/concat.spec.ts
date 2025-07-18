@@ -1,7 +1,6 @@
+import { expect, it } from 'vitest'
 import { array, forAll, tuple, unknown } from '../../random/index.js'
 import { concat } from './index.js'
-
-import { expect, it } from 'vitest'
 
 it('multiple variadic', () => {
     const foo = concat(['1', '2', '3'], [4, 5, 6], [true, false, true]).toArray()

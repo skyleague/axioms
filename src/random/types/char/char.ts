@@ -1,8 +1,7 @@
+import { toUSVString } from 'node:util'
 import type { Dependent } from '../../arbitrary/dependent/index.js'
 import { element } from '../element/index.js'
 import { integer } from '../integer/index.js'
-
-import { toUSVString } from 'node:util'
 
 /**
  * Describes how characters are allowed to be generated.

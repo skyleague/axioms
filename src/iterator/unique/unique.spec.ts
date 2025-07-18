@@ -1,7 +1,6 @@
+import { expect, it } from 'vitest'
 import { array, forAll, json, unknown } from '../../random/index.js'
 import { unique } from './index.js'
-
-import { expect, it } from 'vitest'
 
 it('simple', () => {
     expect(unique([1, 1, 2, 3, 3]).toArray()).toEqual([1, 2, 3])

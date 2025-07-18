@@ -1,3 +1,4 @@
+import { expect, it } from 'vitest'
 import { showTree } from '../../../algorithm/tree/tree.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/index.js'
@@ -5,8 +6,6 @@ import { xoroshiro128plus } from '../../rng/index.js'
 import { boolean } from '../boolean/boolean.js'
 import { integer } from '../integer/index.js'
 import { tuple } from './tuple.js'
-
-import { expect, it } from 'vitest'
 
 it('counter example - equal', () => {
     expect(() => {

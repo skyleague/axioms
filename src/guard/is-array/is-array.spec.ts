@@ -1,6 +1,5 @@
-import { isArray } from './index.js'
-
 import { expect, it } from 'vitest'
+import { isArray } from './index.js'
 
 it('simple', () => {
     expect(isArray([])).toBe(true)

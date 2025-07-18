@@ -1,6 +1,5 @@
-import { Nothing } from './index.js'
-
 import { expect, it } from 'vitest'
+import { Nothing } from './index.js'
 
 it('Nothing serializes', () => {
     expect(Nothing.toString()).toEqual('Symbol((Nothing))')

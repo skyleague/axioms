@@ -1,8 +1,7 @@
-import { parallelLimit } from './parallel-limit.js'
+import { expect, it } from 'vitest'
 
 import { sleep } from '../sleep/index.js'
-
-import { expect, it } from 'vitest'
+import { parallelLimit } from './parallel-limit.js'
 
 it('simple', async () => {
     const limit = parallelLimit(2)

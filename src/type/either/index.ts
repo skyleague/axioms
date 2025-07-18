@@ -1,1 +1,1 @@
-export type { Left, Right, Either } from './either.js'
+export type { Either, Left, Right } from './either.js'

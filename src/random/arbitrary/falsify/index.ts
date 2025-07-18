@@ -1,1 +1,1 @@
-export { type FalsifyOptions, type Falsified, FalsifiedError, falsify } from './falsify.js'
+export { type Falsified, FalsifiedError, type FalsifyOptions, falsify } from './falsify.js'

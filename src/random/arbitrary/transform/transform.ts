@@ -1,9 +1,9 @@
 import { filterTree, mapTree } from '../../../algorithm/tree/index.js'
-import { type Tree, pruneTree } from '../../../algorithm/tree/tree.js'
+import { pruneTree, type Tree } from '../../../algorithm/tree/tree.js'
 import type { Arbitrary } from '../arbitrary/index.js'
 import type { ArbitraryContext } from '../context/context.js'
-import { dependentArbitrary } from '../dependent/index.js'
 import type { Dependent } from '../dependent/index.js'
+import { dependentArbitrary } from '../dependent/index.js'
 
 /**
  * @internal

@@ -1,9 +1,8 @@
-import { isJust } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
 import { isNothing } from '../index.js'
-
-import { expect, it } from 'vitest'
+import { isJust } from './index.js'
 
 const OtherNothing = Symbol.for('(Nothing)')
 

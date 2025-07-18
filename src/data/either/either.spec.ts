@@ -1,6 +1,9 @@
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { concat } from '../../iterator/concat/index.js'
 import { equal } from '../../iterator/equal/index.js'
 import { array, forAll, integer, shuffle, tuple, unknown } from '../../random/index.js'
+import { func } from '../../random/types/func/func.js'
+import type { Either, Left, Right } from '../../type/either/either.js'
 import {
     eitherAsValue,
     eitherToError,
@@ -16,10 +19,6 @@ import {
     whenRight,
     whenRights,
 } from './either.js'
-
-import { describe, expect, expectTypeOf, it } from 'vitest'
-import { func } from '../../random/types/func/func.js'
-import type { Either, Left, Right } from '../../type/either/either.js'
 
 describe('eitherAsValue', () => {
     it('simple', () => {

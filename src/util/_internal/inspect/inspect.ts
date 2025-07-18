@@ -1,6 +1,5 @@
-import type { Maybe } from '../../../type/index.js'
-
 import { inspect as utilInspect } from 'node:util'
+import type { Maybe } from '../../../type/index.js'
 
 /**
  * @internal

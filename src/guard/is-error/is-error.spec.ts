@@ -1,8 +1,7 @@
-import { isError } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isError } from './index.js'
 
 it('unknown is not error', () => {
     forAll(unknown(), (x) => !isError(x))

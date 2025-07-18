@@ -1,6 +1,5 @@
-import { chunk } from '../../iterator/index.js'
-
 import { expect, it } from 'vitest'
+import { chunk } from '../../iterator/index.js'
 
 it('simple chunk function', () => {
     expect(chunk([1, 2, 3, 4, 5], 1).toArray()).toEqual([[1], [2], [3], [4], [5]])

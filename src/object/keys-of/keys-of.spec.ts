@@ -1,8 +1,7 @@
-import { keysOf } from './index.js'
+import { expect, expectTypeOf, it } from 'vitest'
 
 import { array, forAll, integer, oneOf, record, string, unknown } from '../../random/index.js'
-
-import { expect, expectTypeOf, it } from 'vitest'
+import { keysOf } from './index.js'
 
 it('keysOf === Object.keys', () => {
     forAll(record(unknown()), (o) => {

@@ -1,9 +1,8 @@
-import { asArray } from './as-array.js'
+import { it } from 'vitest'
 
 import { array, forAll, unknown } from '../../random/index.js'
 import { isArray } from '../is-array/index.js'
-
-import { it } from 'vitest'
+import { asArray } from './as-array.js'
 
 it('primitive is converted', () => {
     forAll(unknown({ array: false }), (x) => isArray(asArray(x)))

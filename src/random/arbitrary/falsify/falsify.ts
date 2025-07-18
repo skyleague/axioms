@@ -1,3 +1,4 @@
+import { performance } from 'node:perf_hooks'
 import type { Tree } from '../../../algorithm/index.js'
 import { recoverTry } from '../../../data/try/try.js'
 import { isDefined, isFailure, isJust } from '../../../guard/index.js'
@@ -6,8 +7,6 @@ import type { Maybe, Try } from '../../../type/index.js'
 import { Nothing } from '../../../type/index.js'
 import { inspect } from '../../../util/_internal/inspect/inspect.js'
 import { InfeasibleTree } from '../shrink/shrink.js'
-
-import { performance } from 'node:perf_hooks'
 
 export class FalsifiedError extends Error {
     public constructor(falsified: Falsified, { seed }: { seed: bigint }) {
@@ -25,7 +24,7 @@ export class FalsifiedError extends Error {
             if (process.env.JEST_WORKER_ID !== undefined) {
                 // jest adds information to the stack, so input the falsify information there if needed
                 this.stack = `${counterExampleStr}\n\n${falsified.error.stack}`
-                // biome-ignore lint/suspicious/noExplicitAny:
+                // biome-ignore lint/suspicious/noExplicitAny: ignore
                 Object.defineProperty(this, 'matcherResult', (falsified.error as { matcherResult?: any }).matcherResult)
             } else if (process.env.VITEST_WORKER_ID !== undefined) {
                 const origMessage = this.message
@@ -75,8 +74,8 @@ export function falsify<T>({ values, predicate, maxDepth, counterExample, timeou
         }
         return Nothing
     }
-    let smallest: Falsified | undefined = undefined
-    let failure: Error | undefined = undefined
+    let smallest: Falsified | undefined
+    let failure: Error | undefined
     const startTime = performance.now()
     for (const [i, tryTree] of Iterator.from(values()).map((x, i) => [i, x] as const)) {
         if (isFailure(tryTree)) {
@@ -198,8 +197,8 @@ export async function asyncFalsify<T>({
         }
         return Nothing
     }
-    let smallest = undefined
-    let failure: Error | undefined = undefined
+    let smallest: Falsified | undefined
+    let failure: Error | undefined
     const startTime = performance.now()
     for (const [i, tryTree] of Iterator.from(values()).map((x, i) => [i, x] as const)) {
         if (isFailure(tryTree)) {

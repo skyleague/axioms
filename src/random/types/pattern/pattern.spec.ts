@@ -1,8 +1,7 @@
+import { expect, it } from 'vitest'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { pattern } from './pattern.js'
-
-import { expect, it } from 'vitest'
 
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })

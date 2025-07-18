@@ -1,9 +1,8 @@
+import { describe, expect, it } from 'vitest'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/forall.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { domain, subdomain } from './domain.js'
-
-import { describe, expect, it } from 'vitest'
 
 describe('domain', () => {
     it('random sample', () => {
@@ -65,7 +64,7 @@ describe('domain', () => {
 
     it('restricted - matches regex', () => {
         const aint = domain({ format: 'restricted' })
-        const regex = /^([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i
+        const regex = /^([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i
         forAll(aint, (x) => regex.test(x))
     })
 

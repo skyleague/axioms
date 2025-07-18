@@ -67,7 +67,7 @@ it('sample', () => {
 })
 
 it('[0,1) interval', () => {
-    const gen = mulberry32(new Date().getTime())
+    const gen = mulberry32(Date.now())
     const total = 50000
     let mean = 0
     const vals: number[] = []

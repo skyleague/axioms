@@ -1,1 +1,1 @@
-export type { ConstExpr, AsyncConstExpr } from './functions.js'
+export type { AsyncConstExpr, ConstExpr } from './functions.js'

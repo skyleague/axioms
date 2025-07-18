@@ -1,7 +1,6 @@
+import { expect, it } from 'vitest'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, boolean, forAll, xoroshiro128plus } from '../../../random/index.js'
-
-import { expect, it } from 'vitest'
 
 it('distribution', () => {
     const context = arbitraryContext({

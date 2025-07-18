@@ -1,8 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { date, datetime } from './date.js'
-
-import { describe, expect, it } from 'vitest'
 
 describe('datetime', () => {
     it('random sample', () => {

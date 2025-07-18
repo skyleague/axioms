@@ -1,6 +1,5 @@
-import { isDigits } from './index.js'
-
 import { expect, it } from 'vitest'
+import { isDigits } from './index.js'
 
 it('alpha', () => {
     expect(isDigits('0')).toBe(true)

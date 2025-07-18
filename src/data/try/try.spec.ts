@@ -1,4 +1,5 @@
 import type { Promisable } from 'type-fest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { isFailure } from '../../guard/is-failure/index.js'
 import { isSuccess } from '../../guard/is-success/index.js'
 import { isThrown } from '../../guard/is-thrown/index.js'
@@ -18,8 +19,6 @@ import {
     tryToError,
     tryToMaybe,
 } from './try.js'
-
-import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('asTry', () => {
     it('const', () => {

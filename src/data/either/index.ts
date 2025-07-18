@@ -1,15 +1,15 @@
 export {
     eitherAsValue,
     eitherToError,
+    left,
     mapLeft,
     mapLefts,
     mapRight,
     mapRights,
+    right,
     swapEither,
     whenLeft,
     whenLefts,
     whenRight,
     whenRights,
-    right,
-    left,
 } from './either.js'

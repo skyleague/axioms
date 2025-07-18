@@ -1,8 +1,7 @@
-import { isAlpha } from './index.js'
+import { expect, it } from 'vitest'
 
 import { alpha, forAll, integer } from '../../index.js'
-
-import { expect, it } from 'vitest'
+import { isAlpha } from './index.js'
 
 it('alpha', () => {
     forAll(alpha({ minLength: 1 }), (x) => isAlpha(x))

@@ -1,7 +1,7 @@
 import type { Tree } from '../../../algorithm/index.js'
 import type { MaybePartial } from '../../../type/partial/partial.js'
-import { integratedArbitrary } from '../../arbitrary/index.js'
 import type { ArbitraryContext, BiasedArbitraryContext, Integrated } from '../../arbitrary/index.js'
+import { integratedArbitrary } from '../../arbitrary/index.js'
 import { binarySearchTree } from '../../arbitrary/shrink/shrink.js'
 import { weightedChoice } from '../choice/index.js'
 

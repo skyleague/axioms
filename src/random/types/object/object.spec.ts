@@ -1,16 +1,15 @@
+import { expect, it } from 'vitest'
 import { omitUndefined } from '../../../object/omit/omit.js'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/forall.js'
 import { xoroshiro128plus } from '../../rng/index.js'
 import { json } from '../complex/index.js'
+import { constants } from '../constants/constants.js'
 import { constant, optional } from '../helper/helper.js'
 import { integer } from '../integer/index.js'
 import { oneOf } from '../one-of/index.js'
 import { utf16 } from '../string/index.js'
 import { object } from './object.js'
-
-import { expect, it } from 'vitest'
-import { constants } from '../constants/constants.js'
 
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })

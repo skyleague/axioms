@@ -1,8 +1,7 @@
-import { isSuccess } from './is-success.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isSuccess } from './is-success.js'
 
 it('simple', () => {
     expect(isSuccess('foobar')).toBe(true)

@@ -1,9 +1,8 @@
-import { asyncForAll, forAll } from './index.js'
+import { describe, expect, it } from 'vitest'
 
 import { sleep } from '../../../async/index.js'
 import { array, integer, tuple, utf16 } from '../../../random/index.js'
-
-import { describe, expect, it } from 'vitest'
+import { asyncForAll, forAll } from './index.js'
 
 it('abs smaller than six', () => {
     expect(() => {

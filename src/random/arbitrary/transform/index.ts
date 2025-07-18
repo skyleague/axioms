@@ -1,1 +1,1 @@
-export { mapArbitrary, filterArbitrary } from './transform.js'
+export { filterArbitrary, mapArbitrary } from './transform.js'

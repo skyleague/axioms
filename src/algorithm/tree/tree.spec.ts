@@ -1,9 +1,7 @@
+import { expect, it } from 'vitest'
 import type { Tree } from './index.js'
 import { mapTree } from './index.js'
-
 import { bfs, filterTree, showTree, tree } from './tree.js'
-
-import { expect, it } from 'vitest'
 
 it('map tree', () => {
     const t = mapTree(tree(1, [tree(2), tree(3)]), (x) => x + 1)

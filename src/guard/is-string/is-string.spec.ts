@@ -1,8 +1,7 @@
-import { isString } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, string, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isString } from './index.js'
 
 it('string is string', () => {
     expect(isString('foo')).toEqual(true)

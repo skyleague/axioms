@@ -1,6 +1,5 @@
-import { mergeDeep } from './merge-deep.js'
-
 import { expect, it } from 'vitest'
+import { mergeDeep } from './merge-deep.js'
 
 it('simple', () => {
     expect(
