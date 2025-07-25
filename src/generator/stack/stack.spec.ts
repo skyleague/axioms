@@ -1,7 +1,6 @@
+import { expect, it } from 'vitest'
 import { array, forAll, unknown } from '../../random/index.js'
 import { stack } from './index.js'
-
-import { expect, it } from 'vitest'
 
 it('simple', () => {
     expect(stack([1, 2, 3, 4]).toArray()).toMatchInlineSnapshot(`

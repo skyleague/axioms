@@ -1,8 +1,7 @@
-import { asyncMap } from './async-map.js'
+import { expect, it } from 'vitest'
 
 import { asyncCollect } from '../async-collect/index.js'
-
-import { expect, it } from 'vitest'
+import { asyncMap } from './async-map.js'
 
 it('simple', async () => {
     expect(await asyncCollect(asyncMap([1, 2, 3], (x) => x + 1))).toMatchInlineSnapshot(`

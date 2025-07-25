@@ -1,8 +1,7 @@
-import { isEither } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isEither } from './index.js'
 
 it('unknown is not either', () => {
     forAll(unknown(), (x) => !isEither(x))

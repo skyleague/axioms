@@ -1,6 +1,5 @@
-import { array, forAll, integer, string, tuple } from '../src/index.js'
-
 import { describe, expect, it } from 'vitest'
+import { array, forAll, integer, string, tuple } from '../src/index.js'
 
 describe('sorting', () => {
     function sort(xs: number[]): number[] {

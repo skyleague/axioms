@@ -1,12 +1,12 @@
 export {
+    asMaybe,
+    just,
     leftToMaybe,
-    rightToMaybe,
+    maybeAsValue,
     maybeToLeft,
     maybeToRight,
-    maybeAsValue,
+    rightToMaybe,
     whenJust,
     whenJusts,
     whenNothing,
-    just,
-    asMaybe,
 } from './maybe.js'

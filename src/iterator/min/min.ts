@@ -25,7 +25,7 @@ import type { Maybe } from '../../type/maybe/maybe.js'
 export function min<T extends Iterable<bigint | number | string>>(
     xs: T,
 ): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    let min: bigint | number | string | undefined = undefined
+    let min: bigint | number | string | undefined
     for (const x of xs) {
         if (min === undefined || x < min) {
             min = x
@@ -62,8 +62,8 @@ export function minBy<T extends Iterable<unknown>>(
     xs: T,
     f: (item: IterableElement<T>) => bigint | number | string,
 ): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    let min: unknown = undefined
-    let minValue: bigint | number | string | undefined = undefined
+    let min: unknown
+    let minValue: bigint | number | string | undefined
     for (const x of xs) {
         const value = f(x as IterableElement<T>)
         if (minValue === undefined || value < minValue) {

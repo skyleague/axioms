@@ -1,14 +1,11 @@
-import { omit, omitBy, omitUndefined } from './index.js'
-
-import type { OmitUndefined } from './omit.js'
-
+import { describe, expect, it } from 'vitest'
 import { equal } from '../../iterator/index.js'
 import { forAll, record, unknown } from '../../random/index.js'
-import { keysOf, pickBy } from '../index.js'
-
-import { describe, expect, it } from 'vitest'
 import { boolean } from '../../random/types/boolean/boolean.js'
 import { func } from '../../random/types/func/func.js'
+import { keysOf, pickBy } from '../index.js'
+import { omit, omitBy, omitUndefined } from './index.js'
+import type { OmitUndefined } from './omit.js'
 
 describe('omitUndefined', () => {
     it('omitUndefined x === identity, if all values defined', () => {

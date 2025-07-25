@@ -1,7 +1,6 @@
+import { expect, it } from 'vitest'
 import { array, forAll, unknown } from '../../random/index.js'
 import { queue } from './index.js'
-
-import { expect, it } from 'vitest'
 
 it('simple', () => {
     expect(queue([1, 2, 3, 4]).toArray()).toMatchInlineSnapshot(`

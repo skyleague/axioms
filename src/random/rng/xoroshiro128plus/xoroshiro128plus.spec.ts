@@ -67,7 +67,7 @@ it('sample', () => {
 })
 
 it('[0,1) interval', () => {
-    const gen = xoroshiro128plus(BigInt(new Date().getTime()))
+    const gen = xoroshiro128plus(BigInt(Date.now()))
     const total = 50000
     let mean = 0
     const vals: number[] = []

@@ -1,6 +1,5 @@
-import { defer } from './defer.js'
-
 import { expect, it } from 'vitest'
+import { defer } from './defer.js'
 
 it('deferred can be resolved', async () => {
     const p = defer<string>()

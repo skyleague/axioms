@@ -1,10 +1,9 @@
+import { expect, it, vi } from 'vitest'
 import { array, forAll, unknown } from '../../random/index.js'
 import { constant } from '../../random/types/helper/helper.js'
 import { integer } from '../../random/types/integer/integer.js'
 import { tuple } from '../../random/types/tuple/tuple.js'
 import { applicative } from './index.js'
-
-import { expect, it, vi } from 'vitest'
 
 it('make reentrant', () => {
     const xs = [1, 2, 3, 4].values()

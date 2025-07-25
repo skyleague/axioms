@@ -1,2 +1,2 @@
-export { ttlCacheResolver, cacheResolver } from './resolver.js'
 export { type Memoized, memoize } from './memoize.js'
+export { cacheResolver, ttlCacheResolver } from './resolver.js'

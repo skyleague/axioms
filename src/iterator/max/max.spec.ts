@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { Nothing, date, datetime, float, forAll, isJust, oneOf, string } from '../../index.js'
+import { date, datetime, float, forAll, isJust, Nothing, oneOf, string } from '../../index.js'
 import { iterable } from '../../random/types/iterable/iterable.js'
 import type { Maybe } from '../../type/maybe/maybe.js'
 import { max, maxBy } from './max.js'

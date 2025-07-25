@@ -1,13 +1,12 @@
-import { pick, pickBy } from './index.js'
+import { describe, expect, it } from 'vitest'
 
 import { isNumber } from '../../guard/index.js'
 import { equal } from '../../iterator/index.js'
 import { forAll, record, unknown } from '../../random/index.js'
-import { keysOf } from '../index.js'
-
-import { describe, expect, it } from 'vitest'
 import { boolean } from '../../random/types/boolean/boolean.js'
 import { func } from '../../random/types/func/func.js'
+import { keysOf } from '../index.js'
+import { pick, pickBy } from './index.js'
 
 describe('pickBy', () => {
     it('simple', () => {

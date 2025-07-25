@@ -1,8 +1,7 @@
-import { isDefined } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../index.js'
-
-import { expect, it } from 'vitest'
+import { isDefined } from './index.js'
 
 it('isDefined', () => {
     expect(isDefined([])).toBe(true)

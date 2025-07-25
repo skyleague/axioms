@@ -1,3 +1,4 @@
+import { expect, it } from 'vitest'
 import { arbitraryContext } from '../../arbitrary/context/context.js'
 import { forAll } from '../../arbitrary/forall/forall.js'
 import { xoroshiro128plus } from '../../rng/index.js'
@@ -5,8 +6,6 @@ import { constant } from '../helper/helper.js'
 import { integer } from '../integer/integer.js'
 import { tuple } from '../tuple/tuple.js'
 import { float } from './float.js'
-
-import { expect, it } from 'vitest'
 
 it('random sample', () => {
     const ctx = arbitraryContext({ rng: xoroshiro128plus(1638968569864n) })

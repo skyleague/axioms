@@ -1,8 +1,7 @@
-import { valuesOf } from './index.js'
+import { expect, expectTypeOf, it } from 'vitest'
 
 import { array, forAll, integer, oneOf, record, string, unknown } from '../../random/index.js'
-
-import { expect, expectTypeOf, it } from 'vitest'
+import { valuesOf } from './index.js'
 
 it('valuesOf === Object.values', () => {
     forAll(record(unknown()), (o) => {

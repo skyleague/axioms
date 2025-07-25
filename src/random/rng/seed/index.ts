@@ -1,1 +1,1 @@
-export { splitmix64, seeder2, xmur3, seederFromStr } from './seed.js'
+export { seeder2, seederFromStr, splitmix64, xmur3 } from './seed.js'

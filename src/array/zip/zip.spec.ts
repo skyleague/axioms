@@ -1,7 +1,6 @@
+import { describe, expect, it } from 'vitest'
 import { array, forAll, unknown } from '../../random/index.js'
 import { zip, zipWith } from './index.js'
-
-import { describe, expect, it } from 'vitest'
 
 describe('zip', () => {
     it('simple', () => {

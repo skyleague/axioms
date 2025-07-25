@@ -1,10 +1,9 @@
-import { memoize, ttlCacheResolver } from './index.js'
+import { describe, expect, it, vi } from 'vitest'
 
 import { sleep } from '../../async/index.js'
 import { asyncForAll, forAll, integer, tuple, unknown } from '../../random/index.js'
-
-import { describe, expect, it, vi } from 'vitest'
-import { LRUCacheResolver, cacheResolver } from './resolver.js'
+import { memoize, ttlCacheResolver } from './index.js'
+import { cacheResolver, LRUCacheResolver } from './resolver.js'
 
 describe('cache resolver', () => {
     it('simple', () => {
@@ -113,7 +112,7 @@ describe('ttl cache resolver', () => {
     })
 
     it('async mem x called twice after timeout', async () => {
-        vi.setSystemTime(new Date().getTime())
+        vi.setSystemTime(Date.now())
         await asyncForAll(tuple(unknown(), integer({ min: 1, max: 500 })), async ([x, n]) => {
             const fn = vi.fn(async () => x)
             const mem = memoize(fn, ttlCacheResolver(5))
@@ -121,7 +120,7 @@ describe('ttl cache resolver', () => {
                 expect(await mem()).toEqual(x)
             }
 
-            vi.setSystemTime(new Date().getTime() + 10)
+            vi.setSystemTime(Date.now() + 10)
 
             for (let i = 0; i < n; i++) {
                 expect(await mem()).toEqual(x)

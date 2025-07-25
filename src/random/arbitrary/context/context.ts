@@ -19,7 +19,7 @@ export type BiasedArbitraryContext = ArbitraryContext & {
     bias: number
 }
 
-export const defaultRng = xoroshiro128plus(BigInt(Math.round(new Date().getTime() * Math.random())))
+export const defaultRng = xoroshiro128plus(BigInt(Math.round(Date.now() * Math.random())))
 
 export function arbitraryContext({
     rng = defaultRng,

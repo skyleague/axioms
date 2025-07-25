@@ -25,7 +25,7 @@ import type { Maybe } from '../../type/maybe/maybe.js'
 export function max<T extends Iterable<bigint | number | string>>(
     xs: T,
 ): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    let max: bigint | number | string | undefined = undefined
+    let max: bigint | number | string | undefined
     for (const x of xs) {
         if (max === undefined || x > max) {
             max = x
@@ -62,8 +62,8 @@ export function maxBy<T extends Iterable<unknown>>(
     xs: T,
     f: (item: IterableElement<T>) => bigint | number | string,
 ): T extends Iterable<infer I> ? (T extends readonly [unknown, ...unknown[]] ? T[number] : Maybe<I>) : T {
-    let max: unknown = undefined
-    let maxValue: bigint | number | string | undefined = undefined
+    let max: unknown
+    let maxValue: bigint | number | string | undefined
     for (const x of xs) {
         const value = f(x as IterableElement<T>)
         if (maxValue === undefined || value > maxValue) {

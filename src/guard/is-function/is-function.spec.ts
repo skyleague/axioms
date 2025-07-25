@@ -1,8 +1,7 @@
-import { isFunction } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isFunction } from './index.js'
 
 it('unknown is not a function', () => {
     forAll(unknown(), (x) => !isFunction(x))

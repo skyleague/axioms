@@ -1,1 +1,1 @@
-export { omitUndefined, omit, omitBy } from './omit.js'
+export { omit, omitBy, omitUndefined } from './omit.js'

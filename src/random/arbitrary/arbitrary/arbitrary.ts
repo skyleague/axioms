@@ -3,7 +3,7 @@ import { zip } from '../../../array/zip/zip.js'
 import { applicative } from '../../../iterator/applicative/applicative.js'
 import type { Simplify } from '../../../types.js'
 import type { ArbitraryContext, ArbitrarySizeContext } from '../context/context.js'
-import { splitX, splits } from '../shrink/shrink.js'
+import { splits, splitX } from '../shrink/shrink.js'
 
 export interface Arbitrary<T> {
     value: (context: ArbitraryContext) => Tree<T>

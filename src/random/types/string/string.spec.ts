@@ -1,3 +1,5 @@
+import util from 'node:util'
+import { describe, expect, it } from 'vitest'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, forAll } from '../../arbitrary/index.js'
 import { xoroshiro128plus } from '../../rng/index.js'
@@ -16,10 +18,6 @@ import {
     utf16,
     utf16Surrogate,
 } from './string.js'
-
-import { describe, expect, it } from 'vitest'
-
-import util from 'node:util'
 
 const isPrintable = (str: string) => /^[ -~]+$/.test(str)
 

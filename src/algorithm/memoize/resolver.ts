@@ -44,7 +44,7 @@ export type Resolver<Fn extends (...args: any) => any> = {
  */
 export function ttlCacheResolver<Fn extends () => unknown>(ttl: number): Resolver<Fn> {
     type T = ReturnType<Fn>
-    let now = new Date().getTime()
+    let now = Date.now()
     let value: Either<unknown, T> = { left: undefined }
     const resolver: Resolver<Fn> = ((x: Fn): T => {
         if (isLeft(value)) {
@@ -52,7 +52,7 @@ export function ttlCacheResolver<Fn extends () => unknown>(ttl: number): Resolve
             return value.right
         }
 
-        const current = new Date().getTime()
+        const current = Date.now()
         if (current - now > ttl) {
             value = { right: evaluate(x) as T }
         }
@@ -115,7 +115,10 @@ export function cacheResolver<Fn extends () => unknown>(): Resolver<Fn> {
 export function LRUCacheResolver<Fn extends (...args: any) => any>({
     maxItems = 10,
     key = (...args) => args,
-}: { maxItems?: number; key?: (...args: Parameters<Fn>) => unknown } = {}): Resolver<Fn> {
+}: {
+    maxItems?: number
+    key?: (...args: Parameters<Fn>) => unknown
+} = {}): Resolver<Fn> {
     type T = ReturnType<Fn>
     let cache = new Map<string, T>()
 

@@ -1,3 +1,14 @@
+import { assertType, describe, expect, expectTypeOf, it } from 'vitest'
+
+import { isJust, isLeft, isNothing, isRight } from '../../guard/index.js'
+import { equal } from '../../iterator/equal/index.js'
+import { concat } from '../../iterator/index.js'
+import { array, forAll, integer, object, shuffle, unknown } from '../../random/index.js'
+import { func } from '../../random/types/func/func.js'
+import type { Left, Right } from '../../type/either/either.js'
+import type { Either, Maybe } from '../../type/index.js'
+import { Nothing } from '../../type/index.js'
+import { whenLeft, whenRight } from '../either/index.js'
 import {
     asMaybe,
     leftToMaybe,
@@ -10,18 +21,6 @@ import {
     whenNothing,
     whenNothings,
 } from './maybe.js'
-
-import { isJust, isLeft, isNothing, isRight } from '../../guard/index.js'
-import { equal } from '../../iterator/equal/index.js'
-import { concat } from '../../iterator/index.js'
-import { array, forAll, integer, object, shuffle, unknown } from '../../random/index.js'
-import type { Either, Maybe } from '../../type/index.js'
-import { Nothing } from '../../type/index.js'
-import { whenLeft, whenRight } from '../either/index.js'
-
-import { assertType, describe, expect, expectTypeOf, it } from 'vitest'
-import { func } from '../../random/types/func/func.js'
-import type { Left, Right } from '../../type/either/either.js'
 
 class FooError extends Error {
     public foo() {

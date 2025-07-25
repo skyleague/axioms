@@ -1,8 +1,7 @@
-import { isUndefined } from './index.js'
+import { expect, it } from 'vitest'
 
 import { forAll, unknown } from '../../random/index.js'
-
-import { expect, it } from 'vitest'
+import { isUndefined } from './index.js'
 
 it('undefined', () => {
     expect(isUndefined(undefined)).toEqual(true)

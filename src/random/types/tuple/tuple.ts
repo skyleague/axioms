@@ -1,4 +1,4 @@
-import { type Arbitrary, type TypeOfArbitrary, interleave } from '../../arbitrary/arbitrary/arbitrary.js'
+import { type Arbitrary, interleave, type TypeOfArbitrary } from '../../arbitrary/arbitrary/arbitrary.js'
 import type { ArbitrarySizeContext } from '../../arbitrary/context/context.js'
 import { type Dependent, dependentArbitrary } from '../../arbitrary/dependent/dependent.js'
 

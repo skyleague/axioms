@@ -1,3 +1,8 @@
+import util from 'node:util'
+import { describe, expect, it } from 'vitest'
+import { arbitraryContext } from '../../arbitrary/context/context.js'
+import { forAll } from '../../arbitrary/index.js'
+import { utf16 } from '../string/index.js'
 import {
     alphaChar,
     alphaNumericChar,
@@ -10,14 +15,6 @@ import {
     utf16Char,
     utf16SurrogateChar,
 } from './char.js'
-
-import { forAll } from '../../arbitrary/index.js'
-import { utf16 } from '../string/index.js'
-
-import { describe, expect, it } from 'vitest'
-
-import util from 'node:util'
-import { arbitraryContext } from '../../arbitrary/context/context.js'
 
 const isPrintable = (str: string) => /^[ -~]+$/.test(str)
 

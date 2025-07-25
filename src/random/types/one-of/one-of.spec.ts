@@ -1,3 +1,4 @@
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { showTree } from '../../../algorithm/tree/tree.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, xoroshiro128plus } from '../../../random/index.js'
@@ -10,8 +11,6 @@ import { object } from '../object/object.js'
 import { string } from '../string/string.js'
 import { tuple } from '../tuple/tuple.js'
 import { oneOf, oneOfWeighted } from './one-of.js'
-
-import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('oneOf', () => {
     it('distribution', () => {

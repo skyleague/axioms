@@ -1,11 +1,10 @@
+import { expect, it } from 'vitest'
 import { dfsPreOrder, showTree } from '../../../algorithm/tree/tree.js'
 import { mapValues } from '../../../object/index.js'
 import { arbitraryContext, forAll } from '../../../random/arbitrary/index.js'
 import { xoroshiro128plus } from '../../../random/rng/index.js'
 import { constant, natural, tuple } from '../index.js'
 import { integer } from './index.js'
-
-import { expect, it } from 'vitest'
 
 it('distribution', () => {
     const context = arbitraryContext({

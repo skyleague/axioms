@@ -1,6 +1,5 @@
-import { trampoline } from './index.js'
-
 import { expect, it } from 'vitest'
+import { trampoline } from './index.js'
 
 it('non trampoline', () => {
     const sumBelow = (n: number, sum = 0): number => (n === 0 ? sum : sumBelow(n - 1, sum + n))

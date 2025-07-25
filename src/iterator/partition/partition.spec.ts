@@ -1,3 +1,4 @@
+import { expect, expectTypeOf, it } from 'vitest'
 import { isBoolean } from '../../guard/is-boolean/is-boolean.js'
 import { isNumber } from '../../guard/is-number/is-number.js'
 import { isString } from '../../guard/is-string/is-string.js'
@@ -12,8 +13,6 @@ import { oneOf } from '../../random/types/one-of/one-of.js'
 import { string } from '../../random/types/string/string.js'
 import { tuple } from '../../random/types/tuple/tuple.js'
 import { partition } from './partition.js'
-
-import { expect, expectTypeOf, it } from 'vitest'
 
 function* interleave<X, Y>(xs: X[], ys: Y[], seed: number) {
     const rng = xoroshiro128plus(BigInt(seed))

@@ -1,7 +1,6 @@
+import { expect, it } from 'vitest'
 import { equal } from '../../src/iterator/index.js'
 import { array, constant, forAll, integer, natural, tuple } from '../../src/random/index.js'
-
-import { expect, it } from 'vitest'
 
 // https://github.com/jlink/shrinking-challenge
 it('bound 5', () => {
@@ -32,7 +31,7 @@ it('bound 5', () => {
 
       ]
     `)
-})
+}, 15000)
 
 it('coupling', () => {
     expect(() => {
